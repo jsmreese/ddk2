@@ -1,0 +1,1 @@
+DDK.addonsLoad.resolve();
