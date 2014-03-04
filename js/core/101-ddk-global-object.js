@@ -1616,15 +1616,27 @@
 			var $this = $(this),
 				data = $this.data(),
 				dialogType = data.ddkDialog,
-				metrics = $this.closest(".ps-toolbar").data("ddk-metrics"),
-				filterValue = $this.closest(".ps-toolbar").data("ddk-filter-value"),
+				target = data.target,
+				metrics,
+				filterValue,
 				options = DDK.dialog[dialogType],
 				$parentDialog,
 				$dialog,
 				$control,
 				controlIdParts,
 				controlId,
-				controlName;
+				controlName,
+				controlData;
+
+			if (target) {
+				$control = $("[id$=\"" + target + "_widget\"]");
+				controlData = $control.controlData();
+				metrics = controlData.ddkMetrics;
+				filterValue = controlData.ddkFilterValue;
+			} else {
+				metrics = $this.closest(".ps-toolbar").data("ddk-metrics");
+				filterValue = $this.closest(".ps-toolbar").data("ddk-filter-value");
+			}
 
 			if (options) {
 
@@ -1637,7 +1649,7 @@
 					data.ddkDialog = dialogType;
 					// console.log(data, $parentDialog.data());
 				} else {
-					$control = $this.closest("div[id^=\"psc_\"][id$=\"_widget\"]");
+					$control = $control || $this.closest("div[id^=\"psc_\"][id$=\"_widget\"]");
 					if ($control.size()) {
 						controlIdParts = $control.attr("id").split("_");
 						controlId = controlIdParts[2];
