@@ -900,12 +900,6 @@ if (Backbone.Epoxy) {
 			
 			this.sections = "header body footer".split(" ");
 			
-			this.editorOptionGroups = [
-				(new PS.MC.Models.OptionGroup()).setup(PS.optionsAPI.bamset),
-				(new PS.MC.Models.OptionGroup()).setup(PS.optionsAPI.bam),
-				(new PS.MC.Models.OptionGroup()).setup(PS.optionsAPI.formatElement)
-			];
-			
 			this.on("ps.option.change", function (changed) {
 				DDK.log("ps.option.change (Set)", this.cid, changed);
 				
@@ -952,7 +946,7 @@ if (Backbone.Epoxy) {
 			if (isAdvancedEditor) {
 				// render JSON editor
 				this.$textArea = $("<textarea>" + JSON.stringify(config, null, "\t") + "</textarea>").appendTo(this.$editor.empty()).editor({
-					optionGroupModel: this.editorOptionGroups
+					optionGroupModel: DDK.bamset2.configOptionGroupModels
 				});
 				this.resize();
 				

@@ -293,7 +293,9 @@
 	
 
 	/* $.fn.editor jQuery plugin
-	 * Creates a CodeMirror editor from a textarea. Initial version only supports JSON content.
+	 * Creates a CodeMirror editor from a textarea.
+	 * Automatically detects JSON or text content.
+	 * Accepts OptionGroup Models for line-based automatic help in JSON mode.
 	 * by: jsmreese
 	 */
 	 $.fn.editor = function (settings) {
@@ -301,103 +303,134 @@
 			editor,
 			waiting,
 			messages = [],
-			settings = $.extend(true, {}, $.fn.editor.defaults, settings),
+			settings = _.merge({}, $.fn.editor.defaults, settings || {}, {
+				value: _.string.parseJSON(elem.value)
+			}),
 			messageTemplate = _.template(settings.messageTemplate),
 			optionHelpTemplate = _.template(settings.optionHelpTemplate),
 			JSHINT = window.JSHINT || null,
-			updateHints = function () {
-				editor.operation(function () {
-					var errors;
-					
-					// clear messages
-					_.each(messages, editor.removeLineWidget);
-					messages.length = 0;
-
-					// lint value
-					JSHINT(editor.getValue());
-					
-					// create messages for errors
-					_.each(JSHINT.errors, function (err, index) {
-						if (settings.messageCount && index === settings.messageCount) {
-							return false;
-						}
-						messages.push(editor.addLineWidget(err.line - 1, $(messageTemplate(_.extend({}, _.string, err))).get(0), settings.messageSettings));
-					});
-				});
-			},
-			updateHelp = function () {
-				editor.operation(function () {
-					var props,
-						optionGroups = [].concat(settings.optionGroupModel),
-						options = _.flatten(_.map(optionGroups, function (optionGroup) {
-							return optionGroup.reduce(function (optionModel, accumulator) {
-								accumulator.push({ id: optionModel.get("id"), label: optionModel.get("label"), description: optionModel.get("description"), notes: optionModel.get("notes") });
-							}, { includeEmpty: true });
-						}));
-					
-					// clear options help markers
-					editor.clearGutter("CodeMirror-options-help");
-
-					// search editor for known properties
-					props = _.each(_.range(0, editor.doc.lineCount()), function (lineNumber) {
-						var lineInfo = editor.lineInfo(lineNumber),
-							match = lineInfo.text.match(/^[ \t]*"[a-zA-Z]+":/),
-							prop = match && match[0] && _.string.underscored(match[0].replace(/[^a-zA-Z]/g, "")),
-							option = _.find(options, { id: prop}),
-							helpMarker;
-						
-						// if no option match is found, do nothing
-						if (!option) {
-							return;
-						}
-						
-						// if a known property is found, create a help marker for it
-						helpMarker = $(optionHelpTemplate(_.extend({}, _.string, lineInfo, option))).get(0);
-						editor.setGutterMarker(lineInfo.line, "CodeMirror-options-help", helpMarker);
-
-					});
-				});
-			},
-			updateMarkers = function () {
-				JSHINT && updateHints();
-				settings.optionGroupModel && updateHelp();
-			};
+			updateHints,
+			updateHelp,
+			updateMarkers;
 			
 		// allow setting language via data-language
-		settings.language = $.data(elem, "language") || settings.language;
+		settings.language = $.data(elem, "language") || _.result(settings, "language");
 
-		// handle JSON language
-		if (settings.language === "json") {
-			settings.editorSettings.mode = {
-				name: "javascript",
-				json: true
-			};
+		// handle language
+		switch (settings.language) {
+			case "json":
+				// set CodeMirror to use json mode
+				settings.editorSettings.mode = {
+					name: "javascript",
+					json: true
+				};
+				
+				// initialize OptionGroup-based gutter help
+				if (settings.optionGroupModel) {
+					settings.editorSettings.gutters = ["CodeMirror-options-help"];
+				}
+				
+				updateHints = function () {
+					editor.operation(function () {
+						var errors;
+						
+						// clear messages
+						_.each(messages, editor.removeLineWidget);
+						messages.length = 0;
+	
+						// lint value
+						JSHINT(editor.getValue());
+						
+						// create messages for errors
+						_.each(JSHINT.errors, function (err, index) {
+							if (settings.messageCount && index === settings.messageCount) {
+								return false;
+							}
+							messages.push(editor.addLineWidget(err.line - 1, $(messageTemplate(_.extend({}, _.string, err))).get(0), settings.messageSettings));
+						});
+					});
+				};
+				
+				updateHelp = function () {
+					editor.operation(function () {
+						var props,
+							optionGroups = [].concat(settings.optionGroupModel),
+							options = _.flatten(_.map(optionGroups, function (optionGroup) {
+								return optionGroup.reduce(function (optionModel, accumulator) {
+									accumulator.push({ id: optionModel.get("id"), label: optionModel.get("label"), description: optionModel.get("description"), notes: optionModel.get("notes") });
+								}, { includeEmpty: true });
+							}));
+						
+						// clear options help markers
+						editor.clearGutter("CodeMirror-options-help");
+	
+						// search editor for known properties
+						props = _.each(_.range(0, editor.doc.lineCount()), function (lineNumber) {
+							var lineInfo = editor.lineInfo(lineNumber),
+								match = lineInfo.text.match(/^[ \t]*"[a-zA-Z]+":/),
+								prop = match && match[0] && _.string.underscored(match[0].replace(/[^a-zA-Z]/g, "")),
+								option = _.find(options, { id: prop}),
+								helpMarker;
+							
+							// if no option match is found, do nothing
+							if (!option) {
+								return;
+							}
+							
+							// if a known property is found, create a help marker for it
+							helpMarker = $(optionHelpTemplate(_.extend({}, _.string, lineInfo, option))).get(0);
+							editor.setGutterMarker(lineInfo.line, "CodeMirror-options-help", helpMarker);
+	
+						});
+					});
+				};
+				
+				updateMarkers = function () {
+					JSHINT && updateHints();
+					settings.optionGroupModel && updateHelp();
+				};
+
+				break;
 			
-			if (settings.optionGroupModel) {
-				settings.editorSettings.gutters = ["CodeMirror-options-help"];
-			}
+			case "text":
+				settings.editorSettings.lineWrapping = true;
+				
+				break;
+			
+			default:
+			
 		}
 		
+		// setup CodeMirror instance
 		editor = CodeMirror.fromTextArea(elem, settings.editorSettings);
-				
+
+		// setup save on blur
 		editor.on("blur", function (){
 			editor.save();
 		});
 
-		editor.on("change", function () {
-			clearTimeout(waiting);
-			waiting = setTimeout(updateMarkers, 500);
-		});
-
-		setTimeout(updateMarkers, 100);
+		// setup editor hinting and help
+		if (updateMarkers) {
+			editor.on("change", function () {
+				clearTimeout(waiting);
+				waiting = setTimeout(updateMarkers, 500);
+			});
+	
+			setTimeout(updateMarkers, 100);
+		}
 		
+		// save reference to CodeMirror instance in element data
 		$.data(elem, "editor", editor);
 	
 		return this;
 	};
 	
 	$.fn.editor.defaults = {
-		language: "json",
+		// language defaults to "json" if value can be parsed as JSON
+		// otherwise, language defaults to "text"
+		language: function () {
+			return (_.isPlainObject(this.value) ? "json" : "text");
+		},
 		messageCount: 1,
 		messageTemplate: "<div class=\"lint-error\"><%= reason %></div>",
 		messageSettings: {

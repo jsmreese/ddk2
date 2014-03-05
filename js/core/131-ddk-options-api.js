@@ -1147,3 +1147,6 @@ _.each([
 		}
 	});
 });
+
+PS.optionsAPI.scorecard = DDK.scorecard2.optionsAPI.config;
+PS.optionsAPI.scorecardColumn = DDK.scorecard2.optionsAPI.columnConfig;
