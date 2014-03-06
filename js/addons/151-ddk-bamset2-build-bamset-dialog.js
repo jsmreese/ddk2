@@ -110,7 +110,7 @@ if (Backbone.Epoxy) {
 					settings = {
 						model: model,
 						className: "bs-column-dialog-option ui-helper-clearfix",
-						template: (_.string.endsWith(model.id, "_header_style") ? "option_radio" : "option_labeled_aligned")
+						template: ((model.get("displayType") === "radio") ? "option_radio" : "option_labeled_aligned")
 					};
 			}
 			
