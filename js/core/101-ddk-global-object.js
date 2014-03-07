@@ -2653,85 +2653,7 @@ $.extend(true, DDK, {
 				metrics,
 				attributes,
 				displays,
-				hasBams = false,
-				getAjaxSetup = function(navOptions){
-					return {
-						initSelection : function (element, callback) {
-							var dataToPass = {}, newData;
-							K(navOptions.queryKeywords); // read data-keywords and do a keyword update
-							$.extend(true, dataToPass, K.toObject(), {
-								"config.mn": "PSC_Navset2_Dataset_JSON",
-								"control.queryWidget": navOptions.queryWidget, // query widget
-								"control.id": element.val()
-							});
-							$.post("amengine.aspx", dataToPass, 
-								function(data) {
-									if(data && data.results && data.results.length && data.results[0].max_record_count > 0){
-										newData = _.map(data.results, function(item, key){
-											return {"id": item.optvalue, "text": item.optlabel};
-										});
-										if(navOptions.multiple){
-											callback(newData);
-										}
-										else{
-											callback(newData[0]);
-										}
-						/*				_this.model.get("input").trigger("DDK.Navigation.textChange", [_this.el, newData]);
-										_this.model.set("selectedData", newData);
-										if(typeof(_this.model.get("val_callback")) === "function"){
-											_this.model.get("val_callback").call(this, _this);
-										}
-						*/			}
-								}, "json");
-						},
-						ajax: {
-							url: "amengine.aspx?config.mn=PSC_Navset2_Dataset_JSON",
-							type: "POST",
-							dataType: 'json',
-							data: function (term, page, context) {
-								var data;
-								
-								K(navOptions.queryKeywords); // read data-keywords and do a keyword update
-								data = K.toObject(); // set data to the global keyword hash
-								
-								$.extend(true, data, {
-									"control.queryWidget": navOptions.queryWidget, // query widget
-									"control.search": term, // search term
-									"control.sort": navOptions.allowSort,
-									"control.sortColumns": navOptions.sortColumns,
-									"page": page, 
-									"pageSize": navOptions.pageSize
-								});
-
-								return data;
-							},
-							results: function (data, page) {
-								var records = data.results,
-									recordCount = records.length && records[0].optvalue && records[0].optvalue ? records.length : 0,
-									record,
-									i,
-									results = [],
-									result,
-									optionGroup = "",
-									valueWrapString = navOptions.valueWrapString || "",
-									more = (page * navOptions.pageSize) < data.total;
-								
-								for (i = 0; i < recordCount; i += 1) {
-									record = records[i];
-									if ((typeof record.optgroup !== "undefined") && (optionGroup !== record.optgroup)) {
-										results.push({ text: record.optgroup });
-										optionGroup = record.optgroup;
-									}
-									result = { text: record.optlabel, id: valueWrapString + record.optvalue + valueWrapString };
-									if (record.opticon) { result.icon = record.opticon };
-									results.push(result);									
-								}
-								return { results: results, more: more };
-							},
-							quietMillis: 200
-						}
-					};
-				};
+				hasBams = false;
 			tempArr = tempArr.concat(config.setHeaderNavs || []).concat(config.setBodyNavs || []).concat(config.setFooterNavs || []);
 			//initialize elements
 			_.each(tempArr, function(nav, index){
@@ -2757,9 +2679,18 @@ $.extend(true, DDK, {
 							$control.find("#" + elem.elemId).select2(options);
 						}
 					}, "default");
-					if(elem.elemId && elem.elemConfig){
+		/*			if(elem.elemId && elem.elemConfig){
 						//initialize select2
 						initElem(elem.elemType);
+						//add change event for target keyword
+						if(elem.elemConfig.targetKeyword){
+							$control.find("#" + elem.elemId).on("change", function(e){
+								K(elem.elemConfig.targetKeyword, $(this).val());
+							});					
+						}
+					}
+		*/
+					if(elem.elemConfig){
 						//add change event for target keyword
 						if(elem.elemConfig.targetKeyword){
 							$control.find("#" + elem.elemId).on("change", function(e){
@@ -2775,6 +2706,7 @@ $.extend(true, DDK, {
 			DDK.navset2.resize(id);
 
 			DDK.control.init($control);
+			DDK.navFormat($control);
 		},
 		resize: PSC_Navset2_Resize,
 		reload: PSC_Navset2_Reload

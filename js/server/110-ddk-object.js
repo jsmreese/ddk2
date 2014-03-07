@@ -1875,7 +1875,14 @@ DDK.template.render = {
 	},
 	
 	navset2Element: function (accumulator, elem, index) {
-		var createElem = _.delegator({
+		var addDataNav = function(elemType, config){
+				var dataString = "";
+				dataString += " data-nav=\"" + elemType + "\" ";
+				_.each(config, function(item, index){
+					dataString += " data-nav-" + _.string.dasherize(index) + " = \"" + item + "\" ";
+				});
+				return dataString;
+			}, createElem = _.delegator({
 			"label": function(options){
 				return "<label id=\"" + options.elemId + "\" class=\"" + options.elemClassName + "\" " + options.elemAttr + ">" + options.elemText + "</label>";
 			},
@@ -1886,7 +1893,7 @@ DDK.template.render = {
 				return "<button id=\"" + options.elemId + "\" class=\"" + options.elemClassName + "\" " + options.elemAttr + ">" + options.elemText + "</button>";
 			},
 			"select2": function(options){
-				return "<input id=\"" + options.elemId + "\" placeholder=\"" + options.elemText + "\" class=\"ps-nav-select2 " + options.elemClassName + "\" " + options.elemAttr + "></input>";
+				return "<input id=\"" + options.elemId + "\" placeholder=\"" + options.elemText + "\" class=\"ps-nav-select2 " + options.elemClassName + "\" " + options.elemAttr + addDataNav(options.elemType, options.elemConfig) + "></input>";
 			},
 			"checkbox": function(options){
 				var html = "<input id=\"" + options.elemId + "\" type=\"checkbox\" class=\"" + options.elemClassName + "\" " + options.elemAttr + "></input>";
@@ -1903,7 +1910,7 @@ DDK.template.render = {
 				return html;
 			},
 			"date": function(options){
-				return "<input id=\"" + options.elemId + "\" placeholder=\"" + options.elemText + "\" class=\"" + options.elemClassName + "\" " + options.elemAttr + "></input>";
+				return "<input id=\"" + options.elemId + "\" placeholder=\"" + options.elemText + "\" class=\"" + options.elemClassName + "\" " + options.elemAttr + addDataNav(options.elemType, options.elemConfig) + "></input>";
 			}
 		}, "label");
 		
