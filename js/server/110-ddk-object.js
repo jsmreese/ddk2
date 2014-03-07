@@ -2731,14 +2731,21 @@ DDK.fnVersionCheck = function (v, n) {
 
 DDK.parseScriptBlockMatch = function (match) {
 	var out = "";
-	log(match);
 	
 	match = DDK.unescape.brackets(match.slice(2, -2));
 
 	try {
 		out = eval(match);
 	} catch (e) { 
-		out = "DDK Script Block Error -- <code>" + e.message + "</code>. Code: <code>" + match + "</code>";
+		out = "DDK Script Block Error -- <code>" + DDK.escape.brackets(e.message) + "</code>. Code: <code>" + DDK.escape.brackets(match) + "</code>";
+	}
+	
+	if (out == null) {
+		out = "DDK Script Block Error -- return value is <code>null</code> or <code>undefined</code>. Code: <code>" + DDK.escape.brackets(match) + "</code>";
+	}
+	
+	if (typeof out !== "string") {
+		out = "DDK Script Block Error -- return value is not a string. Return value: <code>" + DDK.renderJSON(out) + "</code> Code: <code>" + DDK.escape.brackets(match) + "</code>";
 	}
 	
 	//return out;
