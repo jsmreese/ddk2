@@ -582,11 +582,8 @@ if (Backbone.Epoxy) {
 				// artificially trigger a value model change event
 				// on each element under this bam
 				// so that format and formatStyle are udpated
-				console.warn("SectionViews Properties:", _.keys(this.sectionViews))
 				_.each(this.sectionViews, function (section) {
-					console.warn("ChildViews Length:", section.childViews.length)
 					_.each(section.childViews, function (child) {
-						console.info(section.cid, section, child.cid, child);
 						_.defer(function (child) {
 							child.trigger("ps.option.change", { id: "elem_value", value: child.model.val("elem_value") });
 						}, child);
