@@ -348,6 +348,8 @@
 							}
 							messages.push(editor.addLineWidget(err.line - 1, $(messageTemplate(_.extend({}, _.string, err))).get(0), settings.messageSettings));
 						});
+						
+						$(editor.getTextArea()).closest(".ui-dialog-content")[JSHINT.errors.length ? "addClass" : "removeClass"]("config-error");
 					});
 				};
 				
