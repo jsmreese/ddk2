@@ -24,7 +24,7 @@ DDK.reloadFromFavoriteRequest = function () {
 		ajaxSettings;
 	
 	if (!DDK.reloadFromFavoriteQueue.length) {
-		DDK.info("DDK.reloadFromFavoriteQueue is empty.");
+		DDK.log("DDK.reloadFromFavoriteQueue is empty.");
 		return false;
 	}
 
@@ -55,7 +55,7 @@ DDK.reloadFromFavoriteRequest = function () {
 		success: function (data) {
 			var control = data.datasets[1];
 			
-			$target.empty().html(DDK.unescape.brackets(control.html));
+			$target.am("hidemask").empty().html(DDK.unescape.brackets(control.html));
 			reloadControlContainer(control.name, control.id, settings, settings.callback, $target.children().eq(0));
 			K(control.stateKeywords);
 			
@@ -110,6 +110,8 @@ DDK.reloadFromFavoriteRequest = function () {
 	
 	// set loading status
 	DDK.reloadFromFavoriteLoading = true;
+	DDK.log("Loading control from favorite:", settings);
+	$target.am("showmask");
 
 
 	// get control

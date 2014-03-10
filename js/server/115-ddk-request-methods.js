@@ -70,7 +70,7 @@ DDK.requestMethods.renderControlFromFavorite = function (keywords) {
 		}, {});
 		//control.log = DDK.log(controlKeys);
 		
-		control.html = "<div style='height: 100%; width: 100%;' id='psc_" + control.name + "_" + control.id + "_widget' data-options='" + control.optionsWidget + "' data-keywords=\"" + control.dataKeywords + "\">" +
+		control.html = "<div style='height: 100%; width: 100%;' id='psc_" + control.name + "_" + control.id + "_widget' data-options='" + control.optionsWidget + "' data-keywords=\"" + _.escape(control.dataKeywords).replace(DDK.regex.tilde, "&#126;") + "\">" +
 			run("PSC_" + _.string.titleize(control.name) + "_Widget", controlKeys) +
 			"</div>";
 	}

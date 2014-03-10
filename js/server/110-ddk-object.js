@@ -2751,8 +2751,8 @@ DDK.parseScriptBlockMatch = function (match) {
 		out = "DDK Script Block Error -- return value is <code>null</code> or <code>undefined</code>. Code: <code>" + DDK.escape.brackets(match) + "</code>";
 	}
 	
-	if (typeof out !== "string") {
-		out = "DDK Script Block Error -- return value is not a string. Return value: <code>" + DDK.renderJSON(out) + "</code> Code: <code>" + DDK.escape.brackets(match) + "</code>";
+	if (!(typeof out == "string" || typeof out == "number" || typeof out == "boolean")) {
+		out = "DDK Script Block Error -- return value is not a string, number, or boolean. Return value: <code>" + DDK.renderJSON(out) + "</code> Code: <code>" + DDK.escape.brackets(match) + "</code>";
 	}
 	
 	//return out;
