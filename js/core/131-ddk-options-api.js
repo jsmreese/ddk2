@@ -495,8 +495,8 @@ PS.optionsAPI.navElemConfig = {
 				"description": "Element query widget.",
 				"notes": "Sets query widget"
 			},
-			"queryKeywords": {
-				"id": "query_keywords",
+			"keywords": {
+				"id": "keywords",
 				"label": "Query Keywords",
 				"description": "Keywords to pass to the query widget",
 				"notes": "Keywords to pass to the query widget"
@@ -541,6 +541,36 @@ PS.optionsAPI.navElemConfig = {
 				"id": "value_wrap_string",
 				"label": "Value Wrap String",
 				"description": "String to be used as a wrapper for the value",
+				"notes": ""
+			},
+			"value": {
+				"id": "value",
+				"label": "Default Value",
+				"description": "Default value of the input",
+				"notes": ""
+			},
+			"valueField": {
+				"id": "value_field",
+				"label": "Value Field",
+				"description": "Value Field mapping for select2",
+				"notes": ""
+			},
+			"labelField": {
+				"id": "label_field",
+				"label": "Label Field",
+				"description": "Label Field mapping for select2",
+				"notes": ""
+			},
+			"groupField": {
+				"id": "group_field",
+				"label": "Group Field",
+				"description": "Group Field mapping for select2",
+				"notes": ""
+			},
+			"iconField": {
+				"id": "icon_field",
+				"label": "Icon Field",
+				"description": "Icon Field mapping for select2",
 				"notes": ""
 			}
 		}
@@ -594,23 +624,23 @@ PS.optionsAPI.navElem = {
 				"description": "Element grid classes.",
 				"notes": "Sets classes on the element grid div."
 			},
-			"id": {
+/*				"id": {
 				"id": "elem_id",
 				"label": "Elem Id",
 				"description": "Element Id.",
 				"notes": "Sets id on the element"
 			},
-			"type": {
-				"id": "elem_type",
-				"label": "Elem Type",
-				"description": "Element Type.",
+*/				"format": {
+				"id": "elem_format",
+				"label": "Elem Format",
+				"description": "Element Format.",
 				"notes": "Sets type on the element"
 			},
-			"text": {
-				"id": "elem_text",
-				"label": "Elem text",
-				"description": "Element text.",
-				"notes": "Sets text on the element"
+			"label": {
+				"id": "elem_label",
+				"label": "Elem label",
+				"description": "Element label.",
+				"notes": "Sets label on the element"
 			},
 			"options": {
 				"id": "elem_config",
