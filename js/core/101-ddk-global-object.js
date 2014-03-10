@@ -2643,71 +2643,71 @@ $.extend(true, DDK, {
 			allowClear: true
 		},
 		init: function(id) {
-			var thisNavset = this,
-				$control = $("#psc_navset2_" + id + "_widget"),
-				$data = $('#psc_navset2_data_' + id),
-				data = $data.data(),
-				config = data && data.config || null,
-				tempArr = [],
-				$content,
-				metrics,
-				attributes,
-				displays,
-				hasBams = false;
-			tempArr = tempArr.concat(config.setHeaderNavs || []).concat(config.setBodyNavs || []).concat(config.setFooterNavs || []);
-			//initialize elements
-			_.each(tempArr, function(nav, index){
-				var tempArr2 = [];
-				tempArr2 = tempArr.concat(nav.navHeaderElements || []).concat(nav.navContentElements || []).concat(nav.navFooterElements || []);
-				_.each(tempArr2, function(elem, index2){
-					//initialize date
-					var initElem = _.delegator({
-						"default": function(){},
-						"date": function(){
-							$control.find("#" + elem.elemId).datepicker(elem.elemConfig);
-						},
-						"select2": function(){
-							var options = $.extend(true, {}, thisNavset.defaultSelect2Options, elem.elemConfig);
-							if(elem.elemConfig.queryWidget){
-								$.extend(true, options, getAjaxSetup(options));
+				var thisNavset = this,
+					$control = $("#psc_navset2_" + id + "_widget"),
+					$data = $('#psc_navset2_data_' + id),
+					data = $data.data(),
+					config = data && data.config || null,
+					tempArr = [],
+					$content,
+					metrics,
+					attributes,
+					displays,
+					hasBams = false;
+				tempArr = tempArr.concat(config.setHeaderNavs || []).concat(config.setBodyNavs || []).concat(config.setFooterNavs || []);
+				//initialize elements
+				_.each(tempArr, function(nav, index){
+					var tempArr2 = [];
+					tempArr2 = tempArr.concat(nav.navHeaderElements || []).concat(nav.navContentElements || []).concat(nav.navFooterElements || []);
+					_.each(tempArr2, function(elem, index2){
+						//initialize date
+						var initElem = _.delegator({
+							"default": function(){},
+							"date": function(){
+								$control.find("#" + elem.elemId).datepicker(elem.elemConfig);
+							},
+							"select2": function(){
+								var options = $.extend(true, {}, thisNavset.defaultSelect2Options, elem.elemConfig);
+								if(elem.elemConfig.queryWidget){
+									$.extend(true, options, getAjaxSetup(options));
+								}
+								else{
+									$.extend(true, options, {
+										data: elem.elemConfig.data || []
+									});
+								}
+								$control.find("#" + elem.elemId).select2(options);
 							}
-							else{
-								$.extend(true, options, {
-									data: elem.elemConfig.data || []
-								});
+						}, "default");
+			/*			if(elem.elemId && elem.elemConfig){
+							//initialize select2
+							initElem(elem.elemType);
+							//add change event for target keyword
+							if(elem.elemConfig.targetKeyword){
+								$control.find("#" + elem.elemId).on("change", function(e){
+									K(elem.elemConfig.targetKeyword, $(this).val());
+								});					
 							}
-							$control.find("#" + elem.elemId).select2(options);
 						}
-					}, "default");
-		/*			if(elem.elemId && elem.elemConfig){
-						//initialize select2
-						initElem(elem.elemType);
-						//add change event for target keyword
-						if(elem.elemConfig.targetKeyword){
-							$control.find("#" + elem.elemId).on("change", function(e){
-								K(elem.elemConfig.targetKeyword, $(this).val());
-							});					
+			
+						if(elem.elemConfig){
+							//add change event for target keyword
+							if(elem.elemConfig.targetKeyword && elem.elemId){
+								$control.find("#" + elem.elemId).on("change", function(e){
+									K(elem.elemConfig.targetKeyword, $(this).val());
+								});					
+							}
 						}
-					}
-		*/
-					if(elem.elemConfig){
-						//add change event for target keyword
-						if(elem.elemConfig.targetKeyword){
-							$control.find("#" + elem.elemId).on("change", function(e){
-								K(elem.elemConfig.targetKeyword, $(this).val());
-							});					
-						}
-					}
+			*/		});
 				});
-			});
-			DDK.navset2.data[id] = DDK.navset2.data[id] || {};
-
-			DDK.format($control);
-			DDK.navset2.resize(id);
-
-			DDK.control.init($control);
-			DDK.navFormat($control);
-		},
+				DDK.navset2.data[id] = DDK.navset2.data[id] || {};
+	
+				DDK.format($control);
+				DDK.navset2.resize(id);
+	
+				DDK.control.init($control);
+				DDK.navFormat($control);
+			},
 		resize: PSC_Navset2_Resize,
 		reload: PSC_Navset2_Reload
 	}
