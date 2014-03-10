@@ -68,7 +68,7 @@ module.exports = function(grunt) {
 					return "/*******************************************" +
 					"\n * File: " + filepath + 
 					"\n */" +
-					"\n\n" + src;
+					"\n\n" + src.replace(/\r\n|\r/g, "\n");
 				},
 				banner: banner
 			},
