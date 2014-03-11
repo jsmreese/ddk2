@@ -527,7 +527,7 @@ PS.MC.Models.OptionGroup = Backbone.Model.extend({
 					
 					_.each(value, function (config) {
 						var ordinal = _.uniqueId(),
-							model = new PS.MC.Models.OptionGroup({ ordinal: ordinal });
+							model = new PS.MC.Models.OptionGroup({ ordinal: +ordinal });
 							
 						model.parent = collection;
 						model.app = collection.app;
