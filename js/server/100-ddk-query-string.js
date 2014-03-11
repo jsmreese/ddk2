@@ -1,6 +1,3 @@
-var DDK = DDK || {};
-DDK.VERSION = "2.0.0";
-
 DDK.queryString = {
 	removeBlankValues: function(queryString) {
 		var pairs = queryString.split("&"),

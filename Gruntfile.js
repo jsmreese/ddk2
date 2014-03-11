@@ -43,7 +43,11 @@ module.exports = function(grunt) {
 		" * Copyright (c) <%= grunt.template.today('yyyy') %> PureShare, Inc.\n" +
 		" */\n\n";
 
-	var server_min_banner = banner + "var DDK_SERVERJSMIN = true;\n\n"
+	var server_banner = banner +
+		"var DDK = DDK || {};\n" + 
+		"DDK.VERSION = \"<%= pkg.version %>\";\n\n";
+
+	var server_min_banner = banner + "var DDK_SERVERJSMIN = true;\n\n";
 	
 	// Project configuration.
 	grunt.initConfig({
@@ -91,6 +95,9 @@ module.exports = function(grunt) {
 				]
 			},
 			server: {
+				options: {
+					banner: server_banner
+				},
 				files: [
 					server_files
 				]
