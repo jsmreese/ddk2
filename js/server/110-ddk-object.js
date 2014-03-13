@@ -811,6 +811,8 @@ DDK.regex = {
 	percentPercent: /\x25\x25/g,
 	atPercent: /\x40\x25/g,
 	percentAt: /\x25\x40/g,
+	backslash: /\x5C/g,
+	reverseSolidus: /\x5C/g,
 	backslashAtPercent: /\x5C\x40\x25/g,
 	backslashPercentAt: /\x5C\x25\x40/g,
 	atBangPercent: /\x40\x21\x25/g,
