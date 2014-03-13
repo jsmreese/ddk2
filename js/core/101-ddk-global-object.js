@@ -234,8 +234,8 @@
 				data = $this.data("ddk"),
 				id = data.split(",")[0],
 				column = data.split(",")[1],
-				$dialog = $('#psc_chart_' + id + '_series_config_dialog_' + column)
-			;
+				$dialog = $('#psc_chart_' + id + '_series_config_dialog_' + column),
+				keywords = {};
 
 			if ($dialog.hasClass('ps-hidden')) {
 				$dialog
@@ -246,21 +246,28 @@
 						at: 'left bottom',
 						of: $this,
 						offset: '-9 3'
-					})
-				;
+					});
 
-				K(name + "_id", id);
-				K("s_" + id + "_iw", K("s_" + id + "_iw") || K(name + "__" + id + "_init_widget") || $("#psc_" + name + "_" + id + "_widget").data("options"));
-				K(name + "_init_widget", K("s_" + id + "_iw"));
+				//K(name + "_id", id);
+				keywords[name + "_id"] = id;
+				
+				//K("s_" + id + "_iw", K("s_" + id + "_iw") || K(name + "__" + id + "_init_widget") || $("#psc_" + name + "_" + id + "_widget").data("options"));
+				keywords["s_" + id + "_iw"] = K("s_" + id + "_iw") || K(name + "__" + id + "_init_widget") || $("#psc_" + name + "_" + id + "_widget").data("options");
 
-				K({
-					name: name,
-					id: id
-				}, "component_");
+				//K(name + "_init_widget", K("s_" + id + "_iw"));
+				keywords[name + "_init_widget"] = keywords["s_" + id + "_iw"];
 
-				K("column_name", column);
+				//K({
+				//	name: name,
+				//	id: id
+				//}, "component_");
+				keywords["component_name"] = name;
+				keywords["component_id"] = id;				
 
-				load('psc_chart_' + id + '_series_config_dialog_' + column, 'PSC_Chart_Config_Dialog_Frame');
+				//K("column_name", column);
+				keywords["column_name"] = column;
+
+				load('psc_chart_' + id + '_series_config_dialog_' + column, 'PSC_Chart_Config_Dialog_Frame', keywords);
 			} else {
 				$('#pscChartFrame' + id + column).attr('src', '').remove();
 				$('#psc_chart_' + id + '_series_config_dialog_' + column).addClass('ps-hidden').insertAfter('#psc_chart_' + id + '_series_config_container_' + column);
