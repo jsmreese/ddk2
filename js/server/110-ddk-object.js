@@ -828,7 +828,7 @@ DDK.regex = {
 	whitespace: /\s+/g,
 	delimiter: /\s|,/,
 	tilde: /\x7E/g,
-	carriageReturn: /\x0D\x0A/g,	//represents \n\r
+	carriageReturn: /\x0D\x0A/g,	//represents \r\n
 	tab: /\x09/g,	
 	ddkKeyword: /%%[a-zA-Z0-9_\-\.]+?%%/g
 };
