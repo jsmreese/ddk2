@@ -1120,6 +1120,7 @@ if (Backbone.Epoxy) {
 				width: dialogWidth,
 				height: dialogHeight,
 				minWidth: 730,
+				maxWidth: 1000,
 				minHeight: 300,
 				open: dialogOpen,
 				close: dialogClose,

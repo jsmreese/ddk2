@@ -2428,7 +2428,7 @@
 		});
 		
 		// execute DDK2 formatting
-		$selection.find("[data-format]:visible").each(function() {
+		$selection.find("[data-format]").each(function() {
 			(new PS.Formatter(this)).exec();
 		});
 /*
@@ -2467,7 +2467,7 @@
 		}
 		
 		// execute DDK2 formatting
-		$selection.find("[data-nav]:visible").each(function() {
+		$selection.find("[data-nav]").each(function() {
 			(new PS.NavFormatter(this)).exec();
 		});
 	};

@@ -1821,6 +1821,13 @@ DDK.template.render = {
 			
 			accumulator += "\n\n<div class=\"row bam-" + section + " " + bam["bam" + sectionTitle + "ClassName"] + " " + bam["bam" + sectionTitle + "GridClassName"] + "\" " + bam["bam" + sectionTitle + "Attr"] + " " + bam["bam" + sectionTitle + "GridAttr"] + ">";
 			accumulator += _.reduce(bam["bam" + sectionTitle + "Elements"], DDK.template.render.bamset2Element, "");
+			
+			// if there were elements in this section
+			// finish the final element grid div
+			if (bam["bam" + sectionTitle + "Elements"].length) {
+				accumulator += "</div>";
+			}
+
 			accumulator += "</div>";
 		});
 		
@@ -1831,7 +1838,18 @@ DDK.template.render = {
 	},
 	
 	bamset2Element: function (accumulator, elem, index) {
-		accumulator += "\n\n<div class=\"column element-grid " + elem.elemGridClassName + "\" " + elem.elemGridAttr + ">";
+		if (!index || elem.elemGridClassName || elem.elemGridAttr) {
+			if (index && (elem.elemGridClassName || elem.elemGridAttr)) {
+				// if this is not the first element
+				// and there is a gridClassName or gridAttr
+				// finish the previous grid div
+				accumulator += "</div>";
+			}
+		
+			// only start a new grid div if this is the first element
+			// or if a gridClassName or gridAttr is defined
+			accumulator += "\n\n<div class=\"column element-grid " + elem.elemGridClassName + "\" " + elem.elemGridAttr + ">";
+		}
 		accumulator += "\n<div class=\"bam-element " + elem.elemClassName + "\" " + elem.elemAttr;
 		accumulator += (elem.elemFormat ? " data-format=\"" + elem.elemFormat + "\"" : "");
 		accumulator += (elem.elemFormat ? " data-format-value=\"" + elem.elemValue + "\"" : "");
@@ -1843,7 +1861,6 @@ DDK.template.render = {
 			accumulator += elem.elemValue;
 		}
 				
-		accumulator += "</div>";
 		accumulator += "</div>";
 		
 		return accumulator;
