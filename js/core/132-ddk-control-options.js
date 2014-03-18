@@ -36,21 +36,21 @@ DDK.controlOptions = function (id) {
 				queryWidget: { id: "s_" + id + "_qw", label: "Query Widget", description: "Widget containing the query to run.", notes: "Widget name." },
 				queryHeaderWidget: { id: "s_" + id + "_qhw", label: "Query Header Widget", description: "Widget containing a query to run before the main query.", notes: "The value of this option is applied to the 'config.sqlheader' attribute in AMEngine." },
 				queryDim: { id: "s_" + id + "_qd", label: "Query Dimension", description: "Query dimension and x-axis for charting in the chart control.", notes: "Field name." },
-				queryDimList: { id: "s_" + id + "_qdl", label: "Query Dimension List", description: "List of query dimensions.", notes: "Comma-delimited list by label names each surrounded by single quotes. The chart dimension selector displays this list as options. If value is not \[blank\], the chart dimension toolbar is displayed." },
+				queryDimList: { id: "s_" + id + "_qdl", label: "Query Dimension List", description: "List of query dimensions.", notes: "Comma-delimited list by label names each surrounded by single quotes. The chart dimension selector displays this list as options. If value is not [blank], the chart dimension toolbar is displayed." },
 				queryDimOrder: { id: "s_" + id + "_qdo", label: "Query Dimension Order", description: "Sort direction for the default sorting of the query dimension.", notes: "Accepted values are: ASC and DESC." },
 				queryOrder: { id: "s_" + id + "_qo", label: "Query Order", description: "Overrides the default sort direction of the query dimension.", notes: "The value of this option must be a single field and direction pair (e.g. COLUMN1 DESC) or a list of field and direction pairs (e.g. 'COLUMN1','DESC'^'COLUMN2','ASC'^'COLUMN3','DESC'" },
-				queryTop: { id: "s_" + id + "_qt", label: "Query Top", description: "Will return the TOP \[value\] depending on sort settings for a query.", notes: "This option uses the AMEngine's query paging facility for cross platform SQL TOP selection." },
+				queryTop: { id: "s_" + id + "_qt", label: "Query Top", description: "Will return the TOP [value] depending on sort settings for a query.", notes: "This option uses the AMEngine's query paging facility for cross platform SQL TOP selection." },
 				queryNameEscapeChar: { id: "s_" + id + "_qfnec", label: "Query Field Name Escape Character", description: "Escape Character for the field name of the Query for the control.", notes: "" },
 				queryMode: { id: "s_" + id + "_qm", label: "Query Mode", description: "Query mode for the tree or table control.", notes: "Accepted values are: tsql, json, xml, basic, custom." },
 				beforeRender: { id: "s_" + id + "_qbr", label: "Before Render Function", description: "Executes a function on the JSON or XML response data before passing it to DataTables for rendering.", notes: "This option transforms the response data into a form acceptable to DataTables and must be set if the selected 'query.mode' option is JSON or XML." },
 				url: { id: "s_" + id + "_qu", label: "Datasource URL", description: "URL from which to retrieve the JSON or XML data.", notes: "This option must be set if the selected 'query.mode' option is json or xml." },
 				chooseMetricsDatasource: { id: "s_" + id + "_mcd", label: "Choose Metrics Datasource", description: "Datasource to use when running the query specified in 'Choose Metrics Query Widget'.", notes: "" },
 				chooseMetricsEnabled: { id: "s_" + id + "_mce", label: "Choose Metrics Enabled", description: "Enables (true) or disables (false) the 'Choose Metrics' option in the Chart or Table control UI.", notes: "" },
-				chooseMetricsQueryWidget: { id: "s_" + id + "_mcqw", label: "", description: "Specifies a different query to use for choosing available metrics.", notes: "Widget name." },
+				chooseMetricsQueryWidget: { id: "s_" + id + "_mcqw", label: "Choose Metrics Query Widget", description: "Specifies a different query to use for choosing available metrics.", notes: "Widget name." },
 				exportQueryWidget: { id: "s_" + id + "_eqw", label: "Export Query Widget", description: "Query used for the CSV data export.", notes: "This option is useful if the 'query_widget' option has embedded HTML or other formatting built into the SQL that is not suitable for a CSV data export." },
 				exportFilenameCSV: { id: "s_" + id + "_ecf", label: "Export CSV Filename", description: "File name of the exported CSV file.", notes: "Default value is data_export_[yyyy]-[mm]-[dd]." },
 				filter: { id: "s_" + id + "_fiv", label: "Filter", description: "Sets a custom SQL statement to filter control data.", notes: "" },
-				filterValue: { id: "s_" + id + "_fv", label: "Serialized Filters", description: "Serialized filters for the Filter toolbar.", notes: "Valid operators are LIKE, NOT LIKE, =, NOT =, >, >=, <, <=, NONE. e.g. �Incidents,��>=��150�^�Severity,��>=��Critical�" },
+				filterValue: { id: "s_" + id + "_fv", label: "Serialized Filters", description: "Serialized filters for the Filter toolbar.", notes: "Valid operators are LIKE, NOT LIKE, =, NOT =, >, >=, <, <=, NONE. e.g. 'Incidents,''>=''150'^'Severity,''>=''Critical'" },
 				metricsDynamic: { id: "s_" + id + "_md", label: "Dynamic Metrics", description: "Metrics to be rendered as dynamic metrics and made available in the 'Choose Metrics' option in the chart control UI.", notes: "Comma-delimited list by field names each surrounded by single quotes." },
 				metricsStatic: { id: "s_" + id + "_ms", label: "Static Metrics", description: "Metrics to be rendered as static metrics. These metrics are not available in the 'Choose Metrics' option in the Chart and Table control UI.", notes: "Comma-delimited list by field names each surrounded by single quotes." },
 				metricsFormat: { id: "s_" + id + "_mf", label: "Metrics Format", description: "Sets the display type for metrics series names.", notes: "Accepted values are: none, default, lcase, and ucase." }
@@ -87,7 +87,7 @@ DDK.controlOptions = function (id) {
 			id: "control_config",
 			label: "Configuration",
 			options: {
-				"class": { id: "s_" + id + "_c", label: "Class", description: "CSS class for additional styling in the main content.", notes: "Default value is \[componentName\]-default." },
+				"class": { id: "s_" + id + "_c", label: "Class", description: "CSS class for additional styling in the main content.", notes: "Default value is [componentName]-default." },
 				config: { id: "s_" + id + "_con", label: "Config", dataType: "json", description: "Comma-separated list of JSON objects for scorecard or bamset control.", notes: "Keywords (including global keywords, data result set keywords, and automatic data result set aggregate keywords) may be used in this option for any column attribute; all ~ characters must be escaped as %% (double percent)." },
 				configWidget: { id: "s_" + id + "_cw", label: "Config Widget", description: "Overrides or adds chart attributes via keywords included in the widget.", notes: "Widget. Runs immediately before the control renders." },
 				controlConfigWidget: { id: "s_" + id + "_ccw", label: "Control Config Widget", description: "Sets the custom config for all series in the chart, all dynamic series, all static series, and/or for specific individual series.", notes: "Widget" },
@@ -135,7 +135,7 @@ DDK.controlOptions = function (id) {
 					chartArea: { id: "s_" + id + "_sca", label: "Chart Area", description: "Fields to render on separate chart areas. Comma-delimited list of field names each surrounded by single quotes, with each area delimited by a caret (e.g. 'COLUMN1','COLUMN2'^'COLUMN3'^'COLUMN4'.", notes: "Caret-delimited list of comma-delimited lists of single-quote-wrapped field names." },
 					color: { id: "s_" + id + "_sc", label: "Color", description: "Series color indexes matched by splitting the 'series_color' option on ^ and the 'color' option on a comma (,). Indexes must be formatted as field lists delimited by ^.", notes: "" },
 					configWidget: { id: "s_" + id + "_scw", label: "Config Widget", description: "Custom configurations for all series in the chart control, including dynamic and static series and specific individual series.", notes: "Widget" },
-					enabled: { id: "s_" + id + "_se", label: "Enabled", description: "Fields to render as series.", notes: "Comma-delimited list by label names each surrounded by single quotes. A \[blank\] value indicates that all 'metrics_static' and 'metrics_dynamic' fields are rendered as series." },
+					enabled: { id: "s_" + id + "_se", label: "Enabled", description: "Fields to render as series.", notes: "Comma-delimited list by label names each surrounded by single quotes. A [blank] value indicates that all 'metrics_static' and 'metrics_dynamic' fields are rendered as series." },
 					mapareaWidget: { id: "s_" + id + "_smw", label: "Map Area Aattributes Widget", description: "Chart and map area attributes.", notes: "Widget" },
 					pie: { id: "s_" + id + "_sp", label: "Pie", description: "Field to render as series when the chart type is set to 'pie'.", notes: "Field name." },
 					showLabels: { id: "s_" + id + "_sslav", label: "Show Value Labels", description: "Fields to render as series with values shown as labels.", notes: "Comma-delimited list of field names each surrounded by single quotes." },
@@ -184,7 +184,7 @@ DDK.controlOptions = function (id) {
 			options: {
 				thresholdClient: { id: "s_" + id + "_ptc", label: "Client Threshold", description: "Record count threshold to automatically enable client-side paging.", notes: "Default value is 200." },
 				thresholdServer: { id: "s_" + id + "_pts", label: "Server Threshold", description: "Record count threshold to automatically enable server-side paging.", notes: "Default value is 1000. Maximum value is 5000. Above 5000 records, server paging is enforced." },
-				type: { id: "s_" + id + "_pt", label: "Type", description: "Paging type for the table control.", notes: "Accepted values are \[BLANK\], none, client, server. If \[BLANK\], will automatically determine paging type based on query record count. For best performance with large datasets, set a value of 'server'." }
+				type: { id: "s_" + id + "_pt", label: "Type", description: "Paging type for the table control.", notes: "Accepted values are [BLANK], none, client, server. If [BLANK], will automatically determine paging type based on query record count. For best performance with large datasets, set a value of 'server'." }
 			}
 		}
 	};
