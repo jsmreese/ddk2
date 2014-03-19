@@ -1109,7 +1109,7 @@ if (Backbone.Epoxy) {
 			$dialog = DDK.bamset2.data[data.id].$dialog,
 			config = data.config,
 			columns = config && config.columns || [],
-			dialogWidth = $("body").width() - 100,
+			dialogWidth = Math.min($("body").width() - 100, 1000),
 			dialogHeight = $("body").height() - 100;
 		
 		if (!$dialog) {
