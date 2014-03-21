@@ -546,6 +546,11 @@ xReq =null;
 			if (data && data.indexOf("AMEngine JScript") > -1) {
 				DDK.error("AMEngine Server JavaScript Error: ", id);
 			}
+			
+			if (data && data.indexOf("AMEngine Login") > -1) {
+				location.href = location.origin + "/amengine/login.aspx?redirect=" + encodeURIComponent(location.search.slice(1));
+				return;
+			}
 
 			if (_options && _options.requestState) {
 				requestState = _options.requestState.state();
