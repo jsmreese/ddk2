@@ -702,7 +702,7 @@ PS.NavFormatter.fn.functions = {
 						func(dateText, inst);
 					}
 				//	this.value = inst.selectedYear + "-" + _.string.lpad(inst.selectedMonth + 1, 2, "0");
-					$(this).datepicker("setDate", new Date(inst.selectedYear + "-" + _.string.lpad(inst.selectedMonth + 1, 2, "0")));
+					$(this).datepicker("setDate", (new moment(inst.selectedYear + "-" + _.string.lpad(inst.selectedMonth + 1, 2, "0"), "YYYY-MM")).toDate());
 					$(this).trigger("change");
 				})
 			});
