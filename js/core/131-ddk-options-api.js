@@ -511,13 +511,24 @@ PS.optionsAPI.navElemConfig = {
 				"id": "multiple",
 				"label": "Multiple",
 				"description": "Mode of select2",
-				"notes": "Mode of select2"
+				"notes": "Mode of select2",
+				"default": "false",
+				"values": [
+					{
+						"value": "true",
+						"label": "True"
+					},
+					{
+						"value": "false",
+						"label": "False"
+					}
+				]
 			},
 			"width": {
 				"id": "width",
 				"label": "Width",
 				"description": "width of select2",
-				"notes": "width of select2"
+				"notes": "Percent or pixel width of select2"
 			},
 			"default": {
 				"id": "default",
@@ -634,7 +645,55 @@ PS.optionsAPI.navElem = {
 				"id": "elem_format",
 				"label": "Elem Format",
 				"description": "Element Format.",
-				"notes": "Sets type on the element"
+				"notes": "Sets type on the element",
+				"default": "label",
+				"values": [
+					{
+						"value": "label",
+						"label": "Label"
+					},
+					{
+						"value": "button",
+						"label": "Button"
+					},
+					{
+						"value": "input",
+						"label": "Input - Text"
+					},
+					{
+						"value": "radio",
+						"label": "Option Button"
+					},
+					{
+						"value": "checkbox",
+						"label": "Checkbox"
+					},
+					{
+						"value": "select2",
+						"label": "Dropdown"
+					},
+					{
+						"value": "dateday",
+						"label": "Date - Day"
+					},
+					{
+						"value": "dateweek",
+						"label": "Date - Week"
+					},
+					{
+						"value": "datemonth",
+						"label": "Date - Month"
+					},
+					{
+						"value": "datequarter",
+						"label": "Date - Quarter"
+					},
+					{
+						"value": "dateyear",
+						"label": "Date - Year"
+					}
+					
+				]
 			},
 			"label": {
 				"id": "elem_label",
@@ -792,7 +851,7 @@ PS.optionsAPI.navset = {
 			"isAdvancedEditor": {
 				"id": "is_advanced_editor",
 				"label": "Toggle Advanced Configuration Editor",
-				"description": "If `true`, will generate a JSON editor for the scorecard 'config' option.",
+				"description": "If true, will generate a JSON editor for the scorecard 'config' option.",
 				"notes": "Controls the configuration editor state.",
 				"displayType": "checkbox button icon",
 				"icon": "&#311;"
@@ -855,7 +914,7 @@ PS.optionsAPI.navset = {
 					"label": "Databind",
 					"displayType": "checkbox",
 					"description": "Set databind. Will render the body navs once for each record returned by the control query.",
-					"notes": "Default `false`. If `true` will render the setBodyNavs array once for each record of data. If `false` will render the setBodyNavs once in the context of the last record of data."
+					"notes": "Default false. If true will render the setBodyNavs array once for each record of data. If false will render the setBodyNavs once in the context of the last record of data."
 			},
 
 			"headerAttr": {
