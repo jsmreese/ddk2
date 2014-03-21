@@ -1879,58 +1879,70 @@ DDK.template.render = {
 				var dataString = "";
 				dataString += " data-nav=\"" + elemFormat + "\" ";
 				_.each(config, function(item, index){
-					dataString += " data-nav-" + _.string.dasherize(index) + " = \"" + item + "\" ";
+					if(item){
+						dataString += " data-nav-" + _.string.dasherize(index) + " = \"";
+						if(typeof(item) === "object"){
+							dataString += DDK.unescape.brackets(DDK.renderJSON(item));
+						}
+						else{
+							dataString += item;
+						}
+						dataString += "\" ";
+					}
 				});
 				return dataString;
-			}, createElem = _.delegator({
-			"label": function(options){
-				return "<label id=\"" + (options.elemId || "") + "\" class=\"" + options.elemClassName + "\" " + options.elemAttr + ">" + options.elemLabel + "</label>";
 			},
-			"input": function(options){
-				return "<input id=\"" + (options.elemId || "") + "\" placeholder=\"" + options.elemLabel + "\" class=\"" + options.elemClassName + "\" " + options.elemAttr + " value=\"" + (options.elemConfig && options.elemConfig.value || "") + "\"></input>";
-			},
-			"button": function(options){
-				return "<button id=\"" + (options.elemId || "") + "\" class=\"" + options.elemClassName + "\" " + options.elemAttr + " value=\"" + (options.elemConfig && options.elemConfig.value || "") + "\">" + options.elemLabel + "</button>";
-			},
-			"select2": function(options){
-				return "<input id=\"" + (options.elemId || "") + "\" placeholder=\"" + options.elemLabel + "\" class=\"ps-nav-select2 " + options.elemClassName + "\" " + options.elemAttr + addDataNav(options.elemFormat, options.elemConfig)  + " value=\"" + (options.elemConfig && options.elemConfig.value || "") + "\"></input>";
-			},
-			"checkbox": function(options){
-/*				var html = "<input id=\"" + options.elemId + "\" type=\"checkbox\" class=\"" + options.elemClassName + "\" " + options.elemAttr + " value=\"" + (options.elemConfig && options.elemConfig.value || "") + "\"></input>";
-				if(options.elemLabel){
-					html += "<label for=\"" + options.elemId + "\">" + options.elemLabel + "</label>";
+			createElem = _.delegator({
+				"label": function(options){
+					return "<label id=\"" + (options.elemId || "") + "\" class=\"nav-element " + options.elemClassName + "\" " + options.elemAttr + ">" + options.elemLabel + "</label>";
+				},
+				"input": function(options){
+					return "<input id=\"" + (options.elemId || "") + "\" placeholder=\"" + options.elemLabel + "\" class=\"nav-element " + options.elemClassName + "\" " + options.elemAttr + " value=\"" + (options.elemConfig && options.elemConfig.value || "") + "\"></input>";
+				},
+				"button": function(options){
+					return "<button id=\"" + (options.elemId || "") + "\" class=\"nav-element " + options.elemClassName + "\" " + options.elemAttr + " value=\"" + (options.elemConfig && options.elemConfig.value || "") + "\">" + options.elemLabel + "</button>";
+				},
+				"select2": function(options){
+					return "<input id=\"" + (options.elemId || "") + "\" placeholder=\"" + options.elemLabel + "\" class=\"ps-nav-select2 nav-element " + options.elemClassName + "\" " + options.elemAttr + addDataNav(options.elemFormat, options.elemConfig)  + " value=\"" + (options.elemConfig && options.elemConfig.value || "") + "\"></input>";
+				},
+				"checkbox": function(options){
+					var html = "";
+					if(options.elemLabel){
+						html += "<label>";
+					}
+					html += "<input id=\"" + (options.elemId || "") + "\" type=\"checkbox\" class=\"nav-element " + options.elemClassName + "\" " + options.elemAttr + " value=\"" + (options.elemConfig && options.elemConfig.value || "") + "\"></input>";
+					if(options.elemLabel){
+						html += options.elemLabel + "</label>";
+					}
+					return html;
+				},
+				"radio": function(options){				
+					var html = "";
+					if(options.elemLabel){
+						html += "<label>";
+					}
+					html += "<input id=\"" + (options.elemId || "") + "\" type=\"radio\" class=\"nav-element is-plain-button " + options.elemClassName + "\" " + options.elemAttr + " value=\"" + (options.elemConfig && options.elemConfig.value || "") + "\"></input>";
+					if(options.elemLabel){
+						html += options.elemLabel + "</label>";
+					}
+					return html;
+				},
+				"dateday": function(options){
+					return "<div id=\"" + (options.elemId || "") + "\" data-nav=\"dateday\" placeholder=\"" + options.elemLabel + "\" class=\"nav-element " + options.elemClassName + "\" " + options.elemAttr + addDataNav(options.elemFormat, options.elemConfig) + "></div>";
+				},
+				"dateweek": function(options){
+					return "<div id=\"" + (options.elemId || "") + "\" data-nav=\"dateweek\" placeholder=\"" + options.elemLabel + "\" class=\"nav-element " + options.elemClassName + "\" " + options.elemAttr + addDataNav(options.elemFormat, options.elemConfig) + "></div>";
+				},
+				"datemonth": function(options){
+					return "<div id=\"" + (options.elemId || "") + "\" data-nav=\"datemonth\" placeholder=\"" + options.elemLabel + "\" class=\"nav-element " + options.elemClassName + "\" " + options.elemAttr + addDataNav(options.elemFormat, options.elemConfig) + "></div>";
+				},
+				"datequarter": function(options){
+					return "<div id=\"" + (options.elemId || "") + "\" data-nav=\"datequarter\" placeholder=\"" + options.elemLabel + "\" class=\"nav-element " + options.elemClassName + "\" " + options.elemAttr + addDataNav(options.elemFormat, options.elemConfig) + "></div>";
+				},
+				"dateyear": function(options){
+					return "<div id=\"" + (options.elemId || "") + "\" data-nav=\"dateyear\" placeholder=\"" + options.elemLabel + "\" class=\"nav-element " + options.elemClassName + "\" " + options.elemAttr + addDataNav(options.elemFormat, options.elemConfig) + "></div>";
 				}
-*/
-				var html = "";
-				if(options.elemLabel){
-					html += "<label>";
-				}
-				html += "<input id=\"" + (options.elemId || "") + "\" type=\"checkbox\" class=\"" + options.elemClassName + "\" " + options.elemAttr + " value=\"" + (options.elemConfig && options.elemConfig.value || "") + "\"></input>";
-				if(options.elemLabel){
-					html += options.elemLabel + "</label>";
-				}
-				return html;
-			},
-			"radio": function(options){
-/*				var html = "<input id=\"" + options.elemId + "\" type=\"radio\" class=\"is-plain-button " + options.elemClassName + "\" " + options.elemAttr + " value=\"" + (options.elemConfig && options.elemConfig.value || "") + "\"></input>";
-				if(options.elemLabel){
-					html += "<label for=\"" + options.elemId + "\">" + options.elemLabel + "</label>";
-				}
-*/				
-				var html = "";
-				if(options.elemLabel){
-					html += "<label>";
-				}
-				html += "<input id=\"" + (options.elemId || "") + "\" type=\"radio\" class=\"is-plain-button " + options.elemClassName + "\" " + options.elemAttr + " value=\"" + (options.elemConfig && options.elemConfig.value || "") + "\"></input>";
-				if(options.elemLabel){
-					html += options.elemLabel + "</label>";
-				}
-				return html;
-			},
-			"date": function(options){
-				return "<input id=\"" + (options.elemId || "") + "\" placeholder=\"" + options.elemLabel + "\" class=\"" + options.elemClassName + "\" " + options.elemAttr + addDataNav(options.elemFormat, options.elemConfig) + " value=\"" + (options.elemConfig && options.elemConfig.value || "") + "\"></input>";
-			}
-		}, "label");
+			}, "label");
 		
 		accumulator += "\n\n<div class=\"column element-grid " + elem.elemGridClassName + "\" " + elem.elemGridAttr + ">";
 		
