@@ -77,7 +77,7 @@
 		return evalKeywordValue(value, evaledKeys);
 	}
 
-	function Keyword(key, value, prefix) {
+	function Keyword(key, value, prefix, settings) {
 		// K(key [, value] [, prefix] [, settings])
 		
 		var reservedKeys = "config.m config.mn salt sectoken".split(" ");
