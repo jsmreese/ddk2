@@ -54,7 +54,8 @@ PS.NavFormatter.register = function (settings) {
 		id: settings.id,
 		text: settings.text,
 		sortOrder: settings.sortOrder,
-		name: settings.name
+		name: settings.name,
+		styles: []
 	});
 	
 	// sort formats array
@@ -70,6 +71,31 @@ PS.NavFormatter.register = function (settings) {
 		PS.NavFormatter.defaultFormat = settings.id;
 	}
 };
+
+// register method for adding styles to the format styles array
+PS.NavFormatter.registerStyle = function(settings) {
+	var format = _.find(PS.NavFormatter.formats, { name: settings.parentName }),
+		styles = format.styles;
+	
+	// verify that the format function is registered
+	if (!format) {
+		DDK.error("Unable to register format style. `Cannot find '" + settings.parentName + "' in PS.Formatter.formats.");
+		return;
+	}
+	
+	// add style to the styles array
+	styles.push(settings);
+	
+	// sort styles array
+	styles.sort(function (a, b) {
+		return a.sortOrder - b.sortOrder;
+	});
+	
+	// add style defaults to the formatter function
+	PS.NavFormatter.fn[format.id][settings.id] = settings.defaults || {};		
+};
+
+
 
 PS.NavFormatter.fn.data = [];
 
@@ -88,6 +114,9 @@ PS.NavFormatter.fn.getSettings = function () {
 		
 		// add the default format settings for this format
 		this[this.nav].defaults,
+
+		// add the default format settings from this format style
+		this[this.nav][this.navStyle],
 		
 		dateSettings,
 		
