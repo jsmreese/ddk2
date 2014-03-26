@@ -131,7 +131,8 @@ if (Backbone.Epoxy) {
 							accumulator.push({
 								id: buttonOption.id,
 								value: value,
-								text: buttonOption.get("text")
+								text: buttonOption.get("text"),
+								icon: buttonOption.get("icon")
 							});
 						}
 						return accumulator;
@@ -139,18 +140,39 @@ if (Backbone.Epoxy) {
 
 					return accumulator + 
 						"<span data-label=\"" + buttonGroup.get("label") + "\">" +
-							"<button data-toolbar=\"" + buttonGroup.id + "\" data-text=\"" + buttonGroup.get("text") + "\" data-values=\"" + _.escape(JSON.stringify(values)) + "\">" +
-								"<span>" + 
-									buttonGroup.get("text") + 
-								"</span>" +
+							"<button class=\"sc-toolbar-button\" data-toolbar=\"" + buttonGroup.id + "\" data-text=\"" + (buttonGroup.get("text") || "") + "\" data-icon=\"" + (buttonGroup.get("icon") || "") + "\" data-values=\"" + _.escape(JSON.stringify(values)) + "\">" +
+							(buttonGroup.get("icon") ? 
+							
+							"<span class=\"ddk-icon\">" + 
+								buttonGroup.get("icon") + 
+							"</span>"
+							
+							:
+							
+							"<span>" + 
+								buttonGroup.get("text") + 
+							"</span>"
+							
+							) +
 							"</button>" +
 							"<div class=\"" + buttonGroup.id + " toolbar-content ps-hidden\">" +
 							buttonOptions.reduce(function (accumulator, buttonOption) {
 								return accumulator + 
 									"<span data-label=\"" + buttonOption.get("label") + "\">" +
 										"<button value=\"" + buttonOption.get("value") + "\" data-values=\"" + _.escape(JSON.stringify(_.pluck(values, "value"))) + "\">" + 
-											buttonOption.get("text") + 
-										"</button>" +
+									(buttonOption.get("icon") ? 
+									
+									"<span class=\"ddk-icon\">" + 
+										buttonOption.get("icon") + 
+									"</span>"
+									
+									:
+									
+									"<span>" + 
+										buttonOption.get("text") + 
+									"</span>"
+									
+									) +										"</button>" +
 									"</span>";
 							}, "") +
 							"</div>" +
@@ -182,9 +204,9 @@ if (Backbone.Epoxy) {
 		updateButtons: function (optionValues) {
 			this.$topButtons.each(function (index, elem) {
 				var $elem = $(elem),
-					$span = $elem.find("span"),
 					data = $elem.data(),
 					text = data.text,
+					icon = data.icon,
 					values = data.values,
 					match;
 					
@@ -197,12 +219,29 @@ if (Backbone.Epoxy) {
 					});
 				}
 				
-				if (match && match.text) {
-					$span.text(match.text);
-					return;
+				if (match) {
+					if (match.icon) {
+						$elem.html("<span class='ddk-icon'>" + match.icon + "</span>");
+						return;					
+					}
+					
+					if (match.text) {
+						$elem.html("<span>" + match.text + "</span>");
+						return;	
+					}
 				}
 				
-				$span.text(text);
+				if (icon) {
+					$elem.html("<span class='ddk-icon'>" + icon + "</span>");
+					return;	
+				}
+				
+				if (text) {
+					$elem.html("<span>" + text + "</span>");
+					return;	
+				}
+				
+				$elem.html("<span>NONE</span>");
 			});
 		},
 		
