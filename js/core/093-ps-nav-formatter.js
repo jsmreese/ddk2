@@ -42,7 +42,7 @@ PS.NavFormatter.fn = PS.NavFormatter.prototype;
 PS.NavFormatter.formats = [];
 
 // register method for adding formats to the formats array
-PS.NavFormatter.register = function (settings) {
+/*PS.NavFormatter.register = function (settings) {
 	// verify that the format function exists
 	if (typeof PS.NavFormatter.fn[settings.id] !== "function") {
 		DDK.error("Unable to register formatter. `PS.NavFormatter.fn." + settings.id + "` is not a function.");
@@ -54,8 +54,7 @@ PS.NavFormatter.register = function (settings) {
 		id: settings.id,
 		text: settings.text,
 		sortOrder: settings.sortOrder,
-		name: settings.name,
-		styles: []
+		name: settings.name
 	});
 	
 	// sort formats array
@@ -71,32 +70,7 @@ PS.NavFormatter.register = function (settings) {
 		PS.NavFormatter.defaultFormat = settings.id;
 	}
 };
-
-// register method for adding styles to the format styles array
-PS.NavFormatter.registerStyle = function(settings) {
-	var format = _.find(PS.NavFormatter.formats, { name: settings.parentName }),
-		styles = format.styles;
-	
-	// verify that the format function is registered
-	if (!format) {
-		DDK.error("Unable to register format style. `Cannot find '" + settings.parentName + "' in PS.Formatter.formats.");
-		return;
-	}
-	
-	// add style to the styles array
-	styles.push(settings);
-	
-	// sort styles array
-	styles.sort(function (a, b) {
-		return a.sortOrder - b.sortOrder;
-	});
-	
-	// add style defaults to the formatter function
-	PS.NavFormatter.fn[format.id][settings.id] = settings.defaults || {};		
-};
-
-
-
+*/
 PS.NavFormatter.fn.data = [];
 
 PS.NavFormatter.fn.getSettings = function () {
@@ -114,9 +88,6 @@ PS.NavFormatter.fn.getSettings = function () {
 		
 		// add the default format settings for this format
 		this[this.nav].defaults,
-
-		// add the default format settings from this format style
-		this[this.nav][this.navStyle],
 		
 		dateSettings,
 		
@@ -162,13 +133,16 @@ PS.NavFormatter.fn.date.defaults = {
 		if(!inst.dpDiv.hasClass("hide-calendar")){
 			selectedDate += "-" + _.string.lpad(inst.selectedDay, 2, "0");
 		}
-		selectedMomentObj = new moment(selectedDate);
+		else{
+			selectedDate += "-01";
+		}
+		selectedMomentObj = new moment(selectedDate, "YYYY-MM-DD");
 		//set minDate and maxDate
 		if(inst.input.hasClass("nav-date-start")){
 			$dateEnd = inst.input.parent().find("input.nav-date-end");
 			if(!($dateEnd.is(":visible") && moment($dateEnd.val(), settings.momentDateFormat).diff(selectedMomentObj) > 0)){//$dateEnd.val() > selectedDate)){
 				//set same date if dateEnd is not visible to make it the same as start when user selects range
-				$dateEnd.datepicker("setDate", new Date(selectedDate)).trigger("change");
+		//		$dateEnd.datepicker("setDate", new Date(selectedDate)).trigger("change");
 			}
 			if(!inst.dpDiv.hasClass("hide-calendar")){
 				$dateEnd.datepicker("option", "minDate", new Date(selectedDate)).trigger("change");
@@ -520,7 +494,7 @@ PS.NavFormatter.fn.functions = {
 						{
 							"label": "Week Range",
 							"order": 40
-						},
+						}
 					]
 				},
 				"MONTH": {
@@ -543,7 +517,7 @@ PS.NavFormatter.fn.functions = {
 						{
 							"label": "Month Range",
 							"order": 40
-						},
+						}
 					]
 				},
 				"QUARTER": {
@@ -566,7 +540,7 @@ PS.NavFormatter.fn.functions = {
 						{
 							"label": "Quarter Range",
 							"order": 40
-						},
+						}
 					]
 				},
 				"YEAR": {
@@ -579,7 +553,7 @@ PS.NavFormatter.fn.functions = {
 						},
 						{
 							"label": "Last Year",
-							"data-tp-diff": "-1w",
+							"data-tp-diff": "-1y",
 							"order": 20
 						},
 						{
@@ -589,7 +563,7 @@ PS.NavFormatter.fn.functions = {
 						{
 							"label": "Year Range",
 							"order": 40
-						},
+						}
 					]
 				}
 			};
@@ -687,7 +661,7 @@ PS.NavFormatter.fn.functions = {
 					if(func){
 						func(dateText, inst);
 					}
-					$(this).datepicker("setDate", new Date(inst.selectedYear + "-" + _.string.lpad(inst.selectedMonth + 1, 2, "0")));
+					$(this).datepicker("setDate", moment(inst.selectedYear + "-" + _.string.lpad(inst.selectedMonth + 1, 2, "0"), "YYYY-MM").toDate()); //new Date(inst.selectedYear + "-" + _.string.lpad(inst.selectedMonth + 1, 2, "0")));
 					$(this).trigger("change");
 				})
 			});
@@ -695,7 +669,7 @@ PS.NavFormatter.fn.functions = {
 				//calculate week to set in hidden input
 				var $this = $(this),
 					value = $this.val(),
-					momentObj = new moment(value, settings.momentDateFormat), 
+					momentObj = new moment(value, settings.momentDateFormat || "YYYY-MM"), 
 					$altField,
 					firstMonth = Math.floor((momentObj.month())/3) * 3;
 				momentObj.set("month", firstMonth);
@@ -713,9 +687,13 @@ PS.NavFormatter.fn.functions = {
 			});
 		},
 		"MONTH": function($field, settings){
+			settings.dateFormat = settings.dateFormat || "yy-mm";
+			settings.altFormat = settings.altFormat || "yy-mm";
+			settings.momentDateFormat = settings.momentDateFormat || "YYYY-MM";
+			
 			var options = _.extend({}, settings, {
-				dateFormat: settings.dateFormat || "yy-mm",
-				altFormat: settings.altFormat || "yy-mm",
+				dateFormat: settings.dateFormat,
+				altFormat: settings.altFormat,
 				beforeShow: function(input, inst) {
 					
 					inst.dpDiv.addClass("hide-calendar").removeClass("hide-month");
@@ -778,17 +756,20 @@ PS.NavFormatter.fn.functions = {
 					selectedDate, $altField = $this.data("alt-field"),
 					selectedDate = new moment(value, settings.momentDateFormat),
 					dayOfWeek = selectedDate.isoWeekday();
-				if(value){
-					selectedDate.set("date", selectedDate.date() - dayOfWeek + 1);
-					$this.datepicker("setDate", selectedDate.toDate());
-					if($altField && $altField.length){
-						$altField.val(selectedDate.format("YYYY-[W]WW"));
+				//timeout is for ie8 to prevent reopening the datepicker panel
+				setTimeout(function(){
+					if(value){
+						selectedDate.set("date", selectedDate.date() - dayOfWeek + 1);
+						$this.datepicker("setDate", selectedDate.toDate());
+						if($altField && $altField.length){
+							$altField.val(selectedDate.format("YYYY-[W]WW"));
+						}
 					}
-				}
-				else{
-					$altField.val("");
-				}
-				$this.blur();
+					else{
+						$altField.val("");
+					}
+					$this.blur();
+				}, 0);
 			});
 		},
 		"DAY": function($field, settings){
@@ -845,11 +826,24 @@ PS.NavFormatter.fn.functions = {
 				dateToday = new moment(),
 				$selectedOption = $this.find("option:selected"),
 				type = $selectedOption.data("tp-type"),
-				valueToSet = $selectedOption.data("tp-diff")
+				valueToSet = $selectedOption.data("tp-diff"),
+				momentFormat = {
+					"DAY": "YYYY-MM-DD", 
+					"WEEK": "YYYY-DD-DD",
+					"MONTH": "YYYY-MM",
+					"QUARTER": "YYYY-MM",
+					"YEAR": "YYYY"
+				};
 			;
 			$dateStart.add($dateEnd).add($dateLabel).show();
 			//destroy datepicker and reset onchange event 
 			$dateStart.add($dateEnd).datepicker("destroy").off("change");
+			//if type has change update the dateformat
+			if($hiddenType.data("tp-type") && type !== $hiddenType.data("tp-type")){
+				settings.momentDateFormat = momentFormat[type];
+				settings.dateFormat = _this.functions.mapDateFormat(settings.momentDateFormat);
+				settings.altFormat = settings.dateFormat
+			}
 			settings.altField = _this.$el.find(".nav-hidden-date-start");
 			_this.functions.initDate(type, $dateStart, settings);
 			if($dateStart.val()){
@@ -863,7 +857,7 @@ PS.NavFormatter.fn.functions = {
 			//clear date values if date type has changed
 			if($hiddenType.data("tp-type") && type !== $hiddenType.data("tp-type")){
 				$dateStart.datepicker("setDate", "");
-				$dateEnd.datepicker("setDate", "");
+				$dateEnd.datepicker("setDate", "");		
 			}
 			//if date fields are blank set it to current date
 			if(!$dateStart.val() && !$dateEnd.val() && typeof(valueToSet) === "undefined"){
@@ -914,6 +908,26 @@ PS.NavFormatter.fn.functions = {
 		if(settings.dateTypeHidden){
 			$dateType.hide();
 		}
+		$($dateStart).on("keyup", function(e){
+			setTimeout(_.bind(function(){
+				var c = e.which ? e.which : e.keycode,
+					$this = $(this),
+					inst = $.datepicker._getInst(e.target),
+					$hiddenField = $this.data("altField"),
+					$dateYear = $("#ui-datepicker-div").find(".ui-datepicker-year:visible"),
+					$dateMonth = $("#ui-datepicker-div").find(".ui-datepicker-month:visible"),
+					dateMoment = new moment($this.val(), settings.momentDateFormat);
+				if(dateMoment.isValid()){
+					inst.drawMonth = dateMoment.month();
+					inst.drawYear = dateMoment.year();
+					inst.currentMonth = dateMoment.month();
+					inst.currentYear = dateMoment.year();
+					inst.selectedMonth = dateMoment.month();
+					inst.selectedYear = dateMoment.year();
+					$.datepicker._updateDatepicker(inst);
+				}
+			}, this), 500);
+		});
 		if(settings.targetKeyword){
 			this.$el.on("change", function(e){
 				K(settings.targetKeyword, $(this).val());
@@ -950,13 +964,13 @@ PS.NavFormatter.fn.select2 = function () {
 	}
 };
 // need to regiter nav formatter functions, too
-PS.NavFormatter.register({
+/*PS.NavFormatter.register({
 	id: "select2",
 	text: "Dropdown",
 	sortOrder: 200,
 	name: "Select2"
 });
-
+*/
 PS.NavFormatter.fn.dateday = function () {
 	this.functions.createNavDate.call(this, "DAY");
 };
