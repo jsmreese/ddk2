@@ -42,7 +42,7 @@ PS.NavFormatter.fn = PS.NavFormatter.prototype;
 PS.NavFormatter.formats = [];
 
 // register method for adding formats to the formats array
-/*PS.NavFormatter.register = function (settings) {
+PS.NavFormatter.register = function (settings) {
 	// verify that the format function exists
 	if (typeof PS.NavFormatter.fn[settings.id] !== "function") {
 		DDK.error("Unable to register formatter. `PS.NavFormatter.fn." + settings.id + "` is not a function.");
@@ -54,7 +54,8 @@ PS.NavFormatter.formats = [];
 		id: settings.id,
 		text: settings.text,
 		sortOrder: settings.sortOrder,
-		name: settings.name
+		name: settings.name,
+		styles: []
 	});
 	
 	// sort formats array
@@ -70,7 +71,30 @@ PS.NavFormatter.formats = [];
 		PS.NavFormatter.defaultFormat = settings.id;
 	}
 };
-*/
+
+// register method for adding styles to the format styles array
+PS.NavFormatter.registerStyle = function(settings) {
+	var format = _.find(PS.NavFormatter.formats, { name: settings.parentName }),
+		styles = format.styles;
+	
+	// verify that the format function is registered
+	if (!format) {
+		DDK.error("Unable to register format style. `Cannot find '" + settings.parentName + "' in PS.Formatter.formats.");
+		return;
+	}
+	
+	// add style to the styles array
+	styles.push(settings);
+	
+	// sort styles array
+	styles.sort(function (a, b) {
+		return a.sortOrder - b.sortOrder;
+	});
+	
+	// add style defaults to the formatter function
+	PS.NavFormatter.fn[format.id][settings.id] = settings.defaults || {};		
+};
+
 PS.NavFormatter.fn.data = [];
 
 PS.NavFormatter.fn.getSettings = function () {
@@ -88,6 +112,9 @@ PS.NavFormatter.fn.getSettings = function () {
 		
 		// add the default format settings for this format
 		this[this.nav].defaults,
+
+		// add the default format settings from this format style
+		this[this.nav][this.navStyle],
 		
 		dateSettings,
 		
@@ -450,18 +477,21 @@ PS.NavFormatter.fn.functions = {
 	},
 	createDateType: function(type, settings){
 		var elem = "",
+			dateTypes = _.find(PS.NavFormatter.formats, function(format){
+				return format.id === type;
+			}),
 			optionList = {
 				"DAY": {
 					"optgroup": "Daily",
 					"options": [
 						{
 							"label": "Today",
-							"data-tp-diff": "0",
+							"tp-start-diff": "0",
 							"order": 10
 						}, 
 						{
 							"label": "Yesterday",
-							"data-tp-diff": "-1",
+							"tp-start-diff": "-1",
 							"order": 20
 						},
 						{
@@ -479,12 +509,12 @@ PS.NavFormatter.fn.functions = {
 					"options": [
 						{
 							"label": "This Week",
-							"data-tp-diff": "0",
+							"tp-start-diff": "0",
 							"order": 10
 						},
 						{
 							"label": "Last Week",
-							"data-tp-diff": "-1w",
+							"tp-start-diff": "-1w",
 							"order": 20
 						},
 						{
@@ -502,12 +532,12 @@ PS.NavFormatter.fn.functions = {
 					"options": [
 						{
 							"label": "This Month",
-							"data-tp-diff": "0",
+							"tp-start-diff": "0",
 							"order": 10
 						},
 						{
 							"label": "Last Month",
-							"data-tp-diff": "-1m",
+							"tp-start-diff": "-1m",
 							"order": 20
 						},
 						{
@@ -525,12 +555,12 @@ PS.NavFormatter.fn.functions = {
 					"options": [
 						{
 							"label": "This Quarter",
-							"data-tp-diff": "0",
+							"tp-start-diff": "0",
 							"order": 10
 						},
 						{
 							"label": "Last Quarter",
-							"data-tp-diff": "-3m",
+							"tp-start-diff": "-3m",
 							"order": 20
 						},
 						{
@@ -548,12 +578,12 @@ PS.NavFormatter.fn.functions = {
 					"options": [
 						{
 							"label": "This Year",
-							"data-tp-diff": "0",
+							"tp-start-diff": "0",
 							"order": 10
 						},
 						{
 							"label": "Last Year",
-							"data-tp-diff": "-1y",
+							"tp-start-diff": "-1y",
 							"order": 20
 						},
 						{
@@ -566,9 +596,25 @@ PS.NavFormatter.fn.functions = {
 						}
 					]
 				}
+			},
+			createOption = function(optionType, optionData){
+				var optionHtml = "";
+				_.each(optionData, function(option, index){
+					var value = option.value || option.text || option.label;
+					value = value.replace(/ /g, "").toUpperCase();
+					optionHtml += "<option data-tp-type=\"" + optionType.toUpperCase() + "\" value=\"" + value + "\" ";
+					//add other data attributes
+					_.each(option, function(attrValue, attr){
+						optionHtml += "data-" + attr + "=\"" + attrValue + "\" ";
+					});
+					optionHtml += ">";
+					optionHtml += option.text || option.label;
+					optionHtml += "</option>";
+				});
+				return optionHtml;
 			};
 		elem += "<select class=\"nav-date-type medium-2\">";
-		if(optionList[type.toUpperCase()]){ 
+/*		if(optionList[type.toUpperCase()]){ 
 			if(settings.typeOptions && settings.typeOptions.length){
 				optionList[type.toUpperCase()].options = optionList[type.toUpperCase()].options.concat(settings.typeOptions);
 			}
@@ -580,22 +626,40 @@ PS.NavFormatter.fn.functions = {
 				elem += "<option data-tp-type=\"" + type.toUpperCase() + "\" value=\"" + value + "\" ";
 				//add other attributes except label and value
 				_.each(option, function(attrValue, attr){
-					if(attr !== "value" && attr !== "label"){
-						elem += attr + "=\"" + attrValue + "\" ";
-					}
+					elem += "data-" + attr + "=\"" + attrValue + "\" ";
 				});
 				elem += ">";
 				elem += option.label;
 				elem += "</option>";
 			});
 		}
+*/		if(dateTypes && dateTypes.styles.length){
+			elem += createOption(dateTypes.id, dateTypes.styles);
+/*			_.each(dateTypes.styles, function(option, index){
+				var value = option.value || option.text || option.label;
+				value = value.replace(/ /g, "").toUpperCase();
+				elem += "<option data-tp-type=\"" + type.toUpperCase() + "\" value=\"" + value + "\" ";
+				//add other data attributes
+				_.each(option, function(attrValue, attr){
+					elem += "data-" + attr + "=\"" + attrValue + "\" ";
+				});
+				elem += ">";
+				elem += option.text || option.label;
+				elem += "</option>";
+			});
+*/		}
 		else{
-			_.each(optionList, function(typeOptions, dateType){
+			dateTypes = _.filter(PS.NavFormatter.formats, function(format){
+				return format.id === "dateday" || format.id === "dateweek" || format.id === "datemonth" ||
+					format.id === "datequarter" || format.id === "dateyear";
+			})
+			_.each(dateTypes, function(item, index){
+				elem += "<optgroup label=\"" + item.text + "\">";
+				elem += createOption(item.id, item.styles);
+				elem += "</optgroup>";
+			});
+/*			_.each(optionList, function(typeOptions, dateType){
 				elem += "<optgroup label=\"" + typeOptions.optgroup + "\">";
-				/*	_.each(typeOptions.options, function(option, index){
-						elem += "<option data-tp-type=\"" + dateType + "\" value=\"" + option.replace(/ /g, "").toUpperCase() + "\">" + option + "</option>";
-					});
-				*/
 					_.each(typeOptions.options, function(option, index){
 						var value = option.value || option.label.replace(/ /g, "").toUpperCase();
 						elem += "<option data-tp-type=\"" + dateType.toUpperCase() + "\" value=\"" + value + "\" ";
@@ -611,12 +675,12 @@ PS.NavFormatter.fn.functions = {
 					});
 				elem += "</optgroup>";
 			});
-		}
+*/		}
 		elem += "</select>";
 		return $(elem);
 	},
 	initDate: _.delegator({
-		"YEAR": function($field, settings){
+		"DATEYEAR": function($field, settings){
 			var options = _.extend({}, settings, {
 				dateFormat: settings.dateFormat || "yy",
 				altFormat: settings.altFormat || "yy",
@@ -640,7 +704,7 @@ PS.NavFormatter.fn.functions = {
 			});
 			$field.datepicker(options);
 		},
-		"QUARTER": function($field, settings){
+		"DATEQUARTER": function($field, settings){
 			var options = _.extend({}, settings, {
 				dateFormat: settings.dateFormat || "yy-mm",
 				altFormat: settings.altFormat || "yy-mm",		
@@ -686,7 +750,7 @@ PS.NavFormatter.fn.functions = {
 				}
 			});
 		},
-		"MONTH": function($field, settings){
+		"DATEMONTH": function($field, settings){
 			settings.dateFormat = settings.dateFormat || "yy-mm";
 			settings.altFormat = settings.altFormat || "yy-mm";
 			settings.momentDateFormat = settings.momentDateFormat || "YYYY-MM";
@@ -715,7 +779,7 @@ PS.NavFormatter.fn.functions = {
 			});
 			$field.datepicker(options);
 		},
-		"WEEK": function($field, settings){
+		"DATEWEEK": function($field, settings){
 			var options = _.extend({}, settings, {
 				altFormat: settings.altFormat || 'yy-mm-dd',
 				dateFormat: settings.dateFormat || 'yy-mm-dd',
@@ -772,14 +836,14 @@ PS.NavFormatter.fn.functions = {
 				}, 0);
 			});
 		},
-		"DAY": function($field, settings){
+		"DATEDAY": function($field, settings){
 			var options = _.extend({}, settings, {
 				altFormat: settings.altFormat || 'yy-mm-dd',
 				dateFormat: settings.dateFormat || 'yy-mm-dd'
 			});
 			$field.datepicker(options);
 		}
-	}, "DAY"),
+	}, "DATEDAY"),
 	"mapDateFormat": function(momentFormat){
 		var newFormat = momentFormat.toLowerCase(),
 			formatMap = {
@@ -803,7 +867,14 @@ PS.NavFormatter.fn.functions = {
 			$hiddenDateEnd = $("<input type=\"hidden\" class=\"nav-hidden-date-end\"/>"),
 			$dateStart = $("<input type=\"text\" class=\"nav-date-start\"/>"), 
 			$dateEnd = $("<input type=\"text\" class=\"nav-date-end\"/>"),
-			$dateLabel = $("<label class=\"nav-date-label\">to</label>");
+			$dateLabel = $("<label class=\"nav-date-label\">to</label>"),
+			momentDefaultFormat = {
+				"DATEDAY": "YYYY-MM-DD", 
+				"DATEWEEK": "YYYY-DD-DD",
+				"DATEMONTH": "YYYY-MM",
+				"DATEQUARTER": "YYYY-MM",
+				"DATEYEAR": "YYYY"
+			};
 		//add custom type class on dateStart and dateEnd
 		$dateStart.addClass("nav-date-" + type.toLowerCase());
 		$dateEnd.addClass("nav-date-" + type.toLowerCase());
@@ -826,24 +897,17 @@ PS.NavFormatter.fn.functions = {
 				dateToday = new moment(),
 				$selectedOption = $this.find("option:selected"),
 				type = $selectedOption.data("tp-type"),
-				valueToSet = $selectedOption.data("tp-diff"),
-				momentFormat = {
-					"DAY": "YYYY-MM-DD", 
-					"WEEK": "YYYY-DD-DD",
-					"MONTH": "YYYY-MM",
-					"QUARTER": "YYYY-MM",
-					"YEAR": "YYYY"
-				};
+				optionData = $selectedOption.data(),
+				startValue = optionData.tpStartDiff,
+				endValue = optionData.tpEndDiff || startValue;
 			;
 			$dateStart.add($dateEnd).add($dateLabel).show();
 			//destroy datepicker and reset onchange event 
 			$dateStart.add($dateEnd).datepicker("destroy").off("change");
-			//if type has change update the dateformat
-			if($hiddenType.data("tp-type") && type !== $hiddenType.data("tp-type")){
-				settings.momentDateFormat = momentFormat[type];
-				settings.dateFormat = _this.functions.mapDateFormat(settings.momentDateFormat);
-				settings.altFormat = settings.dateFormat
-			}
+			//set default format if not specified
+			settings.momentDateFormat = settings.momentDateFormat || momentDefaultFormat[type];
+			settings.dateFormat = settings.dateFormat || _this.functions.mapDateFormat(settings.momentDateFormat);
+			settings.altFormat = settings.altFormat || settings.dateFormat
 			settings.altField = _this.$el.find(".nav-hidden-date-start");
 			_this.functions.initDate(type, $dateStart, settings);
 			if($dateStart.val()){
@@ -859,20 +923,29 @@ PS.NavFormatter.fn.functions = {
 				$dateStart.datepicker("setDate", "");
 				$dateEnd.datepicker("setDate", "");		
 			}
-			//if date fields are blank set it to current date
-			if(!$dateStart.val() && !$dateEnd.val() && typeof(valueToSet) === "undefined"){
-				valueToSet = "0";
+			
+			//if date fields are blank and no user defined default value, set it to current date
+			if(!$dateStart.val() && typeof(startValue) === "undefined"){
+				startValue = "0";
 			}
 			//set value of dateStart and dateEnd
-			if(typeof(valueToSet) !== "undefined"){
-				$dateStart.datepicker("setDate", valueToSet.toString()).trigger("change");
-				$dateEnd.datepicker("setDate", valueToSet.toString()).trigger("change");
+			if(typeof(startValue) !== "undefined"){
+				$dateStart.datepicker("setDate", startValue.toString()).trigger("change");
+			}
+			//if date fields are blank set it to current date
+			if(!$dateEnd.val() && typeof(endValue) === "undefined"){
+				endValue = "0";
+			}
+			//set value of dateStart and dateEnd
+			if(typeof(endValue) !== "undefined"){
+				$dateEnd.datepicker("setDate", endValue.toString()).trigger("change");
 			}
 			if(value && value.indexOf("RANGE") < 0){
+	//		if(optionData.hideEnd)
 				//hide date end and label
 				$dateLabel.add($dateEnd).hide();
 			}
-			else if(type === "DAY" || type === "WEEK"){	//if selection is a DAY and not a range set min and max dates
+			else if(type === "DATEDAY" || type === "DATEWEEK"){	//if selection is a DAY and not a range set min and max dates
 				$dateEnd.datepicker("option", "minDate", moment($dateStart.val(), settings.momentDateFormat).toDate()).trigger("change");
 			}
 			$hiddenType.data("tp-type", type).val(value);
@@ -880,15 +953,6 @@ PS.NavFormatter.fn.functions = {
 		//set types value if user specified
 		if(settings.typeDefault){
 			$dateType.val(settings.typeDefault);
-		}
-		else{
-			//set default of type if datestart's or dateend's value is specified
-			if(settings.dateEnd){
-				$dateType.val(type + "RANGE");
-			}
-			else if(settings.dateStart){
-				$dateType.val(type);
-			}
 		}
 		$dateType.trigger("change");
 		//set value for datestart and dateend field
@@ -908,7 +972,7 @@ PS.NavFormatter.fn.functions = {
 		if(settings.dateTypeHidden){
 			$dateType.hide();
 		}
-		$($dateStart).on("keyup", function(e){
+		$($dateStart).add($dateEnd).on("keyup", function(e){
 			setTimeout(_.bind(function(){
 				var c = e.which ? e.which : e.keycode,
 					$this = $(this),
@@ -926,7 +990,7 @@ PS.NavFormatter.fn.functions = {
 					inst.selectedYear = dateMoment.year();
 					$.datepicker._updateDatepicker(inst);
 				}
-			}, this), 500);
+			}, this), 200);
 		});
 		if(settings.targetKeyword){
 			this.$el.on("change", function(e){
@@ -964,30 +1028,30 @@ PS.NavFormatter.fn.select2 = function () {
 	}
 };
 // need to regiter nav formatter functions, too
-/*PS.NavFormatter.register({
+PS.NavFormatter.register({
 	id: "select2",
 	text: "Dropdown",
 	sortOrder: 200,
 	name: "Select2"
 });
-*/
+
 PS.NavFormatter.fn.dateday = function () {
-	this.functions.createNavDate.call(this, "DAY");
+	this.functions.createNavDate.call(this, "dateday");
 };
 PS.NavFormatter.fn.dateweek = function () {
-	this.functions.createNavDate.call(this, "WEEK");
+	this.functions.createNavDate.call(this, "dateweek");
 };
 PS.NavFormatter.fn.datemonth = function () {
-	this.functions.createNavDate.call(this, "MONTH");
+	this.functions.createNavDate.call(this, "datemonth");
 };
 PS.NavFormatter.fn.datequarter = function () {
-	this.functions.createNavDate.call(this, "QUARTER");
+	this.functions.createNavDate.call(this, "datequarter");
 };
 PS.NavFormatter.fn.dateyear = function () {
-	this.functions.createNavDate.call(this, "YEAR");
+	this.functions.createNavDate.call(this, "dateyear");
 };
 PS.NavFormatter.fn.dateany = function () {
-	this.functions.createNavDate.call(this, "ANY");
+	this.functions.createNavDate.call(this, "dateany");
 };
 
 PS.NavFormatter.fn.checkbox = function () {
