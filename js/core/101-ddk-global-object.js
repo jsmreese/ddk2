@@ -629,9 +629,9 @@
 					groupIndex = 0;
 					$elem
 						.find("th:first")
-							.find(".content")
-								.addClass("text-nowrap")
-								.prepend("<span class=\"ddk-icon toggle\">" + (isExpanded ? /* down */ "&#286;" : /* right */ "&#285;") + "</span>")
+							.prepend("<span class=\"ddk-icon toggle\">" + (isExpanded ? /* down */ "&#286;" : /* right */ "&#285;") + "</span>")
+							.find(".sc-content")
+								.addClass("text-nowrap sc-group-toggle")
 								.end()
 							// get the first group header th element to have text-align: left
 							.addClass("text-left")
@@ -1493,7 +1493,7 @@
 						//hdt: favOptions.description,
 						fod: "false",
 						f: filterValue
-					}, "s_" + id + "_");
+					}, "s_" + id + "_", { silent: true });
 				}
 
 				$(spinner).insertAfter($this);
@@ -1516,7 +1516,7 @@
 								fuid: K("sec.userid"),
 								fdesc: favOptions.description,
 								flab: favOptions.label
-							}, "s_" + id + "_");
+							}, "s_" + id + "_", { silent: true });
 							// K("s_" + id + "_fid", response[0]);
 						}
 						DDK[name].reload(id);

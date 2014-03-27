@@ -37,13 +37,31 @@ if (Backbone.Epoxy) {
 	
 			if (this.model.get("displayType") === "radio" && this.options.template && this.options.template.indexOf("radio") > -1 && this.model.get("values").length) {
 				this.$el.find(".option-radio").append(_.reduce(this.model.get("values"), function (accumulator, value, index) {
-					return accumulator + PS.templateCache.radio(_.extend({}, _.string, value, { index: index, optionId: this.model.id }));
+					return accumulator + PS.templateCache.radio(_.extend({}, this.templateHelpers, _.string, value, { index: index, optionId: this.model.id }));
 				}, "", this));
 			}
 
 			this.applyBindings();
 			
 			return this;
+		},
+	
+		templateHelpers: {
+			getTitle: function () {
+				return this.abbr || this.label || this.id || "";
+			},
+			getLabel: function () {
+				return this.label || "";
+			},
+			getDescription: function () {
+				return this.description || "";
+			},
+			getNotes: function () {
+				return this.notes || "";
+			},
+			getIcon: function () {
+				return this.icon || "";
+			}
 		}
 	});
 

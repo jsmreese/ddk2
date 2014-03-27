@@ -1066,17 +1066,24 @@ $.extend(true, DDK.dialog, {
 		dlgInit: function($dialog) {
 			var data = $dialog.data(),
 				name = data.ddkControlName,
-				id = data.ddkControlId;
+				id = data.ddkControlId,
+				keywords = {};
 
-			K(name + "_id", id);
-			K("s_" + id + "_iw", K("s_" + id + "_iw") || K(name + "__" + id + "_init_widget") || $("#psc_" + name + "_" + id + "_widget").data("options"));
+			keywords[name + "_id"] = id;
+			keywords["s_" + id + "_iw"] = K("s_" + id + "_iw") || K(name + "__" + id + "_init_widget") || $("#psc_" + name + "_" + id + "_widget").data("options");
+			
+			//K(name + "_id", id);
+			//K("s_" + id + "_iw", K("s_" + id + "_iw") || K(name + "__" + id + "_init_widget") || $("#psc_" + name + "_" + id + "_widget").data("options"));
 
-			K({
-				name: name,
-				id: id
-			}, "component_");
+			keywords["component_name"] = name;
+			keywords["component_id"] = id;
+			
+			//K({
+			//	name: name,
+			//	id: id
+			//}, "component_");
 
-			run("ddk_dialog_content", "PSC_WPS_Dialog_Content");
+			run("ddk_dialog_content", "PSC_WPS_Dialog_Content", keywords);
 		},
 		dlgTitle: "Control Link"
 	},
