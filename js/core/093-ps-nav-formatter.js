@@ -616,7 +616,9 @@ PS.NavFormatter.fn.functions = {
 					optionHtml += "<option data-tp-type=\"" + optionType.toUpperCase() + "\" value=\"" + value + "\" ";
 					//add other data attributes
 					_.each(option, function(attrValue, attr){
-						optionHtml += "data-" + attr + "=\"" + attrValue + "\" ";
+						if(attrValue){
+							optionHtml += "data-" + attr + "=\"" + attrValue + "\" ";
+						}
 					});
 					optionHtml += ">";
 					optionHtml += option.text || option.label;
@@ -916,9 +918,16 @@ PS.NavFormatter.fn.functions = {
 			//destroy datepicker and reset onchange event 
 			$dateStart.add($dateEnd).datepicker("destroy").off("change");
 			//set default format if not specified
-			settings.momentDateFormat = settings.momentDateFormat || momentDefaultFormat[type];
-			settings.dateFormat = settings.dateFormat || _this.functions.mapDateFormat(settings.momentDateFormat);
-			settings.altFormat = settings.altFormat || settings.dateFormat
+			if(type !== $hiddenType.data("tp-type")){
+				settings.momentDateFormat = momentDefaultFormat[type];
+				settings.dateFormat = _this.functions.mapDateFormat(settings.momentDateFormat);
+				settings.altFormat = settings.dateFormat
+			}
+			else{
+				settings.momentDateFormat = settings.momentDateFormat || momentDefaultFormat[type];
+				settings.dateFormat = settings.dateFormat || _this.functions.mapDateFormat(settings.momentDateFormat);
+				settings.altFormat = settings.altFormat || settings.dateFormat
+			}
 			settings.altField = _this.$el.find(".nav-hidden-date-start");
 			_this.functions.initDate(type, $dateStart, settings);
 			if($dateStart.val()){
@@ -932,7 +941,7 @@ PS.NavFormatter.fn.functions = {
 			//clear date values if date type has changed
 			if($hiddenType.data("tp-type") && type !== $hiddenType.data("tp-type")){
 				$dateStart.datepicker("setDate", "");
-				$dateEnd.datepicker("setDate", "");		
+				$dateEnd.datepicker("setDate", "");	
 			}
 			
 			//if date fields are blank and no user defined default value, set it to current date
@@ -951,8 +960,11 @@ PS.NavFormatter.fn.functions = {
 			if(typeof(endValue) !== "undefined"){
 				$dateEnd.datepicker("setDate", endValue.toString()).trigger("change");
 			}
-			if(value && value.indexOf("RANGE") < 0){
-	//		if(optionData.hideEnd)
+			if(typeof(optionData.showTpStart) !== "undefined" && !optionData.showTpStart){
+				//hide date end and label
+				$dateStart.hide();
+			}
+			if(!optionData.showTpEnd){
 				//hide date end and label
 				$dateLabel.add($dateEnd).hide();
 			}
