@@ -307,10 +307,10 @@ DDK.data.datasetModes = {
 };
 */
 DDK.data.escapeModes = {
-	"html": function(data) {
+	"html": function (data) {
 		return _.escape(data).replace(DDK.regex.openBracket, "&#91;").replace(DDK.regex.closeBracket, "&#93;");
 	},
-	"html-script": function(data) {
+	"html-script": function (data) {
 		return data
 			.replace(/<script/g, "&lt;script")
 			.replace(/<iframe/g, "&lt;iframe")
@@ -320,6 +320,9 @@ DDK.data.escapeModes = {
 			.replace(/\-\->/g, "--&gt;")
 			.replace(DDK.regex.openBracket, "&#91;")
 			.replace(DDK.regex.closeBracket, "&#93;");		
+	},
+	"keyword": function (data) {
+		return data.replace(DDK.regex.tilde, "%7E").replace(DDK.regex.openBracket, "%5B").replace(DDK.regex.closeBracket, "%5D;");
 	}
 };
 
@@ -382,7 +385,7 @@ DDK.options.set = function (controlName, controlId) {
 			
 			// if `keywords` then instantiate the `value` as keywords
 			if (optionName === "keywords") { 
-				K(optionValue);
+				K(evalKeywordValue(optionValue));
 			}
 		} else {
 			optionsWidget = K(controlName + "_" + optionName);

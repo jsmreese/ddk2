@@ -39,6 +39,7 @@ DDK.reloadFromFavoriteRequest = function () {
 			keywords: "&ddk.fav.id=" + settings.favoriteId,
 			shouldCamelizeKeys: true,
 			useCoercedTypes: false,
+			escapeMode: "keyword"
 		},
 		{
 			method: "renderControlFromFavorite"

@@ -65,12 +65,12 @@ DDK.requestMethods.renderControlFromFavorite = function (keywords) {
 				return;
 			}
 			
-			accumulator[key] = value.toString()
+			accumulator[key] = value.toString();
 				
 		}, {});
 		//control.log = DDK.log(controlKeys);
 		
-		control.html = "<div style='height: 100%; width: 100%;' id='psc_" + control.name + "_" + control.id + "_widget' data-options='" + control.optionsWidget + "' data-keywords=\"" + _.escape(control.dataKeywords).replace(DDK.regex.tilde, "&#126;") + "\">" +
+		control.html = "<div style='height: 100%; width: 100%;' id='psc_" + control.name + "_" + control.id + "_widget' data-options='" + control.optionsWidget + "' data-keywords=\"" + control.dataKeywords + "\">" +
 			run("PSC_" + _.string.titleize(control.name) + "_Widget", controlKeys) +
 			"</div>";
 	}

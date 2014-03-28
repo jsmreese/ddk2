@@ -837,13 +837,13 @@
 				, "sAjaxSource": source
 				, "aoColumns": columns
 				, "fnServerData": function ( url, data, callback, settings ) {
-					data.push({name: "table_metrics_static", value: ms});
-					data.push({name: "table_metrics_dynamic", value: md});
-					data.push({name: "table_keywords", value: keywords});
 					//K($widget.data("keywords"));
 					_.each(K.toObject(["v_", "p_"]), function (value, key) {
 						data.push({ name: key, value: value });
 					});
+					data.push({name: "table_metrics_static", value: ms});
+					data.push({name: "table_metrics_dynamic", value: md});
+					data.push({name: "table_keywords", value: decodeURIComponent(keywords) });
 					settings.jqXHR = $.ajax( {
 						"url": url,
 						"data": data,
