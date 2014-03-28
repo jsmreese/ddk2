@@ -194,7 +194,7 @@ PS.NavFormatter.fn.functions = {
 			dataType: 'json',
 			data: function (term, page, context) {					
 				return $.extend({
-						"data.config": JSON.stringify($.extend(settings, {"page": page}))
+						"data.config": JSON.stringify($.extend(settings, {"page": page, "term": term}))
 					}, K.toObject("p_")
 				);
 			}.bind(this),
@@ -370,6 +370,7 @@ PS.NavFormatter.fn.functions = {
 						if(callbackData){	//for searching
 							callbackData.results = newData;
 							callbackData.more = callbackData.more || records.length === options.pageSize;
+							navFormatter.more = callbackData.more;
 							callback(callbackData);
 						}
 						else{	//for initselection
@@ -398,7 +399,9 @@ PS.NavFormatter.fn.functions = {
 					options = navFormatter.data || [],
 					selectedOptions = _.filter(options, function(item){ return _.contains(ids, item.id)});
 				if(settings.cached){
-					selectedOptions = _this.updateCache($.extend(settings, {id: item.val(), callback: callback}), _this);
+					//clear page 
+					settings.page = "";
+					selectedOptions = _this.updateCache($.extend({}, settings, {id: item.val(), callback: callback}), _this);
 				}
 				else if(selectedOptions && selectedOptions.length){
 					if(settings.multiple){
@@ -411,18 +414,20 @@ PS.NavFormatter.fn.functions = {
 			},
 			query: function(query){
 				var data = {results: []},
-					options = navFormatter.data || [],
+					options = settings.data || navFormatter.data || [],
 					modelPage = navFormatter.currentPage,
 					modelPageSize = settings.pageSize,
-					modelDataSize = navFormatter.data.length,
+					modelDataSize = options.length,
 					currentPage,
 					dataLoaded = false;
 				if(query.term){
 					//if not all data has been loaded search in server
 		//			if(modelDataSize < _this.model.get("totalPage")){
-		//				delay(function(){
-							options = _this.updateCache($.extend(settings, {term: query.term, callback: query.callback, callbackData: data}), _this);
-		/*				}, 500);
+					if(settings.cached){
+						delay(function(){
+							settings.page = "";
+							options = _this.updateCache($.extend({}, settings, {term: query.term, callback: query.callback, callbackData: data}), _this);
+						}, 300);
 					}
 					else {
 						_.each(options, function(o) {
@@ -432,8 +437,10 @@ PS.NavFormatter.fn.functions = {
 						});
 						query.callback(data);
 					}
-		*/		}
+				}
 				else{
+					//clear search term
+				//	settings.term = "";
 					//calculate current page to use
 					if(query.page <= modelPage){
 						currentPage = modelPage;
@@ -448,23 +455,27 @@ PS.NavFormatter.fn.functions = {
 						currentPage = query.page;
 					}
 					//store max page in model to avoid data retrieval redundancy
-					navFormatter.currentPage = currentPage
+					navFormatter.currentPage = currentPage;
 					
 					//check if cached mode and needs to add data
 					if(settings.cached){
 						if(currentPage === 1 && !options.length){
-							options = _this.updateCache($.extend(settings, {callback: query.callback, callbackData: data}), _this);
+							options = _this.updateCache($.extend({}, settings, {callback: query.callback, callbackData: data}), _this);
 						}
 						else{
 							//for next page if data has not been loaded
 							if(currentPage > 1 && !dataLoaded){
-								options = _this.updateCache($.extend(settings, {callback: query.callback, callbackData: data}), _this);
+								options = _this.updateCache($.extend({}, settings, {page: currentPage, callback: query.callback, callbackData: data}), navFormatter);
 							}
 							else{
-								data.more = options.length === settings.pageSize;
+								data.more = navFormatter.more || options.length === settings.pageSize;
 								data.results = options;
 								query.callback(data);
 							}
+						}
+						//combined cached/stored data to the new data
+						if(navFormatter.data && !navFormatter.data.length){
+							navFormatter.data = options;
 						}
 					}
 					else{
@@ -1003,8 +1014,8 @@ PS.NavFormatter.fn.select2 = function () {
 	var localThis = this, settings = this.getSettings(), $treeChooser, qtipOptions;
 	//add tree chooser button
 	if(!this.$el.is("select")){
-//			if(settings.queryWidget && !settings.cached){
-		if(settings.queryWidget){
+			if(settings.queryWidget && !settings.cached){
+//		if(settings.queryWidget){
 			$.extend(settings, {
 				ajax: this.functions.ajaxSetup(settings),
 				initSelection : function(element, callback){
@@ -1012,10 +1023,10 @@ PS.NavFormatter.fn.select2 = function () {
 				}.bind(this)
 			});
 		}
-/*			else{
+			else{
 			$.extend(settings, this.functions.localDataSetup(settings, this));
 		}
-*/			$.extend(settings, {
+			$.extend(settings, {
 			formatSelection: this.functions.format,
 			formatResult: this.functions.format
 		});
