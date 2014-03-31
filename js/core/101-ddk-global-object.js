@@ -1400,9 +1400,9 @@
 				$dialog = $this.closest(".ps-tooltip-dialog"),
 				data = $dialog.data(),
 				spinner = "<img class=\"ddk-wait\" src=\"" + (oldIE ? fullPath : "") + "resources/ddk/imgs/spinner_16x16.gif\" alt=\"Saving...\" />",
-				name = data.ddkControlName,
-				id = data.ddkControlId,
-				record = data.record || 0,
+				name = data.ddkControlName || K("v_content_type") || "",
+				id = data.ddkControlId || "content",
+				record = data.record || this.value || 0,
 				stateKeys = (K.toURL("s_" + id + "_") + "&" + K.toURL("p_")).split("&"),
 				favValue = "";
 
@@ -1421,6 +1421,10 @@
 				record: record,
 				value: favValue
 			}, "ddk_fav_");
+			
+			K({
+				id: id
+			}, "fav_comp_");
 
 			$(spinner).insertAfter($this);
 
@@ -1513,10 +1517,10 @@
 							// reset state keywords handling the active favorite
 							K({
 								fid: response[0],
-								fuid: K("sec.userid"),
+								fuid: K("sec.username"),
 								fdesc: favOptions.description,
 								flab: favOptions.label
-							}, "s_" + id + "_", { silent: true });
+							}, "s_" + id + "_");
 							// K("s_" + id + "_fid", response[0]);
 						}
 						DDK[name].reload(id);
