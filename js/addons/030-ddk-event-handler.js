@@ -1,6 +1,9 @@
 // DDK Event Handlers
 $.extend(true, DDK.eventHandler, {
 	controlRefresh: function(e, data) {
+		if (PS.app && PS.app.forceReload) {
+				PS.app.forceReload();
+		}
 		DDK[data.name].reload(data.id);
 	},
 	exportCSV: function(e, data) {

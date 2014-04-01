@@ -24,7 +24,7 @@ var run = function (widgetName, keywords) {
 		_.each(keywords, function (value, key) {
 			key = _.string.underscored(key);
 			cache[key] = (K.isKeyword(key) ? value : null);
-			K(key, value);
+			K(key, evalKeywordValue(value));
 		});
 	}
 	

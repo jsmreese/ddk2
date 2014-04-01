@@ -250,7 +250,7 @@ PS.Formatter.fn.chart = function () {
 
 	(function ($el, settings) {
 		_.defer(function () {
-			$el.sparkline(settings.value.split(","), settings);
+			$el.sparkline(settings.value.toString().split(","), settings);
 		});
 	})(this.$el, settings);
 };
