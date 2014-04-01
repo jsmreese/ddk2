@@ -1422,7 +1422,27 @@
 
 	function reloadControlContainer(controlName, controlId, options, callback, $control) {
 		var $controlDebugOutput,
-			$controlDebug;
+			$controlDebug,
+			beforeInit,
+			beforeReload;
+
+		// create a control data object if one does not already exist
+		DDK[controlName].data[controlId] = DDK[controlName].data[controlId] || {};
+			
+		// cache the callback, beforeInit, and beforeReload functions
+		// to custom control options, or grab them from custom control options
+		// if they are not passed to this function
+		if (callback) {
+			DDK[controlName].data[controlId].callback = callback;
+		} else if (options.callback) {
+			DDK[controlName].data[controlId].callback = callback = options.callback;
+		}
+		if (options.beforeInit) {
+			DDK[controlName].data[controlId].beforeInit = beforeInit = options.beforeInit;
+		}
+		if (options.beforeReload) {
+			DDK[controlName].data[controlId].beforeReload = beforeReload = options.beforeReload;
+		}
 			
 		if (typeof options.beforeInit === "function") {
 			options.beforeInit(controlName, controlId);
@@ -1431,7 +1451,7 @@
 		if (typeof callback === "function") {
 			callback(controlName, controlId);
 		}
-		
+	
 		if (_.string.toBoolean(K("control_debug"))) {
 			$controlDebug = $control.find(".control-debug");
 			$controlDebugOutput = $("body").find("#control_debug");

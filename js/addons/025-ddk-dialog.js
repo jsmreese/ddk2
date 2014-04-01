@@ -359,7 +359,7 @@ $.extend(true, DDK.dialog, {
 							$this.closest(".ddk-dialog-bamset-bam").remove();
 							break;
 						case "Add_Column":
-							$(DDK.template.render.scorecardDialogColumn())
+							$(DDK.template.render.scorecardDialogColumn({ columnMetric: metrics[0].name + " currentValue" }))
 								.find("select.display")
 									//.html("<optgroup label=\"Formatted\">" + DDK.template.render.option(displays) + "</optgroup><optgroup label=\"Unformatted\">" + DDK.template.render.option(attributes) + "</optgroup>")
 									.html(DDK.template.render.option(displays))
