@@ -782,7 +782,7 @@
 
 			DDK.control.init($control);
 			
-			if (!config.columns) {
+			if (!config || !config.columns) {
 				$control.find("[data-ddk-button-action=\"sc2BuildColumns\"]").click();
 			}
 		}
@@ -2622,6 +2622,10 @@ $.extend(true, DDK, {
 			DDK.bamset2.resize(id);
 
 			DDK.control.init($control);
+			
+			if (!config || !config.setBodyBams) {
+				$control.find("[data-ddk-button-action=\"bs2BuildSet\"]").click();
+			}
 		},
 		resize: PSC_Bamset2_Resize,
 		reload: PSC_Bamset2_Reload
