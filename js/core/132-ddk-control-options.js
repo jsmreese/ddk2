@@ -24,7 +24,7 @@
 DDK.controlOptions = function (id) {
 	return {
 		id: "ddk",
-		label: "DDK Control State",
+		label: "DDK Control",
 		data: {
 			id: "data",
 			label: "Data",
@@ -32,7 +32,7 @@ DDK.controlOptions = function (id) {
 				initWidget: { id: "s_" + id + "_iw", label: "Options Widget", description: "Specifies the DDK Options Widget to set multiple options.", notes: "Widget name." },
 				keywords: { id: "s_" + id + "_keywords", label: "Keywords", description: "Overrides specific keywords, including keywords set elsewhere such as in the Options Widget.", notes: "" },
 				datasource: { id: "s_" + id + "_d", label: "Datasource", description: "Datasource to use when running the query specified in the 'query_widget' option.", notes: "Default value is 'db.amdb'." },
-				datasourceShared: { id: "s_" + id + "_dse", label: "Shared Datasource Enabled", description: "Enables (true) or disables (false) the use of a datasource that is being used or shared with other components.", notes: "" },
+				datasourceShared: { id: "s_" + id + "_dse", label: "Shared Datasource Enabled", description: "Enables (true) the use of a datasource that is being used or shared with other components.", notes: "" },
 				queryWidget: { id: "s_" + id + "_qw", label: "Query Widget", description: "Widget containing the query to run.", notes: "Widget name." },
 				queryHeaderWidget: { id: "s_" + id + "_qhw", label: "Query Header Widget", description: "Widget containing a query to run before the main query.", notes: "The value of this option is applied to the 'config.sqlheader' attribute in AMEngine." },
 				queryDim: { id: "s_" + id + "_qd", label: "Query Dimension", description: "Query dimension and x-axis for charting in the chart control.", notes: "Field name." },
@@ -60,7 +60,13 @@ DDK.controlOptions = function (id) {
 			id: "toolbars",
 			label: "Toolbars",
 			options: {
-				toolbarEnabled: { id: "s_" + id + "_te", label: "Toolbar Enabled", description: "Enables (true) or disables (false) the toolbars for the control.", notes: "" },
+				toolbarEnabled: {
+					id: "s_" + id + "_te",
+					label: "Toolbar Enabled",
+					description: "Globally disables (false) the toolbars for the control.",
+					notes: "",
+					values: ["false"]
+				},
 				toolbarDefault: { id: "s_" + id + "_td", label: "Toolbar Default", description: "Enables (true) or disables (false) the setting of a single default for all of the following toolbar options: 'query.top.enabled', 'preview.enabled', 'metrics.choose.enabled', 'filter.enabled', 'favorite.enabled', 'export.csv.enabled', 'filter.global.enabled', 'refresh.enabled', 'type.enabled', and 'config.enabled'.", notes: "If 'toolbar.default' is set to false, all of the above options default to false, regardless if they were individually set to true." },
 				configEnabled: { id: "s_" + id + "_ce", label: "Config Enabled", description: "Enables (true) or disables (false) the Configuration toolbar in the control.", notes: "" },
 				csvExportEnabled: { id: "s_" + id + "_ece", label: "CSV Export Enabled", description: "Enables (true) or disables (false) the 'Export to CSV' option in the control UI.", notes: "" },
@@ -115,17 +121,59 @@ DDK.controlOptions = function (id) {
 			label: "Chart",
 			options: {
 				title: { id: "s_" + id + "_ti", label: "Title", description: "Title for the chart control.", notes: "" },
-				type: { id: "s_" + id + "_ty", label: "Type", description: "Default type used for chart series.", notes: "Accepted values are: point, line, stepline, area, stackedarea, stackedarea100, column, stackedcolumn, stackedcolumn100, bar, stackedbar, stackedbar100, doughnut, and pie." },
+				type: {
+					id: "s_" + id + "_ty",
+					label: "Type",
+					description: "Default type used for chart series.",
+					notes: "Accepted values are: point, line, stepline, area, stackedarea, stackedarea100, column, stackedcolumn, stackedcolumn100, bar, stackedbar, stackedbar100, doughnut, and pie.",
+					values: ["point", "line", "stepline", "column", "stackedcolumn", "stackedcolumn100", "area", "stackedarea", "stackedarea100", "bar", "stackedbar", "stackedbar100", "pie", "doughnut"]
+				},
 				autoRefreshEnabled: { id: "s_" + id + "_are", label: "Auto-Refresh Enabled", description: "Enables (true) or disables (false) the 'Auto-Refresh ON/OFF' option at the top of the Series Config toolbar.", notes: "Boolean." },
-				dataTableEnabled: { id: "s_" + id + "_de", label: "Data Table Enabled", description: "Enables (true) or disables (false) a datatable under the chart showing series values.", notes: "For vertical chart types only; does not display a datatable under the pie, doughnut, or bar chart types." },
-				labelAutoEnabled: { id: "s_" + id + "_lae", label: "Automatic Labels Enabled", description: "Enables (true) or disables (false) the automatic setting of labels for axis.", notes: "Boolean. Labels are set to the names of the series plotted on each axis as the label for that axis." },
+				dataTableEnabled: {
+					id: "s_" + id + "_de",
+					label: "Data Table Enabled",
+					description: "Enables (true) a datatable under the chart showing series values.",
+					notes: "For vertical chart types only; does not display a datatable under the pie, doughnut, or bar chart types.",
+					values: ["true"]
+				},
+				labelAutoEnabled: {
+					id: "s_" + id + "_lae",
+					label: "Automatic Labels Enabled",
+					description: "Disables (false) the automatic setting of labels for axis.",
+					notes: "Boolean. Labels are set to the names of the series plotted on each axis as the label for that axis.",
+					values: ["false"]
+				},
 				labelAxisX: { id: "s_" + id + "_lax", label: "Axis X Label", description: "Label for the x-axis.", notes: "Default x-axis label is the names of the series plotted on the x-axis." },
 				labelAxisY: { id: "s_" + id + "_lay", label: "Axis Y Label", description: "Label for the y-axis.", notes: "Default y-axis label is the names of the series plotted on y-axis (left side)." },
 				labelAxisY2: { id: "s_" + id + "_lay2", label: "Axis Y2 Label", description: "Label for the secondary y-axis.", notes: "Default secondary y-axis label is the names of the series plotted on secondary y-axis (right side)." },
-				stackedLabelY: { id: "s_" + id + "_layse", label: "Stacked Series Labels Enabled, Axis Y", description: "Enables (true) or disables (false) labels for stacked series totals for series on the y-axis.", notes: "Boolean." },
-				stackedLabelY2: { id: "s_" + id + "_lay2se", label: "Stacked Series Labels Enabled, Axis Y2", description: "Enables (true) or disables (false) labels for stacked series totals for series on the secondary y-axis.", notes: "Boolean." },
-				legend: { id: "s_" + id + "_lp", label: "Legend Position", description: "Position of the chart legend relative to the chart.", notes: "Accepted values are: none, top, bottom, left, right." },
-				seriesConfig: { id: "s_" + id + "_scp", label: "Series Config Position", description: "Position of the Series Config toolbar.", notes: "Accepted values are: none, top, bottom, left, right." },
+				stackedLabelY: {
+					id: "s_" + id + "_layse",
+					label: "Stacked Series Labels Enabled, Axis Y",
+					description: "Enables (true) labels for stacked series totals for series on the y-axis.",
+					notes: "Boolean.",
+					values: ["true"]
+				},
+				stackedLabelY2: {
+					id: "s_" + id + "_lay2se",
+					label: "Stacked Series Labels Enabled, Axis Y2",
+					description: "Enables (true) labels for stacked series totals for series on the secondary y-axis.",
+					notes: "Boolean.",
+					values: ["true"]
+				},
+				legend: {
+					id: "s_" + id + "_lp",
+					label: "Legend Position",
+					description: "Position of the chart legend relative to the chart.",
+					notes: "Accepted values are: none, top, bottom, left, right.",
+					values: ["none", "top", "bottom", "left", "right"]
+				},
+				seriesConfig: {
+					id: "s_" + id + "_scp",
+					label: "Series Config Position",
+					description: "Position of the Series Config toolbar.",
+					notes: "Accepted values are: none, top, bottom, left, right.",
+					values: ["none", "top", "bottom", "left", "right"]
+				},
 				templateWidget: { id: "s_" + id + "_tw", label: "Template Widget", description: "Theme options for the chart control.", notes: "Widget." }
 			},
 			series: {
@@ -184,7 +232,13 @@ DDK.controlOptions = function (id) {
 			options: {
 				thresholdClient: { id: "s_" + id + "_ptc", label: "Client Threshold", description: "Record count threshold to automatically enable client-side paging.", notes: "Default value is 200." },
 				thresholdServer: { id: "s_" + id + "_pts", label: "Server Threshold", description: "Record count threshold to automatically enable server-side paging.", notes: "Default value is 1000. Maximum value is 5000. Above 5000 records, server paging is enforced." },
-				type: { id: "s_" + id + "_pt", label: "Type", description: "Paging type for the table control.", notes: "Accepted values are [BLANK], none, client, server. If [BLANK], will automatically determine paging type based on query record count. For best performance with large datasets, set a value of 'server'." }
+				type: {
+					id: "s_" + id + "_pt",
+					label: "Type",
+					description: "Paging type for the table control.",
+					notes: "Accepted values are [BLANK], none, client, server. If [BLANK], will automatically determine paging type based on query record count. For best performance with large datasets, set a value of 'server'.",
+					values: ["none", "client", "server"]
+				}
 			}
 		}
 	};
