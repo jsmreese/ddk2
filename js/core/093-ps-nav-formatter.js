@@ -883,7 +883,7 @@ PS.NavFormatter.fn.functions = {
 			$dateLabel = $("<label class=\"nav-date-label\">to</label>"),
 			momentDefaultFormat = {
 				"DATEDAY": "YYYY-MM-DD", 
-				"DATEWEEK": "YYYY-DD-DD",
+				"DATEWEEK": "YYYY-MM-DD",
 				"DATEMONTH": "YYYY-MM",
 				"DATEQUARTER": "YYYY-MM",
 				"DATEYEAR": "YYYY"
