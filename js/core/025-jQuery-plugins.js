@@ -127,15 +127,28 @@
 		}).get());
 	};
 	
-	/* $.fn.reload jQuery plugin
+	/* $.fn.reloadControls jQuery plugin
 	 * Reloads DDK Control elements.
 	 * by: jsmreese
 	 */
-	$.fn.reload = function () {
+	$.fn.reloadControls = $.fn.reload = function () {
 		return this.each(function (index, elem) {
 			var data = $(elem).controlData();
 			if (data && data.name && data.id) {
 				DDK.reloadControl(data.name, data.id);
+			}
+		});
+	};
+	
+	/* $.fn.reloadControlsQueue jQuery plugin
+	 * Reloads DDK Control elements.
+	 * by: jsmreese
+	 */
+	$.fn.reloadControlsQueue = function () {
+		return this.each(function (index, elem) {
+			var data = $(elem).controlData();
+			if (data && data.name && data.id) {
+				DDK.loadControls({ name: data.name, id: data.id });
 			}
 		});
 	};
