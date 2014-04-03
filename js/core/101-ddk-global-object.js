@@ -783,7 +783,9 @@
 			DDK.control.init($control);
 			
 			if (!config || !config.columns) {
-				$control.find("[data-ddk-button-action=\"sc2BuildColumns\"]").click();
+				if (count && DDK.eventHandler.sc2BuildColumns) {
+					$control.find("[data-ddk-button-action=\"sc2BuildColumns\"]").click();
+				}
 			}
 		}
 		
@@ -2610,6 +2612,7 @@ $.extend(true, DDK, {
 				$data = $('#psc_bamset2_data_' + id),
 				data = $data.data(),
 				config = data && data.config || null,
+				count = data && data.count || 0,
 				$content,
 				metrics,
 				attributes,
@@ -2624,7 +2627,9 @@ $.extend(true, DDK, {
 			DDK.control.init($control);
 			
 			if (!config || !config.setBodyBams) {
-				$control.find("[data-ddk-button-action=\"bs2BuildSet\"]").click();
+				if (count && DDK.eventHandler.bs2BuildSet) {
+					$control.find("[data-ddk-button-action=\"bs2BuildSet\"]").click();
+				}
 			}
 		},
 		resize: PSC_Bamset2_Resize,
