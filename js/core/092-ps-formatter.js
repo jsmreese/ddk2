@@ -169,24 +169,22 @@ PS.Formatter.fn.number = function () {
 	// if nullToZero is false and formatValue is emptyString
 	// (null values in the data appear here as empty strings)
 	// or if the formatValue does not coerce to a number
-	if (!isNum || (!this.nullToZero && this.formatValue === "")) {
-		if (!_.isNumber(this.null)) {
-			// if this.null is not a number, return the text directly without further formatting
-			return this.null;
+	if (!isNum || (!settings.nullToZero && this.formatValue === "")) {
+		if (!_.isNumber(settings.null)) {
+			// if settings.null is not a number, return the text directly without further formatting
+			return settings.null;
 		}
 		
-		// if this.null is a number, format it with units and proper number formatting
-		num = this.null;
-	}
-	
-	if (num === 0) {
-		if (!_.isNumber(this.zero)) {
-			// if this.zero is not a number, return the text directly without further formatting
-			return this.zero;
+		// if settings.null is a number, format it with units and proper number formatting
+		num = settings.null;
+	} else if (num === 0) {
+		if (!_.isNumber(settings.zero)) {
+			// if settings.zero is not a number, return the text directly without further formatting
+			return settings.zero;
 		}
 		
-		// if this.zero is a number, format it with units and proper number formatting
-		num = this.zero;
+		// if settings.zero is a number, format it with units and proper number formatting
+		num = settings.zero;
 	}
 	
 	if (settings.units) {
@@ -207,24 +205,22 @@ PS.Formatter.fn.currency = function () {
 	// if nullToZero is false and formatValue is emptyString
 	// (null values in the data appear here as empty strings)
 	// or if the formatValue does not coerce to a number
-	if (!isNum || (!this.nullToZero && this.formatValue === "")) {
-		if (!_.isNumber(this.null)) {
-			// if this.null is not a number, return the text directly without further formatting
-			return this.null;
+	if (!isNum || (!settings.nullToZero && this.formatValue === "")) {
+		if (!_.isNumber(settings.null)) {
+			// if settings.null is not a number, return the text directly without further formatting
+			return settings.null;
 		}
 		
-		// if this.null is a number, format it with units and proper number formatting
-		num = this.null;
-	}
-	
-	if (num === 0) {
-		if (!_.isNumber(this.zero)) {
-			// if this.zero is not a number, return the text directly without further formatting
-			return this.zero;
+		// if settings.null is a number, format it with units and proper number formatting
+		num = settings.null;
+	} else if (num === 0) {
+		if (!_.isNumber(settings.zero)) {
+			// if settings.zero is not a number, return the text directly without further formatting
+			return settings.zero;
 		}
 		
-		// if this.zero is a number, format it with units and proper number formatting
-		num = this.zero;
+		// if settings.zero is a number, format it with units and proper number formatting
+		num = settings.zero;
 	}
 	
 	if (settings.units) {
@@ -322,24 +318,22 @@ PS.Formatter.fn.percent = function () {
 	// if nullToZero is false and formatValue is emptyString
 	// (null values in the data appear here as empty strings)
 	// or if the formatValue does not coerce to a number
-	if (!isNum || (!this.nullToZero && this.formatValue === "")) {
-		if (!_.isNumber(this.null)) {
-			// if this.null is not a number, return the text directly without further formatting
-			return this.null;
+	if (!isNum || (!settings.nullToZero && this.formatValue === "")) {
+		if (!_.isNumber(settings.null)) {
+			// if settings.null is not a number, return the text directly without further formatting
+			return settings.null;
 		}
 		
-		// if this.null is a number, format it with units and proper number formatting
-		num = this.null;
-	}
-	
-	if (num === 0) {
-		if (!_.isNumber(this.zero)) {
-			// if this.zero is not a number, return the text directly without further formatting
-			return this.zero;
+		// if settings.null is a number, format it with units and proper number formatting
+		num = settings.null;
+	} else if (num === 0) {
+		if (!_.isNumber(settings.zero)) {
+			// if settings.zero is not a number, return the text directly without further formatting
+			return settings.zero;
 		}
 		
-		// if this.zero is a number, format it with units and proper number formatting
-		num = this.zero;
+		// if settings.zero is a number, format it with units and proper number formatting
+		num = settings.zero;
 	}
 	
 	settings.units = "%";
