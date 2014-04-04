@@ -1544,12 +1544,8 @@ DDK.template.render = {
 		return out;
 	},
 	
-	ddkKeywordEval: function (value, globals, record) {
-		var // transform runs .toLowerCase() on all keys to give a clean surface for matching
-			keywords = _.transform(_.extend({}, globals, record || {}), function (accumulator, value, key) {
-				accumulator[key.toLowerCase()] = value;
-			}, {}),
-			keywordEval = function (match) {
+	ddkKeywordEval: function (value, keywords) {
+		var keywordEval = function (match) {
 				var key = match.slice(2, -2).toLowerCase();
 
 				// out += DDK.log(key, typeof keywords[key], DDK.renderJSON(keywords));
@@ -1582,7 +1578,11 @@ DDK.template.render = {
 			metricParameters,
 			columnCount = 0,
 			// colspan can only happen when not in grouped or sortable modes
-			canColspan = (co.groupingKey || !co.sortEnabled);
+			canColspan = (co.groupingKey || !co.sortEnabled),
+			// transform runs .toLowerCase() on all keys to give a clean surface for matching
+			keywords = _.transform(_.extend({}, globals, record || {}), function (accumulator, value, key) {
+				accumulator[key.toLowerCase()] = value;
+			}, {});
 		
 		out += "<tr class=\"" + rowClassName + "\" " + rowAttr + ">";
 		
@@ -1595,16 +1595,16 @@ DDK.template.render = {
 			// create elem config object by reducing column config object to only those properties that apply to this rowType
 			_.each(column, function (value, key) {
 				if (_.string.startsWith(key, rowType)) {
-					elem[_.string.camelize(key.slice(rowType.length))] = DDK.template.render.ddkKeywordEval(value, globals, record);
+					elem[_.string.camelize(key.slice(rowType.length))] = DDK.template.render.ddkKeywordEval(value, keywords);
 				}
 			});
 			
 			// pass column.attr and column.className through ddkKeywordEval as well
 			if (column.attr) {
-				columnAttr = DDK.template.render.ddkKeywordEval(column.attr, globals, record);
+				columnAttr = DDK.template.render.ddkKeywordEval(column.attr, keywords);
 			}
 			if (column.className) {
-				columnClassName = DDK.template.render.ddkKeywordEval(column.className, globals, record);
+				columnClassName = DDK.template.render.ddkKeywordEval(column.className, keywords);
 			}
 			
 			// when colspans are enabled, only render an element if it has defined config properties
@@ -1808,9 +1808,13 @@ DDK.template.render = {
 
 	bamset2Bams: function(setSectionType, co, config, globals, record) {
 		"use strict";
-		var bams = config["set" + _.string.titleize(setSectionType) + "Bams"];
+		var bams = config["set" + _.string.titleize(setSectionType) + "Bams"],
+		// transform runs .toLowerCase() on all keys to give a clean surface for matching
+		keywords = _.transform(_.extend({}, globals, record || {}), function (accumulator, value, key) {
+			accumulator[key.toLowerCase()] = value;
+		}, {});
 
-		return DDK.template.render.ddkKeywordEval(_.reduce(bams, DDK.template.render.bamset2Bam, ""), globals, record);
+		return DDK.template.render.ddkKeywordEval(_.reduce(bams, DDK.template.render.bamset2Bam, ""), keywords);
 	},
 
 	bamset2Bam: function (accumulator, bam, index) {
@@ -1871,9 +1875,13 @@ DDK.template.render = {
 
 	navset2Navs: function(setSectionType, co, config, globals, record) {
 		"use strict";
-		var navs = config["set" + _.string.titleize(setSectionType) + "Navs"];
+		var navs = config["set" + _.string.titleize(setSectionType) + "Navs"],
+		// transform runs .toLowerCase() on all keys to give a clean surface for matching
+		keywords = _.transform(_.extend({}, globals, record || {}), function (accumulator, value, key) {
+			accumulator[key.toLowerCase()] = value;
+		}, {});
 
-		return DDK.template.render.ddkKeywordEval(_.reduce(navs, DDK.template.render.navset2Nav, ""), globals, record);
+		return DDK.template.render.ddkKeywordEval(_.reduce(navs, DDK.template.render.navset2Nav, ""), keywords);
 	},
 
 	navset2Nav: function (accumulator, nav, index) {
