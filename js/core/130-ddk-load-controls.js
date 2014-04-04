@@ -2,8 +2,35 @@ DDK.reloadFromFavoriteQueue = [];
 DDK.reloadFromFavoriteLoading = false;
 
 DDK.reloadFromFavorite = function (target, favoriteId, callback, beforeInit, beforeReload, unshift) {
+
+	// target could be a DOM node, a jQuery selector, or a jQuery collection, or an id string
+	var $target = $(target);
+	if (!$target.size()) { $target = $("#" + target); }
+
+	// exit with a warning if the target cannot be found
+	if (!$target.size()) {
+		DDK.warn("DDK.reloadFromFavorite() target not found:", target);
+		return;
+	}
+	
+	// if there is no favoriteId supplied, check the target for a data-favorite-id attribute
+	if (!favoriteId) {
+		favoriteId = $target.data("favoriteId");
+	}
+	
+	// Exit with an error if favoriteId does not evaluate to a positive number
+	// or is not a name
+	if (!(+favoriteId > 0)) {
+		if (typeof favoriteId !== "string" || favoriteId === "") {
+			DDK.error("DDK.reloadFromFavorite(): invalid favoriteId. " + favoriteId + "\nMust be a positve number or a string.");
+			return;
+		}
+	}
+
+	$target.am("showmask");
+
 	DDK.reloadFromFavoriteQueue[unshift ? "unshift" : "push"]({
-		target: target,
+		$target: $target,
 		favoriteId: favoriteId,
 		callback: callback,
 		beforeInit: beforeInit,
@@ -19,7 +46,6 @@ DDK.reloadFromFavorite = function (target, favoriteId, callback, beforeInit, bef
 
 DDK.reloadFromFavoriteRequest = function () {
 	var settings,
-		$target,
 		dataConfig,
 		ajaxSettings;
 	
@@ -56,8 +82,8 @@ DDK.reloadFromFavoriteRequest = function () {
 		success: function (data) {
 			var control = data.datasets[1];
 			
-			$target.am("hidemask").empty().html(DDK.unescape.brackets(control.html));
-			reloadControlContainer(control.name, control.id, settings, settings.callback, $target.children().eq(0));
+			settings.$target.am("hidemask").empty().html(DDK.unescape.brackets(control.html));
+			reloadControlContainer(control.name, control.id, settings, settings.callback, settings.$target.children().eq(0));
 			K(control.stateKeywords);
 			
 			// clear loading status
@@ -66,31 +92,7 @@ DDK.reloadFromFavoriteRequest = function () {
 			return DDK.reloadFromFavoriteRequest();
 		}		
 	};
-	
-	// target could be a DOM node, a jQuery selector, or a jQuery collection, or an id string
-	$target = $(settings.target);
-	if (!$target.size()) { $target = $("#" + settings.target); }
-
-	// exit with a warning if the target cannot be found
-	if (!$target.size()) {
-		DDK.warn("DDK.reloadFromFavorite() target not found:", settings.target);
-		return DDK.reloadFromFavoriteRequest();
-	}
-
-	// if there is no favoriteId supplied, check the target for a data-favorite-id attribute
-	if (!settings.favoriteId) {
-		settings.favoriteId = $target.data("favoriteId");
-	}
-	
-	// Exit with an error if favoriteId does not evaluate to a positive number
-	// or is not a name
-	if (!(+settings.favoriteId > 0)) {
-		if (typeof settings.favoriteId !== "string" || settings.favoriteId === "") {
-			DDK.error("DDK.reloadFromFavorite(): invalid favoriteId. " + settings.favoriteId + "\nMust be a positve number or a string.");
-			return DDK.reloadFromFavoriteRequest();
-		}
-	}
-	
+		
 	// beforeReload
 	if (settings.beforeReload && typeof settings.beforeReload === "function") {
 		// can't pass controlName and controlId to beforeReload because we don't know them yet
@@ -112,8 +114,6 @@ DDK.reloadFromFavoriteRequest = function () {
 	// set loading status
 	DDK.reloadFromFavoriteLoading = true;
 	DDK.log("Loading control from favorite:", settings);
-	$target.am("showmask");
-
 
 	// get control
 	return $.ajax(ajaxSettings);

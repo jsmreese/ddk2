@@ -1809,8 +1809,25 @@
 			isLoading = false;
 
 		function loadControls(controls) {
-			if (controls) { DDK.log("Queue controls (loadControls): " + JSON.stringify(controls)); }
+			if (!controls) { 
+				DDK.warn("loadControls: no controls found");
+				return;
+			}
+			
+			DDK.log("Queue controls (loadControls): " + JSON.stringify(controls));
+			
+			// mask all controls at queue time
+			// they will be unmasked on initialization
+			if (_.isPlainObject(controls)) {
+				$("#psc_" + controls.name + "_" + controls.id + "_widget").am("showmask");
+			} else {
+				_.each(controls, function (control) {
+					$("#psc_" + control.name + "_" + control.id + "_widget").am("showmask");
+				});
+			}
+
 			controlQueue = controlQueue.concat(controls);
+			
 			if (!isLoading) {
 				isLoading = true;
 				//$("body").prepend("<div style='width: 700px; height: 100px;'>" + JSON.stringify(controlQueue) + "</div>");
