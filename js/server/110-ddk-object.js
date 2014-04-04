@@ -1916,23 +1916,23 @@ DDK.template.render = {
 			},
 			createElem = _.delegator({
 				"label": function(options){
-					return "<label id=\"" + (options.elemId || "") + "\" class=\"nav-element " + options.elemClassName + "\" " + options.elemAttr + ">" + options.elemLabel + "</label>";
+					return "<label id=\"" + (options.elemId || "") + "\" data-nav=\"label\" class=\"nav-element " + options.elemClassName + "\" " + options.elemAttr + addDataNav(options.elemFormat, options.elemConfig) + ">" + options.elemLabel + "</label>";
 				},
 				"input": function(options){
-					return "<input id=\"" + (options.elemId || "") + "\" placeholder=\"" + options.elemLabel + "\" class=\"nav-element " + options.elemClassName + "\" " + options.elemAttr + " value=\"" + (options.elemConfig && options.elemConfig.value || "") + "\"></input>";
+					return "<input id=\"" + (options.elemId || "") + "\" data-nav=\"input\" placeholder=\"" + options.elemLabel + "\" class=\"nav-element " + options.elemClassName + "\" " + options.elemAttr + addDataNav(options.elemFormat, options.elemConfig) + " value=\"" + (options.elemConfig && options.elemConfig.value || "") + "\"></input>";
 				},
 				"button": function(options){
-					return "<button id=\"" + (options.elemId || "") + "\" class=\"nav-element " + options.elemClassName + "\" " + options.elemAttr + " value=\"" + (options.elemConfig && options.elemConfig.value || "") + "\">" + options.elemLabel + "</button>";
+					return "<button id=\"" + (options.elemId || "") + "\" data-nav=\"button\" class=\"nav-element " + options.elemClassName + "\" " + options.elemAttr + addDataNav(options.elemFormat, options.elemConfig) + " value=\"" + (options.elemConfig && options.elemConfig.value || "") + "\">" + options.elemLabel + "</button>";
 				},
 				"select2": function(options){
-					return "<input id=\"" + (options.elemId || "") + "\" placeholder=\"" + options.elemLabel + "\" class=\"ps-nav-select2 nav-element " + options.elemClassName + "\" " + options.elemAttr + addDataNav(options.elemFormat, options.elemConfig)  + " value=\"" + (options.elemConfig && options.elemConfig.value || "") + "\"></input>";
+					return "<input id=\"" + (options.elemId || "") + "\" placeholder=\"" + options.elemLabel + "\" class=\"ps-nav-select2 nav-element " + options.elemClassName + "\" " + options.elemAttr + addDataNav(options.elemFormat, options.elemConfig) + " value=\"" + (options.elemConfig && options.elemConfig.value || "") + "\"></input>";
 				},
 				"checkbox": function(options){
 					var html = "";
 					if(options.elemLabel){
 						html += "<label>";
 					}
-					html += "<input id=\"" + (options.elemId || "") + "\" type=\"checkbox\" class=\"nav-element " + options.elemClassName + "\" " + options.elemAttr + " value=\"" + (options.elemConfig && options.elemConfig.value || "") + "\"></input>";
+					html += "<input id=\"" + (options.elemId || "") + "\" type=\"checkbox\" data-nav=\"checkbox\" class=\"nav-element " + options.elemClassName + "\" " + options.elemAttr + addDataNav(options.elemFormat, options.elemConfig) + " value=\"" + (options.elemConfig && options.elemConfig.value || "") + "\"></input>";
 					if(options.elemLabel){
 						html += options.elemLabel + "</label>";
 					}
@@ -1943,7 +1943,7 @@ DDK.template.render = {
 					if(options.elemLabel){
 						html += "<label>";
 					}
-					html += "<input id=\"" + (options.elemId || "") + "\" type=\"radio\" class=\"nav-element is-plain-button " + options.elemClassName + "\" " + options.elemAttr + " value=\"" + (options.elemConfig && options.elemConfig.value || "") + "\"></input>";
+					html += "<input id=\"" + (options.elemId || "") + "\" type=\"radio\" data-nav=\"radio\" class=\"nav-element is-plain-button " + options.elemClassName + "\" " + options.elemAttr + addDataNav(options.elemFormat, options.elemConfig) + " value=\"" + (options.elemConfig && options.elemConfig.value || "") + "\"></input>";
 					if(options.elemLabel){
 						html += options.elemLabel + "</label>";
 					}
