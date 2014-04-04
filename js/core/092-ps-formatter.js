@@ -132,6 +132,9 @@ PS.Formatter.fn.getSettings = function () {
 
 PS.Formatter.fn.defaults = {
 	precision: 0,
+	nullToZero: true,
+	zero: "-",
+	null: "-",
 	units: "",
 	unitsPosition: "right",
 	unitsAttr: "",
@@ -161,13 +164,29 @@ PS.Formatter.fn.number = function () {
 	var num = +this.formatValue,
 		isNum = !(num == null || isNaN(num)),
 		settings = this.getSettings();
+
+	// null replacement value
+	// if nullToZero is false and formatValue is emptyString
+	// (null values in the data appear here as empty strings)
+	// or if the formatValue does not coerce to a number
+	if (!isNum || (!this.nullToZero && this.formatValue === "")) {
+		if (!_.isNumber(this.null)) {
+			// if this.null is not a number, return the text directly without further formatting
+			return this.null;
+		}
 		
-	if (!isNum) {
-		return "&nbsp;";
+		// if this.null is a number, format it with units and proper number formatting
+		num = this.null;
 	}
 	
 	if (num === 0) {
-		return "-";
+		if (!_.isNumber(this.zero)) {
+			// if this.zero is not a number, return the text directly without further formatting
+			return this.zero;
+		}
+		
+		// if this.zero is a number, format it with units and proper number formatting
+		num = this.zero;
 	}
 	
 	if (settings.units) {
@@ -184,12 +203,28 @@ PS.Formatter.fn.currency = function () {
 		isNum = !(num == null || isNaN(num)),
 		settings = this.getSettings();
 		
-	if (!isNum) {
-		return "&nbsp;";
+	// null replacement value
+	// if nullToZero is false and formatValue is emptyString
+	// (null values in the data appear here as empty strings)
+	// or if the formatValue does not coerce to a number
+	if (!isNum || (!this.nullToZero && this.formatValue === "")) {
+		if (!_.isNumber(this.null)) {
+			// if this.null is not a number, return the text directly without further formatting
+			return this.null;
+		}
+		
+		// if this.null is a number, format it with units and proper number formatting
+		num = this.null;
 	}
 	
 	if (num === 0) {
-		return "-";
+		if (!_.isNumber(this.zero)) {
+			// if this.zero is not a number, return the text directly without further formatting
+			return this.zero;
+		}
+		
+		// if this.zero is a number, format it with units and proper number formatting
+		num = this.zero;
 	}
 	
 	if (settings.units) {
@@ -283,12 +318,28 @@ PS.Formatter.fn.percent = function () {
 		isNum = !(num == null || isNaN(num)),
 		settings = this.getSettings();
 		
-	if (!isNum) {
-		return "&nbsp;";
+	// null replacement value
+	// if nullToZero is false and formatValue is emptyString
+	// (null values in the data appear here as empty strings)
+	// or if the formatValue does not coerce to a number
+	if (!isNum || (!this.nullToZero && this.formatValue === "")) {
+		if (!_.isNumber(this.null)) {
+			// if this.null is not a number, return the text directly without further formatting
+			return this.null;
+		}
+		
+		// if this.null is a number, format it with units and proper number formatting
+		num = this.null;
 	}
 	
 	if (num === 0) {
-		return "-";
+		if (!_.isNumber(this.zero)) {
+			// if this.zero is not a number, return the text directly without further formatting
+			return this.zero;
+		}
+		
+		// if this.zero is a number, format it with units and proper number formatting
+		num = this.zero;
 	}
 	
 	settings.units = "%";
