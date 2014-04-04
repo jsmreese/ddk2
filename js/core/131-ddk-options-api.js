@@ -530,18 +530,6 @@ PS.optionsAPI.navElemConfig = {
 				"description": "width of select2",
 				"notes": "Percent or pixel width of select2"
 			},
-			"default": {
-				"id": "default",
-				"label": "Default",
-				"description": "Default value",
-				"notes": ""
-			},
-			"sortColumns": {
-				"id": "sort_columns",
-				"label": "Sort Columns",
-				"description": "Columns to be used to sort the data",
-				"notes": ""
-			},
 			"pageSize": {
 				"id": "page_size",
 				"label": "Page Size",
@@ -616,12 +604,6 @@ PS.optionsAPI.navElem = {
 				"notes": "Sets classes on the element div."
 			},
 
-			"value": {
-				"id": "elem_value",
-				"label": "Value",
-				"description": "Element format value.",
-				"notes": "Sets the data-format-value attribute on the element div."
-			},
 			"gridAttr": {
 				"id": "elem_grid_attr",
 				"label": "Grid Attributes",
@@ -721,13 +703,6 @@ PS.optionsAPI.nav = {
 		"label": "Nav Config Options",
 		"description": "Options for configuring Nav object.",
 		"options": {
-			"prefix": {
-					"id": "nav_prefix",
-					"label": "Metric / Dimension",
-					"description": "Metric or Dimension prefix used when rendering nav.",
-					"notes": "Used to evaluate DDK Keyword Alias notation in the context of an AMEngine dataset."
-			},
-			
 			"title": {
 					"id": "nav_title",
 					"label": "Title",

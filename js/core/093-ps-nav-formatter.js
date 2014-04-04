@@ -257,10 +257,9 @@ PS.NavFormatter.fn.functions = {
 		if(settings.queryWidget){
 			$.extend(true, dataToPass, K.toObject("p_"), {
 				"config.mn": "DDK_Data_Request",
-				"filterTerm": element.val(),
 				"filterColumn": settings.filterColumn,
 				"columnPrefix": settings.columnPrefix,
-				"data.config": JSON.stringify(settings)
+				"data.config": JSON.stringify($.extend(true, {}, settings, {"id": element.val()}))
 			});
 			$.post("amengine.aspx", dataToPass, 
 				function(data) {
@@ -830,7 +829,7 @@ PS.NavFormatter.fn.functions = {
 				//calculate week to set in hidden input
 				var $this = $(this),
 					value = $this.val(),
-					selectedDate, $altField = $this.data("alt-field"),
+					$altField = $this.data("alt-field"),
 					selectedDate = new moment(value, settings.momentDateFormat),
 					dayOfWeek = selectedDate.isoWeekday();
 				//timeout is for ie8 to prevent reopening the datepicker panel
@@ -918,7 +917,7 @@ PS.NavFormatter.fn.functions = {
 			//destroy datepicker and reset onchange event 
 			$dateStart.add($dateEnd).datepicker("destroy").off("change");
 			//set default format if not specified
-			if(type !== $hiddenType.data("tp-type")){
+			if($hiddenType.data("tp-type") && type !== $hiddenType.data("tp-type")){
 				settings.momentDateFormat = momentDefaultFormat[type];
 				settings.dateFormat = _this.functions.mapDateFormat(settings.momentDateFormat);
 				settings.altFormat = settings.dateFormat
@@ -1050,13 +1049,7 @@ PS.NavFormatter.fn.select2 = function () {
 		});
 	}
 };
-// need to regiter nav formatter functions, too
-PS.NavFormatter.register({
-	id: "select2",
-	text: "Dropdown",
-	sortOrder: 200,
-	name: "Select2"
-});
+
 
 PS.NavFormatter.fn.dateday = function () {
 	this.functions.createNavDate.call(this, "dateday");
@@ -1081,7 +1074,11 @@ PS.NavFormatter.fn.checkbox = function () {
 	var settings = this.getSettings();
 	if(settings.targetKeyword){
 		this.$el.on("change", function(e){
-			K(settings.targetKeyword, $(this).is(":checked"));
+			var $this = $(this), value = $this.is(":checked");
+			if($this.val() && $this.is(":checked")){
+				value = $this.val()
+			}
+			K(settings.targetKeyword, value);
 		});
 	}
 };
@@ -1090,7 +1087,11 @@ PS.NavFormatter.fn.radio = function () {
 	var settings = this.getSettings();
 	if(settings.targetKeyword){
 		this.$el.on("change", function(e){
-			K(settings.targetKeyword, $(this).is(":checked"));
+			var $this = $(this), value = $this.is(":checked");
+			if($this.val() && $this.is(":checked")){
+				value = $this.val()
+			}
+			K(settings.targetKeyword, value);
 		});
 	}
 };
@@ -1098,7 +1099,32 @@ PS.NavFormatter.fn.input = function () {
 	var settings = this.getSettings();
 	if(settings.targetKeyword){
 		this.$el.on("change", function(e){
-			K(settings.targetKeyword, $(this).is(":checked"));
+			K(settings.targetKeyword, $(this).val());
 		});
 	}
 };
+// need to regiter nav formatter functions, too
+PS.NavFormatter.register({
+	id: "select2",
+	text: "Dropdown",
+	sortOrder: 200,
+	name: "Select2"
+});
+PS.NavFormatter.register({
+	id: "input",
+	text: "Input",
+	sortOrder: 300,
+	name: "Input"
+});
+PS.NavFormatter.register({
+	id: "checkbox",
+	text: "Checkbox",
+	sortOrder: 400,
+	name: "Checkbox"
+});
+PS.NavFormatter.register({
+	id: "radio",
+	text: "Radio",
+	sortOrder: 500,
+	name: "Radio"
+});
