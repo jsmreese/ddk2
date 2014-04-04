@@ -115,20 +115,22 @@ function evalKeywordValue(value, evaledKeys) {
 	
 	// check the recursion depth
 	// filter the evaled keys array for the matchedKey
-	// throw exception if matchedKey is found more than 5 times
-	if (_.filter(evaledKeys, function (key) { return key === matchedKey; }).length > 5) {
-		throw "K.eval error: recursive keyword `" + matchedKey + "`";
+	// throw exception if matchedKey is found more than 3 times
+	if (_.filter(evaledKeys, function (key) { return key === matchedKey; }).length > 3) {
+		// execute a global replace for the matchedKey (with tildes) on the value string
+		// replace with a recursive keyword message
+		value = value.replace(new RegExp(DDK.char.tilde + matchedKey + DDK.char.tilde, "g"), "(K.eval error: recursive keyword `" + matchedKey + "`)");
+	} else {
+		// execute a global replace for the matchedKey (with tildes) on the value string
+		// replace with the evaluated keyword value
+		value = value.replace(new RegExp(DDK.char.tilde + matchedKey + DDK.char.tilde, "g"), K(matchedKey));
 	}
 	
-	_.each(potentialKeys, function (potentialKey) {
-		if (_.indexOf(evaledKeys, potentialKey) > -1) {
-			
-		}
-	});
-	
-	
-	// execute a global replace for the matchedKey (with tildes) on the value string
-	value = value.replace(new RegExp(DDK.char.tilde + matchedKey + DDK.char.tilde, "g"), K(matchedKey));
+	//_.each(potentialKeys, function (potentialKey) {
+	//	if (_.indexOf(evaledKeys, potentialKey) > -1) {
+	//		
+	//	}
+	//});
 	
 	// add the matchedKey to the evaledKeys array
 	evaledKeys.push(matchedKey);
