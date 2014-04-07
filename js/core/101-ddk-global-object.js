@@ -1525,6 +1525,9 @@
 							}, "s_" + id + "_");
 							// K("s_" + id + "_fid", response[0]);
 						}
+						if (PS.app && PS.app.forceReload) {
+								PS.app.forceReload();
+						}
 						DDK[name].reload(id);
 					} else {
 						$this.nextAll("img").remove();
