@@ -134,7 +134,7 @@ PS.Formatter.fn.defaults = {
 	precision: 0,
 	nullToZero: true,
 	zero: "-",
-	null: "-",
+	"null": "-",
 	units: "",
 	unitsPosition: "right",
 	unitsAttr: "",
@@ -170,13 +170,13 @@ PS.Formatter.fn.number = function () {
 	// (null values in the data appear here as empty strings)
 	// or if the formatValue does not coerce to a number
 	if (!isNum || (!settings.nullToZero && this.formatValue === "")) {
-		if (!_.isNumber(settings.null)) {
-			// if settings.null is not a number, return the text directly without further formatting
-			return settings.null;
+		if (!_.isNumber(settings["null"])) {
+			// if settings["null"] is not a number, return the text directly without further formatting
+			return settings["null"];
 		}
 		
-		// if settings.null is a number, format it with units and proper number formatting
-		num = settings.null;
+		// if settings["null"] is a number, format it with units and proper number formatting
+		num = settings["null"];
 	} else if (num === 0) {
 		if (!_.isNumber(settings.zero)) {
 			// if settings.zero is not a number, return the text directly without further formatting
@@ -206,13 +206,13 @@ PS.Formatter.fn.currency = function () {
 	// (null values in the data appear here as empty strings)
 	// or if the formatValue does not coerce to a number
 	if (!isNum || (!settings.nullToZero && this.formatValue === "")) {
-		if (!_.isNumber(settings.null)) {
-			// if settings.null is not a number, return the text directly without further formatting
-			return settings.null;
+		if (!_.isNumber(settings["null"])) {
+			// if settings["null"] is not a number, return the text directly without further formatting
+			return settings["null"];
 		}
 		
-		// if settings.null is a number, format it with units and proper number formatting
-		num = settings.null;
+		// if settings["null"] is a number, format it with units and proper number formatting
+		num = settings["null"];
 	} else if (num === 0) {
 		if (!_.isNumber(settings.zero)) {
 			// if settings.zero is not a number, return the text directly without further formatting
@@ -319,13 +319,13 @@ PS.Formatter.fn.percent = function () {
 	// (null values in the data appear here as empty strings)
 	// or if the formatValue does not coerce to a number
 	if (!isNum || (!settings.nullToZero && this.formatValue === "")) {
-		if (!_.isNumber(settings.null)) {
-			// if settings.null is not a number, return the text directly without further formatting
-			return settings.null;
+		if (!_.isNumber(settings["null"])) {
+			// if settings["null"] is not a number, return the text directly without further formatting
+			return settings["null"];
 		}
 		
-		// if settings.null is a number, format it with units and proper number formatting
-		num = settings.null;
+		// if settings["null"] is a number, format it with units and proper number formatting
+		num = settings["null"];
 	} else if (num === 0) {
 		if (!_.isNumber(settings.zero)) {
 			// if settings.zero is not a number, return the text directly without further formatting
