@@ -720,7 +720,8 @@ DDK.query = {
 			out += run(cqw);
 		} else {
 			out += "SELECT \n";
-			if (!outputCSV) {
+			// `SELECT *` when metrics_dynamic and metrics_static are not set
+			if (!outputCSV || !metricsCount) {
 				out += " * \n";
 			} else {
 				if ((controlName === "chart") && qd) {
