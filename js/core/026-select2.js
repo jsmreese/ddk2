@@ -982,13 +982,18 @@ the specific language governing permissions and limitations under the Apache Lic
                 });
             });
 
-            $(window).bind(resize, function() {
-                var s2 = $(selector);
-                if (s2.length == 0) {
-                    $(window).unbind(resize);
-                }
-                s2.select2("close");
-            });
+            window.setTimeout(function() {
+                // this is done inside a timeout because IE will sometimes fire a resize event while opening
+                // the dropdown and that causes this handler to immediately close it. this way the dropdown
+                // has a chance to fully open before we start listening to resize events
+                $(window).bind(resize, function() {
+                    var s2 = $(selector);
+                    if (s2.length == 0) {
+                        $(window).unbind(resize);
+                    }
+                    s2.select2("close");
+                })
+            }, 3000);
 
             this.clearDropdownAlignmentPreference();
 
