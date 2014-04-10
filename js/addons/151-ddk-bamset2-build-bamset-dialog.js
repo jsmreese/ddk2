@@ -728,6 +728,7 @@ if (Backbone.Epoxy) {
 				attr: parentPrefix + "_" + type + "_attr",
 				className: parentPrefix + "_" + type + "_class_name",
 				showSubtitle: parentPrefix + "_" + type + "_show_subtitle",
+				showFooter: parentPrefix + "_show_footer",
 				gridAttr: parentPrefix + "_" + type + "_grid_attr",
 				gridClassName: parentPrefix + "_" + type + "_grid_class_name"
 			};
@@ -848,6 +849,11 @@ if (Backbone.Epoxy) {
 
 			if (this.options.type === "body") {
 				this.renderOption(this.model.getOption("set_databind"), this.$databind, "select");
+			}
+
+			if (this.options.type === "footer") {
+				// set show_footer state
+				this.model.val(this.optionId.showFooter, !!this.children.length);
 			}
 			
 			// render child views
