@@ -278,9 +278,11 @@ PS.Formatter.fn.time = function () {
 
 PS.Formatter.fn.chart = function () {
 	var settings = this.getSettings();
-
+	
 	(function ($el, settings) {
 		_.defer(function () {
+			settings.width = settings.width || $el.width() || 80;
+			settings.height = settings.height || (parseInt($el.css("font-size"), 10) * 0.75).toFixed();
 			$el.sparkline(settings.value.toString().split(","), settings);
 		});
 	})(this.$el, settings);
