@@ -188,7 +188,7 @@ if (Backbone.Epoxy) {
 			_.each(this.options.optionId, this.renderToolbarOption, this);
 			
 			// render buttons
-			//this.renderButtons("format", this.options.optionId.className, "column_settings");
+			this.renderButtons("format", this.options.optionId.className, "bamset_format_settings");
 			
 			if (this.options.type === "bam" || this.options.type === "element") {
 				this.renderButtons("grid", this.options.optionId.gridClassName, "grid_settings");
