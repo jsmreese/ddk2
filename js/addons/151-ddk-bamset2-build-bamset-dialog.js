@@ -74,6 +74,8 @@ if (Backbone.Epoxy) {
 
 			this.optionViews.toolbar = view;
 			$target.append(view.render().$el);
+			
+			return view;
 		},
 
 		renderOption: function (model, $target, mode, className) {
@@ -137,6 +139,8 @@ if (Backbone.Epoxy) {
 			model.app = this;
 			
 			$target.append(view.render().$el);
+			
+			return view;
 		},
 		
 		resize: function () {
@@ -163,6 +167,10 @@ if (Backbone.Epoxy) {
 				this.template = PS.templateCache.configSectionToolbar;
 			}
 			
+			this.on("ps.option.change", function (changed) {
+				this.parent.trigger("ps.option.change", changed);
+			}.bind(this));
+			
 			this.optionViews = {};
 		},
 
@@ -180,7 +188,7 @@ if (Backbone.Epoxy) {
 			_.each(this.options.optionId, this.renderToolbarOption, this);
 			
 			// render buttons
-			this.renderButtons("format", this.options.optionId.className, "column_settings");
+			//this.renderButtons("format", this.options.optionId.className, "column_settings");
 			
 			if (this.options.type === "bam" || this.options.type === "element") {
 				this.renderButtons("grid", this.options.optionId.gridClassName, "grid_settings");
@@ -344,7 +352,8 @@ if (Backbone.Epoxy) {
 	PS.Views.Bamset2.Child = PS.Views.Bamset2.Base.extend({
 		tagName: "li",
 		className: function () {
-			return this.options.type + " row config-child";
+			return this.options.type + " row config-child" + 
+				((this.model.val("elem_grid_class_name") || this.model.val("elem_grid_attr")) ? " has-grid" : "");
 		},
 
 		events: {
@@ -406,6 +415,14 @@ if (Backbone.Epoxy) {
 				
 				if (changed && changed.id === "elem_format") {
 					_.defer(this.formatChange.bind(this), changed.value);
+				}
+
+				if (changed && (changed.id === "elem_grid_class_name" || changed.id === "elem_grid_attr")) {
+					if (this.model.val("elem_grid_class_name") || this.model.val("elem_grid_attr")) {
+						this.$el.addClass("has-grid");
+					} else {
+						this.$el.removeClass("has-grid");
+					}
 				}
 				
 				if (changed && changed.id === this.optionId.showFooter) {

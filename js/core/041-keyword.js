@@ -283,6 +283,12 @@
 	}
 
 	$.extend(Keyword, {
+		// .remove(key)
+		remove: function (key) {
+			daaHash.remove(key);
+			daaHashSet();
+		},
+		
 		// .flush(prefix)
 		flush: function(prefix) {
 			daaHash.removeKeys(prefix || "");
