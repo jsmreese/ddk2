@@ -288,6 +288,19 @@ PS.Formatter.fn.chart = function () {
 	})(this.$el, settings);
 };
 
+PS.Formatter.fn.bar = function () {
+	var settings = this.getSettings();
+	
+	(function ($el, settings) {
+		_.defer(function () {
+			settings.width = settings.width || $el.width() || 80;
+			settings.height = settings.height || (parseInt($el.css("font-size"), 10) * 0.75).toFixed();
+			settings.type = "bullet";
+			$el.sparkline(settings.value.toString().split(","), settings);
+		});
+	})(this.$el, settings);
+};
+
 PS.Formatter.fn.arrow = function () {
 	var num = +this.formatValue,
 		settings = this.getSettings();

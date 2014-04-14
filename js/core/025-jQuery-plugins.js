@@ -201,9 +201,9 @@
 	
 	/* $.fn.controlData jQuery plugin
 	 * Returns an object or array containing the DDK control data for a control or set of DDK control elements.
-	 * If called on a single control, will return an object.
-	 * If called on a set of controls, will return an array.
-	 * If called on an empty set of controls, will return `null`.
+	 * Will return `null` for all non-control elements, and an object for all control elements.
+	 * If called on a single element, will return `null` or an object.
+	 * If called on a set of elements, will return an array of `null` and/or objects.
 	 * by: jsmreese
 	 */
 	$.fn.controlData = function () {
@@ -238,19 +238,32 @@
 					var hasSequence = false,
 						hasTrend = false,
 						hasValue = false,
+						hasNumericValues = false,
 						defaultSuffix = "",
 						lastSequence = "",
+						firstSequence = "",
 						firstSuffix = "",
+						valueSuffixes = [],
 						suffixes = _.map(_.sortBy(_.filter(controlData.ddkMetrics, { columnMetric: prefix }), "columnMetricAttr"), function (column) {
 							var suffix = column.columnMetricAttr,
-								type = column.columnType;
+								type = column.columnType,
+								isSequence = suffix.match(/[0-9]$/),
+								isValue = (suffix === "VALUE"),
+								isTrend = (suffix === "TREND"),
+								isNumeric = column.columnIsNumeric;
 							
 							// columns associated with sequenced metric values ALWAYS end in a number (0-9)
-							hasSequence = hasSequence || suffix.match(/[0-9]$/);
-							hasTrend = hasTrend || (suffix === "TREND");
-							hasValue = hasValue || (suffix === "VALUE");
-							lastSequence = (suffix.match(/[0-9]$/) ? suffix : lastSequence);
+							hasSequence = hasSequence || isSequence;
+							hasTrend = hasTrend || isTrend;
+							hasValue = hasValue || isValue;
+							hasNumericValues = hasNumericValues || ((isSequence || isValue) && isNumeric);
+							lastSequence = (isSequence ? suffix : lastSequence);
+							firstSequence = ((firstSequence || !isSequence) ? firstSequence : suffix);
 							firstSuffix = firstSuffix || suffix;
+							
+							if (isValue || isSequence) {
+								valueSuffixes.push({ id: suffix, text: _.string.titleize(suffix), type: type });
+							}
 								
 							return { id: "%{" + suffix + "}%", text: _.string.titleize(suffix), type: type };
 						}),
@@ -261,14 +274,49 @@
 						trendSuffix.type = "trend";
 					}
 
-					// sequenced metric values can show a trend and rtrend suffix
+					// sequenced metric values show special suffixes
 					if (hasSequence) {
+						// trend suffix
 						if (!hasTrend) {
 							suffixes.push({ id: "%{TREND}%", text: "Trend", type: "trend" });
 						}
+						
+						// rtrend suffix
 						suffixes.push({ id: "%{RTREND}%", text: "Reverse Trend", type: "trend" });
+						
+						// prev/current value suffix
+						if (hasValue && lastSequence) {
+							suffixes.push({ id: "%{" + lastSequence + "}%,%{VALUE}%", text: _.string.titleize(lastSequence) + ", Value", type: "percent" });
+						}
+						
+						// initial/current value suffix
+						if (lastSequence !== firstSequence) {
+							if (hasValue && firstSequence) {
+								suffixes.push({ id: "%{" + firstSequence + "}%,%{VALUE}%", text: _.string.titleize(firstSequence) + ", Value", type: "percent" });
+							} else if (firstSequence && lastSequence) {
+								// when there is no value
+								// sequenced values must be reversed so the lastSquence is actually the initial value
+								suffixes.push({ id: "%{" + lastSequence + "}%,%{" + firstSequence + "}%", text: _.string.titleize(lastSequence) + ", " + _.string.titleize(firstSequence), type: "percent" });
+							}
+						}
 					}
-				
+					
+					if (hasValue && hasNumericValues) {
+						// current/max value suffix
+						suffixes.push({ id: "%{VALUE}%,%{VALUE MAX}%", text: "Value, Value (max)", type: "bar" });
+						
+						// current/100 value suffix
+						suffixes.push({ id: "%{VALUE}%,100", text: "Value, 100", type: "bar" });
+					}
+					
+					if (hasNumericValues) {
+						_.each(valueSuffixes, function (suffix) {
+							_.each(["MAX", "MIN", "AVG", "SUM", "COUNT"], function (aggregate) {
+								suffixes.push({ id: "%{" + suffix.id + " " + aggregate + "}%", text: suffix.text + " (" + aggregate.toLowerCase() + ")", type: suffix.type });
+							});
+						});
+					}
+
 					if (hasValue) {
 						defaultSuffix = "%{VALUE}%";
 					} else if (lastSequence) {
