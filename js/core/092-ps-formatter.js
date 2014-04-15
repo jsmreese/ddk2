@@ -281,8 +281,20 @@ PS.Formatter.fn.chart = function () {
 	
 	(function ($el, settings) {
 		_.defer(function () {
-			settings.width = settings.width || $el.width() || 80;
-			settings.height = settings.height || (parseInt($el.css("font-size"), 10) * 0.75).toFixed();
+			if ($el.parents("table").length) {
+				// use 80px as the default width for charts in a table
+				// use the element font size as the default height for charts in a table
+				settings.width = settings.width || 80;
+				settings.height = settings.height || parseInt($el.css("line-height"), 10) || parseInt($el.css("font-size"), 10) || 24;
+				
+			} else {
+				// use the element width as the default width for charts
+				// in other elements if possible
+				// use 3/4 of the element font size as the default height for charts outside of tables
+				settings.width = settings.width || $el.width() || 80;
+				settings.height = settings.height || (parseInt($el.css("font-size"), 10) * 0.75).toFixed();
+			}
+
 			$el.sparkline(settings.value.toString().split(","), settings);
 		});
 	})(this.$el, settings);
@@ -293,16 +305,70 @@ PS.Formatter.fn.bar = function () {
 	
 	(function ($el, settings) {
 		_.defer(function () {
-			settings.width = settings.width || $el.width() || 80;
-			settings.height = settings.height || (parseInt($el.css("font-size"), 10) * 0.75).toFixed();
+			if ($el.parents("table").length) {
+				// use 80px as the default width for charts in a table
+				// use the element font size as the default height for charts in a table
+				settings.width = settings.width || 80;
+				settings.height = settings.height || parseInt($el.css("line-height"), 10) || parseInt($el.css("font-size"), 10) || 24;
+				
+			} else {
+				// use the element width as the default width for charts
+				// in other elements if possible
+				// use 3/4 of the element font size as the default height for charts outside of tables
+				settings.width = settings.width || $el.width() || 80;
+				settings.height = settings.height || (parseInt($el.css("font-size"), 10) * 0.75).toFixed();
+			}
+			
 			settings.type = "bullet";
-			$el.sparkline(settings.value.toString().split(","), settings);
+
+			$el.sparkline([settings.target || "", settings.performance || ""].concat(settings.value.toString().split(",").reverse()), settings);
+		});
+	})(this.$el, settings);
+};
+
+PS.Formatter.fn.stackedbar100 = function () {
+	var settings = this.getSettings();
+	
+	(function ($el, settings) {
+		_.defer(function () {
+			function sum() {
+				var args = [].slice.call(arguments);
+				return _.reduce(_.map(args, function (value) { return +value; }), function (accumulator, value) {
+					return accumulator + value;
+				}, 0);
+			}
+			
+			var values = _.map(settings.value.toString().split(","), function (value, index, collection) {
+				return sum.apply(null, collection.slice(0, index + 1));
+			});
+			
+			if ($el.parents("table").length) {
+				// use 80px as the default width for charts in a table
+				// use the element font size as the default height for charts in a table
+				settings.width = settings.width || 80;
+				settings.height = settings.height || parseInt($el.css("line-height"), 10) || parseInt($el.css("font-size"), 10) || 24;
+				
+			} else {
+				// use the element width as the default width for charts
+				// in other elements if possible
+				// use 3/4 of the element font size as the default height for charts outside of tables
+				settings.width = settings.width || $el.width() || 80;
+				settings.height = settings.height || (parseInt($el.css("font-size"), 10) * 0.75).toFixed();
+			}
+			
+			settings.type = "bullet";
+
+			$el.sparkline([settings.target || "", settings.performance || ""].concat(values.reverse()), settings);
 		});
 	})(this.$el, settings);
 };
 
 PS.Formatter.fn.arrow = function () {
-	var num = +this.formatValue,
+	var value = ((this.formatValue && this.formatValue.indexOf(",") > -1) ? 
+			PS.Formatter.calcs.change(this.formatValue) : 
+			this.formatValue
+		),
+		num = +value,
 		settings = this.getSettings();
 	
 	if (!settings.direction) {	
@@ -324,8 +390,62 @@ PS.Formatter.fn.bulb = function () {
 	return _.template(settings.bulbTemplate, settings);
 };
 
+PS.Formatter.calcs = {};
+
+PS.Formatter.calcs.percentChange = function (input) {
+	// performs calculation of (last - first) / first
+	// given a comma-separated list of inputs
+	var values = (input ? input.split(",") : []),
+		firstValue = values[0],
+		firstNum = +firstValue,
+		lastValue = values[values.length - 1],
+		lastNum = +lastValue;
+	
+	if ((firstValue == null && lastValue == null) || isNaN(firstNum) || isNaN(lastNum)) {
+		// let format function null handling take over
+		// if both values are null
+		// or if one value is not a number
+		return "";
+	}
+	
+	if (firstNum === 0) {
+		if (lastNum === 0) {
+			// change from 0 to 0 is 0
+			return 0;
+		}
+		
+		// change from 0 is always 100%
+		return 100;
+	}
+
+	return (lastNum - firstNum) / firstNum * 100;
+};
+
+PS.Formatter.calcs.change = function (input) {
+	// performs calculation of (last - first)
+	// given a comma-separated list of inputs
+	var values = (input ? input.split(",") : []),
+		firstValue = values[0],
+		firstNum = +firstValue,
+		lastValue = values[values.length - 1],
+		lastNum = +lastValue;
+	
+	if ((firstValue == null && lastValue == null) || isNaN(firstNum) || isNaN(lastNum)) {
+		// let format function null handling take over
+		// if both values are null
+		// or if one value is not a number
+		return "";
+	}
+
+	return lastNum - firstNum;
+};
+
 PS.Formatter.fn.percent = function () {
-	var num = +this.formatValue,
+	var value = ((this.formatValue && this.formatValue.indexOf(",") > -1) ? 
+			PS.Formatter.calcs.percentChange(this.formatValue) : 
+			this.formatValue
+		),
+		num = +value,
 		isNum = !(num == null || isNaN(num)),
 		settings = this.getSettings();
 		
@@ -333,7 +453,7 @@ PS.Formatter.fn.percent = function () {
 	// if nullToZero is false and formatValue is emptyString
 	// (null values in the data appear here as empty strings)
 	// or if the formatValue does not coerce to a number
-	if (!isNum || (!settings.nullToZero && this.formatValue === "")) {
+	if (!isNum || (!settings.nullToZero && value === "")) {
 		if (!_.isNumber(settings["null"])) {
 			// if settings["null"] is not a number, return the text directly without further formatting
 			return settings["null"];

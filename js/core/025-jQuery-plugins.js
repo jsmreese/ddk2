@@ -265,7 +265,7 @@
 								valueSuffixes.push({ id: suffix, text: _.string.titleize(suffix), type: type });
 							}
 								
-							return { id: "%{" + suffix + "}%", text: _.string.titleize(suffix), type: type };
+							return { id: "%{" + suffix + "}%", text: _.string.titleize(suffix), type: type, isAggregate: false };
 						}),
 						trendSuffix = _.find(suffixes, { text: "Trend" });
 					
@@ -273,48 +273,41 @@
 					if (trendSuffix) {
 						trendSuffix.type = "trend";
 					}
-
-					// sequenced metric values show special suffixes
-					if (hasSequence) {
-						// trend suffix
-						if (!hasTrend) {
-							suffixes.push({ id: "%{TREND}%", text: "Trend", type: "trend" });
-						}
-						
-						// rtrend suffix
-						suffixes.push({ id: "%{RTREND}%", text: "Reverse Trend", type: "trend" });
-						
-						// prev/current value suffix
-						if (hasValue && lastSequence) {
-							suffixes.push({ id: "%{" + lastSequence + "}%,%{VALUE}%", text: _.string.titleize(lastSequence) + ", Value", type: "percent" });
-						}
-						
-						// initial/current value suffix
-						if (lastSequence !== firstSequence) {
-							if (hasValue && firstSequence) {
-								suffixes.push({ id: "%{" + firstSequence + "}%,%{VALUE}%", text: _.string.titleize(firstSequence) + ", Value", type: "percent" });
-							} else if (firstSequence && lastSequence) {
-								// when there is no value
-								// sequenced values must be reversed so the lastSquence is actually the initial value
-								suffixes.push({ id: "%{" + lastSequence + "}%,%{" + firstSequence + "}%", text: _.string.titleize(lastSequence) + ", " + _.string.titleize(firstSequence), type: "percent" });
-							}
-						}
-					}
-					
-					if (hasValue && hasNumericValues) {
-						// current/max value suffix
-						suffixes.push({ id: "%{VALUE}%,%{VALUE MAX}%", text: "Value, Value (max)", type: "bar" });
-						
-						// current/100 value suffix
-						suffixes.push({ id: "%{VALUE}%,100", text: "Value, 100", type: "bar" });
-					}
 					
 					if (hasNumericValues) {
 						_.each(valueSuffixes, function (suffix) {
 							_.each(["MAX", "MIN", "AVG", "SUM", "COUNT"], function (aggregate) {
-								suffixes.push({ id: "%{" + suffix.id + " " + aggregate + "}%", text: suffix.text + " (" + aggregate.toLowerCase() + ")", type: suffix.type });
+								suffixes.push({ id: "%{" + suffix.id + " " + aggregate + "}%", text: "(" + aggregate.toLowerCase() + ") " +suffix.text, type: suffix.type, isAggregate: true });
 							});
 						});
+						
+						if (hasValue) {
+							// current/max value suffix
+							suffixes.push({ id: "%{VALUE}%,%{VALUE MAX}%", text: "Value, (max) Value", type: "bar", isAggregate: false });
+							
+							// current/100 value suffix
+							suffixes.push({ id: "%{VALUE}%,100", text: "Value, 100", type: "bar", isAggregate: false });
+							
+						}
+						
+						if (hasSequence) {
+							// trend suffix
+							if (!hasTrend) {
+								suffixes.push({ id: "%{TREND}%", text: "Trend", type: "trend", isAggregate: false });
+							}
+							
+							// rtrend suffix
+							suffixes.push({ id: "%{RTREND}%", text: "Reverse Trend", type: "trend", isAggregate: false });
+							
+							// prev value / currnet value comparison suffixes
+							if (hasValue) {
+								_.each(valueSuffixes, function (suffix) {
+									if (suffix.id !== "VALUE") {
+										suffixes.push({ id: "%{" + suffix.id + "}%,%{VALUE}%", text: suffix.text + ", Value", type: "percent", isAggregate: false });
+									}
+								});							
+							}
+						}
 					}
 
 					if (hasValue) {
@@ -325,7 +318,7 @@
 						defaultSuffix = "%{" + firstSuffix + "}%";
 					}
 					
-					suffixes = _.sortBy(suffixes, "text");
+					suffixes = _.sortBy(suffixes, ["isAggregate", "text"]);
 				
 					return {
 						id: prefix,
