@@ -351,8 +351,8 @@ PS.Formatter.fn.bar = function () {
 PS.Formatter.fn.stackedbar = function () {
 	function sum() {
 		var args = [].slice.call(arguments);
-		return _.reduce(_.map(args, function (value) { return +value; }), function (accumulator, value) {
-			return accumulator + value;
+		return _.reduce(args, function (accumulator, value) {
+			return accumulator + (+value);
 		}, 0);
 	}
 
@@ -416,8 +416,8 @@ PS.Formatter.fn.stackedbar100 = function () {
 		_.defer(function () {
 			function sum() {
 				var args = [].slice.call(arguments);
-				return _.reduce(_.map(args, function (value) { return +value; }), function (accumulator, value) {
-					return accumulator + value;
+				return _.reduce(args, function (accumulator, value) {
+					return accumulator + (+value);
 				}, 0);
 			}
 			
