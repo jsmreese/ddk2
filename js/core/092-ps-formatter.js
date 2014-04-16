@@ -105,6 +105,37 @@ PS.Formatter.registerStyle = function(settings) {
 	PS.Formatter.fn[format.id][settings.id] = settings.defaults || {};		
 };
 
+PS.Formatter.expandColors = function (color, steps) {
+	var settings = PS.Formatter.expandColors[color],
+		increment,
+		l;
+		
+	if (steps === 1) {
+		// for a single step, output the midpoint
+		return [hsl2rgb(settings.h, settings.s, (settings.l.min + settings.l.max) * 0.5)];
+	}
+	
+	if (steps === 2) {
+		// for two steps, output a truncated range
+		return [
+			hsl2rgb(settings.h, settings.s, (settings.l.min + settings.l.max) * 0.33333),
+			hsl2rgb(settings.h, settings.s, (settings.l.min + settings.l.max) * 0.66667)
+		];
+	}
+	
+		increment = (settings.l.max - settings.l.min)
+		l = _.map(_.range(steps), function (value) {
+			return 
+		});
+});
+
+PS.Formatter.expandColors.red = { h: 0, s: 1, l: { min: 0.35, max: 0.9 } };
+PS.Formatter.expandColors.yellow = { h: 36, s: 1, l: { min: 0.5, max: 0.9 } };
+PS.Formatter.expandColors.green = { h: 100, s: 1, l: { min: 0.35, max: 0.9 } };
+PS.Formatter.expandColors.blue = { h: 212, s: 1, l: { min: 0.35, max: 0.9 } };
+PS.Formatter.expandColors.gray = { h: 0, s: 0, l: { min: 0.35, max: 0.9 } };
+PS.Formatter.expandColors.neutral = PS.Formatter.expandColors.gray;
+
 PS.Formatter.fn.getSettings = function () {
 	return _.extend(
 		// start with an empty object
