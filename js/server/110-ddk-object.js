@@ -56,7 +56,7 @@ DDK.COLUMN_METRIC_TRIGGERS = [
 
 // DDK.columns()
 // returns: array of column objects containing details about the columns in the current dataset
-DDK.columns = function() {
+DDK.columns = function(data) {
 	return _.reject(DDK.columns._addProps(_.map(JSON.parse(columnsToJSON()), function(amengineColumnObject) {
 		var ddkColumnObject = {};
 		
@@ -76,7 +76,7 @@ DDK.columns = function() {
 		
 		return ddkColumnObject;
 	 // slice ignores the recordCount column
-	}).slice(0, -1)), function (value) {
+	}).slice(0, -1), data), function (value) {
 		// reject the RDQ_TIMESTAMP column
 		// note that for DDK.data.toArray to work properly
 		// this assumes that the RDQ_TIMESTAMP column
@@ -98,7 +98,7 @@ _.each(DDK.COLUMN_OBJECT_PROPERTIES, function(value) {
 	};
 });
 
-DDK.columns._addProps = function(ddkColumns) {
+DDK.columns._addProps = function(ddkColumns, data) {
 	var columnNames = _.map(_.pluck(ddkColumns, "columnName"), function(value, index) { return value.toUpperCase(); }),
 		columnNameCount = columnNames.length,
 		columnName,
@@ -153,6 +153,15 @@ DDK.columns._addProps = function(ddkColumns) {
 			ddkColumns[i].columnMetric = columnName;
 			ddkColumns[i].columnMetricAttr = "VALUE";
 		}
+		
+		// check for numeric data
+		if (ddkColumns[i].columnType === "float" || ddkColumns[i].columnType === "int") {
+			ddkColumns[i].columnIsNumeric = true;
+		} else if (ddkColumns[i].columnType === "string" && data) {
+			ddkColumns[i].columnIsNumeric = _.hasNumericData(data, ddkColumns[i].columnIndex);
+		} else {
+			ddkColumns[i].columnIsNumeric = false;
+		}
 	}
 	
 	return ddkColumns;
@@ -193,8 +202,7 @@ DDK.data.toArray = function(options) {
 		coerceMethod,
 		escapeMode = options && options.escapeMode || "none",
 		escapeMethod,
-		initialCharacter,
-		columnPrefixRegExp = RegExp("^" + columnPrefix),
+		columnPrefixRegExp = (columnPrefix ? RegExp("^" + columnPrefix) : null),
 		tempValue;
 	
 	if (escapeMode === "none") { escapeMode = false; }
@@ -206,18 +214,27 @@ DDK.data.toArray = function(options) {
 	}
 	
 	for (i = 0; i < recordCount; i += 1) {
+		// create a new object to hold each record
 		record = (useRecordObjects ? {} : []);
+		
 		for (j = 0; j < columnCount; j += 1) {
 			columnName = columns[j].name;
-			// strip prefixes
-			shortColumnName = (columnPrefix ? columnName.replace(columnPrefixRegExp, "") : columnName);
-			// camelize
-			shortColumnName = (shouldCamelizeKeys ? _.string.camelize(shortColumnName) : shortColumnName);
-			recordIndex = (useRecordObjects ? shortColumnName : j);
+			
+			if (useRecordObjects) {
+				// strip prefixes
+				shortColumnName = (columnPrefix ? columnName.replace(columnPrefixRegExp, "") : columnName);
+				// camelize
+				shortColumnName = (shouldCamelizeKeys ? _.string.camelize(shortColumnName) : shortColumnName);
+				
+				recordIndex = shortColumnName;
+			} else {
+				recordIndex = j;
+			}
+			
 			data = getData(i, columnName);
+			
 			if (data.length && useCoercedTypes) {
-				initialCharacter = data.charAt(0);
-				coerceMethod = DDK.data.coerceTriggers[initialCharacter];
+				coerceMethod = DDK.data.coerceTriggers[data.charAt(0)];
 				if (typeof coerceMethod === "function") {
 					data = coerceMethod(data);
 				}
