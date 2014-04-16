@@ -301,10 +301,93 @@ PS.Formatter.fn.chart = function () {
 };
 
 PS.Formatter.fn.bar = function () {
-	var settings = this.getSettings();
+	var settings = this.getSettings(),
+		elemIndex,
+		$parents = this.$el.parents(),
+		$table = $parents.filter("table"),
+		$cell = $parents.filter("th, td"),
+		$cells,
+		hasTable = !!$table.length;
+	
+	// calculate and cache max value if it is not provided or already calculated
+	if (!settings.max) {
+		if (hasTable) {
+			elemIndex = $cell.index();
+			$cells = $table.find("tbody").find("tr").find("th:eq(" + elemIndex + "), td:eq(" + elemIndex + ")");
+			
+			settings.max = Math.max.apply(null, $cells.map(function (index, elem) {
+				return $(elem).find("[data-format=\"bar\"]").data("formatValue");
+			}).get());
+			
+			$cells.data("formatMax", settings.max);
+		} else {
+			DDK.error("Must set data-format-max when using bar format function outside a table or scorecard.");
+		}
+	}
 	
 	(function ($el, settings) {
 		_.defer(function () {
+			if (hasTable) {
+				// use 80px as the default width for charts in a table
+				// use the element font size as the default height for charts in a table
+				settings.width = settings.width || 80;
+				settings.height = settings.height || parseInt($el.css("line-height"), 10) || parseInt($el.css("font-size"), 10) || 24;
+				
+			} else {
+				// use the element width as the default width for charts
+				// in other elements if possible
+				// use 3/4 of the element font size as the default height for charts outside of tables
+				settings.width = settings.width || $el.width() || 80;
+				settings.height = settings.height || (parseInt($el.css("font-size"), 10) * 0.75).toFixed();
+			}
+			
+			settings.type = "bullet";
+
+			$el.sparkline([settings.target || "", settings.performance || "", settings.max, settings.value], settings);
+		});
+	})(this.$el, settings);
+};
+
+PS.Formatter.fn.stackedbar = function () {
+	function sum() {
+		var args = [].slice.call(arguments);
+		return _.reduce(_.map(args, function (value) { return +value; }), function (accumulator, value) {
+			return accumulator + value;
+		}, 0);
+	}
+
+	var settings = this.getSettings(),
+		elemIndex,
+		$parents = this.$el.parents(),
+		$table = $parents.filter("table"),
+		$cell = $parents.filter("th, td"),
+		$cells,
+		hasTable = !!$table.length;
+	
+	// calculate and cache max value if it is not provided or already calculated
+	if (!settings.max) {
+		if (hasTable) {
+			elemIndex = $cell.index();
+			$cells = $table.find("tbody").find("tr").find("th:eq(" + elemIndex + "), td:eq(" + elemIndex + ")");
+			
+			settings.max = Math.max.apply(null, $cells.map(function (index, elem) {
+				var formatValue = $(elem).find("[data-format=\"stackedbar\"]").data("formatValue");
+				return sum.apply(null, formatValue ? formatValue.split(",") : []);
+			}).get());
+			
+			$cells.data("formatMax", settings.max);
+		} else {
+			DDK.error("Must set data-format-max when using bar format function outside a table or scorecard.");
+		}
+	}
+	
+	(function ($el, settings) {
+		_.defer(function () {
+
+			var values = _.map(settings.value.toString().split(","), function (value, index, collection) {
+				return sum.apply(null, collection.slice(0, index + 1));
+			});
+			
 			if ($el.parents("table").length) {
 				// use 80px as the default width for charts in a table
 				// use the element font size as the default height for charts in a table
@@ -321,7 +404,7 @@ PS.Formatter.fn.bar = function () {
 			
 			settings.type = "bullet";
 
-			$el.sparkline([settings.target || "", settings.performance || ""].concat(settings.value.toString().split(",").reverse()), settings);
+			$el.sparkline([settings.target || "", settings.performance || "", settings.max].concat(values.reverse()), settings);
 		});
 	})(this.$el, settings);
 };

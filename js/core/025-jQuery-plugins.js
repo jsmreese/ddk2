@@ -281,15 +281,6 @@
 							});
 						});
 						
-						if (hasValue) {
-							// current/max value suffix
-							suffixes.push({ id: "%{VALUE}%,%{VALUE MAX}%", text: "Value, (max) Value", type: "bar", isAggregate: false });
-							
-							// current/100 value suffix
-							suffixes.push({ id: "%{VALUE}%,100", text: "Value, 100", type: "bar", isAggregate: false });
-							
-						}
-						
 						if (hasSequence) {
 							// trend suffix
 							if (!hasTrend) {
