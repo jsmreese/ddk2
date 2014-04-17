@@ -105,36 +105,134 @@ PS.Formatter.registerStyle = function(settings) {
 	PS.Formatter.fn[format.id][settings.id] = settings.defaults || {};		
 };
 
-PS.Formatter.expandColors = function (color, steps) {
-	var settings = PS.Formatter.expandColors[color],
-		increment,
-		l;
-		
-	if (steps === 1) {
-		// for a single step, output the midpoint
-		return [hsl2rgb(settings.h, settings.s, (settings.l.min + settings.l.max) * 0.5)];
+PS.Formatter.colorRange = function (color, steps) {
+	/* Various color utility functions */
+	function pack(rgb) {
+		var r = Math.round(rgb[0] * 255);
+		var g = Math.round(rgb[1] * 255);
+		var b = Math.round(rgb[2] * 255);
+		return '#' + (r < 16 ? '0' : '') + r.toString(16) +
+		   (g < 16 ? '0' : '') + g.toString(16) +
+		   (b < 16 ? '0' : '') + b.toString(16);
 	}
-	
-	if (steps === 2) {
-		// for two steps, output a truncated range
+
+	function unpack(color) {
+		if (color.length == 7) {
+			return [parseInt('0x' + color.substring(1, 3)) / 255,
+				parseInt('0x' + color.substring(3, 5)) / 255,
+				parseInt('0x' + color.substring(5, 7)) / 255];
+		}
+		else if (color.length == 4) {
+			return [parseInt('0x' + color.substring(1, 2)) / 15,
+				parseInt('0x' + color.substring(2, 3)) / 15,
+				parseInt('0x' + color.substring(3, 4)) / 15];
+		}
+	}
+
+	function hsl2rgb(hsl) {
+		var m1, m2, r, g, b;
+		var h = hsl[0], s = hsl[1], l = hsl[2];
+		m2 = (l <= 0.5) ? l * (s + 1) : l + s - l*s;
+		m1 = l * 2 - m2;
 		return [
-			hsl2rgb(settings.h, settings.s, (settings.l.min + settings.l.max) * 0.33333),
-			hsl2rgb(settings.h, settings.s, (settings.l.min + settings.l.max) * 0.66667)
+			hue2rgb(m1, m2, h+0.33333),
+			hue2rgb(m1, m2, h),
+			hue2rgb(m1, m2, h-0.33333)
 		];
 	}
-	
-		increment = (settings.l.max - settings.l.min)
-		l = _.map(_.range(steps), function (value) {
-			return 
-		});
-});
 
-PS.Formatter.expandColors.red = { h: 0, s: 1, l: { min: 0.35, max: 0.9 } };
-PS.Formatter.expandColors.yellow = { h: 36, s: 1, l: { min: 0.5, max: 0.9 } };
-PS.Formatter.expandColors.green = { h: 100, s: 1, l: { min: 0.35, max: 0.9 } };
-PS.Formatter.expandColors.blue = { h: 212, s: 1, l: { min: 0.35, max: 0.9 } };
-PS.Formatter.expandColors.gray = { h: 0, s: 0, l: { min: 0.35, max: 0.9 } };
-PS.Formatter.expandColors.neutral = PS.Formatter.expandColors.gray;
+	function hue2rgb(m1, m2, h) {
+		h = (h < 0) ? h + 1 : ((h > 1) ? h - 1 : h);
+		if (h * 6 < 1) return m1 + (m2 - m1) * h * 6;
+		if (h * 2 < 1) return m2;
+		if (h * 3 < 2) return m1 + (m2 - m1) * (0.66666 - h) * 6;
+		return m1;
+	}
+
+	function rgb2hsl(rgb) {
+		var min, max, delta, h, s, l;
+		var r = rgb[0], g = rgb[1], b = rgb[2];
+		min = Math.min(r, Math.min(g, b));
+		max = Math.max(r, Math.max(g, b));
+		delta = max - min;
+		l = (min + max) / 2;
+		s = 0;
+		if (l > 0 && l < 1) {
+			s = delta / (l < 0.5 ? (2 * l) : (2 - 2 * l));
+		}
+		h = 0;
+		if (delta > 0) {
+			if (max == r && max != g) h += (g - b) / delta;
+			if (max == g && max != b) h += (2 + (b - r) / delta);
+			if (max == b && max != r) h += (4 + (r - g) / delta);
+			h /= 6;
+		}
+		return [h, s, l];
+	}
+	
+	function hsl2hex(hsl) {
+		return pack(hsl2rgb(hsl));
+	}
+  
+	var settings = PS.Formatter.colorRange[color],
+		range = settings.l.max - settings.l.min,
+		increment,
+		l;
+	
+	switch (steps) {
+		case 1:
+			// for a single step, output the 2/3 point
+			return [hsl2hex([settings.h, settings.s, settings.l.min + range * 0.66667])];
+
+		case 2:
+			// for two steps, output the 1/3 and 2/3 points
+			return [
+				hsl2hex([settings.h, settings.s, settings.l.min + range * 0.33333]),
+				hsl2hex([settings.h, settings.s, settings.l.min + range * 0.66667])
+			];
+		
+		case 3:
+			// for three steps, output the 1/4, 1/2, and 3/4 points
+			return [
+				hsl2hex([settings.h, settings.s, settings.l.min + range * 0.25]),
+				hsl2hex([settings.h, settings.s, settings.l.min + range * 0.5]),
+				hsl2hex([settings.h, settings.s, settings.l.min + range * 0.75])
+			];
+
+		case 4:
+			// four steps
+			return [
+				hsl2hex([settings.h, settings.s, settings.l.min + range * 0.1]),
+				hsl2hex([settings.h, settings.s, settings.l.min + range * 0.35]),
+				hsl2hex([settings.h, settings.s, settings.l.min + range * 0.6]),
+				hsl2hex([settings.h, settings.s, settings.l.min + range * 0.85])
+			];
+
+		case 5:
+			// five steps
+			return [
+				hsl2hex([settings.h, settings.s, settings.l.min]),
+				hsl2hex([settings.h, settings.s, settings.l.min + range * 0.25]),
+				hsl2hex([settings.h, settings.s, settings.l.min + range * 0.7]),
+				hsl2hex([settings.h, settings.s, settings.l.min + range * 0.75]),
+				hsl2hex([settings.h, settings.s, settings.l.min + range])
+			];
+		
+		default:
+			// more than 5 steps
+			increment = range / (steps - 1);
+			return _.map(_.range(steps), function (value) {
+				return hsl2hex([settings.h, settings.s, settings.l.min + increment * steps]);
+			});
+	}
+};
+
+PS.Formatter.colorRange.red = { h: 0, s: 1, l: { min: 0.35, max: 0.9 } };
+PS.Formatter.colorRange.yellow = { h: 36 / 360, s: 1, l: { min: 0.5, max: 0.9 } };
+PS.Formatter.colorRange.green = { h: 100 / 360, s: 1, l: { min: 0.35, max: 0.9 } };
+PS.Formatter.colorRange.blue = { h: 212 / 360, s: 1, l: { min: 0.35, max: 0.9 } };
+PS.Formatter.colorRange.gray = { h: 0, s: 0, l: { min: 0.35, max: 0.9 } };
+PS.Formatter.colorRange.neutral = PS.Formatter.colorRange.gray;
 
 PS.Formatter.fn.getSettings = function () {
 	return _.extend(
@@ -478,7 +576,7 @@ PS.Formatter.fn.stackedbar100 = function () {
 };
 
 PS.Formatter.fn.arrow = function () {
-	var value = ((this.formatValue && this.formatValue.indexOf(",") > -1) ? 
+	var value = ((this.formatValue && this.formatValue.toString().indexOf(",") > -1) ? 
 			PS.Formatter.calcs.change(this.formatValue) : 
 			this.formatValue
 		),
@@ -555,7 +653,7 @@ PS.Formatter.calcs.change = function (input) {
 };
 
 PS.Formatter.fn.percent = function () {
-	var value = ((this.formatValue && this.formatValue.indexOf(",") > -1) ? 
+	var value = ((this.formatValue && this.formatValue.toString().indexOf(",") > -1) ? 
 			PS.Formatter.calcs.percentChange(this.formatValue) : 
 			this.formatValue
 		),
