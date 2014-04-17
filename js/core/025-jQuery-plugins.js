@@ -277,7 +277,7 @@
 					if (hasNumericValues) {
 						_.each(valueSuffixes, function (suffix) {
 							_.each(["MAX", "MIN", "AVG", "SUM", "COUNT"], function (aggregate) {
-								suffixes.push({ id: "%{" + suffix.id + " " + aggregate + "}%", text: "(" + aggregate.toLowerCase() + ") " +suffix.text, type: suffix.type, isAggregate: true });
+								suffixes.push({ id: "%{" + suffix.id + " " + aggregate + "}%", text: suffix.text + " - " + aggregate.toLowerCase(), type: suffix.type, isAggregate: true });
 							});
 						});
 						

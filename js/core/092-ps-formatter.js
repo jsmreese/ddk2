@@ -208,21 +208,11 @@ PS.Formatter.colorRange = function (color, steps) {
 				hsl2hex([settings.h, settings.s, settings.l.min + range * 0.85])
 			];
 
-		case 5:
-			// five steps
-			return [
-				hsl2hex([settings.h, settings.s, settings.l.min]),
-				hsl2hex([settings.h, settings.s, settings.l.min + range * 0.25]),
-				hsl2hex([settings.h, settings.s, settings.l.min + range * 0.7]),
-				hsl2hex([settings.h, settings.s, settings.l.min + range * 0.75]),
-				hsl2hex([settings.h, settings.s, settings.l.min + range])
-			];
-		
 		default:
-			// more than 5 steps
+			// more than 4 steps
 			increment = range / (steps - 1);
 			return _.map(_.range(steps), function (value) {
-				return hsl2hex([settings.h, settings.s, settings.l.min + increment * steps]);
+				return hsl2hex([settings.h, settings.s, settings.l.min + increment * value]);
 			});
 	}
 };
@@ -277,7 +267,8 @@ PS.Formatter.fn.defaults = {
 	bulbTemplate: "<span class=\"format-bulb <%= bulbClassName %>\" <%= bulbAttr %>></span>",
 	orientation: 1,
 	direction: 0,
-	method: "format"
+	method: "format",
+	valueColor: "neutral"
 };
 
 // default formatter functions
@@ -406,11 +397,20 @@ PS.Formatter.fn.time = function () {
 };
 
 PS.Formatter.fn.chart = function () {
-	var settings = this.getSettings();
+	var settings = this.getSettings(),
+		elemIndex,
+		$parents = this.$el.parents(),
+		$table = $parents.filter("table"),
+		$cell = $parents.filter("th, td"),
+		$cells,
+		hasTable = !!$table.length;
 	
 	(function ($el, settings) {
 		_.defer(function () {
-			if ($el.parents("table").length) {
+			var padding = 0,
+				$canvas;
+
+			if (hasTable) {
 				// use 80px as the default width for charts in a table
 				// use the element font size as the default height for charts in a table
 				settings.width = settings.width || 80;
@@ -425,6 +425,15 @@ PS.Formatter.fn.chart = function () {
 			}
 
 			$el.sparkline(settings.value.toString().split(","), settings);
+			
+			// set the table cell width
+			if (hasTable) {
+				$canvas = $el.find("canvas");
+				padding += parseInt($canvas.css("padding-left"), 10);
+				padding += parseInt($canvas.css("padding-right"), 10);
+				
+				$el.closest("td, th").width(settings.width + padding);
+			}
 		});
 	})(this.$el, settings);
 };
@@ -454,25 +463,54 @@ PS.Formatter.fn.bar = function () {
 		}
 	}
 	
+	// create settings.rangeColors if it does not exist
+	if (!settings.rangeColors) {
+		// expand valueColor
+		if (settings.valueColor.toString().indexOf(",") > -1) {
+			// valueColor can be a comma-separated list of color values, e.g. #aaa,#ccc,#eee
+			settings.valueColor = settings.valueColor.toString().split(",");
+		} else if (PS.Formatter.colorRange[settings.valueColor]) {
+			// valueColor can be a color keyword set as a property of PS.Formmater.colorRange
+			// color keyword will be expanded into a gradient range for as many steps as there are values
+			settings.valueColor = PS.Formatter.colorRange(settings.valueColor, settings.value.toString().split(",").length);
+		} else {
+			settings.valueColor = [settings.valueColor];
+		}
+		
+		settings.rangeColors = [settings.fillColor].concat(settings.valueColor.reverse());
+	}
+	
 	(function ($el, settings) {
 		_.defer(function () {
+			var padding = 0,
+				$canvas;
+			
 			if (hasTable) {
-				// use 80px as the default width for charts in a table
+				// use 160px as the default width for bars in a table
 				// use the element font size as the default height for charts in a table
-				settings.width = settings.width || 80;
+				settings.width = settings.width || 160;
 				settings.height = settings.height || parseInt($el.css("line-height"), 10) || parseInt($el.css("font-size"), 10) || 24;
 				
 			} else {
 				// use the element width as the default width for charts
 				// in other elements if possible
 				// use 3/4 of the element font size as the default height for charts outside of tables
-				settings.width = settings.width || $el.width() || 80;
+				settings.width = settings.width || $el.width() || 160;
 				settings.height = settings.height || (parseInt($el.css("font-size"), 10) * 0.75).toFixed();
 			}
 			
 			settings.type = "bullet";
 
 			$el.sparkline([settings.target || "", settings.performance || "", settings.max, settings.value], settings);
+			
+			// set the table cell width
+			if (hasTable) {
+				$canvas = $el.find("canvas");
+				padding += parseInt($canvas.css("padding-left"), 10);
+				padding += parseInt($canvas.css("padding-right"), 10);
+				
+				$el.closest("td, th").width(settings.width + padding);
+			}
 		});
 	})(this.$el, settings);
 };
@@ -510,36 +548,87 @@ PS.Formatter.fn.stackedbar = function () {
 		}
 	}
 	
+	// create settings.rangeColors if it does not exist
+	if (!settings.rangeColors) {
+		// expand valueColor
+		if (settings.valueColor.toString().indexOf(",") > -1) {
+			// valueColor can be a comma-separated list of color values, e.g. #aaa,#ccc,#eee
+			settings.valueColor = settings.valueColor.toString().split(",");
+		} else if (PS.Formatter.colorRange[settings.valueColor]) {
+			// valueColor can be a color keyword set as a property of PS.Formmater.colorRange
+			// color keyword will be expanded into a gradient range for as many steps as there are values
+			settings.valueColor = PS.Formatter.colorRange(settings.valueColor, settings.value.toString().split(",").length);
+		} else {
+			settings.valueColor = [settings.valueColor];
+		}
+		
+		settings.rangeColors = [settings.fillColor].concat(settings.valueColor.reverse());
+	}
+	
 	(function ($el, settings) {
 		_.defer(function () {
-
+			var padding = 0,
+				$canvas;
+				
 			var values = _.map(settings.value.toString().split(","), function (value, index, collection) {
 				return sum.apply(null, collection.slice(0, index + 1));
 			});
 			
-			if ($el.parents("table").length) {
-				// use 80px as the default width for charts in a table
+			if (hasTable) {
+				// use 160px as the default width for charts in a table
 				// use the element font size as the default height for charts in a table
-				settings.width = settings.width || 80;
+				settings.width = settings.width || 160;
 				settings.height = settings.height || parseInt($el.css("line-height"), 10) || parseInt($el.css("font-size"), 10) || 24;
 				
 			} else {
 				// use the element width as the default width for charts
 				// in other elements if possible
 				// use 3/4 of the element font size as the default height for charts outside of tables
-				settings.width = settings.width || $el.width() || 80;
+				settings.width = settings.width || $el.width() || 160;
 				settings.height = settings.height || (parseInt($el.css("font-size"), 10) * 0.75).toFixed();
 			}
 			
 			settings.type = "bullet";
 
 			$el.sparkline([settings.target || "", settings.performance || "", settings.max].concat(values.reverse()), settings);
+			
+			// set the table cell width
+			if (hasTable) {
+				$canvas = $el.find("canvas");
+				padding += parseInt($canvas.css("padding-left"), 10);
+				padding += parseInt($canvas.css("padding-right"), 10);
+				
+				$el.closest("td, th").width(settings.width + padding);
+			}
 		});
 	})(this.$el, settings);
 };
 
 PS.Formatter.fn.stackedbar100 = function () {
-	var settings = this.getSettings();
+	var settings = this.getSettings(),
+		elemIndex,
+		$parents = this.$el.parents(),
+		$table = $parents.filter("table"),
+		$cell = $parents.filter("th, td"),
+		$cells,
+		hasTable = !!$table.length;
+
+	// create settings.rangeColors if it does not exist
+	if (!settings.rangeColors) {
+		// expand valueColor
+		if (settings.valueColor.toString().indexOf(",") > -1) {
+			// valueColor can be a comma-separated list of color values, e.g. #aaa,#ccc,#eee
+			settings.valueColor = settings.valueColor.toString().split(",");
+		} else if (PS.Formatter.colorRange[settings.valueColor]) {
+			// valueColor can be a color keyword set as a property of PS.Formmater.colorRange
+			// color keyword will be expanded into a gradient range for as many steps as there are values
+			settings.valueColor = PS.Formatter.colorRange(settings.valueColor, settings.value.toString().split(",").length);
+		} else {
+			settings.valueColor = [settings.valueColor];
+		}
+		
+		settings.rangeColors = [settings.fillColor].concat(settings.valueColor.reverse());
+	}
 	
 	(function ($el, settings) {
 		_.defer(function () {
@@ -549,28 +638,40 @@ PS.Formatter.fn.stackedbar100 = function () {
 					return accumulator + (+value);
 				}, 0);
 			}
-			
+
+			var padding = 0,
+				$canvas;
+				
 			var values = _.map(settings.value.toString().split(","), function (value, index, collection) {
 				return sum.apply(null, collection.slice(0, index + 1));
 			});
 			
-			if ($el.parents("table").length) {
-				// use 80px as the default width for charts in a table
+			if (hasTable) {
+				// use 160px as the default width for charts in a table
 				// use the element font size as the default height for charts in a table
-				settings.width = settings.width || 80;
+				settings.width = settings.width || 160;
 				settings.height = settings.height || parseInt($el.css("line-height"), 10) || parseInt($el.css("font-size"), 10) || 24;
 				
 			} else {
 				// use the element width as the default width for charts
 				// in other elements if possible
 				// use 3/4 of the element font size as the default height for charts outside of tables
-				settings.width = settings.width || $el.width() || 80;
+				settings.width = settings.width || $el.width() || 160;
 				settings.height = settings.height || (parseInt($el.css("font-size"), 10) * 0.75).toFixed();
 			}
 			
 			settings.type = "bullet";
 
 			$el.sparkline([settings.target || "", settings.performance || ""].concat(values.reverse()), settings);
+			
+			// set the table cell width
+			if (hasTable) {
+				$canvas = $el.find("canvas");
+				padding += parseInt($canvas.css("padding-left"), 10);
+				padding += parseInt($canvas.css("padding-right"), 10);
+				
+				$el.closest("td, th").width(settings.width + padding);
+			}
 		});
 	})(this.$el, settings);
 };
