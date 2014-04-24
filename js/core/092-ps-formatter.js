@@ -408,14 +408,22 @@ PS.Formatter.fn.chart = function () {
 	(function ($el, settings) {
 		_.defer(function () {
 			var padding = 0,
-				$canvas;
+				$canvas,
+				lineHeight;
 
 			if (hasTable) {
 				// use 80px as the default width for charts in a table
 				// use the element font size as the default height for charts in a table
 				settings.width = settings.width || 80;
-				settings.height = settings.height || parseInt($el.css("line-height"), 10) || parseInt($el.css("font-size"), 10) || 24;
-				
+				if (!settings.height) {
+					// check to see if line-height is reported as a numeric factor of font-size
+					lineHeight = +$el.css("line-height");
+					if (lineHeight) {
+						settings.height = lineHeight * parseInt($el.css("font-size"), 10);
+					} else {
+						settings.height = parseInt($el.css("line-height"), 10) || parseInt($el.css("font-size"), 10) || 24;
+					}
+				}				
 			} else {
 				// use the element width as the default width for charts
 				// in other elements if possible
@@ -483,14 +491,22 @@ PS.Formatter.fn.bar = function () {
 	(function ($el, settings) {
 		_.defer(function () {
 			var padding = 0,
-				$canvas;
+				$canvas,
+				lineHeight;
 			
 			if (hasTable) {
 				// use 160px as the default width for bars in a table
 				// use the element font size as the default height for charts in a table
 				settings.width = settings.width || 160;
-				settings.height = settings.height || parseInt($el.css("line-height"), 10) || parseInt($el.css("font-size"), 10) || 24;
-				
+				if (!settings.height) {
+					// check to see if line-height is reported as a numeric factor of font-size
+					lineHeight = +$el.css("line-height");
+					if (lineHeight) {
+						settings.height = lineHeight * parseInt($el.css("font-size"), 10);
+					} else {
+						settings.height = parseInt($el.css("line-height"), 10) || parseInt($el.css("font-size"), 10) || 24;
+					}
+				}
 			} else {
 				// use the element width as the default width for charts
 				// in other elements if possible
@@ -568,7 +584,8 @@ PS.Formatter.fn.stackedbar = function () {
 	(function ($el, settings) {
 		_.defer(function () {
 			var padding = 0,
-				$canvas;
+				$canvas,
+				lineHeight;
 				
 			var values = _.map(settings.value.toString().split(","), function (value, index, collection) {
 				return sum.apply(null, collection.slice(0, index + 1));
@@ -578,8 +595,15 @@ PS.Formatter.fn.stackedbar = function () {
 				// use 160px as the default width for charts in a table
 				// use the element font size as the default height for charts in a table
 				settings.width = settings.width || 160;
-				settings.height = settings.height || parseInt($el.css("line-height"), 10) || parseInt($el.css("font-size"), 10) || 24;
-				
+				if (!settings.height) {
+					// check to see if line-height is reported as a numeric factor of font-size
+					lineHeight = +$el.css("line-height");
+					if (lineHeight) {
+						settings.height = lineHeight * parseInt($el.css("font-size"), 10);
+					} else {
+						settings.height = parseInt($el.css("line-height"), 10) || parseInt($el.css("font-size"), 10) || 24;
+					}
+				}
 			} else {
 				// use the element width as the default width for charts
 				// in other elements if possible
@@ -640,7 +664,8 @@ PS.Formatter.fn.stackedbar100 = function () {
 			}
 
 			var padding = 0,
-				$canvas;
+				$canvas,
+				lineHeight;
 				
 			var values = _.map(settings.value.toString().split(","), function (value, index, collection) {
 				return sum.apply(null, collection.slice(0, index + 1));
@@ -650,8 +675,15 @@ PS.Formatter.fn.stackedbar100 = function () {
 				// use 160px as the default width for charts in a table
 				// use the element font size as the default height for charts in a table
 				settings.width = settings.width || 160;
-				settings.height = settings.height || parseInt($el.css("line-height"), 10) || parseInt($el.css("font-size"), 10) || 24;
-				
+				if (!settings.height) {
+					// check to see if line-height is reported as a numeric factor of font-size
+					lineHeight = +$el.css("line-height");
+					if (lineHeight) {
+						settings.height = lineHeight * parseInt($el.css("font-size"), 10);
+					} else {
+						settings.height = parseInt($el.css("line-height"), 10) || parseInt($el.css("font-size"), 10) || 24;
+					}
+				}				
 			} else {
 				// use the element width as the default width for charts
 				// in other elements if possible
