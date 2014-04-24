@@ -517,7 +517,7 @@ PS.Formatter.fn.bar = function () {
 			
 			settings.type = "bullet";
 
-			$el.sparkline([settings.target || "", settings.performance || "", settings.max, settings.value], settings);
+			$el.sparkline([settings.target || null, settings.performance || null, settings.max, settings.value], settings);
 			
 			// set the table cell width
 			if (hasTable) {
@@ -614,7 +614,7 @@ PS.Formatter.fn.stackedbar = function () {
 			
 			settings.type = "bullet";
 
-			$el.sparkline([settings.target || "", settings.performance || "", settings.max].concat(values.reverse()), settings);
+			$el.sparkline([settings.target || null, settings.performance || null, settings.max].concat(values.reverse()), settings);
 			
 			// set the table cell width
 			if (hasTable) {
@@ -694,7 +694,7 @@ PS.Formatter.fn.stackedbar100 = function () {
 			
 			settings.type = "bullet";
 
-			$el.sparkline([settings.target || "", settings.performance || ""].concat(values.reverse()), settings);
+			$el.sparkline([settings.target || null, settings.performance || null].concat(values.reverse()), settings);
 			
 			// set the table cell width
 			if (hasTable) {
