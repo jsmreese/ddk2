@@ -360,7 +360,7 @@ PS.Formatter.fn.date = function () {
 	
 	// exit early for null values
 	if (this.formatValue === "") {
-		return this.null;
+		return this["null"];
 	}
 	
 	if (settings.units) {
@@ -389,7 +389,7 @@ PS.Formatter.fn.time = function () {
 
 	// exit early for null values
 	if (this.formatValue === "") {
-		return this.null;
+		return this["null"];
 	}
 	
 	dur = moment.duration.apply(null, args);
