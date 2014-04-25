@@ -253,7 +253,7 @@ PS.Formatter.fn.defaults = {
 	precision: 0,
 	nullToZero: true,
 	zero: "-",
-	"null": "-",
+	"null": "",
 	units: "",
 	unitsPosition: "right",
 	unitsAttr: "",
@@ -358,6 +358,11 @@ PS.Formatter.fn.date = function () {
 		args = [this.formatValue],
 		mom;
 	
+	// exit early for null values
+	if (this.formatValue === "") {
+		return this.null;
+	}
+	
 	if (settings.units) {
 		args.push(settings.units);
 	}
@@ -381,6 +386,11 @@ PS.Formatter.fn.time = function () {
 	var settings = this.getSettings(),
 		args = [this.formatValue, settings.units || "seconds"],
 		dur;
+
+	// exit early for null values
+	if (this.formatValue === "") {
+		return this.null;
+	}
 	
 	dur = moment.duration.apply(null, args);
 	
