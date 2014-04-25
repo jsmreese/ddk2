@@ -1,6 +1,6 @@
-/*! Moment Duration Format v1.2.0
+/*! Moment Duration Format v1.2.1
  *  https://github.com/jsmreese/moment-duration-format 
- *  Date: 2014-04-23
+ *  Date: 2014-04-24
  *
  *  Duration format plugin function for the Moment.js library
  *  http://momentjs.com/
@@ -76,7 +76,7 @@
 	
 	if (hasRequire) {
 		// require moment
-		_ = require('moment');
+		moment = require('moment');
 	} else if (root.moment) {
 		moment = root.moment;
 	} else {
