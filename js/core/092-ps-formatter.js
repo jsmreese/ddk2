@@ -651,7 +651,7 @@ PS.Formatter.fn.stackedbar100 = function () {
 			settings.valueColor = [settings.valueColor];
 		}
 		
-		settings.rangeColors = [settings.fillColor].concat(settings.valueColor.reverse());
+		settings.rangeColors = settings.valueColor.reverse();
 	}
 	
 	(function ($el, settings) {
