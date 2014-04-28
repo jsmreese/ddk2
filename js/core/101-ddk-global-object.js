@@ -636,9 +636,11 @@
 							// get the first group header th element to have text-align: left
 							.addClass("text-left")
 							// add +/- image and toggle event
-							.click(function () {
+							.click(function (e) {
 								var $this = $(this),
 									$icon = $this.find(".ddk-icon.toggle");
+									
+								e.stopPropagation();
 									
 								$icon.html(function (index, value) {
 									return (value === /* down */ "\u011E" ? /* right */ "\u011D" : /* down */ "\u011E");
@@ -660,6 +662,8 @@
 									var $this = $(this),
 										$img = $this.find("img:first"),
 										src = $img.attr("src");
+
+									e.stopPropagation();
 
 									if (src.indexOf("minus.png") > -1) {
 										$img.attr("src", (oldIE ? fullPath : "") + "resources/ddk/imgs/scorecard/plus.png");
