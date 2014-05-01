@@ -112,7 +112,6 @@ DDK.controlOptions = function (id) {
 				fav_description: { id: "s_" + id + "_fdesc", label: "Favorite Description", description: "Favorite Bar tooltip." },
 				fav_id: { id: "s_" + id + "_fid", label: "Favorite Id", description: "Favorite Id." },
 				fav_label: { id: "s_" + id + "_flab", label: "Favorite Label", description: "Favorite Bar label." },
-				fav_fod: { id: "s_" + id + "_fod", label: "Favorite Option Display", description: "Deprecated option." },
 				fav_uid: { id: "s_" + id + "_fuid", label: "User Id", description: "Favorite User Id" },
 			}
 		},
@@ -120,123 +119,308 @@ DDK.controlOptions = function (id) {
 			id: "chart",
 			label: "Chart",
 			options: {
-				title: { id: "s_" + id + "_ti", label: "Title", description: "Title for the chart control.", notes: "" },
+				title: {
+					id: "s_" + id + "_ti",
+					label: "Title",
+					description: "Title for the rendered chart.",
+					notes: ""
+				},
 				type: {
 					id: "s_" + id + "_ty",
 					label: "Type",
 					description: "Default type used for chart series.",
-					notes: "Accepted values are: point, line, stepline, area, stackedarea, stackedarea100, column, stackedcolumn, stackedcolumn100, bar, stackedbar, stackedbar100, doughnut, and pie.",
+					notes: "May be overridden for any particular series using the <code>chart_series_type_...</code> options.",
 					values: ["point", "line", "stepline", "column", "stackedcolumn", "stackedcolumn100", "area", "stackedarea", "stackedarea100", "bar", "stackedbar", "stackedbar100", "pie", "doughnut"]
 				},
-				autoRefreshEnabled: { id: "s_" + id + "_are", label: "Auto-Refresh Enabled", description: "Enables (true) or disables (false) the 'Auto-Refresh ON/OFF' option at the top of the Series Config toolbar.", notes: "Boolean." },
+				autoRefreshEnabled: {
+					id: "s_" + id + "_are",
+					label: "Auto-Refresh Enabled",
+					description: "When <code>false</code>, disables chart auto-refresh for any configuration change.",
+					notes: "The Auto-Refresh option toggle is at the top of the Series Config toolbar.",
+					values: ["false"]
+				},
 				dataTableEnabled: {
 					id: "s_" + id + "_de",
 					label: "Data Table Enabled",
-					description: "Enables (true) a datatable under the chart showing series values.",
-					notes: "For vertical chart types only; does not display a datatable under the pie, doughnut, or bar chart types.",
+					description: "When <code>true</code>, displays a datatable under the chart showing series values.",
+					notes: "For chart types with a vertical y-axis only (area, column, line, etc.) <p>Datatable is not displayed under the pie, doughnut, or bar chart types.",
 					values: ["true"]
 				},
 				labelAutoEnabled: {
 					id: "s_" + id + "_lae",
 					label: "Automatic Labels Enabled",
-					description: "Disables (false) the automatic setting of labels for axis.",
-					notes: "Boolean. Labels are set to the names of the series plotted on each axis as the label for that axis.",
+					description: "When <code>false</code>, disables automatic chart axis labels.",
+					notes: "Default axis labels are created from the names of the series plotted on each axis.",
 					values: ["false"]
 				},
-				labelAxisX: { id: "s_" + id + "_lax", label: "Axis X Label", description: "Label for the x-axis.", notes: "Default x-axis label is the names of the series plotted on the x-axis." },
-				labelAxisY: { id: "s_" + id + "_lay", label: "Axis Y Label", description: "Label for the y-axis.", notes: "Default y-axis label is the names of the series plotted on y-axis (left side)." },
-				labelAxisY2: { id: "s_" + id + "_lay2", label: "Axis Y2 Label", description: "Label for the secondary y-axis.", notes: "Default secondary y-axis label is the names of the series plotted on secondary y-axis (right side)." },
+				labelAxisX: {
+					id: "s_" + id + "_lax",
+					label: "Axis X Label",
+					description: "Label for the x-axis.",
+					notes: "Default x-axis label is the name of the series plotted on the x-axis."
+				},
+				labelAxisY: {
+					id: "s_" + id + "_lay",
+					label: "Axis Y Label",
+					description: "Label for the primary y-axis.",
+					notes: "Default primary y-axis label is the names of the series plotted on y-axis."
+				},
+				labelAxisY2: {
+					id: "s_" + id + "_lay2",
+					label: "Axis Y2 Label",
+					description: "Label for the secondary y-axis.",
+					notes: "Default secondary y-axis label is the names of the series plotted on secondary y-axis."
+				},
 				stackedLabelY: {
 					id: "s_" + id + "_layse",
 					label: "Stacked Series Labels Enabled, Axis Y",
-					description: "Enables (true) labels for stacked series totals for series on the y-axis.",
-					notes: "Boolean.",
+					description: "When <code>true</code>, enables labels for stacked series totals for series on the primary y-axis.",
+					notes: "",
 					values: ["true"]
 				},
 				stackedLabelY2: {
 					id: "s_" + id + "_lay2se",
 					label: "Stacked Series Labels Enabled, Axis Y2",
-					description: "Enables (true) labels for stacked series totals for series on the secondary y-axis.",
-					notes: "Boolean.",
+					description: "When <code>true</code>, enables labels for stacked series totals for series on the secondary y-axis.",
+					notes: "",
 					values: ["true"]
 				},
-				legend: {
+				legendPosition: {
 					id: "s_" + id + "_lp",
 					label: "Legend Position",
 					description: "Position of the chart legend relative to the chart.",
-					notes: "Accepted values are: none, top, bottom, left, right.",
-					values: ["none", "top", "bottom", "left", "right"]
+					notes: "",
+					values: ["none", "top", "bottom", "left", "right"],
+					defaultValue: "right"
 				},
-				seriesConfig: {
+				seriesConfigPosition: {
 					id: "s_" + id + "_scp",
 					label: "Series Config Position",
 					description: "Position of the Series Config toolbar.",
-					notes: "Accepted values are: none, top, bottom, left, right.",
-					values: ["none", "top", "bottom", "left", "right"]
+					notes: "",
+					values: ["none", "top", "bottom", "left", "right"],
+					defaultValue: "left"
 				},
-				templateWidget: { id: "s_" + id + "_tw", label: "Template Widget", description: "Theme options for the chart control.", notes: "Widget." }
+				templateWidget: {
+					id: "s_" + id + "_tw",
+					label: "Template Widget",
+					description: "AMEngine Chart widget containing theme parameters for the Chart Control.",
+					notes: "Widget chart attributes will be used by the Chart Control as it is rendered. <p>Series, title, height, and width chart attributes will be ignored."
+				}
 			},
 			series: {
 				id: "series",
 				label: "Series",
 				options: {
-					chartArea: { id: "s_" + id + "_sca", label: "Chart Area", description: "Fields to render on separate chart areas. Comma-delimited list of field names each surrounded by single quotes, with each area delimited by a caret (e.g. 'COLUMN1','COLUMN2'^'COLUMN3'^'COLUMN4'.", notes: "Caret-delimited list of comma-delimited lists of single-quote-wrapped field names." },
-					color: { id: "s_" + id + "_sc", label: "Color", description: "Series color indexes matched by splitting the 'series_color' option on ^ and the 'color' option on a comma (,). Indexes must be formatted as field lists delimited by ^.", notes: "" },
-					configWidget: { id: "s_" + id + "_scw", label: "Config Widget", description: "Custom configurations for all series in the chart control, including dynamic and static series and specific individual series.", notes: "Widget" },
-					enabled: { id: "s_" + id + "_se", label: "Enabled", description: "Fields to render as series.", notes: "Comma-delimited list by label names each surrounded by single quotes. A [blank] value indicates that all 'metrics_static' and 'metrics_dynamic' fields are rendered as series." },
-					mapareaWidget: { id: "s_" + id + "_smw", label: "Map Area Aattributes Widget", description: "Chart and map area attributes.", notes: "Widget" },
-					pie: { id: "s_" + id + "_sp", label: "Pie", description: "Field to render as series when the chart type is set to 'pie'.", notes: "Field name." },
-					showLabels: { id: "s_" + id + "_sslav", label: "Show Value Labels", description: "Fields to render as series with values shown as labels.", notes: "Comma-delimited list of field names each surrounded by single quotes." },
-					formatAxisX: { id: "s_" + id + "_sxf", label: "X Axis Format", description: "Auto-format type for the x-axis.", notes: "The date auto-format expects the query dimension field to be VARCHAR in the format yyyy-mm-dd as output by the SQL function 'CONVERT(VARCHAR(10), <datetime>, 120)'. The -dash format variant uses a dash between formatted strings rather than spaces or newline characters." },
-					formatWidgetAxisX: { id: "s_" + id + "_sxfw", label: "X Axis Format Widget", description: "Custom format for the x-axis.", notes: "Widget" },
-					secondaryAxisY: { id: "s_" + id + "_sys", label: "Secondary Y Axis", description: "Fields to render as series on the secondary y-axis.", notes: "Comma-delimited list by field names each surrounded by single quotes." }
+					chartArea: {
+						id: "s_" + id + "_sca",
+						label: "Chart Area",
+						description: "Fields to render on separate chart areas.",
+						notes: "Comma-delimited field names, each surrounded by single quotes, with each area delimited by a caret. <p>e.g. <code>'COLUMN1','COLUMN2'^'COLUMN3'^'COLUMN4'</code>."
+					},
+					color: {
+						id: "s_" + id + "_sc",
+						label: "Color",
+						description: "Sets series colors using an indexed list of fields matched to <code>chart_color</code> option indexes.",
+						notes: "Comma-delimited field names, each surrounded by single quotes, with each color delimited by a caret. <p>e.g. <code>'COLUMN1','COLUMN2'^'COLUMN3'^'COLUMN4'</code>. <p>Series color indexes matched by splitting the <code>chart_series_color</code> option on <code>^</code> and the <code>chart_color</code> option on a comma."
+					},
+					configWidget: {
+						id: "s_" + id + "_scw",
+						label: "Series Config Widget",
+						description: "Widget executed for any series in the chart control. Widgets may be configured for particular series, for all series, for all static series, and for all dynamic series.",
+						notes: "Value is written ad part of a JavaScript object literal. e.g. <code>'Games':'Example_DDK1_CCSC_Chart_SeriesConfig_Games','dynamic':'Example_DDK1_CCSC_Chart_SeriesConfig_Dynamic','static':'Example_DDK1_CCSC_Chart_SeriesConfig_Static','all':'Example_DDK1_CCSC_Chart_SeriesConfig_All'</code>"
+					},
+					enabled: {
+						id: "s_" + id + "_se",
+						label: "Enabled Series",
+						description: "Series to be rendered on the chart.",
+						notes: "Comma-delimited list of field names, each surrounded by single quotes. <p>If this option does not have a value, all <code>metrics_static</code> and <code>metrics_dynamic</code> fields are rendered as series."
+					},
+					mapAreaWidget: {
+						id: "s_" + id + "_smw",
+						label: "Map Area Aattributes Widget",
+						description: "Widget used to render custom chart map area attributes.",
+						notes: "Will override default chart map area attributes, which will disable default chart map area mouseovers."
+					},
+					pie: {
+						id: "s_" + id + "_sp",
+						label: "Pie",
+						description: "Series to render when the chart type is set to <code>pie</code>.",
+						notes: "Field name."
+					},
+					showLabels: {
+						id: "s_" + id + "_sslav",
+						label: "Show Value Labels",
+						description: "Series to be rendered with values labels displayed.",
+						notes: "Comma-delimited list of field names, each surrounded by single quotes."
+					},
+					formatAxisX: {
+						id: "s_" + id + "_sxf",
+						label: "X Axis Format",
+						description: "Format type for the x-axis.",
+						notes: "X-axis format options expect query dimension field values in the format yyyy-mm-dd as output by the SQL function <code>CONVERT(VARCHAR(10), <datetime>, 120)</code>. <p>The <code>-dash</code> format variant uses a dash between formatted strings rather than spaces or newline characters.",
+						values: ["day", "day-dash", "month", "month-dash"]
+					},
+					formatWidgetAxisX: {
+						id: "s_" + id + "_sxfw",
+						label: "X Axis Format Widget",
+						description: "Custom format widget for chart x-axis values.",
+						notes: "Widget should execute a keyword update on <code>chart.series&#126;chart_series_index&#126;.points.valuex</code>. Keyword value should be an AMEngine server code block (VBScript is best) that will be executed for each chart x-axis value. <p>See widget <code>PSC_Chart_Build_Series_Detail_xAxis_day</code>."
+					},
+					secondaryAxisY: {
+						id: "s_" + id + "_sys",
+						label: "Secondary Y Axis",
+						description: "Fields to render as series on the secondary y-axis.",
+						notes: "Comma-delimited list of field names, each surrounded by single quotes."
+					}
 				},
 				type: {
 					id: "type",
 					label: "Type",
 					options: {
-						area: { id: "s_" + id + "_sta", label: "Area", description: "Fields to render as area series for vertical chart types.", notes: "Comma-delimited list by field names each surrounded by single quotes." },
-						bar: { id: "s_" + id + "_stb", label: "Bar", description: "Fields to render as bar series for horizontal chart types.", notes: "Comma-delimited list by field names each surrounded by single quotes." },
-						column: { id: "s_" + id + "_stc", label: "Column", description: "Fields to render as column series for vertical chart types.", notes: "Comma-delimited list by field names each surrounded by single quotes." },
-						line: { id: "s_" + id + "_stl", label: "Line", description: "Fields to render as line series for vertical chart types.", notes: "Comma-delimited list by field names each surrounded by single quotes." },
-						point: { id: "s_" + id + "_stp", label: "Point", description: "Fields to render as point series for vertical chart types.", notes: "Comma-delimited list by field names each surrounded by single quotes." },
-						stacked: { id: "s_" + id + "_sts", label: "Stacked", description: "Fields to render as stacked series when chart type is 'bar', 'column', or 'area'.", notes: "Comma-delimited list by field names each surrounded by single quotes." },
-						stepLine: { id: "s_" + id + "_stsl", label: "Step Line", description: "Fields to render as stepline series for vertical chart types.", notes: "Comma-delimited list by field names each surrounded by single quotes." }
+						area: {
+							id: "s_" + id + "_sta",
+							label: "Area",
+							description: "Fields to render as area series for charts with a vertical y-axis (area, column, line, etc.)",
+							notes: "Comma-delimited list of field names, each surrounded by single quotes."
+						},
+						bar: {
+							id: "s_" + id + "_stb",
+							label: "Bar",
+							description: "Fields to render as bar series for charts with a horizontal y-axis (bar).",
+							notes: "Comma-delimited list of field names, each surrounded by single quotes."
+						},
+						column: {
+							id: "s_" + id + "_stc",
+							label: "Column",
+							description: "Fields to render as column series for charts with a vertical y-axis (area, column, line, etc.)",
+							notes: "Comma-delimited list of field names, each surrounded by single quotes."
+						},
+						line: {
+							id: "s_" + id + "_stl",
+							label: "Line",
+							description: "Fields to render as line series for charts with a vertical y-axis (area, column, line, etc.)",
+							notes: "Comma-delimited list of field names, each surrounded by single quotes."
+						},
+						point: {
+							id: "s_" + id + "_stp",
+							label: "Point",
+							description: "Fields to render as point series for charts with a vertical y-axis (area, column, line, etc.)",
+							notes: "Comma-delimited list of field names, each surrounded by single quotes."
+						},
+						stacked: {
+							id: "s_" + id + "_sts",
+							label: "Stacked",
+							description: "Fields to render as stacked series when series type is <code>bar</code>, <code>column</code>, or <code>area</code>.",
+							notes: "Comma-delimited list of field names, each surrounded by single quotes."
+						},
+						stepLine: {
+							id: "s_" + id + "_stsl",
+							label: "Step Line",
+							description: "Fields to render as stepline series for charts with a vertical y-axis (area, column, line, etc.)",
+							notes: "Comma-delimited list of field names, each surrounded by single quotes."
+						}
 					}
+				}
+			}
+		},
+		headerFooter: {
+			id: "header_footer",
+			label: "Header and Footer",
+			description: "Widgets to add custom header and footer content to control tables.",
+			notes: "Used by controls that generate HTML tables: Table, Scorecard (v1 and v2).",
+			options: {
+				headerWidger: {
+					id: "s_" + id + "_hw",
+					label: "Header Widget",
+					description: "Custom content for a control's <code>thead</code> element.",
+					notes: "Will be rendered before any control-generated header content. <p>Widget may access AMEngine datasets using the <code>psc_component_data</code> datasource. <p>Header content must have the same number of (or fewer) columns than the control. The header renders nicely with an overhanging th colspan (colspan set so that it runs off the edge of the control if rendered at full column-spanned width). The entire dataset is not available at render time in server-side paging mode, so use aggregate functions with caution."
+				},
+				footerWidger: {
+					id: "s_" + id + "_fw",
+					label: "Footer Widget",
+					description: "Custom content for a control's <code>tfoot</code> element.",
+					notes: "Will be rendered after any control-generated footer content. <p>Widget may access AMEngine datasets using the <code>psc_component_data</code> datasource. <p>Footer content must have the same number of (or fewer) columns than the control. The footer renders nicely with an overhanging th colspan (colspan set so that it runs off the edge of the control if rendered at full column-spanned width). The entire dataset is not available at render time in server-side paging mode, so use aggregate functions with caution."
 				}
 			}
 		},
 		scorecard: {
 			id: "scorecard",
 			label: "Scorecard",
+			description: "Options specific to the Scorecard Control.",
+			notes: "Used by both Scorecard v1 and Scorecard v2.",
 			options: {
-				headerWidger: { id: "s_" + id + "_hw", label: "Header Widget", description: "Custom content for the header.", notes: "Widget may access AMEngine datasets using the 'psc_component_data' attribute. Header content must have the same number of (or fewer) columns than the control. The header renders nicely with an overhanging th colspan (colspan set so that it runs off the edge of the control if rendered at full column-spanned width). The entire dataset is not available at render time in server-side paging mode, so use aggregate functions with caution." },
-				footerWidger: { id: "s_" + id + "_fw", label: "Footer Widget", description: "Custom content for the footer.", notes: "Widget may access AMEngine datasets using the 'psc_component_data' attribute. Footer content must have the same number of (or fewer) columns than the control. The footer renders nicely with an overhanging th colspan (colspan set so that it runs off the edge of the control if rendered at full column-spanned width). The entire dataset is not available at render time in server-side paging mode, so use aggregate functions with caution." },
-				groupingKey: { id: "s_" + id + "_gk", label: "Grouping Key", description: "Grouping field name key for the control query.", notes: "If this option has no value, the control is rendered ungrouped. If it has a value, the control is rendered grouped. Grouped control do not use DataTables but ungrouped control do use DataTables." },
-				groupingExpanded: { id: "s_" + id + "_ge", label: "Grouping Expanded", description: "Enables (true) or disables (false) expanded grouping.", notes: "If true, control groups are rendered expanded. If false, control groups are rendered collapsed." },
-				sortEnabled: { id: "s_" + id + "_soe", label: "Sort Enabled", description: "Enables (true) or disables (false) the 'Sort' option buttonset.", notes: "This option does nothing when the 'grouping.key' option is set." }
+				groupingKey: {
+					id: "s_" + id + "_gk",
+					label: "Grouping Key",
+					description: "Field name to be used for grouping scorecard rows.",
+					notes: "Scorecards are rendered ungrouped by default. If this option has a value, the scorecard will be grouped on changes in the specified field's data."
+				},
+				groupingExpanded: {
+					id: "s_" + id + "_ge",
+					label: "Grouping Expanded",
+					description: "When <code>true</code>, scorecard groups will be initialized in an open state.",
+					notes: "Scorecard groups are rendered in a collapsed state by default. <p>This option does nothing when the <code>grouping.key</code> option has no value.",
+					values: ["true"]
+				},
+				sortEnabled: {
+					id: "s_" + id + "_soe",
+					label: "Sort Enabled",
+					description: "When <code>true</code>, enables sorting on scorecards.",
+					notes: "The jQuery <a href=\"http://datatables.net\">DataTables</a> plugin is used to create a sortable scorecard. <p>This option does nothing when the <code>grouping.key</code> option is set. <p> The default value for Scorecard v1 is <code>true</code>. The default value for Scorecard v2 is <code>false</code>.",
+					values: ["true"]
+				}
 			}
 		},
 		table: {
 			id: "table",
 			label: "Table",
+			description: "Options specific to the Table Control.",
 			options: {
-				filterMetricsSelect: { id: "s_" + id + "_fms", label: "Select Column Filters", description: "Selectable filter drop-down menus for columns.", notes: "The filter menu displays at the top of the column it is set for. Comma-delimited list by field names each surrounded by single quotes." },
-				filterMetricsText: { id: "s_" + id + "_fmt", label: "Text Column Filters", description: "Filter text field for columns.", notes: "Filter text field displays at the top of the column it is set for. Comma-delimited list by field names each surrounded by single quotes." },
-				sortValue: { id: "s_" + id + "_sv", label: "Sort Value", description: "Sorting order of the table column", notes: "Comma-delimited list by field number and sort order each surrounded by single quotes. e.g. '0','asc'^'2','desc'" }
+				filterMetricsSelect: {
+					id: "s_" + id + "_fms",
+					label: "Column Filters (Dropdown)",
+					description: "Places a selectable dropdown above columns for in-browser record filtering.",
+					notes: "Comma-delimited list by field names, each surrounded by single quotes. <p>e.g. <code>'COLUMN_A','COLUMN_B'</code>"
+				},
+				filterMetricsText: {
+					id: "s_" + id + "_fmt",
+					label: "Column Filters (Text Input)",
+					description: "Places a text input field above columns for in-browser record filtering.",
+					notes: "Comma-delimited list by field names, each surrounded by single quotes. <p>e.g. <code>'COLUMN_A','COLUMN_B'</code>"
+				},
+				sortValue: {
+					id: "s_" + id + "_sv",
+					label: "Sort Value",
+					description: "Initial sorting applied to table columns. Applied in the browser, not at the data level.",
+					notes: "Comma-delimited list of column indexes (0-based) and sort orders, each surrounded by single quotes. <p>e.g. <code>'0','asc'^'2','desc'</code>"
+				}
 			}
 		},
 		paging: {
 			id: "paging",
 			label: "Paging",
+			description: "Paging is used by the Table and Tree Controls to determine how much data should be loaded from the server at one time.",
 			options: {
-				thresholdClient: { id: "s_" + id + "_ptc", label: "Client Threshold", description: "Record count threshold to automatically enable client-side paging.", notes: "Default value is 200." },
-				thresholdServer: { id: "s_" + id + "_pts", label: "Server Threshold", description: "Record count threshold to automatically enable server-side paging.", notes: "Default value is 1000. Maximum value is 5000. Above 5000 records, server paging is enforced." },
+				thresholdClient: {
+					id: "s_" + id + "_ptc",
+					label: "Client Threshold",
+					description: "Record count threshold to automatically enable client-side paging.",
+					notes: "Maximum value is 5000. Above 5000 records, server paging mode is enforced.",
+					defaultValue: "200"
+				},
+				thresholdServer: {
+					id: "s_" + id + "_pts",
+					label: "Server Threshold",
+					description: "Record count threshold to automatically enable server-side paging.",
+					notes: "Maximum value is 5000. Above 5000 records, server paging mode is enforced.",
+					defaultValue: "1000"
+				},
 				type: {
 					id: "s_" + id + "_pt",
 					label: "Type",
 					description: "Paging type for the table control.",
-					notes: "Accepted values are [BLANK], none, client, server. If [BLANK], will automatically determine paging type based on query record count. For best performance with large datasets, set a value of 'server'.",
+					notes: "If not specified, will automatically determine paging type based on query record count. For best performance with large datasets, set a value of <code>server</code> to force server paging mode.",
 					values: ["none", "client", "server"]
 				}
 			}
