@@ -1048,7 +1048,7 @@
 				items,
 				options = {},
 				format,
-				nodesSort = "node_label", //$("#"+id+"Sort").find("input:radio:checked").val(),
+				nodesSort = $("#"+id+"Sort").find("a[checked]").attr("value") || "node_label",
 				nodesCreate = (DDK.tree.data[id] && DDK.tree.data[id].nodes && DDK.tree.data[id].nodes.menu && DDK.tree.data[id].nodes.menu.defaultOptions) ? DDK.tree.data[id].nodes.menu.defaultOptions.createOption : "",
 				nodesRename = (DDK.tree.data[id] && DDK.tree.data[id].nodes && DDK.tree.data[id].nodes.menu && DDK.tree.data[id].nodes.menu.defaultOptions) ? DDK.tree.data[id].nodes.menu.defaultOptions.renameOption : "",
 				nodesDelete = (DDK.tree.data[id] && DDK.tree.data[id].nodes && DDK.tree.data[id].nodes.menu && DDK.tree.data[id].nodes.menu.defaultOptions) ? DDK.tree.data[id].nodes.menu.defaultOptions.deleteOption : "",

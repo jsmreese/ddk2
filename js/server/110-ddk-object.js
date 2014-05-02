@@ -957,24 +957,13 @@ DDK.tree.toolbars = {
 			//out += run("PSC_Tree_Refresh");
 			out += "<button type=\"button\" id=\"" + co.id + "Refresh\"  type=\"button\" title=\"Refresh Tree\" style=\"margin-left: 10px;\"><span class=\"ui-button-icon-primary ui-icon ui-icon-arrowrefresh-1-e\"></span></button>";
 		}
-		if (co.sort_enabled === "true") {
-			/*
-out += "<span id=\"" + co.id + "Sort\" style=\"margin-left: 10px;\">";
-out += "<input type=\"radio\" id=\"" + co.id + "Sort1\" name=\"" + co.id + "Sort\" value=\"sort_order\" " + (((!co.nodes_sort_default) || (co.nodes_sort_default === "sort_order")) ? "checked" : "") + "/>";
-out += "<label for=\"" + co.id + "Sort1\" title=\"Sort by Sort Order\">#</label>";
-out += "<input type=\"radio\" id=\"" + co.id + "Sort2\" name=\"" + co.id + "Sort\" value=\"node_label\" " + (co.nodes_sort_default === "node_label" ? "checked" : "") + "/>";
-out += "<label for=\"" + co.id + "Sort2\" title=\"Sort alphabetically by Label\">L</label>";
-out += "<input type=\"radio\" id=\"" + co.id + "Sort3\" name=\"" + co.id + "Sort\" value=\"node_name\" " + (co.nodes_sort_default === "node_name" ? "checked" : "") + "/>";
-out += "<label for=\"" + co.id + "Sort3\" title=\"Sort alphabetically by Name\">N</label>";
-out += "</span>";
-*/
-			
+		if (co.sort_enabled === "true") {			
 			out += "<dl id=\"" + co.id + "Sort\" class=\"ddk-dropdown\">";
 			out += "<dt></dt>";
 			out += "<dd><ul>";
-			out += "<li><a href=\"#\" value=\"node_label\"><span class=\"ui-icon ui-icon-pencil\"></span><label>Label</label></a></li>";
-			out += "<li><a href=\"#\" value=\"node_name\"><span class=\"ui-icon ui-icon-person\"></span><label>Name</label></a></li>";
-			out += "<li><a href=\"#\" value=\"sort_order\"><span class=\"ui-icon ui-icon-arrowthick-2-n-s\"></span><label>Sort</label></a></li>";
+			out += "<li><a href=\"#\" value=\"node_label\" " + (((!co.nodes_sort_default) || (co.nodes_sort_default === "node_label")) ? "checked" : "") + "><span class=\"ui-icon ui-icon-pencil\"></span><label>Label</label></a></li>";
+			out += "<li><a href=\"#\" value=\"node_name\" " + (co.nodes_sort_default === "node_name" ? "checked" : "") + "><span class=\"ui-icon ui-icon-person\"></span><label>Name</label></a></li>";
+			out += "<li><a href=\"#\" value=\"sort_order\" " + (co.nodes_sort_default === "sort_order" ? "checked" : "") + "><span class=\"ui-icon ui-icon-arrowthick-2-n-s\" ></span><label>Sort</label></a></li>";
 			out += "</ul></dd>";
 			out += "</dl>";
 		}
