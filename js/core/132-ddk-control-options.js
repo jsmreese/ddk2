@@ -6,7 +6,7 @@ DDK.controlOptions = function (id) {
 		data: {
 			id: "data",
 			label: "Data",
-			description: "Common Control data options.",
+			description: "Common Control data options govern how data is loaded in the control.  This includes whether the data is loaded server side or client side, if data is to be shared across controls, what data source to use and so on.  For server side data the most used options are the query options detailing how to retrieve the data.",
 			options: {
 				initWidget: {
 					id: "s_" + id + "_iw",
@@ -166,7 +166,7 @@ DDK.controlOptions = function (id) {
 		config: {
 			id: "control_config",
 			label: "Configuration",
-			description: "General Control configuration options.",
+			description: "Control configuration options are used to govern appearance and client-side effects such as mouseovers.  Many of the options pertain to styling such as Class to reference CSS and Control CSS for custom styles.  Other options trigger client-side effects including Control Javascript which is used to trigger javascript at render time.  One major item of note is the Config option which can contain JSON for control rendering (used especially for BAMSets, Scorecards, and NavSets).",
 			options: {
 				class_name: {
 					id: "s_" + id + "_c",
@@ -223,7 +223,7 @@ DDK.controlOptions = function (id) {
 		toolbars: {
 			id: "toolbars",
 			label: "Toolbars",
-			description: "Control toolbar buttons and custom content.",
+			description: "Control toolbar options govern the buttons and custom content placed around controls.  These can be enabled and disabled globally or turned on/off individually.  Custom toolbars can also be added through widgets.",
 			options: {
 				toolbarEnabled: {
 					id: "s_" + id + "_te",
@@ -396,7 +396,7 @@ DDK.controlOptions = function (id) {
 		favorite: {
 			id: "control_favorite",
 			label: "Favorite",
-			description: "Options controlling the Favorite record loaded for a Control.",
+			description: "Control favorite options are special parameters used to control the Favorite record loaded for a Control.  These are not typically edited by users.  They are used by the UIs for favorites.",
 			options: {
 				fav_description: {
 					id: "s_" + id + "_fdesc",
