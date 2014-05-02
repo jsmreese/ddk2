@@ -2,6 +2,7 @@ DDK.controlOptions = function (id) {
 	return {
 		id: "ddk",
 		label: "DDK Control",
+		description: "DDK Control options determine all aspects of Control render, from the query used to generate a Control's dataset to custom content in a Control's toolbars.",
 		data: {
 			id: "data",
 			label: "Data",
@@ -157,11 +158,69 @@ DDK.controlOptions = function (id) {
 					id: "s_" + id + "_mf",
 					label: "Metrics Format",
 					description: "Sets the display case for metrics series names.",
-					notes: "By default, field names are displayed in title case (underscores to spaces, first character of words is capitalized)."
+					notes: "By default, field names are displayed in title case (underscores to spaces, first character of words is capitalized).",
 					values: ["none", "lcase", "ucase"]
 				}
 			}
 		},
+		
+		config: {
+			id: "control_config",
+			label: "Configuration",
+			description: "General Control configuration options.",
+			options: {
+				class_name: {
+					id: "s_" + id + "_c",
+					label: "Class",
+					description: "CSS class for additional styling in the main content.",
+					notes: "Default value is <code>[componentName]-default</code>. <p>If adding custom control class names using this option, it is usally a good idea to include the default control class in the custom value. e.g. <code>table-default striped-blue hover-blue</code>"
+				},
+				config: {
+					id: "s_" + id + "_con",
+					label: "Config",
+					dataType: "json",
+					description: "JSON data structure used to render Control content. Describes Scorecard Control columns as well as BAM Control BAMs.",
+					notes: "Keywords (globals, data, data aggregate) may be used via DDK Keyword syntax (<code>%%KEY%%</code>). <p>DDK Keyword Alias syntax (<code>%{ATTR}%</code>) may also be used to evaluate metric attributes in the context of each data record."
+				},
+				configWidget: {
+					id: "s_" + id + "_cw",
+					label: "Config Widget",
+					description: "Widget will be executed after all Control keywords are created, but before Control content render.",
+					notes: "May be used to override automatically generated Control keywords, such as chart series keywords."
+				},
+				controlConfigWidget: {
+					id: "s_" + id + "_ccw",
+					label: "Control Config Widget",
+					description: "Widget will be executed after Control Framework keywords are created, but before Control Framework content render.",
+					notes: "May be used to override automatically generated Control Framework keywords, such as <code>table_metrics_dynamic</code>."
+				},
+				controlCSS: {
+					id: "s_" + id + "_ccss",
+					label: "Control CSS",
+					description: "Arbitrary CSS may be included in control favorites for use with the Metrics Browser and View Designer.",
+					notes: "Option value will be automatically wrapped in a <code>style</code> element and will affect the entire document."
+				},
+				controlJS: {
+					id: "s_" + id + "_cjs",
+					label: "Control JavaScript",
+					description: "Arbitrary javascript may be included in control favorites for use with the Metrics Browser and View Designer.",
+					notes: "Option value will be automatically wrapped in a <code>script</code> element. Function calls are not allowed, so code such as <code>console.log(\"message\");</code> will have no effect. <p>Property assignments are allowed, and DDK keyword syntax will be evaluated."
+				},
+				mouseover: {
+					id: "s_" + id + "_mouse",
+					label: "Mouseover",
+					description: "Mouseover configuration activated via data-ddk-mouseover attribute on the control.",
+					notes: "If no value is found in data-ddk-mouseover or a matching key does not exist, no mouseover will be rendered. Specific element for mouseover varies by control: Scorecards apply mouseover to <code>tr</code> elements, while Charts apply mouseover to <code>area</code> elements. BAMs apply mouseover to <code>div.bam</code> elements."
+				},
+				nodataWidget: {
+					id: "s_" + id + "_ndw",
+					label: "No-Data Widget",
+					description: "Custom content to be rendered when control query returns no data.",
+					notes: "This will render for all controls except Notes Control."
+				}
+			}
+		},
+
 		toolbars: {
 			id: "toolbars",
 			label: "Toolbars",
@@ -334,62 +393,7 @@ DDK.controlOptions = function (id) {
 				}
 			}
 		},
-		config: {
-			id: "control_config",
-			label: "Configuration",
-			description: "General Control configuration options.",
-			options: {
-				class_name: {
-					id: "s_" + id + "_c",
-					label: "Class",
-					description: "CSS class for additional styling in the main content.",
-					notes: "Default value is <code>[componentName]-default</code>. <p>If adding custom control class names using this option, it is usally a good idea to include the default control class in the custom value. e.g. <code>table-default striped-blue hover-blue</code>"
-				},
-				config: {
-					id: "s_" + id + "_con",
-					label: "Config",
-					dataType: "json",
-					description: "JSON data structure used to render Control content. Describes Scorecard Control columns as well as BAM Control BAMs.",
-					notes: "Keywords (globals, data, data aggregate) may be used via DDK Keyword syntax (<code>%%KEY%%</code>). <p>DDK Keyword Alias syntax (<code>%{ATTR}%</code>) may also be used to evaluate metric attributes in the context of each data record."
-				},
-				configWidget: {
-					id: "s_" + id + "_cw",
-					label: "Config Widget",
-					description: "Widget will be executed after all Control keywords are created, but before Control content render.",
-					notes: "May be used to override automatically generated Control keywords, such as chart series keywords."
-				},
-				controlConfigWidget: {
-					id: "s_" + id + "_ccw",
-					label: "Control Config Widget",
-					description: "Widget will be executed after Control Framework keywords are created, but before Control Framework content render.",
-					notes: "May be used to override automatically generated Control Framework keywords, such as <code>table_metrics_dynamic</code>."
-				},
-				controlCSS: {
-					id: "s_" + id + "_ccss",
-					label: "Control CSS",
-					description: "Arbitrary CSS may be included in control favorites for use with the Metrics Browser and View Designer.",
-					notes: "Option value will be automatically wrapped in a <code>style</code> element and will affect the entire document."
-				},
-				controlJS: {
-					id: "s_" + id + "_cjs",
-					label: "Control JavaScript",
-					description: "Arbitrary javascript may be included in control favorites for use with the Metrics Browser and View Designer.",
-					notes: "Option value will be automatically wrapped in a <code>script</code> element. Function calls are not allowed, so code such as <code>console.log(\"message\");</code> will have no effect. <p>Property assignments are allowed, and DDK keyword syntax will be evaluated."
-				},
-				mouseover: {
-					id: "s_" + id + "_mouse",
-					label: "Mouseover",
-					description: "Mouseover configuration activated via data-ddk-mouseover attribute on the control.",
-					notes: "If no value is found in data-ddk-mouseover or a matching key does not exist, no mouseover will be rendered. Specific element for mouseover varies by control: Scorecards apply mouseover to <code>tr</code> elements, while Charts apply mouseover to <code>area</code> elements. BAMs apply mouseover to <code>div.bam</code> elements."
-				},
-				nodataWidget: {
-					id: "s_" + id + "_ndw",
-					label: "No-Data Widget",
-					description: "Custom content to be rendered when control query returns no data.",
-					notes: "This will render for all controls except Notes Control."
-				}
-			}
-		},
+		
 		favorite: {
 			id: "control_favorite",
 			label: "Favorite",
@@ -419,6 +423,110 @@ DDK.controlOptions = function (id) {
 				}
 			}
 		},
+		
+		paging: {
+			id: "paging",
+			label: "Paging",
+			description: "Paging is used by the Table and Tree Controls to determine how much data should be loaded from the server at one time.",
+			options: {
+				thresholdClient: {
+					id: "s_" + id + "_ptc",
+					label: "Client Threshold",
+					description: "Record count threshold to automatically enable client-side paging.",
+					notes: "Maximum value is 5000. Above 5000 records, server paging mode is enforced.",
+					defaultValue: "200"
+				},
+				thresholdServer: {
+					id: "s_" + id + "_pts",
+					label: "Server Threshold",
+					description: "Record count threshold to automatically enable server-side paging.",
+					notes: "Maximum value is 5000. Above 5000 records, server paging mode is enforced.",
+					defaultValue: "1000"
+				},
+				type: {
+					id: "s_" + id + "_pt",
+					label: "Type",
+					description: "Paging type for the table control.",
+					notes: "If not specified, will automatically determine paging type based on query record count. For best performance with large datasets, set a value of <code>server</code> to force server paging mode.",
+					values: ["none", "client", "server"]
+				}
+			}
+		},
+		
+		headerFooter: {
+			id: "header_footer",
+			label: "Header and Footer",
+			description: "Widgets to add custom header and footer content to control tables.",
+			notes: "Used by controls that generate HTML tables: Table, Scorecard (v1 and v2).",
+			options: {
+				headerWidger: {
+					id: "s_" + id + "_hw",
+					label: "Header Widget",
+					description: "Custom content for a control's <code>thead</code> element.",
+					notes: "Will be rendered before any control-generated header content. <p>Widget may access AMEngine datasets using the <code>psc_component_data</code> datasource. <p>Header content must have the same number of (or fewer) columns than the control. The header renders nicely with an overhanging th colspan (colspan set so that it runs off the edge of the control if rendered at full column-spanned width). The entire dataset is not available at render time in server-side paging mode, so use aggregate functions with caution."
+				},
+				footerWidger: {
+					id: "s_" + id + "_fw",
+					label: "Footer Widget",
+					description: "Custom content for a control's <code>tfoot</code> element.",
+					notes: "Will be rendered after any control-generated footer content. <p>Widget may access AMEngine datasets using the <code>psc_component_data</code> datasource. <p>Footer content must have the same number of (or fewer) columns than the control. The footer renders nicely with an overhanging th colspan (colspan set so that it runs off the edge of the control if rendered at full column-spanned width). The entire dataset is not available at render time in server-side paging mode, so use aggregate functions with caution."
+				}
+			}
+		},
+		scorecard: {
+			id: "scorecard",
+			label: "Scorecard",
+			description: "Options specific to the Scorecard Control.",
+			notes: "Used by both Scorecard v1 and Scorecard v2.",
+			options: {
+				groupingKey: {
+					id: "s_" + id + "_gk",
+					label: "Grouping Key",
+					description: "Field name to be used for grouping scorecard rows.",
+					notes: "Scorecards are rendered ungrouped by default. If this option has a value, the scorecard will be grouped on changes in the specified field's data."
+				},
+				groupingExpanded: {
+					id: "s_" + id + "_ge",
+					label: "Grouping Expanded",
+					description: "When <code>true</code>, scorecard groups will be initialized in an open state.",
+					notes: "Scorecard groups are rendered in a collapsed state by default. <p>This option does nothing when the <code>grouping.key</code> option has no value.",
+					values: ["true"]
+				},
+				sortEnabled: {
+					id: "s_" + id + "_soe",
+					label: "Sort Enabled",
+					description: "When <code>true</code>, enables sorting on scorecards.",
+					notes: "The jQuery <a href=\"http://datatables.net\">DataTables</a> plugin is used to create a sortable scorecard. <p>This option does nothing when the <code>grouping.key</code> option is set. <p> The default value for Scorecard v1 is <code>true</code>. The default value for Scorecard v2 is <code>false</code>.",
+					values: ["true"]
+				}
+			}
+		},
+		table: {
+			id: "table",
+			label: "Table",
+			description: "Options specific to the Table Control.",
+			options: {
+				filterMetricsSelect: {
+					id: "s_" + id + "_fms",
+					label: "Column Filters (Dropdown)",
+					description: "Places a selectable dropdown above columns for in-browser record filtering.",
+					notes: "Comma-delimited list by field names, each surrounded by single quotes. <p>e.g. <code>'COLUMN_A','COLUMN_B'</code>"
+				},
+				filterMetricsText: {
+					id: "s_" + id + "_fmt",
+					label: "Column Filters (Text Input)",
+					description: "Places a text input field above columns for in-browser record filtering.",
+					notes: "Comma-delimited list by field names, each surrounded by single quotes. <p>e.g. <code>'COLUMN_A','COLUMN_B'</code>"
+				},
+				sortValue: {
+					id: "s_" + id + "_sv",
+					label: "Sort Value",
+					description: "Initial sorting applied to table columns. Applied in the browser, not at the data level.",
+					notes: "Comma-delimited list of column indexes (0-based) and sort orders, each surrounded by single quotes. <p>e.g. <code>'0','asc'^'2','desc'</code>"
+				}
+			}
+		},
+
 		chart: {
 			id: "chart",
 			label: "Chart",
@@ -546,7 +654,7 @@ DDK.controlOptions = function (id) {
 						id: "s_" + id + "_scw",
 						label: "Series Config Widget",
 						description: "Widget executed for any series in the chart control. Widgets may be configured for particular series, for all series, for all static series, and for all dynamic series.",
-						notes: "Value is written ad part of a JavaScript object literal. e.g. <code>'Games':'Example_DDK1_CCSC_Chart_SeriesConfig_Games','dynamic':'Example_DDK1_CCSC_Chart_SeriesConfig_Dynamic','static':'Example_DDK1_CCSC_Chart_SeriesConfig_Static','all':'Example_DDK1_CCSC_Chart_SeriesConfig_All'</code>"
+						notes: "Value is written ad part of a JavaScript object literal. e.g. <code>'Games':'Example_DDK1_CCSC_Chart_SeriesConfig_Games', 'dynamic':'Example_DDK1_CCSC_Chart_SeriesConfig_Dynamic', 'static':'Example_DDK1_CCSC_Chart_SeriesConfig_Static', 'all':'Example_DDK1_CCSC_Chart_SeriesConfig_All'</code>"
 					},
 					enabled: {
 						id: "s_" + id + "_se",
@@ -576,7 +684,7 @@ DDK.controlOptions = function (id) {
 						id: "s_" + id + "_sxf",
 						label: "X Axis Format",
 						description: "Format type for the x-axis.",
-						notes: "X-axis format options expect query dimension field values in the format yyyy-mm-dd as output by the SQL function <code>CONVERT(VARCHAR(10), <datetime>, 120)</code>. <p>The <code>-dash</code> format variant uses a dash between formatted strings rather than spaces or newline characters.",
+						notes: "X-axis format options expect query dimension field values in the format <code>yyyy-mm-dd</code> as output by the SQL function <code>CONVERT(VARCHAR(10), &lt;datetime&gt;, 120)</code>. <p>The <code>-dash</code> format variant uses a dash between formatted strings rather than spaces or newline characters.",
 						values: ["day", "day-dash", "month", "month-dash"]
 					},
 					formatWidgetAxisX: {
@@ -644,107 +752,7 @@ DDK.controlOptions = function (id) {
 				}
 			}
 		},
-		headerFooter: {
-			id: "header_footer",
-			label: "Header and Footer",
-			description: "Widgets to add custom header and footer content to control tables.",
-			notes: "Used by controls that generate HTML tables: Table, Scorecard (v1 and v2).",
-			options: {
-				headerWidger: {
-					id: "s_" + id + "_hw",
-					label: "Header Widget",
-					description: "Custom content for a control's <code>thead</code> element.",
-					notes: "Will be rendered before any control-generated header content. <p>Widget may access AMEngine datasets using the <code>psc_component_data</code> datasource. <p>Header content must have the same number of (or fewer) columns than the control. The header renders nicely with an overhanging th colspan (colspan set so that it runs off the edge of the control if rendered at full column-spanned width). The entire dataset is not available at render time in server-side paging mode, so use aggregate functions with caution."
-				},
-				footerWidger: {
-					id: "s_" + id + "_fw",
-					label: "Footer Widget",
-					description: "Custom content for a control's <code>tfoot</code> element.",
-					notes: "Will be rendered after any control-generated footer content. <p>Widget may access AMEngine datasets using the <code>psc_component_data</code> datasource. <p>Footer content must have the same number of (or fewer) columns than the control. The footer renders nicely with an overhanging th colspan (colspan set so that it runs off the edge of the control if rendered at full column-spanned width). The entire dataset is not available at render time in server-side paging mode, so use aggregate functions with caution."
-				}
-			}
-		},
-		scorecard: {
-			id: "scorecard",
-			label: "Scorecard",
-			description: "Options specific to the Scorecard Control.",
-			notes: "Used by both Scorecard v1 and Scorecard v2.",
-			options: {
-				groupingKey: {
-					id: "s_" + id + "_gk",
-					label: "Grouping Key",
-					description: "Field name to be used for grouping scorecard rows.",
-					notes: "Scorecards are rendered ungrouped by default. If this option has a value, the scorecard will be grouped on changes in the specified field's data."
-				},
-				groupingExpanded: {
-					id: "s_" + id + "_ge",
-					label: "Grouping Expanded",
-					description: "When <code>true</code>, scorecard groups will be initialized in an open state.",
-					notes: "Scorecard groups are rendered in a collapsed state by default. <p>This option does nothing when the <code>grouping.key</code> option has no value.",
-					values: ["true"]
-				},
-				sortEnabled: {
-					id: "s_" + id + "_soe",
-					label: "Sort Enabled",
-					description: "When <code>true</code>, enables sorting on scorecards.",
-					notes: "The jQuery <a href=\"http://datatables.net\">DataTables</a> plugin is used to create a sortable scorecard. <p>This option does nothing when the <code>grouping.key</code> option is set. <p> The default value for Scorecard v1 is <code>true</code>. The default value for Scorecard v2 is <code>false</code>.",
-					values: ["true"]
-				}
-			}
-		},
-		table: {
-			id: "table",
-			label: "Table",
-			description: "Options specific to the Table Control.",
-			options: {
-				filterMetricsSelect: {
-					id: "s_" + id + "_fms",
-					label: "Column Filters (Dropdown)",
-					description: "Places a selectable dropdown above columns for in-browser record filtering.",
-					notes: "Comma-delimited list by field names, each surrounded by single quotes. <p>e.g. <code>'COLUMN_A','COLUMN_B'</code>"
-				},
-				filterMetricsText: {
-					id: "s_" + id + "_fmt",
-					label: "Column Filters (Text Input)",
-					description: "Places a text input field above columns for in-browser record filtering.",
-					notes: "Comma-delimited list by field names, each surrounded by single quotes. <p>e.g. <code>'COLUMN_A','COLUMN_B'</code>"
-				},
-				sortValue: {
-					id: "s_" + id + "_sv",
-					label: "Sort Value",
-					description: "Initial sorting applied to table columns. Applied in the browser, not at the data level.",
-					notes: "Comma-delimited list of column indexes (0-based) and sort orders, each surrounded by single quotes. <p>e.g. <code>'0','asc'^'2','desc'</code>"
-				}
-			}
-		},
-		paging: {
-			id: "paging",
-			label: "Paging",
-			description: "Paging is used by the Table and Tree Controls to determine how much data should be loaded from the server at one time.",
-			options: {
-				thresholdClient: {
-					id: "s_" + id + "_ptc",
-					label: "Client Threshold",
-					description: "Record count threshold to automatically enable client-side paging.",
-					notes: "Maximum value is 5000. Above 5000 records, server paging mode is enforced.",
-					defaultValue: "200"
-				},
-				thresholdServer: {
-					id: "s_" + id + "_pts",
-					label: "Server Threshold",
-					description: "Record count threshold to automatically enable server-side paging.",
-					notes: "Maximum value is 5000. Above 5000 records, server paging mode is enforced.",
-					defaultValue: "1000"
-				},
-				type: {
-					id: "s_" + id + "_pt",
-					label: "Type",
-					description: "Paging type for the table control.",
-					notes: "If not specified, will automatically determine paging type based on query record count. For best performance with large datasets, set a value of <code>server</code> to force server paging mode.",
-					values: ["none", "client", "server"]
-				}
-			}
-		},
+
 		tree: {
 			id: "tree",
 			label: "Tree",
@@ -846,8 +854,8 @@ DDK.controlOptions = function (id) {
 					id: "s_" + id + "_nst",
 					label: "Nodes Search Text",
 					description: "Custom text displayed after tree return search results",
-					notes: "Use ~recCount~ to indicate result count. Eg. Seen ~recCount~ metrics.",
-					defaultValue: "Found ~recCount~ object(s)"
+					notes: "Use &#126;reccount&#126; keyword to indicate result count. e.g. <code>&#126;reccount&#126; matching metric(s).</code>",
+					defaultValue: "Found &#126;reccount&#126; object(s)"
 				},
 				nodesSort: {
 					id: "s_" + id + "_nso",
