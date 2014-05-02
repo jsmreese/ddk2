@@ -67,57 +67,217 @@ DDK.controlOptions = function (id) {
 					notes: "",
 					values: ["false"]
 				},
-				toolbarDefault: { id: "s_" + id + "_td", label: "Toolbar Default", description: "Enables (true) or disables (false) the setting of a single default for all of the following toolbar options: 'query.top.enabled', 'preview.enabled', 'metrics.choose.enabled', 'filter.enabled', 'favorite.enabled', 'export.csv.enabled', 'filter.global.enabled', 'refresh.enabled', 'type.enabled', and 'config.enabled'.", notes: "If 'toolbar.default' is set to false, all of the above options default to false, regardless if they were individually set to true." },
-				configEnabled: { id: "s_" + id + "_ce", label: "Config Enabled", description: "Enables (true) or disables (false) the Configuration toolbar in the control.", notes: "" },
-				csvExportEnabled: { id: "s_" + id + "_ece", label: "CSV Export Enabled", description: "Enables (true) or disables (false) the 'Export to CSV' option in the control UI.", notes: "" },
-				editEnabled: { id: "s_" + id + "_edite", label: "Edit Enabled", description: "Enables (true) or disables (false) the edit option for the control.", notes: "" },
-				expandEnabled: { id: "s_" + id + "_ee", label: "Expand Enabled", description: "Enables (true) or disables (false) the ability to expand nodes in the tree control UI.", notes: "" },
-				favoriteEnabled: { id: "s_" + id + "_fe", label: "Favorites Enabled", description: "Enables (true) or disables (false) the Favorites toolbar.", notes: "" },
-				filterEnabled: { id: "s_" + id + "_fie", label: "Filter Enabled", description: "Enables (true) or disables (false) the Filter toolbar in the control UI.", notes: "" },
-				filterGlobalEnabled: { id: "s_" + id + "_fge", label: "Global Filter Enabled", description: "Enables (true) or disables (false) the display of the global text filter input in the control.", notes: "" },
-				headerEnabled: { id: "s_" + id + "_he", label: "Header Enabled", description: "Enables (true) or disables (false) the header in the control UI.", notes: "" },
-				helpEnabled: { id: "s_" + id + "_helpe", label: "Help Enabled", description: "Enables (true) or disables (false) the help button toolbar in the control.", notes: "" },
-				helpWidget: { id: "s_" + id + "_helpw", label: "Custom Help Content Widget", description: "Sets custom content for the help widget in the toolbar in the control.", notes: "" },
-				previewEnabled: { id: "s_" + id + "_pe", label: "Preview Enabled", description: "Enables (true) or disables (false) the 'Preview' option in the chart control UI.", notes: "" },
-				queryTopEnabled: { id: "s_" + id + "_qte", label: "Query Top Enabled", description: "Enables (true) or disables (false) the Top Sort toolbar in the chart control UI.", notes: "" },
-				refreshEnabled: { id: "s_" + id + "_re", label: "Refresh Enabled", description: "Enables (true) or disables (false) the refresh toolbar in the control UI.", notes: "" },
-				typeEnabled: { id: "s_" + id + "_tye", label: "Type Enabled", description: "Enables (true) or disables (false) the Type toolbar in the control UI.", notes: "" },
+				toolbarDefault: {
+					id: "s_" + id + "_td",
+					label: "Toolbar Default",
+					description: "When <code>false</code>, sets the default value of all toolbar options to <code>false</code>. <p>Affects these toolbar options: <code>query.top.enabled</code>, <code>preview.enabled</code>, <code>metrics.choose.enabled</code>, <code>filter.enabled</code>, <code>favorite.enabled</code>, <code>export.csv.enabled</code>, <code>filter.global.enabled</code>, <code>refresh.enabled</code>, <code>type.enabled<code>, and <code>config.enabled</code>.", 
+					notes: "Individual toolbars may be turned on by setting their specific options to <code>true</code>.",
+					values: ["false"]
+				},
 				
-				bottomLeft: { id: "s_" + id + "_tblw", label: "Bottom Left Widget", description: "Content to display in the bottom left toolbar in the control.", notes: "Widget name." },
-				bottomRight: { id: "s_" + id + "_tbrw", label: "Bottom Right Widget", description: "Content to display in the bottom right toolbar in the control.", notes: "Widget name." },
-				topLeft: { id: "s_" + id + "_ttlw", label: "Top Left Widget", description: "Content to display in the top left toolbar in the control.", notes: "Widget name." },
-				topRight: { id: "s_" + id + "_ttrw", label: "Top Right Widget", description: "Content to display in the top left toolbar in the control.", notes: "Widget name." }
+				
+				configEnabled: {
+					id: "s_" + id + "_ce",
+					label: "Config Enabled",
+					description: "Enables (true) or disables (false) the Configuration toolbar in the control.",
+					notes: ""
+				},
+				csvExportEnabled: {
+					id: "s_" + id + "_ece",
+					label: "CSV Export Enabled",
+					description: "Enables (true) or disables (false) the 'Export to CSV' option in the control UI.",
+					notes: ""
+				},
+				editEnabled: {
+					id: "s_" + id + "_edite",
+					label: "Edit Enabled",
+					description: "Enables (true) or disables (false) the edit option for the control.",
+					notes: ""
+				},
+				expandEnabled: {
+					id: "s_" + id + "_ee",
+					label: "Expand Enabled",
+					description: "Enables (true) or disables (false) the ability to expand nodes in the tree control UI.",
+					notes: ""
+				},
+				favoriteEnabled: {
+					id: "s_" + id + "_fe",
+					label: "Favorites Enabled",
+					description: "Enables (true) or disables (false) the Favorites toolbar.",
+					notes: ""
+				},
+				filterEnabled: {
+					id: "s_" + id + "_fie",
+					label: "Filter Enabled",
+					description: "Enables (true) or disables (false) the Filter toolbar in the control UI.",
+					notes: ""
+				},
+				filterGlobalEnabled: {
+					id: "s_" + id + "_fge",
+					label: "Global Filter Enabled",
+					description: "Enables (true) or disables (false) the display of the global text filter input in the control.",
+					notes: ""
+				},
+				headerEnabled: {
+					id: "s_" + id + "_he",
+					label: "Header Enabled",
+					description: "Enables (true) or disables (false) the header in the control UI.",
+					notes: ""
+				},
+				helpEnabled: {
+					id: "s_" + id + "_helpe",
+					label: "Help Enabled",
+					description: "Enables (true) or disables (false) the help button toolbar in the control.",
+					notes: ""
+				},
+				helpWidget: {
+					id: "s_" + id + "_helpw",
+					label: "Custom Help Content Widget",
+					description: "Sets custom content for the help widget in the toolbar in the control.",
+					notes: ""
+				},
+				previewEnabled: {
+					id: "s_" + id + "_pe",
+					label: "Preview Enabled",
+					description: "Enables (true) or disables (false) the 'Preview' option in the chart control UI.",
+					notes: ""
+				},
+				queryTopEnabled: {
+					id: "s_" + id + "_qte",
+					label: "Query Top Enabled",
+					description: "Enables (true) or disables (false) the Top Sort toolbar in the chart control UI.",
+					notes: ""
+				},
+				refreshEnabled: {
+					id: "s_" + id + "_re",
+					label: "Refresh Enabled",
+					description: "Enables (true) or disables (false) the refresh toolbar in the control UI.",
+					notes: ""
+				},
+				typeEnabled: {
+					id: "s_" + id + "_tye",
+					label: "Type Enabled",
+					description: "Enables (true) or disables (false) the Type toolbar in the control UI.",
+					notes: ""
+				},
+				
+				bottomLeft: {
+					id: "s_" + id + "_tblw",
+					label: "Bottom Left Widget",
+					description: "Content to display in the bottom left toolbar in the control.",
+					notes: "Widget name."
+				},
+				bottomRight: {
+					id: "s_" + id + "_tbrw",
+					label: "Bottom Right Widget",
+					description: "Content to display in the bottom right toolbar in the control.",
+					notes: "Widget name."
+				},
+				topLeft: {
+					id: "s_" + id + "_ttlw",
+					label: "Top Left Widget",
+					description: "Content to display in the top left toolbar in the control.",
+					notes: "Widget name."
+				},
+				topRight: {
+					id: "s_" + id + "_ttrw",
+					label: "Top Right Widget",
+					description: "Content to display in the top left toolbar in the control.",
+					notes: "Widget name."
+				}
+				
+				// add top top right and left
 			}
 		},
 		config: {
 			id: "control_config",
 			label: "Configuration",
+			description: "General Control configuration options.",
 			options: {
-				"class": { id: "s_" + id + "_c", label: "Class", description: "CSS class for additional styling in the main content.", notes: "Default value is [componentName]-default." },
-				config: { id: "s_" + id + "_con", label: "Config", dataType: "json", description: "Comma-separated list of JSON objects for scorecard or bamset control.", notes: "Keywords (including global keywords, data result set keywords, and automatic data result set aggregate keywords) may be used in this option for any column attribute; all ~ characters must be escaped as %% (double percent)." },
-				configWidget: { id: "s_" + id + "_cw", label: "Config Widget", description: "Overrides or adds chart attributes via keywords included in the widget.", notes: "Widget. Runs immediately before the control renders." },
-				controlConfigWidget: { id: "s_" + id + "_ccw", label: "Control Config Widget", description: "Sets the custom config for all series in the chart, all dynamic series, all static series, and/or for specific individual series.", notes: "Widget" },
-				controlCSS: { id: "s_" + id + "_ccss", label: "Control CSS", description: "Sets the arbitrary CSS to be included in control favorites for use with the Metrics Browser and View Designer.", notes: "Option value will be automatically wrapped in \"&lt;style&gt;&lt;/style&gt;\" tags and will affect the entire document." },
-				controlJS: { id: "s_" + id + "_cjs", label: "Control JavaScript", description: "Arbitrary javascript to be included in control favorites for use with the Metrics Browser and View Designer.", notes: "In the rendered JavaScript script element, function calls are not allowed, so code such as `console.log(\"message\");` will have no effect. Property assignments are allowed, and DDK keyword syntax will be evaluated." },
-				mouseover: { id: "s_" + id + "_mouse", label: "Mouseover", description: "Custom mouseover configurations that are activated via a data-ddk-mouseover attribute assigned to any element.", notes: "If no value is found in data-ddk-mouseover or a matching key does not exist, no mouseover will be rendered." },
-				nodataWidget: { id: "s_" + id + "_ndw", label: "No-Data Widget", description: "Custom content to be rendered when control query returns no data.", notes: "This will render for all controls except Notes Control." },
-				height: { id: "s_" + id + "_h", label: "Height", description: "Height of the content in the chart control (not including toolbars).", notes: "Default value is 300." },
-				width: { id: "s_" + id + "_w", label: "Width", description: "Width of content in the chart control (not including toolbars).", notes: "Default value is 500." }
+				class_name: {
+					id: "s_" + id + "_c",
+					label: "Class",
+					description: "CSS class for additional styling in the main content.",
+					notes: "Default value is <code>[componentName]-default</code>. <p>If adding custom control class names using this option, it is usally a good idea to include the default control class in the custom value. e.g. <code>table-default striped-blue hover-blue</code>"
+				},
+				config: {
+					id: "s_" + id + "_con",
+					label: "Config",
+					dataType: "json",
+					description: "JSON data structure used to render Control content. Describes Scorecard Control columns as well as BAM Control BAMs.",
+					notes: "Keywords (globals, data, data aggregate) may be used via DDK Keyword syntax (<code>%%KEY%%</code>). <p>DDK Keyword Alias syntax (<code>%{ATTR}%</code>) may also be used to evaluate metric attributes in the context of each data record."
+				},
+				configWidget: {
+					id: "s_" + id + "_cw",
+					label: "Config Widget",
+					description: "Widget will be executed after all Control keywords are created, but before Control content render.",
+					notes: "May be used to override automatically generated Control keywords, such as chart series keywords."
+				},
+				controlConfigWidget: {
+					id: "s_" + id + "_ccw",
+					label: "Control Config Widget",
+					description: "Widget will be executed after Control Framework keywords are created, but before Control Framework content render.",
+					notes: "May be used to override automatically generated Control Framework keywords, such as <code>table_metrics_dynamic</code>."
+				},
+				controlCSS: {
+					id: "s_" + id + "_ccss",
+					label: "Control CSS",
+					description: "Arbitrary CSS may be included in control favorites for use with the Metrics Browser and View Designer.",
+					notes: "Option value will be automatically wrapped in a <code>style</code> element and will affect the entire document."
+				},
+				controlJS: {
+					id: "s_" + id + "_cjs",
+					label: "Control JavaScript",
+					description: "Arbitrary javascript may be included in control favorites for use with the Metrics Browser and View Designer.",
+					notes: "Option value will be automatically wrapped in a <code>script</code> element. Function calls are not allowed, so code such as <code>console.log(\"message\");</code> will have no effect. <p>Property assignments are allowed, and DDK keyword syntax will be evaluated."
+				},
+				mouseover: {
+					id: "s_" + id + "_mouse",
+					label: "Mouseover",
+					description: "Mouseover configuration activated via data-ddk-mouseover attribute on the control.",
+					notes: "If no value is found in data-ddk-mouseover or a matching key does not exist, no mouseover will be rendered. Specific element for mouseover varies by control: Scorecards apply mouseover to <code>tr</code> elements, while Charts apply mouseover to <code>area</code> elements. BAMs apply mouseover to <code>div.bam</code> elements."
+				},
+				nodataWidget: {
+					id: "s_" + id + "_ndw",
+					label: "No-Data Widget",
+					description: "Custom content to be rendered when control query returns no data.",
+					notes: "This will render for all controls except Notes Control."
+				}
 			}
 		},
 		favorite: {
 			id: "control_favorite",
 			label: "Favorite",
+			description: "Options controlling the Favorite record loaded for a Control.",
 			options: {
-				fav_description: { id: "s_" + id + "_fdesc", label: "Favorite Description", description: "Favorite Bar tooltip." },
-				fav_id: { id: "s_" + id + "_fid", label: "Favorite Id", description: "Favorite Id." },
-				fav_label: { id: "s_" + id + "_flab", label: "Favorite Label", description: "Favorite Bar label." },
-				fav_uid: { id: "s_" + id + "_fuid", label: "User Id", description: "Favorite User Id" },
+				fav_description: {
+					id: "s_" + id + "_fdesc",
+					label: "Favorite Description",
+					description: "Favorite Bar tooltip.",
+					notes: "Rendered from the Favorite record description field."
+				},
+				fav_id: {
+					id: "s_" + id + "_fid",
+					label: "Favorite Id",
+					description: "Favorite record id."
+				},
+				fav_label: {
+					id: "s_" + id + "_flab",
+					label: "Favorite Label",
+					description: "Favorite Bar label.",
+					notes: "Rendered from the Favorite record label field."
+				},
+				fav_uid: {
+					id: "s_" + id + "_fuid",
+					label: "User Id",
+					description: "Owner of the loaded Favorite record."
+				}
 			}
 		},
 		chart: {
 			id: "chart",
 			label: "Chart",
+			description: "Options specific to the Chart Control.",
 			options: {
 				title: {
 					id: "s_" + id + "_ti",
@@ -131,6 +291,18 @@ DDK.controlOptions = function (id) {
 					description: "Default type used for chart series.",
 					notes: "May be overridden for any particular series using the <code>chart_series_type_...</code> options.",
 					values: ["point", "line", "stepline", "column", "stackedcolumn", "stackedcolumn100", "area", "stackedarea", "stackedarea100", "bar", "stackedbar", "stackedbar100", "pie", "doughnut"]
+				},
+				height: {
+					id: "s_" + id + "_h",
+					label: "Height",
+					description: "Height of the content in the chart control (not including toolbars).",
+					defaultValue: "300"
+				},
+				width: {
+					id: "s_" + id + "_w",
+					label: "Width",
+					description: "Width of content in the chart control (not including toolbars).",
+					defaultValue: "500"
 				},
 				autoRefreshEnabled: {
 					id: "s_" + id + "_are",
@@ -211,6 +383,7 @@ DDK.controlOptions = function (id) {
 			series: {
 				id: "series",
 				label: "Series",
+				description: "Used to configure Chart Control series.",
 				options: {
 					chartArea: {
 						id: "s_" + id + "_sca",
@@ -277,6 +450,8 @@ DDK.controlOptions = function (id) {
 				type: {
 					id: "type",
 					label: "Type",
+					description: "Used to override the default chart type for specific series.",
+					notes: "Based on these options, a series will strive to be the type that best fits the default chart type. <p>If a series appears in both the <code>bar</code> and <code>area</code> options, and the default chart type is <code>line</code>, then the series will be displayed with type <code>area</code>.",
 					options: {
 						area: {
 							id: "s_" + id + "_sta",
