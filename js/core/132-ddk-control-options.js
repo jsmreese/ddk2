@@ -115,8 +115,7 @@ DDK.controlOptions = function (id) {
 				chooseMetricsQueryWidget: {
 					id: "s_" + id + "_mcqw",
 					label: "Choose Metrics Query Widget",
-					description: "Used by the Table and Chart Controls to specify an alternate query to use for the Choose Metrics dialog.",
-					notes: "Widget name."
+					description: "Used by the Table and Chart Controls to specify an alternate query widget for the Choose Metrics dialog."
 				},
 				exportQueryWidget: { 
 					id: "s_" + id + "_eqw",
