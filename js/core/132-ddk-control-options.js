@@ -240,7 +240,7 @@ DDK.controlOptions = function (id) {
 					filterGlobalEnabled: {
 						id: "s_" + id + "_fge",
 						label: "Global Filter Enabled",
-						description: "Enables or disables the Table Control global search text input.",
+						description: "Enables or disables the Table and Tree Control global search text input.",
 						notes: "Default value is from the <code>toolbar_default</code> option.",
 						values: ["true", "false"]
 					},
