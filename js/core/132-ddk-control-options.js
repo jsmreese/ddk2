@@ -753,141 +753,129 @@ DDK.controlOptions = function (id) {
 				nodesId: {
 					id: "s_" + id + "_nid",
 					label: "Nodes Id",
-					description: "",
-					notes: "",
-					defaultValue: ""
-				},
-				nodesLevel: {
-					id: "s_" + id + "_nlvl",
-					label: "Nodes Level",
-					description: "",
-					notes: "",
+					description: "Filters the tree by returning a single level of leaf nodes of the given node id.",
+					notes: "(Not in Options Widget. For internal use) Highest priority over all option filters, if set to a value tree will ignore other option filters.",
 					defaultValue: ""
 				},
 				nodesLoad: {
 					id: "s_" + id + "_nl",
 					label: "Nodes Load",
-					description: "",
-					notes: "",
+					description: "Filters the tree with the given list of node id and open them with its leaf nodes.",
+					notes: "Third highest priority on all option filters. If set to a value, tree will ignore tree_nodes_open. Format is a comma separated list of id with single quotes. Should not contain double quotes.",
 					defaultValue: ""
 				},
 				nodesMenuDefaultCreate: {
 					id: "s_" + id + "_nmdcr",
 					label: "Nodes Menu Default Create",
-					description: "",
-					notes: "",
+					description: "Callback function when a node is created.",
+					notes: "Format is a function name or an anonymous function.",
 					defaultValue: ""
 				},
 				nodesMenuDefaultDelete: {
 					id: "s_" + id + "_nmdd",
 					label: "Nodes Menu Default Delete",
-					description: "",
-					notes: "",
+					description: "Callback function when a node is deleted.",
+					notes: "Format is a function name or an anonymous function.",
 					defaultValue: ""
 				},
 				nodesMenuDefaultEnabled: {
 					id: "s_" + id + "_nmde",
 					label: "Nodes Menu Default Enabled",
-					description: "",
-					notes: "",
+					description: "When <code>false</code>, hides the default create, edit, rename, delete items in the context menu.",
+					notes: "Actions and labels for these items can be added/modified in the nodesMenuItems",
+					values: ["true", "false"],
 					defaultValue: "true"
 				},
 				nodesMenuDefaultRename: {
 					id: "s_" + id + "_nmdr",
 					label: "Nodes Menu Default Rename",
-					description: "",
-					notes: "",
+					description: "Callback function when a node is renamed.",
+					notes: "Format is a function name or an anonymous function.",
 					defaultValue: ""
 				},
 				nodesMenuEnabled: {
 					id: "s_" + id + "_nme",
 					label: "Nodes Menu Enabled",
-					description: "",
-					notes: "",
+					description: "Enables the context menu when you right click on a node. ",
+					notes: "Actions and labels for these items can be added/modified in the nodesMenuItems",
 					defaultValue: "true"
 				},
 				nodesMenuItems: {
 					id: "s_" + id + "_nmi",
 					label: "Nodes Menu Items",
-					description: "",
-					notes: "",
+					description: "Custom items which are included on the context menu. ",
+					notes: "Should be in a JSON Format and should not contain double quotes. Options are the same with the jstree contextmenu plugin http://www.jstree.com/documentation/contextmenu.",
 					defaultValue: ""
 				},
 				nodesOnClick: {
 					id: "s_" + id + "_noc",
 					label: "Nodes On Click",
-					description: "",
-					notes: "",
+					description: "Action when a node is clicked.",
+					notes: "Difference with onselect is the onselect triggers when the tree is refreshed since the selection is retain when tree is refreshed. Format is a function name or an anonymous function.",
 					defaultValue: ""
 				},
 				nodesOnSelect: {
 					id: "s_" + id + "_nos",
 					label: "Nodes On Select",
-					description: "",
-					notes: "",
+					description: "Action that triggers when a node is selected in the tree.",
+					notes: "Format is a function name or an anonymous function.",
 					defaultValue: ""
 				},
 				nodesOnSelectEnabled: {
 					id: "s_" + id + "_nose",
 					label: "Nodes On Select Enabled",
-					description: "",
+					description: "Enables highlighing of nodes.",
 					notes: "",
 					defaultValue: "true"
 				},	
 				nodesOpen: {
 					id: "s_" + id + "_no",
 					label: "Nodes Open",
-					description: "",
-					notes: "",
+					description: "Opens the node(s) of the given list of node id.",
+					notes: "Lowest priority on all option filters. Only triggers when the other 3 option filters are empty. Format is a comma separated list of id with single quotes. Should not contain double quotes. ",
 					defaultValue: ""
 				},
 				nodesSearch: {
 					id: "s_" + id + "_ns",
 					label: "Nodes Search",
-					description: "",
-					notes: "",
+					description: "Filters the tree with the given string without their children. ",
+					notes: "Second highest priority on all option filters. If set to a value, tree will ignore tree_nodes_load and tree_nodes_open. Format is a string without single or double quotes.",
 					defaultValue: ""
 				},
 				nodesSearchText: {
 					id: "s_" + id + "_nst",
 					label: "Nodes Search Text",
-					description: "",
-					notes: "",
-					defaultValue: ""
-				},
-				nodesSearchTextEnabled: {
-					id: "s_" + id + "_nste",
-					label: "Nodes Search Text Enabled",
-					description: "",
-					notes: "",
-					defaultValue: "false"
+					description: "Custom text displayed after tree return search results",
+					notes: "Use ~recCount~ to indicate result count. Eg. Seen ~recCount~ metrics.",
+					defaultValue: "Found ~recCount~ object(s)"
 				},
 				nodesSort: {
 					id: "s_" + id + "_nso",
 					label: "Nodes Sort",
-					description: "",
-					notes: "",
+					description: "Sort columns of the tree nodes.",
+					notes: "Uses sql sorting and takes priority over the sort dropdown in the toolbar.",
 					defaultValue: ""
 				},
 				nodesSortDefault: {
 					id: "s_" + id + "_nsod",
 					label: "Nodes Sort Default",
-					description: "",
+					description: "Default value of the sort dropdown.",
 					notes: "",
-					defaultValue: ""
+					values: ["node_label", "node_name", "sort_order"],
+					defaultValue: "node_label"
 				},
 				nodesTitle: {
 					id: "s_" + id + "_nt",
 					label: "Nodes Title",
-					description: "",
-					notes: "",
+					description: "Tooltip text for the nodes.",
+					notes: "text should be wrapped in single quotes and can also use the column names. Eg. 'id = '+node_id",
 					defaultValue: ""
 				},
 				nodesTypes: {
 					id: "s_" + id + "_nty",
 					label: "Nodes Types",
-					description: "",
-					notes: "",
+					description: "Custom types of nodes.",
+					notes: "Options are the same with jstree type plugin http://www.jstree.com/documentation/types. Should be in JSON format without double quotes.",
 					defaultValue: ""
 				}
 			}
