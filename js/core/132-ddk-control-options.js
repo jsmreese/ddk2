@@ -1,26 +1,3 @@
-/*
-"nodes_id nid",
-"nodes_level nlvl",
-"nodes_load nl",
-"nodes_menu_default_create nmdcr",
-"nodes_menu_default_delete nmdd",
-"nodes_menu_default_enabled nmde true",
-"nodes_menu_default_rename nmdr",
-"nodes_menu_enabled nme true",
-"nodes_menu_items nmi",
-"nodes_onclick noc",
-"nodes_onselect nos",
-"nodes_onselect_enabled nose true",
-"nodes_open no",
-"nodes_search ns",
-"nodes_search_text nst",
-"nodes_search_text_enabled nste false",
-"nodes_sort nso",
-"nodes_sort_default nsod",
-"nodes_title nt",
-"nodes_types nty",
-*/
-
 DDK.controlOptions = function (id) {
 	return {
 		id: "ddk",
@@ -28,165 +5,333 @@ DDK.controlOptions = function (id) {
 		data: {
 			id: "data",
 			label: "Data",
+			description: "Common Control data options.",
 			options: {
-				initWidget: { id: "s_" + id + "_iw", label: "Options Widget", description: "Specifies the DDK Options Widget to set multiple options.", notes: "Widget name." },
-				keywords: { id: "s_" + id + "_keywords", label: "Keywords", description: "Overrides specific keywords, including keywords set elsewhere such as in the Options Widget.", notes: "" },
-				datasource: { id: "s_" + id + "_d", label: "Datasource", description: "Datasource to use when running the query specified in the 'query_widget' option.", notes: "Default value is 'db.amdb'." },
-				datasourceShared: { id: "s_" + id + "_dse", label: "Shared Datasource Enabled", description: "Enables (true) the use of a datasource that is being used or shared with other components.", notes: "" },
-				queryWidget: { id: "s_" + id + "_qw", label: "Query Widget", description: "Widget containing the query to run.", notes: "Widget name." },
-				queryHeaderWidget: { id: "s_" + id + "_qhw", label: "Query Header Widget", description: "Widget containing a query to run before the main query.", notes: "The value of this option is applied to the 'config.sqlheader' attribute in AMEngine." },
-				queryDim: { id: "s_" + id + "_qd", label: "Query Dimension", description: "Query dimension and x-axis for charting in the chart control.", notes: "Field name." },
-				queryDimList: { id: "s_" + id + "_qdl", label: "Query Dimension List", description: "List of query dimensions.", notes: "Comma-delimited list by label names each surrounded by single quotes. The chart dimension selector displays this list as options. If value is not [blank], the chart dimension toolbar is displayed." },
-				queryDimOrder: { id: "s_" + id + "_qdo", label: "Query Dimension Order", description: "Sort direction for the default sorting of the query dimension.", notes: "Accepted values are: ASC and DESC." },
-				queryOrder: { id: "s_" + id + "_qo", label: "Query Order", description: "Overrides the default sort direction of the query dimension.", notes: "The value of this option must be a single field and direction pair (e.g. COLUMN1 DESC) or a list of field and direction pairs (e.g. 'COLUMN1','DESC'^'COLUMN2','ASC'^'COLUMN3','DESC'" },
-				queryTop: { id: "s_" + id + "_qt", label: "Query Top", description: "Will return the TOP [value] depending on sort settings for a query.", notes: "This option uses the AMEngine's query paging facility for cross platform SQL TOP selection." },
-				queryNameEscapeChar: { id: "s_" + id + "_qfnec", label: "Query Field Name Escape Character", description: "Escape Character for the field name of the Query for the control.", notes: "" },
-				queryMode: { id: "s_" + id + "_qm", label: "Query Mode", description: "Query mode for the tree or table control.", notes: "Accepted values are: tsql, json, xml, basic, custom." },
-				beforeRender: { id: "s_" + id + "_qbr", label: "Before Render Function", description: "Executes a function on the JSON or XML response data before passing it to DataTables for rendering.", notes: "This option transforms the response data into a form acceptable to DataTables and must be set if the selected 'query.mode' option is JSON or XML." },
-				url: { id: "s_" + id + "_qu", label: "Datasource URL", description: "URL from which to retrieve the JSON or XML data.", notes: "This option must be set if the selected 'query.mode' option is json or xml." },
-				chooseMetricsDatasource: { id: "s_" + id + "_mcd", label: "Choose Metrics Datasource", description: "Datasource to use when running the query specified in 'Choose Metrics Query Widget'.", notes: "" },
-				chooseMetricsEnabled: { id: "s_" + id + "_mce", label: "Choose Metrics Enabled", description: "Enables (true) or disables (false) the 'Choose Metrics' option in the Chart or Table control UI.", notes: "" },
-				chooseMetricsQueryWidget: { id: "s_" + id + "_mcqw", label: "Choose Metrics Query Widget", description: "Specifies a different query to use for choosing available metrics.", notes: "Widget name." },
-				exportQueryWidget: { id: "s_" + id + "_eqw", label: "Export Query Widget", description: "Query used for the CSV data export.", notes: "This option is useful if the 'query_widget' option has embedded HTML or other formatting built into the SQL that is not suitable for a CSV data export." },
-				exportFilenameCSV: { id: "s_" + id + "_ecf", label: "Export CSV Filename", description: "File name of the exported CSV file.", notes: "Default value is data_export_[yyyy]-[mm]-[dd]." },
-				filter: { id: "s_" + id + "_fiv", label: "Filter", description: "Sets a custom SQL statement to filter control data.", notes: "" },
-				filterValue: { id: "s_" + id + "_fv", label: "Serialized Filters", description: "Serialized filters for the Filter toolbar.", notes: "Valid operators are LIKE, NOT LIKE, =, NOT =, >, >=, <, <=, NONE. e.g. 'Incidents,''>=''150'^'Severity,''>=''Critical'" },
-				metricsDynamic: { id: "s_" + id + "_md", label: "Dynamic Metrics", description: "Metrics to be rendered as dynamic metrics and made available in the 'Choose Metrics' option in the chart control UI.", notes: "Comma-delimited list by field names each surrounded by single quotes." },
-				metricsStatic: { id: "s_" + id + "_ms", label: "Static Metrics", description: "Metrics to be rendered as static metrics. These metrics are not available in the 'Choose Metrics' option in the Chart and Table control UI.", notes: "Comma-delimited list by field names each surrounded by single quotes." },
-				metricsFormat: { id: "s_" + id + "_mf", label: "Metrics Format", description: "Sets the display type for metrics series names.", notes: "Accepted values are: none, default, lcase, and ucase." }
+				initWidget: {
+					id: "s_" + id + "_iw",
+					label: "Options Widget",
+					description: "Options widgets provide a way to set all Control options using an ActiveMetrics widget interface.",
+					notes: "When using the Metrics Browser, the default options widget is <code>MB2_Content_Options</code>. Control options should be set via the Metrics Browser interface rather than through the Control options widget."
+				},
+				keywords: {
+					id: "s_" + id + "_keywords",
+					label: "Keywords",
+					description: "Control keywords overrides keywords set elsewhere, such as in the Control options widget or in the global keyword hash.",
+					notes: "Keywords must be formatted as a URL query string. e.g. <code>&amp;key1=value1&amp;key2=value2</code>"
+				},
+				datasource: {
+					id: "s_" + id + "_d",
+					label: "Datasource",
+					description: "Datasource to use when running the control query.",
+					defaultValue: "db.amdb"
+				},
+				datasourceShared: {
+					id: "s_" + id + "_dse",
+					label: "Shared Datasource Enabled",
+					description: "When <code>true</code>, enables Controls to use a previously created AMEngine dataset keyword.",
+					notes: "AMEngine dataset keyword must be named <code>psc_component_data</code>. If the dataset keyword is not available, the control well execute its query to create a dataset.",
+					values: ["true"]
+				},
+				queryWidget: {
+					id: "s_" + id + "_qw",
+					label: "Query Widget",
+					description: "Widget executed to create the Control query.",
+					notes: "All keywords used in the Control query must be prefixed with <code>p_</code>."
+				},
+				queryHeaderWidget: {
+					id: "s_" + id + "_qhw",
+					label: "Query Header Widget",
+					description: "Widget executed to create the Control query header.",
+					notes: "The Control query header is set to the keyword <code>config.sqlheader</code> in AMEngine."
+				},
+				queryFooterWidget: {
+					id: "s_" + id + "_qfw",
+					label: "Query Footer Widget",
+					description: "Widget executed to create the Control query footer.",
+					notes: "The Control query footer is set to the keyword <code>config.sqlfooter</code> in AMEngine."
+				},
+				queryDim: {
+					id: "s_" + id + "_qd",
+					label: "Query Dimension",
+					description: "Query dimension and x-axis for charting in the Chart Control.",
+					notes: "Field name. Not wrapped in single quotes."
+				},
+				queryDimList: {
+					id: "s_" + id + "_qdl",
+					label: "Query Dimension List",
+					description: "List of query dimensions for plotting on the Chart Control x-axis.",
+					notes: "Comma-delimited list of field names, each surrounded by single quotes. <p>When using the Metrics Browser, this option will be set automatically based on the Control data."
+				},
+				queryDimOrder: {
+					id: "s_" + id + "_qdo",
+					label: "Query Dimension Order",
+					description: "Sort direction for the default sorting of the query dimension.",
+					values: ["ASC", "DESC"]
+				},
+				queryOrder: {
+					id: "s_" + id + "_qo",
+					label: "Query Order",
+					description: "Overrides the default sort direction of the query dimension. Allows for complex query sort expressions.",
+					notes: "Option value must be a single field and direction pair. e.g. <code>COLUMN1 DESC</code>. <p>Or a list of field and direction pairs. e.g. <code>'COLUMN1','DESC'^'COLUMN2','ASC'^'COLUMN3','DESC'</code>"
+				},
+				queryTop: {
+					id: "s_" + id + "_qt",
+					label: "Query Top",
+					description: "Will return the initial number of specified records, depending on sort settings for a query.",
+					notes: "Uses the AMEngine query paging feature (<code>config.startrecord</code> and <code>config.maxrecords</code>) for cross platform SQL TOP selection. <p>AMEngine generates paged queries by delegating to the datasource driver."
+				},
+				queryNameEscapeChar: {
+					id: "s_" + id + "_qfnec",
+					label: "Query Field Name Escape Character",
+					description: "Escape Character for the field name of the Query for the control.",
+					notes: "Value must be a single decimal character code. e.g. <code>34</code> will escape all field names with double quotes. <p>Or a comma-separated list of character codes. e.g. <code>91,93</code> will escape all field names with open/close square brackets."
+				},
+				queryMode: {
+					id: "s_" + id + "_qm",
+					label: "Query Mode",
+					description: "Query mode for the tree or table control.",
+					notes: "Table and Tree Controls use options <code>json</code> or <code>xml</code> to use a non-query datasource.",
+					values: ["json", "xml", "tsql", "basic", "custom"]
+				},
+				beforeRender: {
+					id: "s_" + id + "_qbr",
+					label: "Before Render Function",
+					description: "Used by the Table and Tree Controls to execute a function on the JSON or XML response data before passing it to DataTables or JSTree for rendering.",
+					notes: "This function transforms the response data into a form acceptable to DataTables or JSTree and must be set if the selected <code>query.mode</code> option is <code>json</code> or <code>xml</code>."
+				},
+				url: {
+					id: "s_" + id + "_qu",
+					label: "Datasource URL",
+					description: "URL from which to retrieve the JSON or XML data.",
+					notes: "This option must be set if the selected <code>query.mode</code> option is <code>json</code> or <code>xml</code>."
+				},
+				chooseMetricsDatasource: {
+					id: "s_" + id + "_mcd",
+					label: "Choose Metrics Datasource",
+					description: "Datasource to use when running the query rendered by the Choose Metrics Query Widget.",
+					notes: ""
+				},
+				chooseMetricsQueryWidget: {
+					id: "s_" + id + "_mcqw",
+					label: "Choose Metrics Query Widget",
+					description: "Used by the Table and Chart Controls to specify an alternate query to use for the Choose Metrics dialog.",
+					notes: "Widget name."
+				},
+				exportQueryWidget: { 
+					id: "s_" + id + "_eqw",
+					label: "Export Query Widget",
+					description: "Query used for the CSV data export.",
+					notes: "This option is useful if the <code>query.widget</code> has embedded HTML or other formatting built into the SQL that is not suitable for a CSV data export."
+				},
+				exportFilenameCSV: {
+					id: "s_" + id + "_ecf",
+					label: "Export CSV Filename",
+					description: "File name of the exported CSV file.",
+					defaultValue: "data_export_[yyyy]-[mm]-[dd]"
+				},
+				filter: {
+					id: "s_" + id + "_fiv",
+					label: "Filter",
+					description: "Sets a custom SQL statement to filter control data.",
+					notes: ""
+				},
+				filterValue: {
+					id: "s_" + id + "_fv",
+					label: "Serialized Filters",
+					description: "Serialized representation of the Control Filter toolbar.",
+					notes: "Valid operators are <code>LIKE</code>, <code>NOT LIKE</code>, <code>=</code>, <code>NOT =</code>, <code>&gt;</code>, <code>&gt;=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>NONE</code>. e.g. <code>'Incidents','&gt;=','150'^'Severity','&gt;=','Critical'</code>"
+				},
+				metricsDynamic: {
+					id: "s_" + id + "_md",
+					label: "Dynamic Metrics",
+					description: "Fields to be rendered as dynamic fields. Dynamic fields may be added to or removed from Chart and Table Controls via the Choose Metrics dialog.",
+					notes: "Comma-delimited list of field names, each surrounded by single quotes."
+				},
+				metricsStatic: {
+					id: "s_" + id + "_ms",
+					label: "Static Metrics",
+					description: "Fields to be rendered as static fields in a Chart or Table Control. Static fields are not available in the Choose Metrics dialog.",
+					notes: "Comma-delimited list of field names, each surrounded by single quotes."
+				},
+				metricsFormat: {
+					id: "s_" + id + "_mf",
+					label: "Metrics Format",
+					description: "Sets the display case for metrics series names.",
+					notes: "By default, field names are displayed in title case (underscores to spaces, first character of words is capitalized)."
+					values: ["none", "lcase", "ucase"]
+				}
 			}
 		},
 		toolbars: {
 			id: "toolbars",
 			label: "Toolbars",
+			description: "Control toolbar buttons and custom content.",
 			options: {
 				toolbarEnabled: {
 					id: "s_" + id + "_te",
 					label: "Toolbar Enabled",
-					description: "Globally disables (false) the toolbars for the control.",
+					description: "When <code>false</code>, globally disables Control toolbars.",
 					notes: "",
 					values: ["false"]
 				},
 				toolbarDefault: {
 					id: "s_" + id + "_td",
 					label: "Toolbar Default",
-					description: "When <code>false</code>, sets the default value of all toolbar options to <code>false</code>. <p>Affects these toolbar options: <code>query.top.enabled</code>, <code>preview.enabled</code>, <code>metrics.choose.enabled</code>, <code>filter.enabled</code>, <code>favorite.enabled</code>, <code>export.csv.enabled</code>, <code>filter.global.enabled</code>, <code>refresh.enabled</code>, <code>type.enabled<code>, and <code>config.enabled</code>.", 
+					description: "When <code>false</code>, sets the default value of all Control toolbar options to <code>false</code>. <p>Affects these toolbar options: <code>query.top.enabled</code>, <code>preview.enabled</code>, <code>metrics.choose.enabled</code>, <code>filter.enabled</code>, <code>favorite.enabled</code>, <code>export.csv.enabled</code>, <code>filter.global.enabled</code>, <code>refresh.enabled</code>, <code>type.enabled<code>, and <code>config.enabled</code>.", 
 					notes: "Individual toolbars may be turned on by setting their specific options to <code>true</code>.",
 					values: ["false"]
-				},
-				
-				
-				configEnabled: {
-					id: "s_" + id + "_ce",
-					label: "Config Enabled",
-					description: "Enables (true) or disables (false) the Configuration toolbar in the control.",
-					notes: ""
-				},
-				csvExportEnabled: {
-					id: "s_" + id + "_ece",
-					label: "CSV Export Enabled",
-					description: "Enables (true) or disables (false) the 'Export to CSV' option in the control UI.",
-					notes: ""
-				},
-				editEnabled: {
-					id: "s_" + id + "_edite",
-					label: "Edit Enabled",
-					description: "Enables (true) or disables (false) the edit option for the control.",
-					notes: ""
-				},
-				expandEnabled: {
-					id: "s_" + id + "_ee",
-					label: "Expand Enabled",
-					description: "Enables (true) or disables (false) the ability to expand nodes in the tree control UI.",
-					notes: ""
-				},
-				favoriteEnabled: {
-					id: "s_" + id + "_fe",
-					label: "Favorites Enabled",
-					description: "Enables (true) or disables (false) the Favorites toolbar.",
-					notes: ""
-				},
-				filterEnabled: {
-					id: "s_" + id + "_fie",
-					label: "Filter Enabled",
-					description: "Enables (true) or disables (false) the Filter toolbar in the control UI.",
-					notes: ""
-				},
-				filterGlobalEnabled: {
-					id: "s_" + id + "_fge",
-					label: "Global Filter Enabled",
-					description: "Enables (true) or disables (false) the display of the global text filter input in the control.",
-					notes: ""
-				},
-				headerEnabled: {
-					id: "s_" + id + "_he",
-					label: "Header Enabled",
-					description: "Enables (true) or disables (false) the header in the control UI.",
-					notes: ""
-				},
-				helpEnabled: {
-					id: "s_" + id + "_helpe",
-					label: "Help Enabled",
-					description: "Enables (true) or disables (false) the help button toolbar in the control.",
-					notes: ""
-				},
-				helpWidget: {
-					id: "s_" + id + "_helpw",
-					label: "Custom Help Content Widget",
-					description: "Sets custom content for the help widget in the toolbar in the control.",
-					notes: ""
-				},
-				previewEnabled: {
-					id: "s_" + id + "_pe",
-					label: "Preview Enabled",
-					description: "Enables (true) or disables (false) the 'Preview' option in the chart control UI.",
-					notes: ""
-				},
-				queryTopEnabled: {
-					id: "s_" + id + "_qte",
-					label: "Query Top Enabled",
-					description: "Enables (true) or disables (false) the Top Sort toolbar in the chart control UI.",
-					notes: ""
-				},
-				refreshEnabled: {
-					id: "s_" + id + "_re",
-					label: "Refresh Enabled",
-					description: "Enables (true) or disables (false) the refresh toolbar in the control UI.",
-					notes: ""
-				},
-				typeEnabled: {
-					id: "s_" + id + "_tye",
-					label: "Type Enabled",
-					description: "Enables (true) or disables (false) the Type toolbar in the control UI.",
-					notes: ""
-				},
-				
-				bottomLeft: {
-					id: "s_" + id + "_tblw",
-					label: "Bottom Left Widget",
-					description: "Content to display in the bottom left toolbar in the control.",
-					notes: "Widget name."
-				},
-				bottomRight: {
-					id: "s_" + id + "_tbrw",
-					label: "Bottom Right Widget",
-					description: "Content to display in the bottom right toolbar in the control.",
-					notes: "Widget name."
-				},
-				topLeft: {
-					id: "s_" + id + "_ttlw",
-					label: "Top Left Widget",
-					description: "Content to display in the top left toolbar in the control.",
-					notes: "Widget name."
-				},
-				topRight: {
-					id: "s_" + id + "_ttrw",
-					label: "Top Right Widget",
-					description: "Content to display in the top left toolbar in the control.",
-					notes: "Widget name."
 				}
+			},
+			toolbarButtons: {
+				id: "toolbar_buttons",
+				label: "Toolbar Buttons",
+				description: "Options to enable or disable individual toolbar buttons.",
+				options: {
 				
-				// add top top right and left
+					configEnabled: {
+						id: "s_" + id + "_ce",
+						label: "Config Enabled",
+						description: "Enables or disables the Control Configuration toolbar button.",
+						notes: "Default value is from the <code>toolbar_default</code> option.",
+						values: ["true", "false"]
+					},
+					csvExportEnabled: {
+						id: "s_" + id + "_ece",
+						label: "CSV Export Enabled",
+						description: "Enables or disables the Control Export to CSV toolbar button.",
+						notes: "Default value is from the <code>toolbar_default</code> option.",
+						values: ["true", "false"]
+					},
+					chooseMetricsEnabled: {
+						id: "s_" + id + "_mce",
+						label: "Choose Metrics Enabled",
+						description: "Enables or disables the Chart and Table Control Choose Metrics toolbar button, or the Scorecard and BAM Control Build Scorecard/BAM button.",
+						notes: "Default value is from the <code>toolbar_default</code> option.",
+						values: ["true", "false"]
+					},
+					editEnabled: {
+						id: "s_" + id + "_edite",
+						label: "Edit Enabled",
+						description: "Enables or disables the Control Edit toolbar button.",
+						notes: "Default value is from the <code>toolbar_default</code> option.",
+						values: ["true", "false"]
+					},
+					expandEnabled: {
+						id: "s_" + id + "_ee",
+						label: "Expand Enabled",
+						description: "Enables or disables the Tree Control Expand Nodes buttons.",
+						notes: "Default value is from the <code>toolbar_default</code> option.",
+						values: ["true", "false"]
+					},
+					favoriteEnabled: {
+						id: "s_" + id + "_fe",
+						label: "Favorites Enabled",
+						description: "Enables or disables the Control Favorites toolbar buttons.",
+						notes: "Default value is from the <code>toolbar_default</code> option.",
+						values: ["true", "false"]
+					},
+					filterEnabled: {
+						id: "s_" + id + "_fie",
+						label: "Filter Enabled",
+						description: "Enables or disables the Control Filter toolbar buttons.",
+						notes: "Default value is from the <code>toolbar_default</code> option.",
+						values: ["true", "false"]
+					},
+					filterGlobalEnabled: {
+						id: "s_" + id + "_fge",
+						label: "Global Filter Enabled",
+						description: "Enables or disables the Table Control global search text input.",
+						notes: "Default value is from the <code>toolbar_default</code> option.",
+						values: ["true", "false"]
+					},
+					headerEnabled: {
+						id: "s_" + id + "_he",
+						label: "Header Enabled",
+						description: "Enables or disables the Control header.",
+						notes: "Default value is from the <code>toolbar_default</code> option.",
+						values: ["true", "false"]
+					},
+					helpEnabled: {
+						id: "s_" + id + "_helpe",
+						label: "Help Enabled",
+						description: "Enables or disables the Control Help toolbar button.",
+						notes: "Default value is from the <code>toolbar_default</code> option.",
+						values: ["true", "false"]
+					},
+					previewEnabled: {
+						id: "s_" + id + "_pe",
+						label: "Preview Enabled",
+						description: "Enables or disables the Control Preview toolbar button.",
+						notes: "Default value is from the <code>toolbar_default</code> option.",
+						values: ["true", "false"]
+					},
+					queryTopEnabled: {
+						id: "s_" + id + "_qte",
+						label: "Query Top Enabled",
+						description: "Enables or disables the Control Sort toolbar button.",
+						notes: "Default value is from the <code>toolbar_default</code> option.",
+						values: ["true", "false"]
+					},
+					refreshEnabled: {
+						id: "s_" + id + "_re",
+						label: "Refresh Enabled",
+						description: "Enables or disables the Control Reload toolbar button.",
+						notes: "Default value is from the <code>toolbar_default</code> option.",
+						values: ["true", "false"]
+					},
+					typeEnabled: {
+						id: "s_" + id + "_tye",
+						label: "Type Enabled",
+						description: "Enables or disables the Chart Control Chart Type toolbar button.",
+						notes: "Default value is from the <code>toolbar_default</code> option.",
+						values: ["true", "false"]
+					}
+				}
+			},
+
+			toolbarWidgets: {
+				id: "toolbar_widgets",
+				label: "Toolbar Widgets",
+				description: "Toolbar widgets add custom content to Control tooblars.",
+				options: {
+			
+					bottomLeft: {
+						id: "s_" + id + "_tblw",
+						label: "Bottom Left Widget",
+						description: "Widget to render in the Control's bottom left toolbar."
+					},
+					bottomRight: {
+						id: "s_" + id + "_tbrw",
+						label: "Bottom Right Widget",
+						description: "Widget to render in the Control's bottom right toolbar."
+					},
+					topLeft: {
+						id: "s_" + id + "_ttlw",
+						label: "Top Left Widget",
+						description: "Widget to render in the Control's top left toolbar."
+					},
+					topRight: {
+						id: "s_" + id + "_ttrw",
+						label: "Top Right Widget",
+						description: "Widget to render in the Control's top right toolbar."
+					},
+					topTopLeft: {
+						id: "s_" + id + "_tttlw",
+						label: "Top Top Left Widget",
+						description: "Widget to render in the Control's top top left toolbar."
+					},
+					topTopRight: {
+						id: "s_" + id + "_tttrw",
+						label: "Top Top Right Widget",
+						description: "Widget to render in the Control's top top right toolbar."
+					},
+
+					helpWidget: {
+						id: "s_" + id + "_helpw",
+						label: "Custom Help Content Widget",
+						description: "Widget to render in the Control's toolbar help dialog."
+					}
+				}
 			}
 		},
 		config: {
@@ -597,6 +742,153 @@ DDK.controlOptions = function (id) {
 					description: "Paging type for the table control.",
 					notes: "If not specified, will automatically determine paging type based on query record count. For best performance with large datasets, set a value of <code>server</code> to force server paging mode.",
 					values: ["none", "client", "server"]
+				}
+			}
+		},
+		tree: {
+			id: "tree",
+			label: "Tree",
+			description: "Options specific to the Tree Control.",
+			options: {
+				nodesId: {
+					id: "s_" + id + "_nid",
+					label: "Nodes Id",
+					description: "",
+					notes: "",
+					defaultValue: ""
+				},
+				nodesLevel: {
+					id: "s_" + id + "_nlvl",
+					label: "Nodes Level",
+					description: "",
+					notes: "",
+					defaultValue: ""
+				},
+				nodesLoad: {
+					id: "s_" + id + "_nl",
+					label: "Nodes Load",
+					description: "",
+					notes: "",
+					defaultValue: ""
+				},
+				nodesMenuDefaultCreate: {
+					id: "s_" + id + "_nmdcr",
+					label: "Nodes Menu Default Create",
+					description: "",
+					notes: "",
+					defaultValue: ""
+				},
+				nodesMenuDefaultDelete: {
+					id: "s_" + id + "_nmdd",
+					label: "Nodes Menu Default Delete",
+					description: "",
+					notes: "",
+					defaultValue: ""
+				},
+				nodesMenuDefaultEnabled: {
+					id: "s_" + id + "_nmde",
+					label: "Nodes Menu Default Enabled",
+					description: "",
+					notes: "",
+					defaultValue: "true"
+				},
+				nodesMenuDefaultRename: {
+					id: "s_" + id + "_nmdr",
+					label: "Nodes Menu Default Rename",
+					description: "",
+					notes: "",
+					defaultValue: ""
+				},
+				nodesMenuEnabled: {
+					id: "s_" + id + "_nme",
+					label: "Nodes Menu Enabled",
+					description: "",
+					notes: "",
+					defaultValue: "true"
+				},
+				nodesMenuItems: {
+					id: "s_" + id + "_nmi",
+					label: "Nodes Menu Items",
+					description: "",
+					notes: "",
+					defaultValue: ""
+				},
+				nodesOnClick: {
+					id: "s_" + id + "_noc",
+					label: "Nodes On Click",
+					description: "",
+					notes: "",
+					defaultValue: ""
+				},
+				nodesOnSelect: {
+					id: "s_" + id + "_nos",
+					label: "Nodes On Select",
+					description: "",
+					notes: "",
+					defaultValue: ""
+				},
+				nodesOnSelectEnabled: {
+					id: "s_" + id + "_nose",
+					label: "Nodes On Select Enabled",
+					description: "",
+					notes: "",
+					defaultValue: "true"
+				},	
+				nodesOpen: {
+					id: "s_" + id + "_no",
+					label: "Nodes Open",
+					description: "",
+					notes: "",
+					defaultValue: ""
+				},
+				nodesSearch: {
+					id: "s_" + id + "_ns",
+					label: "Nodes Search",
+					description: "",
+					notes: "",
+					defaultValue: ""
+				},
+				nodesSearchText: {
+					id: "s_" + id + "_nst",
+					label: "Nodes Search Text",
+					description: "",
+					notes: "",
+					defaultValue: ""
+				},
+				nodesSearchTextEnabled: {
+					id: "s_" + id + "_nste",
+					label: "Nodes Search Text Enabled",
+					description: "",
+					notes: "",
+					defaultValue: "false"
+				},
+				nodesSort: {
+					id: "s_" + id + "_nso",
+					label: "Nodes Sort",
+					description: "",
+					notes: "",
+					defaultValue: ""
+				},
+				nodesSortDefault: {
+					id: "s_" + id + "_nsod",
+					label: "Nodes Sort Default",
+					description: "",
+					notes: "",
+					defaultValue: ""
+				},
+				nodesTitle: {
+					id: "s_" + id + "_nt",
+					label: "Nodes Title",
+					description: "",
+					notes: "",
+					defaultValue: ""
+				},
+				nodesTypes: {
+					id: "s_" + id + "_nty",
+					label: "Nodes Types",
+					description: "",
+					notes: "",
+					defaultValue: ""
 				}
 			}
 		}
