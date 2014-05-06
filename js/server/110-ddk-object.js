@@ -1572,8 +1572,9 @@ DDK.template.render = {
 	scorecard2Row: function(rowType, co, config, globals, record) {
 		"use strict";
 		var out = "",
-			rowClassName = rowType + " " + config[rowType + "RowClassName"] + 
-			(((rowType === "body") && co.groupingKey && !_.string.toBoolean(co.groupingExpanded)) ? " ps-hidden" : ""),
+			rowClassName = rowType + " " + config[rowType + "RowClassName"],
+			//rowClassName = rowType + " " + config[rowType + "RowClassName"] + 
+			//(((rowType === "body") && co.groupingKey && !_.string.toBoolean(co.groupingExpanded)) ? " ps-hidden" : ""),
 			rowAttr = config[rowType + "RowAttr"] + 
 			(((rowType === "body" || rowType === "group") && co.groupingKey) ? " data-key=\"%%" + co.groupingKey + "%%\" " : "") + 
 			(((rowType === "body") && co.mouseover) ? " data-ddk-mouseover=\"" + co.mouseover + "\" " : "") + 

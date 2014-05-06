@@ -676,9 +676,7 @@
 				} else {
 					$elem.addClass(groupIndex % 2 ? "even" : "odd");
 					groupIndex += 1;
-					if (!isExpanded) {
-						$elem.addClass("ps-hidden");
-					}
+					$elem[isExpanded ? "removeClass" : "addClass"]("ps-hidden");
 				}
 			});
 		}
