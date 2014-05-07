@@ -110,8 +110,61 @@
 		}
 		
 		return this;
-	}
+	};
+
+	/* $.fn.breakTable jQuery plugin
+	 * Breaks an HTML table element into multiple tables
+	 * with a maximum specified height.
+	 * Returns the calling jQuery collection.
+	 * by: jsmreese
+	 */
+	$.fn.breakTable = function (maxHeight) {
+		var $this = $(this),
+			$table,
+			$thead,
+			$tbody,
+			$tfoot,
+			$rows,
+			$newTable,
+			headHeight = $this.find("thead").height(),
+			footHeight = $this.find("tfoot").height(),
+			$tables;
+			
+		if (!maxHeight) {
+			maxHeight = $.fn.breakTable.defaults.maxHeight;
+		}
+		
+		// do nothing if the table is already smaller than the max height
+		if ($this.height() < maxHeight) {
+			return this;
+		}
+		
+		// if the table is larger, split it into multiple tables
+		// add to each table a page-break-before: always rule
+		// add the thead to each table
+		// add the tfoot to the final table
+		$thead = $this.find("thead").remove();
+		$tfoot = $this.find("tfoot").remove();
+		$rows = $this.find("tr").remove();
+		$tbody = $this.find("tbody").remove();
+		
+		$table = $this.clone();
+		
+		$rows.each(function (index, elem) {
+		
+		});
+		
+
+		
+		
+		
+		return this;
+	};
 	
+	$.fn.breakTable.defaults = {
+		maxHeight: 740;
+	};
+
 	/* $.fn.isControl jQuery plugin
 	 * Returns true if an element is a DDK Control container.
 	 * If there are multiple elements in the collection, 
