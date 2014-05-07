@@ -774,7 +774,7 @@
 
 			if (isGrouped) {
 				groupScorecard(id, "2");
-			} else if (isSortable) {
+			} else if (isSortable && !DDK.outputPDF) {
 				options.table = $('#' + id).dataTable( $.extend(true, scorecardOptions, DDK.scorecard2.data[id].customOptions || {}) );
 				fixColumnSizing('#psc_scorecard2_' + id + '_widget');
 			}
@@ -783,7 +783,7 @@
 			DDK.scorecard2.resize(id);
 
 			DDK.control.init($control);
-			
+						
 			if (!config || !config.columns) {
 				if (count && DDK.eventHandler.sc2BuildColumns) {
 					$control.find("[data-ddk-button-action=\"sc2BuildColumns\"]").click();
@@ -1876,7 +1876,11 @@
 					$("[id^=\"layout_\"]").not("[id^=\"layout_header\"], [id^=\"layout_footer\"]").each(function (index, elem) {
 						$(elem).children().unwrap();
 					});
+
+					$(document).find("table").breakTable();
 					
+					$(document).expandControlTableParents()
+			
 					window.ABCpdf_go = true;
 					//console.log("pdf output");
 				}, DDK_PDF_WAIT);

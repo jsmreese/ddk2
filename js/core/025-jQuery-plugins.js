@@ -73,7 +73,7 @@
 	 * by: jsmreese
 	 */
 	$.fn.rowspan = function (columnIndex) {
-		var $rows = $(this).find("tbody").find("tr"),
+		var $rows = this.find("tbody").find("tr"),
 			lastValue,
 			$rowspanTarget,
 			rowspanCount;
@@ -114,57 +114,144 @@
 
 	/* $.fn.breakTable jQuery plugin
 	 * Breaks an HTML table element into multiple tables
-	 * with a maximum specified height.
-	 * Returns the calling jQuery collection.
+	 * with specified threshold break height.
+	 * Returns a jQuery collection containing the newly created table elements.
 	 * by: jsmreese
 	 */
-	$.fn.breakTable = function (maxHeight) {
-		var $this = $(this),
-			$table,
-			$thead,
-			$tbody,
-			$tfoot,
-			$rows,
-			$newTable,
-			headHeight = $this.find("thead").height(),
-			footHeight = $this.find("tfoot").height(),
-			$tables;
+	$.fn.breakTable = function (threshold) {
+		var newTables = [];
+
+		if (!threshold) {
+			threshold = $.fn.breakTable.defaults.threshold;
+		}
+		
+		this.each(function (item, elem) {
+			var	$elem = $(elem),
+				$table, $thead, $tbody, $tfoot, $rows, $newTable, $newBody;
 			
-		if (!maxHeight) {
-			maxHeight = $.fn.breakTable.defaults.maxHeight;
-		}
-		
-		// do nothing if the table is already smaller than the max height
-		if ($this.height() < maxHeight) {
-			return this;
-		}
-		
-		// if the table is larger, split it into multiple tables
-		// add to each table a page-break-before: always rule
-		// add the thead to each table
-		// add the tfoot to the final table
-		$thead = $this.find("thead").remove();
-		$tfoot = $this.find("tfoot").remove();
-		$rows = $this.find("tr").remove();
-		$tbody = $this.find("tbody").remove();
-		
-		$table = $this.clone();
-		
-		$rows.each(function (index, elem) {
-		
+			// do nothing if the table is already smaller than the threshold
+			if ($elem.height() < threshold) {
+				return;
+			}
+			
+			// if the table is larger, split it into multiple tables
+			// add to each table a page-break-before: always rule
+			// add the thead to each table
+			// add the tfoot to the final table
+			
+			// grab the sections of the existing table
+			$thead = $elem.find("thead").remove();
+			$tfoot = $elem.find("tfoot").remove();
+			$rows = $elem.find("tr").remove();
+			$tbody = $elem.find("tbody").remove();
+			
+			// remove the table id attribute so we don't create duplicate ids through cloning
+			$table = $elem.clone().removeAttr("id").append($thead).append($tbody);
+			
+			// create the first new table
+			$newTable = $table.clone().insertAfter($elem);
+			$newBody = $newTable.find("tbody");
+			
+			// add new table element to the new tables array
+			newTables.push($newTable.get(0));
+			
+			// add page-break-before CSS rule to all subsequent tables
+			$table.css("page-break-before", "always");
+			
+			// iterate through the existing rows
+			// creating new tables as needed
+			$rows.each(function (index, row) {
+				var $row = $(row);
+				
+				$newBody.append($row);
+				
+				// if the table height is larger than the threshold
+				// and there is more than one body row
+				// remove the row from the table
+				// and add it to a new table
+				if ($newTable.height() > threshold && $newBody.children().length > 1) {
+					$row.remove();
+					
+					$newTable = $table.clone().insertAfter($newTable);
+					$newBody = $newTable.find("tbody");				
+					newTables.push($newTable.get(0));
+					
+					$newBody.append($row);
+				}
+			});
+			
+			// append the footer to the final table
+			$newTable.append($tfoot);
+
+			// if the table height is larger than the threshold
+			// remove the footer from the table
+			// and add it to a new table
+			if ($newTable.height() > threshold) {
+				$tfoot.remove();
+				
+				$newTable = $table.clone().insertAfter($newTable);
+				newTables.push($newTable.get(0));
+				
+				$newTable.append($tfoot);
+			}
+				
+			// remove the existing table from the DOM
+			$elem.remove();
 		});
 		
-
-		
-		
-		
-		return this;
+		// return the collection of newly created tables
+		return this.pushStack(newTables, "breakTable", "");
 	};
 	
 	$.fn.breakTable.defaults = {
-		maxHeight: 740;
+		threshold: 1200
 	};
 
+	
+	/* $.fn.expandControlTableParents jQuery plugin
+	 * Finds DDK Controls that have more than one content table (via $.fn.breakTable)
+	 * and duplicates table element parents for each table so that paging will work properly in PDF output.
+	 * Returns the calling jQuery collection.
+	 * by: jsmreese
+	 */
+	$.fn.expandControlTableParents = function (threshold) {
+		var $controls = this.findControls().filter(function (index, elem) {
+				return $(elem).find("\[data-height\]").find("table").length > 1;
+			}),
+			$target;
+			
+		$controls.each(function (index, control) {
+			var $control = $(control),
+				$tables = $control.find("\[data-height\]").find("table"),
+				$controlParents = $control.parentsUntil("body"),
+				$target = $target || $controlParents.last();
+				
+			$tables.each(function (index, table) {
+				var $table = $(table),
+					$parents = $table.parentsUntil("body").clone().empty(),
+					$stack = $table;
+
+				// build the nested parent HTML structure
+				$parents.each(function (index, parent) {
+					$stack = $(parent).append($stack);
+				});
+				
+				// insert new stack into the DOM
+				$stack.insertAfter($target);
+				
+				// redirect target to the element just inserted
+				$target = $stack;
+			});
+
+			// remove the original (now empty) control
+			$control.remove();
+			$controlParents.remove();
+		});
+
+		return this;
+	};
+	
+	
 	/* $.fn.isControl jQuery plugin
 	 * Returns true if an element is a DDK Control container.
 	 * If there are multiple elements in the collection, 
