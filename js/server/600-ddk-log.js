@@ -30,6 +30,6 @@ DDK.log = (function () {
 				}
 				
 				return accumulator + "<tr style='background:" + bgColor + ";'><td style='color:#888;text-align:right;padding:2px 5px;'>" + type + "</td>" + "<td style='color:#444;padding:2px 5px;'>" + str + "</td></tr>";
-			}, "") + "</table>").replace(/%%/g, "&#37;&#37;").replace(/%\{/g, "&#37;&#123;").replace(/\}%/g, "&#123;&#37;").replace(/%@/g, "&#37;&#64;").replace(/@%/g, "&#64;&#37;").replace(DDK.regex.tilde, "&#126;");
+			}, "") + "</table>").replace(/%%/g, "&#37;&#37;").replace(/%\{/g, "&#37;&#123;").replace(/\}%/g, "&#125;&#37;").replace(/%@/g, "&#37;&#64;").replace(/@%/g, "&#64;&#37;").replace(DDK.regex.tilde, "&#126;");
 	};
 })();
