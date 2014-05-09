@@ -155,9 +155,6 @@
 			// add new table element to the new tables array
 			newTables.push($newTable.get(0));
 			
-			// add page-break-before CSS rule to all subsequent tables
-			$table.css("page-break-before", "always");
-			
 			// iterate through the existing rows
 			// creating new tables as needed
 			$rows.each(function (index, row) {
