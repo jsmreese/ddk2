@@ -31,7 +31,8 @@ DDK.controlOptions = function (id) {
 					label: "Shared Datasource Enabled",
 					description: "When <code>true</code>, enables Controls to use a previously created AMEngine dataset keyword.",
 					notes: "AMEngine dataset keyword must be named <code>psc_component_data</code>. If the dataset keyword is not available, the control well execute its query to create a dataset.",
-					values: ["true"]
+					values: ["true"],
+					examples: ["Example_DDK1_ASD_Advanced_Shared_Datasets", "Example_DDK1_SD_Charts_With_Shared_Dataset"]
 				},
 				queryWidget: {
 					id: "s_" + id + "_qw",
@@ -61,7 +62,8 @@ DDK.controlOptions = function (id) {
 					id: "s_" + id + "_qdl",
 					label: "Query Dimension List",
 					description: "List of query dimensions for plotting on the Chart Control x-axis.",
-					notes: "Comma-delimited list of field names, each surrounded by single quotes. <p>When using the Metrics Browser, this option will be set automatically based on the Control data."
+					notes: "Comma-delimited list of field names, each surrounded by single quotes. <p>When using the Metrics Browser, this option will be set automatically based on the Control data.",
+					examples: ["Example_DDK1_QDL_Chart_With_Query_Dimension_List"]
 				},
 				queryDimOrder: {
 					id: "s_" + id + "_qdo",
@@ -85,7 +87,8 @@ DDK.controlOptions = function (id) {
 					id: "s_" + id + "_qfnec",
 					label: "Query Field Name Escape Character",
 					description: "Escape Character for the field name of the Query for the control.",
-					notes: "Value must be a single decimal character code. e.g. <code>34</code> will escape all field names with double quotes. <p>Or a comma-separated list of character codes. e.g. <code>91,93</code> will escape all field names with open/close square brackets."
+					notes: "Value must be a single decimal character code. e.g. <code>34</code> will escape all field names with double quotes. <p>Or a comma-separated list of character codes. e.g. <code>91,93</code> will escape all field names with open/close square brackets.",
+					examples: ["Example_DDK1_Query_Field_Name_Escape_Character"]
 				},
 				queryMode: {
 					id: "s_" + id + "_qm",
@@ -98,13 +101,15 @@ DDK.controlOptions = function (id) {
 					id: "s_" + id + "_qbr",
 					label: "Before Render Function",
 					description: "Used by the Table and Tree Controls to execute a function on the JSON or XML response data before passing it to DataTables or JSTree for rendering.",
-					notes: "This function transforms the response data into a form acceptable to DataTables or JSTree and must be set if the selected <code>query.mode</code> option is <code>json</code> or <code>xml</code>."
+					notes: "This function transforms the response data into a form acceptable to DataTables or JSTree and must be set if the selected <code>query.mode</code> option is <code>json</code> or <code>xml</code>.",
+					examples: ["Example_DDK1_JD_Table_And_Tree_With_JSON_Data"]
 				},
 				url: {
 					id: "s_" + id + "_qu",
 					label: "Datasource URL",
 					description: "URL from which to retrieve the JSON or XML data.",
-					notes: "This option must be set if the selected <code>query.mode</code> option is <code>json</code> or <code>xml</code>."
+					notes: "This option must be set if the selected <code>query.mode</code> option is <code>json</code> or <code>xml</code>.",
+					examples: ["Example_DDK1_JD_Table_And_Tree_With_JSON_Data"]
 				},
 				chooseMetricsDatasource: {
 					id: "s_" + id + "_mcd",
@@ -185,7 +190,8 @@ DDK.controlOptions = function (id) {
 					id: "s_" + id + "_cw",
 					label: "Config Widget",
 					description: "Widget will be executed after all Control keywords are created, but before Control content render.",
-					notes: "May be used to override automatically generated Control keywords, such as chart series keywords."
+					notes: "May be used to override automatically generated Control keywords, such as chart series keywords.",
+					examples: ["Example_DDK1_Control_Config_Widget", "Example_DDK1_CCSC_Custom_Chart_Config"]
 				},
 				controlConfigWidget: {
 					id: "s_" + id + "_ccw",
@@ -209,7 +215,8 @@ DDK.controlOptions = function (id) {
 					id: "s_" + id + "_mouse",
 					label: "Mouseover",
 					description: "Mouseover configuration activated via data-ddk-mouseover attribute on the control.",
-					notes: "If no value is found in data-ddk-mouseover or a matching key does not exist, no mouseover will be rendered. Specific element for mouseover varies by control: Scorecards apply mouseover to <code>tr</code> elements, while Charts apply mouseover to <code>area</code> elements. BAMs apply mouseover to <code>div.bam</code> elements."
+					notes: "If no value is found in data-ddk-mouseover or a matching key does not exist, no mouseover will be rendered. Specific element for mouseover varies by control: Scorecards apply mouseover to <code>tr</code> elements, while Charts apply mouseover to <code>area</code> elements. BAMs apply mouseover to <code>div.bam</code> elements.",
+					examples: ["Example_DDK1_BM_Bamset_Mouseover", "Example_DDK1_SCM_Scorecard_Mouseover"]
 				},
 				nodataWidget: {
 					id: "s_" + id + "_ndw",
@@ -230,7 +237,8 @@ DDK.controlOptions = function (id) {
 					label: "Toolbar Enabled",
 					description: "When <code>false</code>, globally disables Control toolbars.",
 					notes: "",
-					values: ["false"]
+					values: ["false"],
+					examples: ["Example_DDK1_NF_Chart_Grid_With_Toolbars_Disabled"]
 				},
 				toolbarDefault: {
 					id: "s_" + id + "_td",
@@ -387,7 +395,8 @@ DDK.controlOptions = function (id) {
 					helpWidget: {
 						id: "s_" + id + "_helpw",
 						label: "Custom Help Content Widget",
-						description: "Widget to render in the Control's toolbar help dialog."
+						description: "Widget to render in the Control's toolbar help dialog.",
+						examples: ["Example_DDK1_CHC_Custom_Help_Dialog_Content"]
 					}
 				}
 			}
@@ -462,13 +471,15 @@ DDK.controlOptions = function (id) {
 					id: "s_" + id + "_hw",
 					label: "Header Widget",
 					description: "Custom content for a control's <code>thead</code> element.",
-					notes: "Will be rendered before any control-generated header content. <p>Widget may access AMEngine datasets using the <code>psc_component_data</code> datasource. <p>Header content must have the same number of (or fewer) columns than the control. The header renders nicely with an overhanging th colspan (colspan set so that it runs off the edge of the control if rendered at full column-spanned width). The entire dataset is not available at render time in server-side paging mode, so use aggregate functions with caution."
+					notes: "Will be rendered before any control-generated header content. <p>Widget may access AMEngine datasets using the <code>psc_component_data</code> datasource. <p>Header content must have the same number of (or fewer) columns than the control. The header renders nicely with an overhanging th colspan (colspan set so that it runs off the edge of the control if rendered at full column-spanned width). The entire dataset is not available at render time in server-side paging mode, so use aggregate functions with caution.",
+					examples: ["Example_DDK1_CHF_Table_With_Custom_Header_And_Footer"]
 				},
 				footerWidger: {
 					id: "s_" + id + "_fw",
 					label: "Footer Widget",
 					description: "Custom content for a control's <code>tfoot</code> element.",
-					notes: "Will be rendered after any control-generated footer content. <p>Widget may access AMEngine datasets using the <code>psc_component_data</code> datasource. <p>Footer content must have the same number of (or fewer) columns than the control. The footer renders nicely with an overhanging th colspan (colspan set so that it runs off the edge of the control if rendered at full column-spanned width). The entire dataset is not available at render time in server-side paging mode, so use aggregate functions with caution."
+					notes: "Will be rendered after any control-generated footer content. <p>Widget may access AMEngine datasets using the <code>psc_component_data</code> datasource. <p>Footer content must have the same number of (or fewer) columns than the control. The footer renders nicely with an overhanging th colspan (colspan set so that it runs off the edge of the control if rendered at full column-spanned width). The entire dataset is not available at render time in server-side paging mode, so use aggregate functions with caution.",
+					examples: ["Example_DDK1_CHF_Table_With_Custom_Header_And_Footer"]
 				}
 			}
 		},
@@ -653,7 +664,8 @@ DDK.controlOptions = function (id) {
 						id: "s_" + id + "_scw",
 						label: "Series Config Widget",
 						description: "Widget executed for any series in the chart control. Widgets may be configured for particular series, for all series, for all static series, and for all dynamic series.",
-						notes: "Value is written ad part of a JavaScript object literal. e.g. <code>'Games':'Example_DDK1_CCSC_Chart_SeriesConfig_Games', 'dynamic':'Example_DDK1_CCSC_Chart_SeriesConfig_Dynamic', 'static':'Example_DDK1_CCSC_Chart_SeriesConfig_Static', 'all':'Example_DDK1_CCSC_Chart_SeriesConfig_All'</code>"
+						notes: "Value is written ad part of a JavaScript object literal. e.g. <code>'Games':'Example_DDK1_CCSC_Chart_SeriesConfig_Games', 'dynamic':'Example_DDK1_CCSC_Chart_SeriesConfig_Dynamic', 'static':'Example_DDK1_CCSC_Chart_SeriesConfig_Static', 'all':'Example_DDK1_CCSC_Chart_SeriesConfig_All'</code>",
+						examples: ["Example_DDK1_CCSC_Custom_Chart_Config"]
 					},
 					enabled: {
 						id: "s_" + id + "_se",
@@ -665,7 +677,8 @@ DDK.controlOptions = function (id) {
 						id: "s_" + id + "_smw",
 						label: "Map Area Aattributes Widget",
 						description: "Widget used to render custom chart map area attributes.",
-						notes: "Will override default chart map area attributes, which will disable default chart map area mouseovers."
+						notes: "Will override default chart map area attributes, which will disable default chart map area mouseovers.",
+						examples: ["Example_DDK1_CMCE_Custom_Chart_Events"]
 					},
 					pie: {
 						id: "s_" + id + "_sp",
@@ -684,7 +697,8 @@ DDK.controlOptions = function (id) {
 						label: "X Axis Format",
 						description: "Format type for the x-axis.",
 						notes: "X-axis format options expect query dimension field values in the format <code>yyyy-mm-dd</code> as output by the SQL function <code>CONVERT(VARCHAR(10), &lt;datetime&gt;, 120)</code>. <p>The <code>-dash</code> format variant uses a dash between formatted strings rather than spaces or newline characters.",
-						values: ["day", "day-dash", "month", "month-dash"]
+						values: ["day", "day-dash", "month", "month-dash"],
+						examples: ["Example_DDK1_AXF_AxisX_Format"]
 					},
 					formatWidgetAxisX: {
 						id: "s_" + id + "_sxfw",
