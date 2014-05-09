@@ -629,7 +629,13 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
         return lexical.indented + (state.lastType == "operator" || state.lastType == "," ? statementIndent || indentUnit : 0);
       else if (lexical.info == "switch" && !closing && parserConfig.doubleIndentSwitch != false)
         return lexical.indented + (/^(?:case|default)\b/.test(textAfter) ? indentUnit : 2 * indentUnit);
+	  // removed this line for DDK v2.1.2
+	  // because 'aligned' indenting uses spaces
+	  // which leads to 'mixed spaces and tabs' JSHint errors in the editor
+	  // - jsmreese 2014-05-09
+	  //*****
       //else if (lexical.align) return lexical.column + (closing ? 0 : 1);
+	  //*****
       else return lexical.indented + (closing ? 0 : indentUnit);
     },
 
