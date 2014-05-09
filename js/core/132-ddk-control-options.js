@@ -191,13 +191,14 @@ DDK.controlOptions = function (id) {
 					label: "Config Widget",
 					description: "Widget will be executed after all Control keywords are created, but before Control content render.",
 					notes: "May be used to override automatically generated Control keywords, such as chart series keywords.",
-					examples: ["Example_DDK1_Control_Config_Widget", "Example_DDK1_CCSC_Custom_Chart_Config"]
+					examples: ["Example_DDK1_CCSC_Custom_Chart_Config"]
 				},
 				controlConfigWidget: {
 					id: "s_" + id + "_ccw",
 					label: "Control Config Widget",
 					description: "Widget will be executed after Control Framework keywords are created, but before Control Framework content render.",
-					notes: "May be used to override automatically generated Control Framework keywords, such as <code>table_metrics_dynamic</code>."
+					notes: "May be used to override automatically generated Control Framework keywords, such as <code>table_metrics_dynamic</code>.",
+					examples: ["Example_DDK1_Control_Config_Widget"]
 				},
 				controlCSS: {
 					id: "s_" + id + "_ccss",
