@@ -633,7 +633,9 @@
 		editorSettings: {
 			indentUnit: 4,
 			indentWithTabs: true,
-			lineNumbers: true
+			lineNumbers: true,
+			matchBrackets: true,
+			autoCloseBrackets: true
 		},
 		optionGroupModel: null,
 		optionHelpTemplate: "<span class=\"editor-option-help\" title=\"<%= camelize(id) %> (line <%= 1 + line %>)\n\n<%= label %>\n\n<%= description %>\n<%= notes %>\">?</span>"
