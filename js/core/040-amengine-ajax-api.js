@@ -1337,7 +1337,7 @@ if (jQuery){
         	            $elem.css( 'overflow','hidden');
         	            //Should be !IMPORTANT
                     }
-                    var loadobj = $('<div id="loadingobj" style="z-index:100;position: absolute;top:0;left:0;-moz-opacity: 0.5; opacity: .50; filter: alpha(opacity=50); background-color: #efefef; width: 100%;height: 100%;zoom: 1;background-image:url(' + (oldIE ? fullPath : "") + 'resources/ddk/imgs/spinner_32x32.gif);background-repeat:no-repeat;background-position:center;"></div>');
+                    var loadobj = $('<div id="loadingobj" style="z-index:100;position: absolute;top:0;left:0;-moz-opacity: 0.5; opacity: .50; filter: alpha(opacity=50); background-color: #efefef; width: 100%;height: 100%;zoom: 1;background-image:url(' + (oldIE ? fullPath : "") + 'resources/ddk/' + DDK_PATH + '/imgs/spinner_32x32.gif);background-repeat:no-repeat;background-position:center;"></div>');
                     if(navigator.userAgent.toLowerCase().indexOf("msie") > -1){
 
         	            loadobj.height($elem.height() + parseInt($elem.css("padding-top")) + parseInt($elem.css("padding-bottom")));

@@ -1346,7 +1346,7 @@ $.extend(true, DDK.dialog, {
 				$dialogContent,
 				dialogContent = "",
 				controlHelpContent = (DDK[name].data[id] && DDK[name].data[id].customHelpContent) || DDK.help[name] || [],
-				controlHelpImage = (DDK[name].data[id] && DDK[name].data[id].customHelpImage) || ((oldIE ? fullPath : "") + "resources/ddk/imgs/help/" + name + ".jpg"),
+				controlHelpImage = (DDK[name].data[id] && DDK[name].data[id].customHelpImage) || ((oldIE ? fullPath : "") + "resources/ddk/" + DDK_PATH + "/imgs/help/" + name + ".jpg"),
 				controlHelpListTag = (DDK[name].data[id] && DDK[name].data[id].customHelpListTag) || "ol",
 				controlHelpFooter = DDK[name].data[id] && DDK[name].data[id].customHelpFooter,
 				helpWidget = data.ddkHelpWidget || "",
@@ -1375,7 +1375,7 @@ $.extend(true, DDK.dialog, {
 				dialogContent += "</" + controlHelpListTag + "></div>";
 
 				if (controlHelpFooter === true) {
-					dialogContent += "<div class=\"ddk-dialog-indent ddk-dialog-separator\">For more information on these options, including instructions on how to use them, please refer to the <a href=\"" + (oldIE ? fullPath : "") + "resources/ddk/docs/PureShare%20Dashboard%20Controls.pdf\">PureShare Dashboard Controls</a> <span style=\"font-size: 80%;\">(pdf)</span> document.</div>";
+					dialogContent += "<div class=\"ddk-dialog-indent ddk-dialog-separator\">For more information on these options, including instructions on how to use them, please refer to the <a href=\"" + (oldIE ? fullPath : "") + "resources/ddk/" + DDK_PATH + "/docs/PureShare%20Dashboard%20Controls.pdf\">PureShare Dashboard Controls</a> <span style=\"font-size: 80%;\">(pdf)</span> document.</div>";
 					dialogContent += "<div class=\"ddk-dialog-indent ddk-dialog-spacer ddk-dialog-note\"><em>Please note that these options may not be available in all " + name + " controls.</em></div>";
 				} else if (controlHelpFooter) {
 					dialogContent += "<div class=\"ddk-dialog-indent ddk-dialog-separator\">" + controlHelpFooter + "</div>";

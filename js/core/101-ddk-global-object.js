@@ -343,7 +343,7 @@
 						}
 				, "sInfo": "Showing _TOTAL_ entries"
 				, "sInfoEmpty": "Showing 0 entries"
-				, "sProcessing": "<img src=\"" + (oldIE ? fullPath : "") + "resources/ddk/imgs/spinner_32x32.gif\" alt=\"Processing...\">"
+				, "sProcessing": "<img src=\"" + (oldIE ? fullPath : "") + "resources/ddk/" + DDK_PATH + "/imgs/spinner_32x32.gif\" alt=\"Processing...\">"
 			}
 		};
 
@@ -657,7 +657,7 @@
 							// get the first group header th element to have text-align: left
 							.addClass("ddk-format-metricname")
 							// add +/- image and toggle event
-							.prepend("<img class='detail-toggle' src='" + (oldIE ? fullPath : "") + "resources/ddk/imgs/scorecard/" + (isExpanded ? "minus.png" : "plus.png") + "'>")
+							.prepend("<img class='detail-toggle' src='" + (oldIE ? fullPath : "") + "resources/ddk/" + DDK_PATH + "/imgs/scorecard/" + (isExpanded ? "minus.png" : "plus.png") + "'>")
 								.click(function() {
 									var $this = $(this),
 										$img = $this.find("img:first"),
@@ -666,9 +666,9 @@
 									e.stopPropagation();
 
 									if (src.indexOf("minus.png") > -1) {
-										$img.attr("src", (oldIE ? fullPath : "") + "resources/ddk/imgs/scorecard/plus.png");
+										$img.attr("src", (oldIE ? fullPath : "") + "resources/ddk/" + DDK_PATH + "/imgs/scorecard/plus.png");
 									} else {
-										$img.attr("src", (oldIE ? fullPath : "") + "resources/ddk/imgs/scorecard/minus.png");
+										$img.attr("src", (oldIE ? fullPath : "") + "resources/ddk/" + DDK_PATH + "/imgs/scorecard/minus.png");
 									}
 									$this.closest("tr").nextUntil(".row-grouping-header").toggleClass("ps-hidden");
 									DDK.format($widget);
@@ -702,7 +702,7 @@
 						}
 				, "sInfo": "Showing _TOTAL_ entries"
 				, "sInfoEmpty": "Showing 0 entries"
-				, "sProcessing": "<img src=\"" + (oldIE ? fullPath : "") + "resources/ddk/imgs/spinner_32x32.gif\" alt=\"Processing...\">"
+				, "sProcessing": "<img src=\"" + (oldIE ? fullPath : "") + "resources/ddk/" + DDK_PATH + "/imgs/spinner_32x32.gif\" alt=\"Processing...\">"
 			}
 		};
 
@@ -727,7 +727,7 @@
 						}
 				, "sInfo": "Showing _TOTAL_ entries"
 				, "sInfoEmpty": "Showing 0 entries"
-				, "sProcessing": "<img src=\"" + (oldIE ? fullPath : "") + "resources/ddk/imgs/spinner_32x32.gif\" alt=\"Processing...\">"
+				, "sProcessing": "<img src=\"" + (oldIE ? fullPath : "") + "resources/ddk/" + DDK_PATH + "/imgs/spinner_32x32.gif\" alt=\"Processing...\">"
 			}
 		};
 
@@ -993,27 +993,27 @@
 				"types" : {
 					"organization" : {
 						"icon" : {
-							"image" : (oldIE ? fullPath : "") + "resources/ddk/imgs/tree/Organization_16.png"
+							"image" : (oldIE ? fullPath : "") + "resources/ddk/" + DDK_PATH + "/imgs/tree/Organization_16.png"
 						}
 					},
 					"contact" : {
 						"icon" : {
-							"image" : (oldIE ? fullPath : "") + "resources/ddk/imgs/tree/Contact_16.png"
+							"image" : (oldIE ? fullPath : "") + "resources/ddk/" + DDK_PATH + "/imgs/tree/Contact_16.png"
 						}
 					},
 					"category" : {
 						"icon" : {
-							"image" : (oldIE ? fullPath : "") + "resources/ddk/imgs/tree/Category_16.png"
+							"image" : (oldIE ? fullPath : "") + "resources/ddk/" + DDK_PATH + "/imgs/tree/Category_16.png"
 						}
 					},
 					"metric" : {
 						"icon" : {
-							"image" : (oldIE ? fullPath : "") + "resources/ddk/imgs/tree/Metric_16.png"
+							"image" : (oldIE ? fullPath : "") + "resources/ddk/" + DDK_PATH + "/imgs/tree/Metric_16.png"
 						}
 					},
 					"location" : {
 						"icon" : {
-							"image" : (oldIE ? fullPath : "") + "resources/ddk/imgs/tree/Location_16.png"
+							"image" : (oldIE ? fullPath : "") + "resources/ddk/" + DDK_PATH + "/imgs/tree/Location_16.png"
 						}
 					}
 				}
@@ -1377,7 +1377,7 @@
 			var $this = $(this),
 				$dialog = $this.closest(".ps-tooltip-dialog"),
 				data = $dialog.data(),
-				spinner = "<img class=\"ddk-wait\" src=\"" + (oldIE ? fullPath : "") + "resources/ddk/imgs/spinner_16x16.gif\" alt=\"Saving...\" />",
+				spinner = "<img class=\"ddk-wait\" src=\"" + (oldIE ? fullPath : "") + "resources/ddk/" + DDK_PATH + "/imgs/spinner_16x16.gif\" alt=\"Saving...\" />",
 				name = data.ddkControlName,
 				id = data.ddkControlId,
 				record = (data.ddkFavorite.id || 0);
@@ -1403,7 +1403,7 @@
 			var $this = $(this),
 				$dialog = $this.closest(".ps-tooltip-dialog"),
 				data = $dialog.data(),
-				spinner = "<img class=\"ddk-wait\" src=\"" + (oldIE ? fullPath : "") + "resources/ddk/imgs/spinner_16x16.gif\" alt=\"Saving...\" />",
+				spinner = "<img class=\"ddk-wait\" src=\"" + (oldIE ? fullPath : "") + "resources/ddk/" + DDK_PATH + "/imgs/spinner_16x16.gif\" alt=\"Saving...\" />",
 				name = data.ddkControlName || K("v_content_type") || "",
 				id = data.ddkControlId || "content",
 				record = data.record || this.value || 0,
@@ -1451,7 +1451,7 @@
 				data = $dialog.data(),
 				fav = data.ddkFavorite || {},
 				loadFavorite = e.data,
-				spinner = "<img class=\"ddk-wait\" src=\"" + (oldIE ? fullPath : "") + "resources/ddk/imgs/spinner_16x16.gif\" alt=\"Saving...\" />",
+				spinner = "<img class=\"ddk-wait\" src=\"" + (oldIE ? fullPath : "") + "resources/ddk/" + DDK_PATH + "/imgs/spinner_16x16.gif\" alt=\"Saving...\" />",
 				$label = $dialog.find(".ddk-fav-label"),
 				name = data.ddkControlName,
 				id = data.ddkControlId,
