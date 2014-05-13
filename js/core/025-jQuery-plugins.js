@@ -469,15 +469,6 @@
 	 */
 	$.fn.dataStack = function () {
 		return $.extend.apply(null, [{}].concat(this.parents().addBack().map(function (index, elem) {
-			// this check is here to prevent execptions in IE11
-			// when calling $.fn.data() on the body element when it has an onpageshow attribute
-			// more info:
-			// http://bugs.jquery.com/ticket/14894
-			// http://jira.pureshare.com/jira/browse/PSDDK-657
-			if (elem.tagName === "BODY" && _.indexOf(elem.attributes, null) > -1) {
-				return {};
-			}
-			
 			return $(elem).data();
 		}).get()));
 	};
