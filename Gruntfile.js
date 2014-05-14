@@ -7,7 +7,7 @@ module.exports = function(grunt) {
 		return {
 			expand: true,
 			cwd: "js/" + folder,
-			src: ["*.js", "!*-LEGACY.js"],
+			src: ["*.js", "!*-LEGACY.js", "!*-R.js"],
 			dest: "dist/js/client/",
 			rename: function (dest) {
 				return dest + "ddk2-" + folder + "-standard.js";
@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 		return {
 			expand: true,
 			cwd: "js/" + folder,
-			src: ["*.js", "!*-STANDARD.js"],
+			src: ["*.js", "!*-STANDARD.js", "!*-R.js"],
 			dest: "dist/js/client/",
 			rename: function (dest) {
 				return dest + "ddk2-" + folder + "-legacy.js";
@@ -34,7 +34,7 @@ module.exports = function(grunt) {
 			src: ["*.js", "!*-LEGACY.js", "!*-NR.js"],
 			dest: "dist/js/client/",
 			rename: function (dest) {
-				return dest + "ddk2r-" + folder + "-standard.js";
+				return dest + "ddk2-" + folder + "-responsive-standard.js";
 			}
 		};
 	};
@@ -46,7 +46,7 @@ module.exports = function(grunt) {
 			src: ["*.js", "!*-STANDARD.js", "!*-NR.js"],
 			dest: "dist/js/client/",
 			rename: function (dest) {
-				return dest + "ddk2r-" + folder + "-legacy.js";
+				return dest + "ddk2-" + folder + "-responsive-legacy.js";
 			}
 		};
 	};
@@ -118,22 +118,10 @@ module.exports = function(grunt) {
 					legacy_files("plugins")
 				]
 			},
-			plugins_responsive: {
-				files: [
-					standard_responsive_files("plugins"),
-					legacy_responsive_files("plugins")
-				]
-			},
 			addons: {
 				files: [
 					standard_files("addons"),
 					legacy_files("addons")
-				]
-			},
-			addons_responsive: {
-				files: [
-					standard_responsive_files("addons"),
-					legacy_responsive_files("addons")
 				]
 			},
 			server: {
