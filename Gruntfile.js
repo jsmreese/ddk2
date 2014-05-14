@@ -26,6 +26,30 @@ module.exports = function(grunt) {
 			}
 		};
 	};
+
+	var standard_responsive_files = function (folder) {
+		return {
+			expand: true,
+			cwd: "js/" + folder,
+			src: ["*.js", "!*-LEGACY.js", "!*-NR.js"],
+			dest: "dist/js/client/",
+			rename: function (dest) {
+				return dest + "ddk2r-" + folder + "-standard.js";
+			}
+		};
+	};
+	
+	var legacy_responsive_files = function (folder) {
+		return {
+			expand: true,
+			cwd: "js/" + folder,
+			src: ["*.js", "!*-STANDARD.js", "!*-NR.js"],
+			dest: "dist/js/client/",
+			rename: function (dest) {
+				return dest + "ddk2r-" + folder + "-legacy.js";
+			}
+		};
+	};
 	
 	var server_files = {
 		expand: true,
@@ -36,7 +60,7 @@ module.exports = function(grunt) {
 			return dest + "ddk2-server.js";
 		}
 	};
-	
+
 	var banner = "/* <%= pkg.title %>\n" +
 		" * Version: <%= pkg.version %>\n" +
 		" * Date: <%= grunt.template.today('yyyy-mm-dd HH:MM:ss') %>\n" +
@@ -82,16 +106,34 @@ module.exports = function(grunt) {
 					legacy_files("core")
 				]
 			},
+			core_responsive: {
+				files: [
+					standard_responsive_files("core"),
+					legacy_responsive_files("core")
+				]
+			},
 			plugins: {
 				files: [
 					standard_files("plugins"),
 					legacy_files("plugins")
 				]
 			},
+			plugins_responsive: {
+				files: [
+					standard_responsive_files("plugins"),
+					legacy_responsive_files("plugins")
+				]
+			},
 			addons: {
 				files: [
 					standard_files("addons"),
 					legacy_files("addons")
+				]
+			},
+			addons_responsive: {
+				files: [
+					standard_responsive_files("addons"),
+					legacy_responsive_files("addons")
 				]
 			},
 			server: {
