@@ -2079,227 +2079,227 @@ DDK.template.render = {
 			// if there is a currentValueColumn append it to sequence values
 			(currentValueColumn ? ",%%" + currentValueColumn + "%%" : "")
 			)
+		};
+	
+	},
+	
+	bams: function(bams) {
+		"use strict";
+		var out = "",
+			bamCount,
+			i;
+		
+		if (!_.isArray(bams)) {
+			bams = [].concat(bams);
+		}
+		bamCount = bams.length;
+		
+		if (bamCount > 1 || _.isArray(bams[0])) {
+			out += "<li class=\"ddk-bam ddk-bam-array\"><ul>";
+			for (i = 0; i < bamCount; i += 1) {
+				out += DDK.template.render.bams(bams[i]);
+			}
+			out += "</ul></li>";
+		} else if (bamCount === 1) {
+			out += DDK.template.render.bam(bams[0]);
+		}
+		
+		return out;
+	},
+		
+	bam: function(bam) {
+		"use strict";
+		var out = "",
+			attr = (bam.bamAttr || ""),
+			autoSize = ((bam.bamAutoSize === undefined) ? true : bam.bamAutoSize),
+			className = (bam.bamClassName || ""),
+			metric = (bam.bamMetric || ""),
+			metricName = (metric.split(" ")[0] || "").toLowerCase(),
+			metricDisplay = metric.split(" ")[1] || (metricName ? "currentValue" : ""),
+			metricDisplayLayout = parseInt(metric.split(" ")[2], 10) || 0,
+			displayLayouts = (DDK.template.metricDisplay[metricDisplay] ? [].concat(DDK.template.metricDisplay[metricDisplay].displayLayout) : undefined),
+			metricDisplayTemplate = ((displayLayouts && displayLayouts[metricDisplayLayout]) || ""),
+			content = ((metricName && metricDisplayTemplate) ? _.deepExtend(metricDisplayTemplate.bamContent, bam.bamContent) : bam.bamContent),
+			footer = ((metricName && metricDisplayTemplate) ? _.deepExtend(metricDisplayTemplate.bamFooter, bam.bamFooter) : bam.bamFooter),
+			header = ((metricName && metricDisplayTemplate) ? _.deepExtend(metricDisplayTemplate.bamHeader, bam.bamHeader) : bam.bamHeader),
+			title = bam.bamTitle || "",
+			subtitle = bam.bamSubtitle ||  "",
+			metricParameters,
+			i;
+		
+		//log("bam: metricDisplayTemplate");
+		//log(DDK.renderJSON(metricDisplayTemplate));
+		//log("bam: content");
+		//log(DDK.renderJSON(content));
+		//log(typeof header + " -- " + typeof title + " -- " + title + " -- " + DDK.renderJSON(header));
+		//out += "<div>" + LogMessage + "</div>";
+		
+		// set title
+		if (!title) {
+			if (metricName === "metric") {
+				title = "{{name}}";
+			} else if (metricDisplay === "metricName" || metricDisplay === "NAME" || metricDisplay === "LABEL") {
+				// do nothing
+			} else {
+				title = _.string.titleize(_.string.titleize(metricName));
+			}
+		}
+		
+		// if there is no content, create some!
+		if (!content) {
+			if (metricName && metricDisplay) {
+				// if there is a metricName and metricDisplay but no metricDisplayTemplate (and thus no content), the metricDisplay must be a generic metric attribute
+				content = {
+					bamsectionSpan: {
+						spanValue: "{{" + metricDisplay + "}}"
+					}
 				};
-	
-},
-	
-		bams: function(bams) {
-			"use strict";
-			var out = "",
-				bamCount,
-				i;
-			
-			if (!_.isArray(bams)) {
-				bams = [].concat(bams);
-			}
-			bamCount = bams.length;
-			
-			if (bamCount > 1 || _.isArray(bams[0])) {
-				out += "<li class=\"ddk-bam ddk-bam-array\"><ul>";
-				for (i = 0; i < bamCount; i += 1) {
-					out += DDK.template.render.bams(bams[i]);
-				}
-				out += "</ul></li>";
-			} else if (bamCount === 1) {
-				out += DDK.template.render.bam(bams[0]);
+				
+			} else {
+				// otherwise, just create a generic blank bam content
+				content = {
+					bamsectionSpan: {
+						spanValue: "{{}}"
+					}
+				};
 			}
 			
-			return out;
-		},
+		}
+		
+		// if the execution context is a bamset...
+		if (isBamset) {
+			// build automatic bam header
+			if (title && _.isEmpty(header)) {
+				header = {
+					bamsectionSize: "30%",
+					bamsectionSpan: {
+						spanValue: "{{bamTitle}}"
+					}
+				}
+					}
 			
-			bam: function(bam) {
-				"use strict";
-				var out = "",
-					attr = (bam.bamAttr || ""),
-					autoSize = ((bam.bamAutoSize === undefined) ? true : bam.bamAutoSize),
-					className = (bam.bamClassName || ""),
-					metric = (bam.bamMetric || ""),
-					metricName = (metric.split(" ")[0] || "").toLowerCase(),
-					metricDisplay = metric.split(" ")[1] || (metricName ? "currentValue" : ""),
-					metricDisplayLayout = parseInt(metric.split(" ")[2], 10) || 0,
-					displayLayouts = (DDK.template.metricDisplay[metricDisplay] ? [].concat(DDK.template.metricDisplay[metricDisplay].displayLayout) : undefined),
-					metricDisplayTemplate = ((displayLayouts && displayLayouts[metricDisplayLayout]) || ""),
-					content = ((metricName && metricDisplayTemplate) ? _.deepExtend(metricDisplayTemplate.bamContent, bam.bamContent) : bam.bamContent),
-					footer = ((metricName && metricDisplayTemplate) ? _.deepExtend(metricDisplayTemplate.bamFooter, bam.bamFooter) : bam.bamFooter),
-					header = ((metricName && metricDisplayTemplate) ? _.deepExtend(metricDisplayTemplate.bamHeader, bam.bamHeader) : bam.bamHeader),
-					title = bam.bamTitle || "",
-					subtitle = bam.bamSubtitle ||  "",
-					metricParameters,
-					i;
-				
-				//log("bam: metricDisplayTemplate");
-				//log(DDK.renderJSON(metricDisplayTemplate));
-				//log("bam: content");
-				//log(DDK.renderJSON(content));
-				//log(typeof header + " -- " + typeof title + " -- " + title + " -- " + DDK.renderJSON(header));
-				//out += "<div>" + LogMessage + "</div>";
-				
-				// set title
-				if (!title) {
-					if (metricName === "metric") {
-						title = "{{name}}";
-					} else if (metricDisplay === "metricName" || metricDisplay === "NAME" || metricDisplay === "LABEL") {
-						// do nothing
-					} else {
-						title = _.string.titleize(_.string.titleize(metricName));
+			// build automatic bam footer
+			if (subtitle && _.isEmpty(footer)) {
+				footer = {
+					bamsectionSize: "15%",
+					bamsectionSpan: {
+						spanValue: "{{bamSubitle}}"
+					}						
+				}
 					}
-				}
-				
-				// if there is no content, create some!
-				if (!content) {
-					if (metricName && metricDisplay) {
-						// if there is a metricName and metricDisplay but no metricDisplayTemplate (and thus no content), the metricDisplay must be a generic metric attribute
-						content = {
-							bamsectionSpan: {
-								spanValue: "{{" + metricDisplay + "}}"
-							}
-						};
-						
-					} else {
-						// otherwise, just create a generic blank bam content
-						content = {
-							bamsectionSpan: {
-								spanValue: "{{}}"
-							}
-						};
-					}
-					
-				}
-				
-				// if the execution context is a bamset...
-				if (isBamset) {
-					// build automatic bam header
-					if (title && _.isEmpty(header)) {
-						header = {
-							bamsectionSize: "30%",
-							bamsectionSpan: {
-								spanValue: "{{bamTitle}}"
-							}
-						}
-							}
-					
-					// build automatic bam footer
-					if (subtitle && _.isEmpty(footer)) {
-						footer = {
-							bamsectionSize: "15%",
-							bamsectionSpan: {
-								spanValue: "{{bamSubitle}}"
-							}						
-						}
-							}
-				}
-				
-				//content.bamsectionSize = (100 - ((header && header.bamsectionSize) ? parseInt(header.bamsectionSize, 10) : 0) - ((footer && footer.bamsectionSize) ? parseInt(footer.bamsectionSize, 10) : 0)).toString() + "%";
-				content.bamsectionSize = 100;
-				if (header) {
-					content.bamsectionSize = content.bamsectionSize - ((header && header.bamsectionSize) ? parseInt(header.bamsectionSize, 10) : 0);
-				}
-				if (footer) {
-					content.bamsectionSize = content.bamsectionSize - ((footer && footer.bamsectionSize) ? parseInt(footer.bamsectionSize, 10) : 0);
-				}
-				
-				content.bamsectionSize = content.bamsectionSize.toString() + "%";
-				
-				out += "<li class=\"ddk-bam ddk-bam-object " + (autoSize ? "ddk-bam-autosize " : "") + className + "\" " + attr + (((autoSize !== true) && (autoSize !== false)) ? (" data-bam-autosize=\"" + autoSize + "\"") : "") + (isBamset ? " data-ddk-mouseover=\"" + K("bamset_mouseover") + "\"" : "") + (isBamset ? " data-ddk-detail=\"" + DDK.template.render.dataDetail() + "\"" : "") + ">";
-				
-				if (header) {
-					out += DDK.template.render.bamsection(header, "header");
-				}
-				if (content) {
-					out += DDK.template.render.bamsection(content, "content");
-				}
-				if (footer) {
-					out += DDK.template.render.bamsection(footer, "footer");
-				}
-				
-				out += "</li>";
-				
-				//log("bam: metricName");
-				//log(metricName);
-				//log("bam: metricDisplay");
-				//log(metricDisplay);
-				
-				out = out.replace(/{{bamTitle}}/g, title).replace(/{{bamSubitle}}/g, subtitle)
-					
-					if (metricName) {
-						metricParameters = DDK.template.render.columnMetricParameters({
-							columnMetricName: metricName,
-							columnMetricDisplay: metricDisplay,
-							columns: DDK_COLUMNS
-						});
-						return out
-							.replace(/{{trend}}/gi, metricParameters.trend)
-							.replace(/{{valueMax}}/g, metricParameters.valueMax)
-							.replace(/{{valueMin}}/g, metricParameters.valueMin)
-							.replace(/{{valueSum}}/g, metricParameters.valueSum)
-							.replace(/{{valueAvg}}/g, metricParameters.valueAvg)
-							.replace(/{{prevValue}}/g, metricParameters.prevValue)
-							.replace(/{{name}}/gi, metricParameters.name)
-							.replace(/{{value}}/gi, metricParameters.value)
-							.replace(/{{\w+}}/g, function(match) {
-								return ("%%" + metricName + "_" + match.slice(2, -2) + "%%").toUpperCase();
-							});
-					} else {
-						return out;
-					}
-			},
-				
-				bamsection: function(section, sectionType) {
-					"use strict";
-					var out = "",
-						spans = (section.bamsectionSpan ? [].concat(section.bamsectionSpan) : []),
-						spanCount = spans.length,
-						attr = (section.bamsectionAttr || ""),
-						className = (section.bamsectionClassName || ""),
-						size = (section.bamsectionSize || ""),
-						i;
-					
-					out += "<div class=\"ddk-bam-" + sectionType + " " + className + "\" " + attr + (size ? " style=\"height: " + size + ";\"" : "") + ">";
-					
-					for (i = 0; i < spanCount; i += 1) {
-						out += spans[i].spanValue ? DDK.template.render.span(spans[i], spanCount) : "";
-					}
-					
-					out += "</div>";
-					
-					return out;
-				},
-					
-					span: function(span, spanCount) {
-						"use strict";
-						var out = "",
-							attr = (span.spanAttr || ""),
-							className = (span.spanClassName || ""),
-							value = (span.spanValue || ""),
-							format = (span.spanFormat ? JSON.stringify(span.spanFormat) : "");
-						// , size = (span.spanSize ? span.spanSize : (Math.floor(100 / spanCount) + "%"));
-						
-						// out += "<span class=\"ddk-format-span " + className + "\" style=\"width: " + size + ";\" " + attr + (format ? " data-format='" + format + "'" : "") + ">";
-						out += "<span class=\"ddk-format-span " + className + "\"" + attr + (format ? " data-format='" + format + "'" : "") + ">";
-						out += value;
-						out += "</span>";
-						
-						return out;
-					},
-						
-						header: function () {
-							var out = "";
-							
-							if (cwpo.header_content_widget) {
-								out += run(cwpo.header_content_widget);
-							} else if (DDK.PAGE_HEADER) {
-								if (typeof DDK.PAGE_HEADER.CONTENT === "function") {
-									out += DDK.PAGE_HEADER.CONTENT(cwpo);
-								} else if (typeof DDK.PAGE_HEADER.CONTENT === "string") {
-									out += DDK.PAGE_HEADER.CONTENT;
-								}
-							} else {
-								K("v_menubar_is_page_header", "true");
-								K("v_menubar_fcat", "PS_HEADER_MENUBAR");
-								out += run("DDK2_Menubar");
-							}
-							return out;
-						}
+		}
+		
+		//content.bamsectionSize = (100 - ((header && header.bamsectionSize) ? parseInt(header.bamsectionSize, 10) : 0) - ((footer && footer.bamsectionSize) ? parseInt(footer.bamsectionSize, 10) : 0)).toString() + "%";
+		content.bamsectionSize = 100;
+		if (header) {
+			content.bamsectionSize = content.bamsectionSize - ((header && header.bamsectionSize) ? parseInt(header.bamsectionSize, 10) : 0);
+		}
+		if (footer) {
+			content.bamsectionSize = content.bamsectionSize - ((footer && footer.bamsectionSize) ? parseInt(footer.bamsectionSize, 10) : 0);
+		}
+		
+		content.bamsectionSize = content.bamsectionSize.toString() + "%";
+		
+		out += "<li class=\"ddk-bam ddk-bam-object " + (autoSize ? "ddk-bam-autosize " : "") + className + "\" " + attr + (((autoSize !== true) && (autoSize !== false)) ? (" data-bam-autosize=\"" + autoSize + "\"") : "") + (isBamset ? " data-ddk-mouseover=\"" + K("bamset_mouseover") + "\"" : "") + (isBamset ? " data-ddk-detail=\"" + DDK.template.render.dataDetail() + "\"" : "") + ">";
+		
+		if (header) {
+			out += DDK.template.render.bamsection(header, "header");
+		}
+		if (content) {
+			out += DDK.template.render.bamsection(content, "content");
+		}
+		if (footer) {
+			out += DDK.template.render.bamsection(footer, "footer");
+		}
+		
+		out += "</li>";
+		
+		//log("bam: metricName");
+		//log(metricName);
+		//log("bam: metricDisplay");
+		//log(metricDisplay);
+		
+		out = out.replace(/{{bamTitle}}/g, title).replace(/{{bamSubitle}}/g, subtitle)
+			
+			if (metricName) {
+				metricParameters = DDK.template.render.columnMetricParameters({
+					columnMetricName: metricName,
+					columnMetricDisplay: metricDisplay,
+					columns: DDK_COLUMNS
+				});
+				return out
+					.replace(/{{trend}}/gi, metricParameters.trend)
+					.replace(/{{valueMax}}/g, metricParameters.valueMax)
+					.replace(/{{valueMin}}/g, metricParameters.valueMin)
+					.replace(/{{valueSum}}/g, metricParameters.valueSum)
+					.replace(/{{valueAvg}}/g, metricParameters.valueAvg)
+					.replace(/{{prevValue}}/g, metricParameters.prevValue)
+					.replace(/{{name}}/gi, metricParameters.name)
+					.replace(/{{value}}/gi, metricParameters.value)
+					.replace(/{{\w+}}/g, function(match) {
+						return ("%%" + metricName + "_" + match.slice(2, -2) + "%%").toUpperCase();
+					});
+			} else {
+				return out;
+			}
+	},
+		
+	bamsection: function(section, sectionType) {
+		"use strict";
+		var out = "",
+			spans = (section.bamsectionSpan ? [].concat(section.bamsectionSpan) : []),
+			spanCount = spans.length,
+			attr = (section.bamsectionAttr || ""),
+			className = (section.bamsectionClassName || ""),
+			size = (section.bamsectionSize || ""),
+			i;
+		
+		out += "<div class=\"ddk-bam-" + sectionType + " " + className + "\" " + attr + (size ? " style=\"height: " + size + ";\"" : "") + ">";
+		
+		for (i = 0; i < spanCount; i += 1) {
+			out += spans[i].spanValue ? DDK.template.render.span(spans[i], spanCount) : "";
+		}
+		
+		out += "</div>";
+		
+		return out;
+	},
+		
+	span: function(span, spanCount) {
+		"use strict";
+		var out = "",
+			attr = (span.spanAttr || ""),
+			className = (span.spanClassName || ""),
+			value = (span.spanValue || ""),
+			format = (span.spanFormat ? JSON.stringify(span.spanFormat) : "");
+		// , size = (span.spanSize ? span.spanSize : (Math.floor(100 / spanCount) + "%"));
+		
+		// out += "<span class=\"ddk-format-span " + className + "\" style=\"width: " + size + ";\" " + attr + (format ? " data-format='" + format + "'" : "") + ">";
+		out += "<span class=\"ddk-format-span " + className + "\"" + attr + (format ? " data-format='" + format + "'" : "") + ">";
+		out += value;
+		out += "</span>";
+		
+		return out;
+	},
+		
+	header: function () {
+		var out = "";
+		
+		if (cwpo.header_content_widget) {
+			out += run(cwpo.header_content_widget);
+		} else if (DDK.PAGE_HEADER) {
+			if (typeof DDK.PAGE_HEADER.CONTENT === "function") {
+				out += DDK.PAGE_HEADER.CONTENT(cwpo);
+			} else if (typeof DDK.PAGE_HEADER.CONTENT === "string") {
+				out += DDK.PAGE_HEADER.CONTENT;
+			}
+		} else {
+			K("v_menubar_is_page_header", "true");
+			K("v_menubar_fcat", "PS_HEADER_MENUBAR");
+			out += run("DDK2_Menubar");
+		}
+		return out;
+	}
 };
 
 DDK.formatObject = function(obj) {
