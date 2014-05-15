@@ -42,6 +42,10 @@ var run = function (widgetName, keywords) {
 		});
 	}
 	
+	if (_.string.startsWith(result, "AMEngine can't load starting widget ID '00' or widget name '" + widgetName + "' from database")) {
+		return "AMEngine error: widget '" + widgetName + "' does not exist.";
+	}
+	
 	return result;
 };
 
