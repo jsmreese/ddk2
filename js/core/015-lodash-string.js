@@ -650,7 +650,7 @@
 				  };
 
 				  return makeExtender;
-				})();
+				})(),
 			extendObj = extend(obj);
 		
 		_.each(str.replace(/\+/g, " ").replace(/^\?/g, "").split("&"), function (param) {
