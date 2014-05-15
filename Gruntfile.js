@@ -178,6 +178,9 @@ module.exports = function(grunt) {
 	
 	// server task
 	grunt.registerTask("server", ["clean:server", "concat:server", "uglify:server"]);
+
+	// server task
+	grunt.registerTask("resp", ["clean:client", "concat:core_responsive", "uglify:client"]);
 	
 	// client tasks
 	_.each("core plugins addons".split(" "), function (value) {
