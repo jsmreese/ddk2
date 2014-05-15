@@ -346,7 +346,7 @@ _.extend(K, {
 	// will strip prefixes from the front of keys
 	// will camelize remaining key names
 	// will coerce value types
-	toObject2: function(prefix) {
+/*	toObject2: function(prefix) {
 		var prefixes = [].concat(prefix),
 			out = {};
 		
@@ -363,6 +363,19 @@ _.extend(K, {
 			}), function (pair) {
 				out[pair[0]] = pair[1];	
 			});
+		});
+		
+		return out;
+	},
+*/
+	toObject2: function(prefix) {
+		var prefixes = [].concat(prefix),
+			out = {};
+		
+		_.each(prefixes, function (prefix) {
+			var queryString = keywordsToURL(prefix);
+			
+			_.extend(out, _.string.parseQueryString(queryString));
 		});
 		
 		return out;

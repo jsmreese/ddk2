@@ -613,7 +613,7 @@
 				value = pair[1] && decodeURIComponent(pair[1]);
 				
 			if (key && typeof value === "string") {
-				obj[key] = _.string.coerce(value);
+				extend(obj, key, _.string.coerce(value));
 			}
 		});
 		
