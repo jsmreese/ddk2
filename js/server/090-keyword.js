@@ -373,7 +373,7 @@ _.extend(K, {
 			out = {};
 		
 		_.each(prefixes, function (prefix) {
-			var queryString = keywordsToURL(prefix);
+			var queryString = keywordsToURL(prefix).replace(new RegExp(prefix, "g"), "&");
 			
 			_.extend(out, _.string.parseQueryString(queryString));
 		});

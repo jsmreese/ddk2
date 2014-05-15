@@ -605,15 +605,61 @@
 	// can improve the implementation later if required
 	// see http://benalman.com/projects/jquery-bbq-plugin/ for a more robust handling of query strings
 	parseQueryString: function(str) {
-		var obj = {};
+		var obj = {},
+			/* extend - 0.0.3.1
+			 * a teeny-tiny JavaScript namespacing script 
+			 * https://github.com/searls/extend.js
+			 * https://github.com/jsmreese/extend.js
+			 * 0.0.3.1: jsmreese - edited makeExtender to create an empty object when no value argument is passed
+			 * Customized version to function in AMEngine server JavaScript
+			 */
+			extend = (function () {
+				  var isExtensible, makeExtender, originalExtend, resolveAncestors, verifyDistinctness;
+
+				  makeExtender = function(top) {
+					return function(name, value) {
+					  var ancestors, leaf, parent;
+
+					  ancestors = name.split(/[./\\]/g);
+					  leaf = ancestors.pop();
+					  parent = resolveAncestors(ancestors, top);
+					  verifyDistinctness(name, value, parent[leaf]);
+					  if (isExtensible(parent[leaf], value)) {
+						_(parent[leaf]).extend(value);
+					  } else { // if (arguments.length > 1) {
+						parent[leaf] = _.isUndefined(value) ? {} : value; // value
+					  }
+					  return parent[leaf];
+					};
+				  };
+
+				  isExtensible = function(existing, value) {
+					return (existing != null) && !_(value).isFunction() && !_(existing).isFunction();
+				  };
+
+				  resolveAncestors = function(ancestors, top) {
+					return _(ancestors).reduce(function(ancestor, child) {
+					  return ancestor[child] || (ancestor[child] = {});
+					}, top);
+				  };
+
+				  verifyDistinctness = function(name, value, existing) {
+					if (_(existing).isFunction() && (value != null) && existing !== value) {
+					  throw "Cannot define a new function \"" + name + "\", because one is already defined.";
+					}
+				  };
+
+				  return makeExtender;
+				})();
+			extendObj = extend(obj);
 		
 		_.each(str.replace(/\+/g, " ").replace(/^\?/g, "").split("&"), function (param) {
 			var pair = param.split("="),
 				key = pair[0] && decodeURIComponent(pair[0]),
 				value = pair[1] && decodeURIComponent(pair[1]);
 				
-			if (key && typeof value === "string") {
-				extend(obj, key, _.string.coerce(value));
+			if (key && typeof value === "string" && value) {
+				extendObj(_.string.camelize(key), _.string.coerce(value));
 			}
 		});
 		
