@@ -52,7 +52,7 @@
 		
 		elem = document.createElement("script");
 		elem.onload = function (e) {
-			DDK.info("Script load complete.", settings.src);
+			DDK.log("Script load complete.", settings.src);
 			ret.resolve();
 		};
 		elem.onerror = function (e) {
@@ -91,7 +91,7 @@
 		elem = document.createElement("link");
 		elem.rel = "stylesheet";
 		elem.onload = function (e) {
-			DDK.info("Style load complete.", settings.src);
+			DDK.log("Style load complete.", settings.src);
 			ret.resolve();
 		};
 		elem.onerror = function (e) {
