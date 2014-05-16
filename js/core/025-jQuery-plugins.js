@@ -66,6 +66,45 @@
 		return ret.then(settings.success).fail(settings.error);
 	};
 
+	/* $.loadStyle jQuery plugin
+	 * Loads a stylesheet link element onto the page.
+	 * Does not use $.ajax().
+	 * Structured as a jQuery plugin because that's where DOM Manipulation tools are found.
+	 * Returns a jQuery Deferred object.
+	 * Accepts src, success, error, or a settings object
+	 * by: jsmreese
+	 */
+	$.loadStyle = function (src, success, error) {
+		var elem,
+			settings = (_.isPlainObject(src) ? src : {
+				src: src,
+				success: success,
+				error: error
+			}),
+			ret = $.Deferred();
+
+		if (!settings.src) {
+			DDK.warn("$.loadStyle(): no `src` argument."); 
+			return;
+		}
+
+		elem = document.createElement("link");
+		elem.rel = "stylesheet";
+		elem.onload = function (e) {
+			DDK.info("Style load complete.", settings.src);
+			ret.resolve();
+		};
+		elem.onerror = function (e) {
+			DDK.error("Style load error.", settings.src);
+			ret.reject();
+		};
+
+		elem.href = settings.src;
+		document.head.appendChild(elem);
+		
+		return ret.then(settings.success).fail(settings.error);
+	};
+	
 	/* $.fn.rowspan jQuery plugin
 	 * Adds rowspans to an html table element
 	 * for td elements at the provided column index.
