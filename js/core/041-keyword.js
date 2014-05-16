@@ -304,7 +304,17 @@
 		toObject: function(prefix) {
 			return daaHash.toObject(prefix || "");
 		},
+		
+		toRequestData: function () {
+			return _.omit(K.toObject(), function (value, key) {
+				return _.string.startsWith(key, "sec.");
+			});
+		},
 
+		toRequestURL: function () {
+			return "&" + $.param(K.toRequestData());
+		},
+		
 		// .setDefault(key, value)
 		setDefault: function(key, value) {
 			function setDefaultKeywordValue(_value, _key) {
