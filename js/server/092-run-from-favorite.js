@@ -6,7 +6,7 @@ var runFromFavorite = function (favoriteId, keywords) {
 				queryWidget: "PSC_Favorites_Record_Query",
 				columnPrefix: "sci_fav_",
 				datasetMode: "array",
-				keywords: "&ddk.fav.id=" + favoriteId,
+				keywords: "&ddk_fav_id=" + favoriteId,
 				shouldCamelizeKeys: true,
 				useCoercedTypes: false
 			},
