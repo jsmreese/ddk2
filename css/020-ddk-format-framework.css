@@ -1,0 +1,130 @@
+
+.format-bulb:before {
+	content: '\01F0';
+	font-family: ddk_icon;
+	line-height: 1;
+}
+
+.square .format-bulb:before {
+	content: '\01F5';
+}
+
+.donut .format-bulb:before {
+	content: '\0218';
+}
+
+.flag .format-bulb:before {
+	content: '\0201';
+}
+
+.star .format-bulb:before {
+	content: '\0200';
+}
+
+.dot .format-bulb:before {
+	content: '\01FF';
+}
+
+.format-arrow:before {
+	font-family: ddk_icon;
+	line-height: 1;
+}
+
+.format-arrow.up:before {
+	content: '\01F1';
+}
+.format-arrow.down:before {
+	content: '\01F2';
+}
+.format-arrow.neutral:before {
+	content: '-';	
+}
+
+.arrow-xthin .format-arrow.up:before {
+	content: '\01F9';
+}
+.arrow-xthin .format-arrow.down:before {
+	content: '\01FA';
+}
+
+.arrow-thin .format-arrow.up:before {
+	content: '\0208';
+}
+.arrow-thin .format-arrow.down:before {
+	content: '\0209';
+}
+
+.triangle .format-arrow.up:before {
+	content: '\01F3';
+}
+.triangle .format-arrow.down:before {
+	content: '\01F4';
+}
+
+.caret-thick .format-arrow.up:before {
+	content: '\020D';
+}
+.caret-thick .format-arrow.down:before {
+	content: '\020A';
+}
+
+.caret .format-arrow.up:before {
+	content: '\0211';
+}
+.caret .format-arrow.down:before {
+	content: '\020E';
+}
+
+.chevron .format-arrow.up:before {
+	content: '\0215';
+}
+.chevron .format-arrow.down:before {
+	content: '\0212';
+}
+
+.plus-minus .format-arrow.up:before {
+	content: '\0206';
+}
+.plus-minus .format-arrow.down:before {
+	content: '\0207';
+}
+.plus-minus .format-arrow.neutral:before {
+	content: '';
+}
+
+.plus-minus-circle .format-arrow.up:before {
+	content: '\01FB';
+}
+.plus-minus-circle .format-arrow.down:before {
+	content: '\01FC';
+}
+.plus-minus-circle .format-arrow.neutral:before {
+	content: '';
+}
+
+.plus-minus-square .format-arrow.up:before {
+	content: '\01FD';
+}
+.plus-minus-square .format-arrow.down:before {
+	content: '\01FE';
+}
+.plus-minus-square .format-arrow.neutral:before {
+	content: '';
+}
+
+.check-x .format-arrow.up:before {
+	content: '\0202';
+}
+.check-x .format-arrow.down:before {
+	content: '\0204';
+}
+.check-x .format-arrow.neutral:before {
+	content: '';
+}
+
+.thumb .format-arrow.up:before {
+	content: '\0216';
+}
+.thumb .format-arrow.down:before {
+	content: '\0217';
+}

@@ -1,0 +1,387 @@
+
+	/* Scorecard CSS */
+
+	/* support for footable */
+	.ddk-scorecard.footable > thead > tr > th > span.footable-sort-indicator {
+		position: absolute;
+		right: 4px;
+		bottom: 2px;
+		color: #aaa;
+	}
+	
+	.ddk-scorecard.footable > thead > tr > th.footable-sortable {
+		position: relative;
+	}
+	
+	.ddk-scorecard.footable.breakpoint > tbody > tr > td > span.footable-toggle ~div {
+		margin-left: 30px;
+	}
+	
+	.ddk-scorecard .footable-toggle {
+		position: absolute;
+	}
+	
+	.ddk-scorecard td.footable-visible {
+		position: relative;
+	}
+
+	.ddk-scorecard .footable-row-detail-value {
+		text-align: left;
+	}
+	
+	.ddk-scorecard .footable-row-detail-name {
+		text-align: left;
+		font-weight: bold;
+		font-size: 0.75em;
+		color: #0C59AB;
+	}
+	
+	.ddk-scorecard .footable-row-detail-value {
+		font-size: 0.75em;
+	}	
+	/* end footable */
+	
+	.ps-scorecard {
+		/* float: left; */
+		overflow: hidden;
+		/* width: 100%; */
+	}
+	
+	.ps-scorecard.ps-scorecard-grouped,
+	.ps-scorecard.ps-scorecard-no-sort {
+		overflow: auto;	
+	}
+	
+	[id^="psc_scorecard2_data_"].ps-scorecard.ps-scorecard-no-sort {
+		overflow-y: hidden;
+		overflow-x: auto;
+	}
+	[id^="psc_scorecard2_data_"].ps-scorecard.ps-scorecard-grouped {
+		overflow-y: hidden;	
+		overflow-x: auto;	
+	}
+	.ps-content-block [id^="psc_scorecard2_data_"].ps-scorecard.ps-scorecard-grouped {
+		overflow-y: auto;		
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	 * scorecard-default
+	 */
+	 
+	table.scorecard-default {
+		line-height: 1.5;
+	}
+	
+	table.scorecard-default {
+		font-size: 16px;
+		margin: 0 auto;
+		clear: both;
+		width: 100%;
+	}
+	
+	table.scorecard-default thead th {
+		padding: 1px 2px;
+		border-bottom: 1px solid #ddd;
+		font-size: 14px;
+		font-weight: bold;
+		vertical-align: bottom;
+	}
+
+	table.scorecard-default tbody th {
+		padding: 1px 2px;
+		font-weight: bold;
+	}
+
+	table.scorecard-default tbody th img.detail-toggle {
+		margin-right: 5px;
+	}
+	
+	table.scorecard-default tfoot th {
+		padding: 1px 2px;
+		border-top: 1px solid black;
+		font-weight: bold;
+	}
+	
+	table.scorecard-default tr.heading2 td {
+		border-bottom: 1px solid #ddd;
+	}
+	
+	table.scorecard-default td {
+		padding: 1px 2px;
+		color: #444;
+	}
+	
+	table.scorecard-default td.center {
+		text-align: center;
+	}
+
+	table.scorecard-default tr.row-grouping-header{
+		background-color: #eee;
+	}
+	
+	table.scorecard-default tr.group th {
+		border-top: 1px solid #ccc;
+	}
+
+	.group .ddk-icon.toggle {
+		color: #aaa;
+		position: absolute;
+	}
+	
+	.group .ddk-icon.toggle ~ div {
+		margin-left: 1em;
+	}
+	
+	table.scorecard-default tr.odd {
+		background-color: white; /* #F2F8FF; */ /* E2EEFF */
+	}
+	
+	table.scorecard-default tr.even {
+		background-color: white;
+	}
+	
+	table.scorecard-default tr td.sorting_1,
+	table.scorecard-default tr td.sorting_2,
+	table.scorecard-default tr td.sorting_3	{ background-color: white; }
+
+	table.scorecard-default thead th.sorting,
+	table.scorecard-default thead th.sorting_asc,
+	table.scorecard-default thead th.sorting_desc {
+		padding: 2px 12px 2px 1px;
+	}
+	
+	table.scorecard-default tbody td {
+		border-bottom: 1px solid #F4F4F4;
+	}
+	
+	
+	table.scorecard-default tfoot th,
+	table.scorecard-default tfoot td {
+		vertical-align: top;
+	}
+/*	
+	table.scorecard-default span {
+		margin-right: 5px;
+	}
+*/
+
+	table.scorecard-default th,
+	table.scorecard-default td {
+		text-align: right;
+	}
+/*
+	table.scorecard-default th:first-child,
+	table.scorecard-default td:first-child {
+		text-align: left;
+	}
+*/
+	table.scorecard-default th.ddk-format-abbreviation,
+	table.scorecard-default td.ddk-format-abbreviation,
+	table.scorecard-default th.ddk-format-metricname,
+	table.scorecard-default td.ddk-format-metricname {
+		text-align: left;
+	}
+	
+	td.ddk-format-bullet canvas {
+		background-color: #EEE;
+	}
+
+
+/*
+	table.scorecard-default td:first-child {
+		padding-left: 5px;
+	}
+*/
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	 * scorecard-default barchart nohead
+	 */
+	 
+	table.scorecard-default.barchart td.ddk-format-bar {
+		width: 50%;
+	}
+	
+	table.scorecard-default.nohead thead {
+		display: none
+	}
+	
+	/* Table CSS */
+	table {
+		border-spacing: 0;
+	}
+/*	
+	.ps-table {
+		float: left;
+		width: 100%;
+	}
+*/
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	 * table-default
+	 */
+	table.table-default {
+		margin: 0 auto;
+		clear: both;
+		width: 100%;
+	}
+	
+	table.table-default thead th {
+		padding: 2px 13px 2px 5px;
+		border-bottom: 1px solid #ddd;
+		font-weight: bold;
+		cursor: pointer;
+		* cursor: hand;
+	}
+	
+	table.table-default tfoot th {
+		padding: 2px 13px 2px 5px;
+		border-top: 1px solid black;
+		font-weight: bold;
+	}
+	
+	table.table-default tr.heading2 td {
+		border-bottom: 1px solid #ddd;
+	}
+	
+	table.table-default td {
+		padding: 2px 5px;
+		color: #444;
+	}
+	
+	table.table-default td.center {
+		text-align: center;
+	}
+
+	
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	 * table-form
+	 */
+	table.table-form {
+		margin: 0 auto;
+		clear: both;
+		width: 100%;
+	}
+	
+	table.table-form thead th {
+		padding: 2px 13px 2px 5px;
+		border-bottom: 1px solid #ddd;
+		font-weight: bold;
+		cursor: pointer;
+		* cursor: hand;
+	}
+	
+	table.table-form tfoot th {
+		padding: 2px 13px 2px 5px;
+		border-top: 1px solid black;
+		font-weight: bold;
+	}
+	
+	table.table-form tr.heading2 td {
+		border-bottom: 1px solid #ddd;
+	}
+	
+	table.table-form td {
+		padding: 0;
+		color: #444;
+	}
+	
+	table.table-form td.center {
+		text-align: center;
+	}
+	
+	.table-form input {
+		width: 100%;
+		box-sizing: border-box;
+		margin: 0;
+		border: 1px solid #ccc;
+	}
+	
+	#ddk_body .table-form button {
+		background: transparent;
+		border: 1px solid transparent;
+		height: 18px;
+		width: 18px;
+	}
+	
+	#ddk_body .table-form tr, #ddk_body .table-form td { background: transparent; }
+	
+	.table-form tr:hover { background: #eee; }
+	.table-form .sorting_desc { background: url('../themes/ps-doral/table/sort-desc.png') no-repeat center right; }
+	.table-form .sorting_asc { background: url('../themes/ps-doral/table/sort-asc.png') no-repeat center right; }
+
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	 * table-smooth
+	 */
+	table.table-smooth {
+		margin: 0 auto;
+		clear: both;
+		width: 100%;
+	}
+	
+	table.table-smooth thead th {
+		padding: 2px 13px 2px 5px;
+		border-bottom: 1px solid #ddd;
+		font-weight: bold;
+		cursor: pointer;
+		* cursor: hand;
+	}
+	
+	table.table-smooth tfoot th {
+		padding: 2px 13px 2px 5px;
+		border-top: 1px solid black;
+		font-weight: bold;
+	}
+	
+	table.table-smooth tr.heading2 td {
+		border-bottom: 1px solid #ddd;
+	}
+	
+	table.table-smooth td {
+		padding: 2px 5px;
+		color: #444;
+	}
+	
+	table.table-smooth td.center {
+		text-align: center;
+	}
+
+		
+	.table-smooth tr.odd {
+		background-color: #f0f0f0;
+	}
+	
+	.table-smooth tr.even {
+		background-color: white;
+	}
+	
+	.table-smooth tr.odd td.sorting_1 {
+		background-color: #e9e9e9;
+	}
+	
+	.table-smooth tr.odd td.sorting_2 {
+		background-color: #ececec;
+	}
+	
+	.table-smooth tr.odd td.sorting_3 {
+		background-color: #efefef;
+	}
+	
+	.table-smooth tr.even td.sorting_1 {
+		background-color: #f4f4f4;
+	}
+	
+	.table-smooth tr.even td.sorting_2 {
+		background-color: #f8f8f8;
+	}
+	
+	.table-smooth tr.even td.sorting_3 {
+		background-color: #fcfcfc;
+	}
+	
+	.table-smooth .sorting_asc {
+		background: url('../imgs/sort_asc_smooth.png') no-repeat center right;
+	}
+	
+	.table-smooth .sorting_desc {
+		background: url('../imgs/sort_desc_smooth.png') no-repeat center right;
+	}
+
+

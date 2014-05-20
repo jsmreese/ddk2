@@ -1,0 +1,75 @@
+	
+	/* Bamset CSS */
+	.ddk-bam-header > span,
+	.ddk-bam-content > span,
+	.ddk-bam-footer > span {
+		display: inline-block;
+		height: 100%;
+		margin: 0;
+		padding: 0;
+		/* vertical-align: middle; */
+	}
+	
+	.ddk-bam-header,
+	.ddk-bam-footer {
+		color: #ccc;
+	}
+
+	.ddk-bam-header,
+	.ddk-bam-content,
+	.ddk-bam-footer {
+		vertical-align: middle;
+	}
+/*	
+	.ddk-bamset .ddk-bam-object {
+		border: 1px solid #eee;
+		border-radius: 20px;
+	}
+*/	
+	.ddk-bamset {
+		height: 100%;
+		overflow: hidden;
+		text-align: center;
+		width: 100%;
+		padding-top: 5px;	
+	}
+
+	.ddk-bamset[data-config=""] {
+		overflow: visible;
+		height: auto;
+	}
+	
+	.ddk-bamset ul {
+		display: block;
+		float: left;
+		height: 100%;
+		list-style: none;
+		margin: 0;
+		overflow: hidden;
+		padding: 0;
+		width: 100%;
+	}
+	
+	.ddk-bamset ul.ddk-bamset-scroll-horizontal {
+		overflow-x: scroll;
+		overflow-y: hidden;
+		text-align: left;
+		white-space: nowrap;
+	}
+	
+	.ddk-bamset ul.ddk-bamset-scroll-vertical {
+		overflow-x: hidden;
+		overflow-y: scroll;
+	}
+	
+	.ddk-bamset li {
+		display: block;
+		float: left;
+		list-style: none;
+	}
+	
+	.ddk-bamset-scroll-horizontal > li {
+		display: inline-block;
+		float: none;
+		text-align: center;
+	}

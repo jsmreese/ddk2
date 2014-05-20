@@ -1,0 +1,21 @@
+	/* Tree CSS */
+	.jstree-search{
+		color: black !important;
+		font-style: normal !important;
+	}
+	.ps-tree {
+		/* float: left; */
+		padding: 5px;
+		/* width: 97%; */
+	}
+	.ps-tree>div{
+		overflow-y: auto;
+		width: 100%;
+	}
+	
+	.ps-tree-chooser{
+		width: 25px;
+		height: 25px;
+		font-size: 20px;
+		margin-left: 5px;
+	}

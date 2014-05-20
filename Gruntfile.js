@@ -85,6 +85,9 @@ module.exports = function(grunt) {
 			},
 			server: {
 				src: ["dist/js/server"]
+			},
+			css: {
+				src: ["dist/css"]
 			}
 		},
 		
@@ -131,6 +134,30 @@ module.exports = function(grunt) {
 				files: [
 					server_files
 				]
+			},
+			css: {
+				files: [
+					// standard build
+					{
+						expand: true,
+						cwd: "css/",
+						src: ["*.css", "!*-LEGACY.css", "!*-NR.css"],
+						dest: "dist/css/",
+						rename: function (dest) {
+							return dest + "ddk2-responsive-standard.css";
+						}
+					},
+					// legacy build
+					{
+						expand: true,
+						cwd: "css/",
+						src: ["*.css", "!*-STANDARD.css", "!*-NR.css"],
+						dest: "dist/css/",
+						rename: function (dest) {
+							return dest + "ddk2-responsive-legacy.css";
+						}
+					}
+				]
 			}
 		},
 		
@@ -163,6 +190,23 @@ module.exports = function(grunt) {
 					}
 				]
 			}
+		},
+		
+		cssmin: {
+			css: {
+				options: {
+					banner: banner
+				},
+				files: [
+					{
+						expand: true,
+						cwd: "dist/css",
+						src: ["*.css"],
+						dest: "dist/css",
+						ext: ".min.css"
+					}
+				]
+			}
 		}
 	});
 
@@ -170,11 +214,15 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-contrib-clean");
 	grunt.loadNpmTasks("grunt-contrib-concat");
 	grunt.loadNpmTasks("grunt-contrib-uglify");
+	grunt.loadNpmTasks("grunt-contrib-cssmin");
 	//grunt.loadNpmTasks("grunt-contrib-qunit");
 	//grunt.loadNpmTasks("grunt-contrib-jshint");
 
 	// default task
-	grunt.registerTask("default", ["clean", "concat", "uglify"]);
+	grunt.registerTask("default", ["clean", "concat", "uglify", "cssmin"]);
+
+	// css task
+	grunt.registerTask("css", ["clean:css", "concat:css", "cssmin:css"]);
 	
 	// server task
 	grunt.registerTask("server", ["clean:server", "concat:server", "uglify:server"]);

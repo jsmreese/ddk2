@@ -1,0 +1,8 @@
+.select2-container-multi .select2-choices .select2-search-field input:focus {
+	-webkit-box-sizing: initial;
+	box-sizing: initial;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}	
+	

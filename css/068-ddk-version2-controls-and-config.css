@@ -1,0 +1,824 @@
+	.scorecard-default .ddk-icon {
+		font-size: 1.25em;
+		position: relative;
+		top: 0.07em;
+	}
+	
+	/* Bamset2 CSS */
+	.bamset {
+		font-family: Arial, sans-serif;
+		font-size: 32px;
+		text-align: center;
+		max-width: 480px;
+		margin-right: auto;
+		margin-left: auto;
+	}
+	
+	.bamset canvas {
+		vertical-align: baseline !important;
+	}
+	
+	.bamset > .row > .column,
+	.navset > .row > .column	{
+		margin-bottom: 16px;
+	}
+	
+	.bamset .column + .column:last-child,
+	.bamset .column + .columns:last-child,
+	.bamset .columns + .column:last-child,
+	.bamset .columns + .columns:last-child,
+	.navset .column + .column:last-child,
+	.navset .column + .columns:last-child,
+	.navset .columns + .column:last-child,
+	.navset .columns + .columns:last-child {
+		float: left;
+	}
+	
+	.bamset .bam-content {
+		font-weight: bold;
+	}
+	
+	.bam-element {
+		display: inline-block;
+	}
+	
+	.bam {
+		padding: 4px;
+	}
+
+	/* Bamset2 Dialog CSS */
+	.dialog-scrollfix {
+		position: absolute;
+		top: -999px;
+	}
+
+	.bamset-editor {
+		margin: 0;
+		padding: 0;
+		overflow-x: hidden;
+		overflow-y: auto;
+		width: 100%;
+		height: 100%;
+	}
+	
+	.option-input-span {
+		float: right;
+		margin-right: 2em;
+		font-weight: normal;
+	}
+
+
+
+	select.nav-date-type{
+		margin-right: 5px;
+	}
+	input.nav-date-start[type="text"], input.nav-date-end[type="text"]{
+		display: inline;
+	}
+	.nav-date-label{
+		margin-left: 5px;
+		margin-right: 5px;
+	}
+	.hide-calendar .ui-datepicker-calendar {
+		display: none;
+	}
+	.hide-month .ui-datepicker-month {
+		display: none;
+	}
+
+/* Scorecard2 Control */
+	.ddk-scorecard tr.group > th:first-child {
+		position: relative;
+	}
+
+	.ddk-scorecard.scorecard-default .formatter-bar canvas,
+	.ddk-scorecard.scorecard-default .formatted-stackedbar canvas,
+	.ddk-scorecard.scorecard-default .formatted-stackedbar100 canvas,
+	.ddk-scorecard.scorecard-default .formatted-chart canvas {
+		padding: 0 2px;
+	}
+	
+	.ddk-scorecard.scorecard-default .formatted-bar,
+	.ddk-scorecard.scorecard-default .formatted-stackedbar,
+	.ddk-scorecard.scorecard-default .formatted-stackedbar100,
+	.ddk-scorecard.scorecard-default .formatted-chart,
+	.ddk-scorecard.scorecard-default .formatted-text,
+	.ddk-scorecard.scorecard-default .formatted-html,
+	.ddk-scorecard.scorecard-default .formatted-date {
+		text-align: left;
+	}
+
+	.ddk-scorecard.scorecard-default .formatted-number,
+	.ddk-scorecard.scorecard-default .formatted-percent,
+	.ddk-scorecard.scorecard-default .formatted-currency,
+	.ddk-scorecard.scorecard-default .formatted-arrow,
+	.ddk-scorecard.scorecard-default .formatted-bulb,
+	.ddk-scorecard.scorecard-default .formatted-time {
+		text-align: right;
+	}
+
+	.sc-dialog .ui-dialog-titlebar {
+		border: 1px solid transparent;
+		background: #F7FAFC;
+	}
+
+	.sc-dialog .link,
+	.sc-dialog .ui-dialog-titlebar-close,
+	.sc-dialog .ui-dialog-content button {
+		border: 1px solid transparent;
+		background: transparent;
+	}
+	
+	.sc-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+		float: none;
+	}
+	
+	.sc-dialog .select2-container .select2-choice .ddk-icon {
+		margin-right: 0;
+	}
+	
+	.sc-columns .sort-placeholder {
+		height: 31px;
+		border: 1px solid #FCCD83;
+		background: #f0e0c2;
+	}
+	
+	.sc-dialog .ui-dialog-content .ddk-icon {
+		font-size: 1.5em;
+		color: #0C59AB;
+		position: relative; top: 2px;
+	}
+	
+	.sc-dialog .ui-dialog-content button {
+		margin: 2px 0;
+		padding: 1px 3px;
+		width: 26px; height: 28px;
+	}
+	
+	.sc-dialog .ui-dialog-content button:hover {
+		border: 1px solid #ccc;
+		border-radius: 6px;
+		background-color: #F0F2F5;
+	}
+	
+	.sc-dialog .select2-container .select2-choice {
+		background: transparent;
+	}
+	
+	.sc-dialog .select2-container .select2-choice div {
+		background: #EEE;
+	}
+	
+	.sc-advanced-editor .add-column,
+	.sc-column-editor .add-column {
+		display: none;
+	}
+	
+	.sc-editor textarea {
+		width: 100%; height: 100%;
+	}
+
+	.sc-columns {
+		overflow-x: hidden; overflow-y: auto;
+		width: 100%; height: 100%;
+	}
+
+	.sc-columns {
+		margin: 0;
+		padding: 0;
+	}
+	
+	.sc-columns li {
+		list-style-type: none;
+		border-top: 1px solid #F4F4F4;
+		white-space: nowrap;
+		height: 32px;
+		line-height: 32px;
+		opacity: 0.6;
+	}
+	
+	.sc-columns li:only-child .remove-column {
+		visibility: hidden;
+	}
+	
+	.sc-columns li .select2-container,
+	.sc-settings .select2-container {
+		margin-top: 3px;
+		margin-right: 5px;
+	}
+	
+	.sc-settings {
+		border-top: 1px solid #ccc;
+		position: absolute; bottom: 0; left: 1em; right: 1em;
+		padding: 0.5em 0 0.1em;
+		line-height: 30px;
+		opacity: 0.6;
+		overflow: hidden;
+	}
+	
+	.sc-settings:hover,
+	.sc-columns li:hover,
+	.sc-columns .ui-sortable-helper {
+		opacity: 1;
+	}
+	
+	.sc-settings label {
+		margin-right: 1em;
+		cursor: pointer;
+		float: left;
+	}
+	
+	.sc-settings label:last-of-type {
+		margin-right: 0.25em;
+	}
+	
+	.sc-dialog .sort-handle {
+		display: inline-block;
+		vertical-align: text-top;
+		cursor: pointer;
+	}
+
+	.sc-dialog .body-format {
+		width: 90px;
+	}
+
+
+
+/* Scorecard2 Control Additions */
+
+	.checkbox-button {
+		position: absolute;
+		top: -20000px;
+	}
+
+	.checkbox-button + span {
+		margin: 2px 0;
+		padding: 1px 3px;
+		width: 18px; height: 24px;
+		border-radius: 6px;
+		border: 1px solid transparent;
+		display: inline-block;
+		text-align: center;
+	}
+
+	.checkbox-button + span:hover {
+		border-color: #CCC;
+		background-color: #F0F2F5;
+	}
+	
+	.checkbox-button:checked + span {
+		border-color: #AAA;
+		background-color: #ADCBEB;
+		color: #07325F;
+	}
+	
+	.sc-dialog .checkbox-button + span .ddk-icon {
+		top: -1px;
+	}
+	
+	.sc-settings label {
+		margin-right: 0.3em;
+	}
+	
+	.sc-settings label:first-child {
+		margin-right: 1em;
+	}
+	
+	.select2-container.grouping-key {
+		margin-left: 5px;
+		width: 160px;
+	}
+	
+	.CodeMirror-options-help {
+		width: 8px;
+	}
+
+	.editor-option-help {
+		color: #AAA;
+	}
+
+	.format-units.right {
+		margin: 0 0 0 0.5em;
+	}
+	
+	.toolbar button {
+		border: 1px solid transparent;
+		background-color: transparent;
+		margin: 2px 0;
+		padding: 1px 3px;
+		/* width: 26px; */
+		height: 28px;
+		font-weight: bold;
+		color: #0C59AC;
+		
+	}
+
+	.toolbar button:hover {
+		border: 1px solid #ccc;
+		border-radius: 6px;
+		background-color: #F0F2F5;
+	}
+	
+	.toolbar .qtip-content {
+		/* padding: 0; */
+	}
+	
+	.toolbar input {
+		font-family: monospace;
+		padding: 4px 6px;
+		margin: 0 0 3px;
+		border-radius: 6px;
+		border: 1px solid #CCC;
+	}
+	
+	[data-toolbar] span:after {
+		content: '\011E';
+		position: absolute;
+		top: 3px;
+		opacity: 0.4;
+		font-family: ddk_icon;
+		font-size: 20px;
+	}
+	
+	.config-dialog [data-toolbar] span:after {
+		right: -10px;
+	}
+	
+	[data-toolbar] span {
+		position: relative;
+	}
+	
+	.sc-dialog .ui-dialog-content button[data-toolbar] {
+		width: auto;
+	}
+	
+	.qtip-close.qtip-icon {
+		top: 2px;
+		right: 1px;
+		border: 0;
+		background: transparent;
+	}
+	
+	.qtip-close.qtip-icon span {
+		background-color: transparent;
+		color: #0C59AC;
+		opacity: 0.5;
+	}
+
+	.toolbar-content {
+		color: #7096C2;
+		font-size: 10px;
+		font-weight: bold;
+		display: none;
+	}
+	
+	.config-dialog .ui-dialog-content  .toolbar-buttonbar .ddk-icon {
+		font-size: 24px;
+	}
+		
+	.toolbar-content .ddk-icon {
+		font-size: 24px;
+		display: block;
+		width: 20px;
+	}
+
+	.sc-toolbar-button .ddk-icon {
+		width: 28px;
+	}
+	
+	.toolbar-content input,
+	.toolbar-content .select2-container {
+		display: block;
+	}
+	
+	.qtip-content .select2-container .select2-choice {
+		background: transparent;
+	}
+	
+	.qtip-content .select2-container .select2-choice div {
+		background: #EEE;
+	}
+	
+	.qtip-content .select2-container {
+		font-size: 13px;
+		font-weight: normal;
+	}
+
+
+.sc-column-dialog {
+	position: absolute; top: 0; right: 0; bottom: 0; left: 0;
+	border: 1px solid #DDD;
+	border-radius: 4px;
+	padding: 2px;
+}
+
+.sc-column-dialog-content {
+	background: #fff;
+	overflow-x: hidden;
+	overflow-y: auto;
+	padding: 5px 1em;
+}
+
+.sc-column-dialog .sc-column-dialog-title.ui-dialog-titlebar {
+	background: #FBFCFE;
+	color: #7098C2;
+	cursor: auto;
+}
+
+button[data-action="showadvancedoptions"] {
+	font-size: 9px;
+	opacity: 0.4;
+	font-weight: normal;
+	height: 20px;
+}
+
+.toolbar-advanced-options {
+	display: none;
+	margin-top: 10px;
+	padding: 5px 0;
+	border-top: 1px solid #F4F4F4;
+	border-bottom: 1px solid #F4F4F4;
+}
+
+.format-units {
+	font-size: 0.75em;
+	margin-left: 2px;
+}
+
+button[data-action="closecolumndialog"] {
+	opacity: 0.6;
+	position: absolute; top: 0; right: 0;
+	margin: 0 !important;
+}
+button[data-action="closecolumndialog"]:hover {
+	opacity: 1;
+}
+.sc-column-dialog .sc-column-dialog-title button[data-action="closecolumndialog"]:hover {
+	border: 1px solid transparent;
+	border-radius: 6px;
+	background-color: transparent;
+}
+
+.sc-column-dialog .sc-column-dialog-title .ddk-icon{
+	color: #7098C2;
+}
+
+.sc-column-dialog-option { 
+	opacity: 0.6;
+	margin-bottom: 5px;
+	padding: 2px 0;
+}
+
+.sc-column-dialog-option:hover { 
+	opacity: 1;
+}
+
+.sc-column-dialog-option .prefix-label { 
+	line-height: 1.1;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.sc-column-dialog-option > input {
+	border-radius: 4px;
+	border: 1px solid #AAA;
+	padding: 2px 5px;
+}
+
+.sc-column-dialog-option > span {
+	width: 80px;
+	text-align: right;
+	margin: 0 15px 5px 0;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.sc-column-row {
+	margin-top: 15px;
+	border-top: 1px solid #F4F4F4;
+}
+
+.option-radio-label {
+	margin: 5px 15px 5px 0;
+	display: inline-block;
+}
+
+.option-radio {
+	padding: 0 12px 0 0;
+	display: inline-block;
+}
+
+.sc-dialog .sc-column-dialog-row-header button.column-settings,
+.sc-dialog .sc-column-dialog-option button.column-settings {
+	margin: 0;
+	padding: 1px 0 1px 3px;
+	height: 24px;
+}
+
+.sc-column-dialog-row-header {
+	background: #FBFCFE;
+	color: #7098C2;
+	font-weight: bold;
+	margin: 2px 0 5px;
+	padding: 5px 0 5px 20px;
+	border-radius: 4px;
+}
+
+.sc-column-row {
+	opacity: 0.6;
+}
+
+.sc-column-row:hover {
+	opacity: 1;
+}
+	
+/* Choose Favorite Dialog */
+
+	.fav-chooser .fav-table {
+		overflow-y: auto;
+	}
+	
+	.config-dialog .ui-dialog-content button.fav-add {
+		width: auto;
+		font-size: 0.75em;
+	}
+
+	
+	.fav-table-label {
+		margin-top: 1em;
+	}
+	
+	.fav-type-hide,
+	.fav-owner-hide {
+		display: none !important;
+	}
+	
+	
+	
+/* Config Dialog */
+
+	.config-error {
+		outline: 3px solid #FCC;
+	}
+
+	.config-dialog .ui-dialog-content .add-element {
+		float: right;
+		position: relative;
+		right: -7px;
+	}
+	
+	.config-dialog .ui-dialog-content .add-bam {
+		float: right;
+		width: auto;
+	}
+	
+	.config-dialog .link, .config-dialog .ui-dialog-titlebar-close {
+		border: 1px solid rgba(0, 0, 0, 0);
+		background: rgba(0, 0, 0, 0);
+	}
+
+	.config-child-remove-self {
+		position: absolute;
+		right: 0.5em;
+	}
+
+	.config-section-toggle-toolbar,
+	.config-child-toggle-toolbar {
+		position: absolute;
+		right: 2.5em;
+	}
+	
+	.config-section-toggle-toolbar.bamset-section-format {
+		right: 1em;
+	}
+	
+	.config-dialog-hidden {
+		visibility: hidden;
+	}
+	
+	.config-dialog .option-radio {
+		padding: 0;
+	}
+	
+	.config-dialog .option-radio-label {
+		color: #0A305C;
+		margin: 0 0.5em 0 0;
+		line-height: 28px;
+	}
+	
+	.config-dialog .option-radio-label:last-child {
+		color: #0A305C;
+		margin: 0;
+		line-height: 28px;
+	}
+
+	.config-dialog .ui-dialog-titlebar {
+		border: 1px solid transparent;
+		background: #F7FAFC;
+	}
+
+	.config-dialog .ui-dialog-content button {
+		margin: 0;
+		padding: 1px 3px;
+		width: 26px;
+		height: 28px;
+		border: 1px solid transparent;
+		background: transparent;
+		color: #0C59AB;
+		font-weight: bold;
+		font-family: arial;
+		opacity: 0.9;
+	}
+
+	.config-dialog .ui-dialog-content button[data-toolbar] {
+		width: 32px;
+	}
+	
+	.config-dialog .ui-dialog-content button[data-toolbar="small"],
+	.config-dialog .ui-dialog-content button[data-toolbar="medium"],
+	.config-dialog .ui-dialog-content button[data-toolbar="large"] {
+		width: 40px;
+	}
+	
+	.config-dialog .ui-dialog-content button:hover {
+		border: 1px solid #ccc;
+		border-radius: 6px;
+		background-color: #F0F2F5;
+		opacity: 1;
+	}
+
+	.config-dialog .ui-dialog-content .ddk-icon {
+		font-size: 1.5em;
+		color: #0C59AB;
+		position: relative;
+		top: 2px;
+	}
+	
+	.config-dialog .select2-container .select2-choice {
+		-webkit-appearance: none;
+		-webkit-border-radius: 0;
+		border-radius: 0;
+		background: white;
+		font-family: inherit;
+		border: 1px solid #cccccc;
+		-webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+		box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+		color: rgba(0, 0, 0, 0.75);
+		display: block;
+		font-size: 1em;
+		margin: 0 0 3px 0;
+		height: 2em;
+		-moz-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		box-sizing: border-box;	
+	}
+	
+	.config-dialog .select2-container .select2-choice div {
+		border-radius: 0;
+		background: transparent;
+		border-left: 1px solid transparent;
+/*		background: #eee;
+		border-left: 1px solid #ccc; */
+	}
+
+	.config-dialog {
+		box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.3);	
+	}
+
+	.config-editor {
+		overflow-x: auto;
+		overflow-y: scroll;
+	}
+	
+	.is-advanced-editor .config-editor {
+		overflow-y: auto;
+	}
+	
+	.config-settings {
+		border-top: 1px solid #ccc;
+		position: absolute; bottom: 0; left: 1em; right: 1em;
+		padding: 0.5em 0 0.1em;
+		line-height: 30px;
+		overflow: hidden;
+	}
+	
+	.config-section-content {
+		margin: 0;
+	}
+
+	.config-section-content > .bam {
+		border: 1px solid #7098C2; /* #C2CBD6; */
+		margin: 1em 0;
+	}
+	
+	.config-section-header-style {
+		text-align: right;
+	}
+
+	.config-child {
+		list-style-type: none;
+	}
+	
+	.bam > .config-child-header {
+		padding-top: 0.5em;
+		background: #E0EAF5; /* #D9E5F2; */
+	}
+	
+	.config-dialog .bam.config-child {
+		box-shadow: 2px 2px 2px hsla(212, 80%, 20%, 0.5);
+		margin-right: -0.2rem;
+	}
+	
+	.bam-section-footer {
+		display: none;
+	}
+	
+	.config-child.element.has-grid {
+		border-top: 1px dashed #C2CBD6;
+		padding-top: 3px;
+	}
+
+	.config-child.element.has-grid:first-child {
+		border-top-width: 0;
+		padding-top: 0;
+	}
+	
+	.config-child-wrapper {
+		/* margin: 6px; */
+	}
+	
+	.config-section-header {
+		border-top: 1px solid #E0E5EB;
+		padding-top: 3px;
+	}
+	
+	.config-toolbar {
+		display: none;
+	}
+	
+	.config-toolbar-content {
+		background: #FBFDFE;
+		border: 1px solid #D9E5F2;
+		margin-bottom: 1em;
+		padding-top: 3px;
+	}
+	
+	.config-toolbar-section-title {
+		color: #667D99;
+		text-align: right;
+		font-weight: bold;
+		font-family: Arial, sans-serif;
+		line-height: 28px;
+	}
+	
+	.config-toolbar-label {
+		color: #8598AD;
+		text-align: right;
+		line-height: 28px;
+	}
+
+	.config-section-label {
+		color: #8598AD;
+		line-height: 28px;
+	}
+
+	.config-child-label {
+		color: #0C59AB; /* #8598AD; */
+		line-height: 28px;
+		font-weight: bold;
+	}
+	
+	.config-option-label {
+		color: #0A305C;
+		text-align: right;
+		line-height: 28px;
+		white-space: nowrap;
+	}
+	
+	.config-option-label select {
+		color: #0A305C;
+	}
+	
+	.config-option-input {
+		width: 100%;
+	}
+	
+	[data-action="toggletoolbar"] .ddk-icon:before {
+		content: '\0178';
+	}
+	
+	.remove-element .ddk-icon:before {
+		content: '\013B';
+	}
+	
+	.remove-bam .ddk-icon:before {
+		content: '\013A';
+	}
+	
+	.config-toolbar-open[data-action="toggletoolbar"] .ddk-icon:before {
+		content: '\017B';
+	}
+	
+	.config-toolbar input[type="text"].config-option-input {
+		font-family: monospace;
+	}

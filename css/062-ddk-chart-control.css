@@ -1,0 +1,151 @@
+	/* Chart CSS */
+	table.chart-datatable {
+		/* border: 1px solid #ccc; */
+		border-collapse:  collapse;
+		font-size: 13px;
+	}
+	
+	table.chart-datatable td {
+		height: 15px;
+		overflow: hidden;
+		padding: 0;
+		white-space: nowrap;
+		border: 1px solid #bbb;
+		text-align: center;
+	}
+
+	
+	table.chart-datatable td:first-child {
+		border-top-color: transparent;
+		border-bottom-color: transparent;
+		border-left-color: transparent;
+		text-align: right;
+	}
+
+	table.chart-datatable tr:first-child td {
+		border-top-color: transparent;
+		border-right-color: transparent;
+		border-left-color: transparent;
+		text-align: center;
+	}
+	
+
+	table.chart-datatable td:first-child {
+		padding: 0 2px 0 0;
+		text-align: right;
+	}
+
+	table.chart-datatable tr:nth-child(even) td:not(:first-child) {
+		background-color: #F2F8FF;
+	}
+	
+	table.chart-datatable td span {
+		display: block;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		width: 100%;
+	}
+	
+	label.ui-button span.ps-icon-chart-pie {
+		background-image: url('../imgs/ddk.png');
+		background-position: 0px 0px;
+		height: 16px;
+		width: 16px;
+	}
+
+	label.ui-button span.ps-icon-chart-doughnut {
+		background-image: url('../imgs/ddk.png');
+		background-position: -16px 0px;
+		height: 16px;
+		width: 16px;
+	}
+
+	label.ui-button span.ps-icon-chart-stackedcolumn100 {
+		background-image: url('../imgs/ddk.png');
+		background-position: -32px 0px;
+		height: 16px;
+		width: 16px;
+	}
+
+	label.ui-button span.ps-icon-chart-point {
+		background-image: url('../imgs/ddk.png');
+		background-position: -16px -32px;
+		height: 16px;
+		width: 16px;
+	}
+
+	label.ui-button span.ps-icon-chart-area {
+		background-image: url('../imgs/ddk.png');
+		background-position: -32px -32px;
+		height: 16px;
+		width: 16px;
+	}
+
+	label.ui-button span.ps-icon-chart-stackedarea {
+		background-image: url('../imgs/ddk.png');
+		background-position: -48px -32px;
+		height: 16px;
+		width: 16px;
+	}
+
+	label.ui-button span.ps-icon-chart-stackedarea100 {
+		background-image: url('../imgs/ddk.png');
+		background-position: -64px -32px;
+		height: 16px;
+		width: 16px;
+	}
+	
+	label.ui-button span.ps-icon-chart-stackedbar100 {
+		background-image: url('../imgs/ddk.png');
+		background-position: -64px 0px;
+		height: 16px;
+		width: 16px;
+	}
+
+	label.ui-button span.ps-icon-chart-line {
+		background-image: url('../imgs/ddk.png');
+		background-position: 0px -16px;
+		height: 16px;
+		width: 16px;
+	}
+	
+	label.ui-button span.ps-icon-chart-stepline {
+		background-image: url('../imgs/ddk.png');
+		background-position: 0px -32px;
+		height: 16px;
+		width: 16px;
+	}
+	
+	label.ui-button span.ps-icon-chart-column {
+		background-image: url('../imgs/ddk.png');
+		background-position: -16px -16px;
+		height: 16px;
+		width: 16px;
+	}
+	label.ui-button span.ps-icon-chart-bar {
+		background-image: url('../imgs/ddk.png');
+		background-position: -32px -16px;
+		height: 16px;
+		width: 16px;
+	}
+	label.ui-button span.ps-icon-chart-stackedcolumn {
+		background-image: url('../imgs/ddk.png');
+		background-position: -48px -16px;
+		height: 16px;
+		width: 16px;
+	}
+	label.ui-button span.ps-icon-chart-stackedbar {
+		background-image: url('../imgs/ddk.png');
+		background-position: -64px -16px;
+		height: 16px;
+		width: 16px;
+	}
+	
+	#ddk_dialog_content .sort-field { width: 124px; }
+	#ddk_dialog_content .sort-dir { width: 54px; }
+
+	button.sort-remove.ui-state-default:not(.ui-state-hover):not(.ui-state-active):not(.ui-state-focus),
+	button.sort-add.ui-state-default:not(.ui-state-hover):not(.ui-state-active):not(.ui-state-focus){
+		background: transparent;
+		border: 1px solid transparent;
+	}

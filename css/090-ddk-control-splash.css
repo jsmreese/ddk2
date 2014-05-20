@@ -1,0 +1,51 @@
+
+/* Splash */
+
+.ddk-control-splash-title {
+	color: #2A89EF;
+	font-size: 4em;
+	font-family: Arial, sans-serif;
+	text-shadow: 0 0 0.2em rgba(0,0,0,0.3);
+	opacity: 0.5;
+	margin-bottom: 0.25em;
+}
+
+.ddk-control-splash {
+	width: 500px;
+	text-align: center;
+	display: block;
+	position: relative;
+	margin: 0 auto;
+}
+
+.ddk-control-splash .ddk-dialog-content-header {
+	color: #0C59AB;
+	opacity: 0.5;
+}
+
+.ddk-control-splash-content,
+.ddk-control-splash-footer {
+	width: 500px;
+	margin: 0 auto;
+	text-align: left;
+}
+
+.ddk-control-splash-footer {
+	margin-top: 1em;
+	margin-bottom: 3em;
+}
+
+.position-right {
+	position: absolute;
+	right: 0;
+}
+
+
+.ui-button.large {
+	height: auto;
+}
+
+.ui-button.large span {
+	font-size: 2em;
+	padding: 0.5em;
+}

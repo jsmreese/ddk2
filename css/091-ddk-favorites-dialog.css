@@ -1,0 +1,41 @@
+	/* Favorites Icons 12x12 */
+	
+	.ui-button span.ps-icon-bulb-black {
+		background-image: url('../imgs/ddk-12x12.png');
+		background-position: 0px 4px;
+		background-repeat: no-repeat;
+		height: 12px;
+		width: 12px;
+	}
+	
+	.ui-button span.ps-icon-bulb-gray {
+		background-image: url('../imgs/ddk-12x12.png');
+		background-position: -12px 4px;
+		background-repeat: no-repeat;
+		height: 12px;
+		width: 12px;
+	}
+	
+	.ui-button span.ps-icon-bulb-green {
+		background-image: url('../imgs/ddk-12x12.png');
+		background-position: -36px 4px;
+		background-repeat: no-repeat;
+		height: 12px;
+		width: 12px;
+	}
+	
+	.ui-button span.ps-icon-bulb-yellow {
+		background-image: url('../imgs/ddk-12x12.png');
+		background-position: -24px 4px;
+		background-repeat: no-repeat;
+		height: 12px;
+		width: 12px;
+	}
+	
+	.ui-button span.ps-icon-bulb-red {
+		background-image: url('../imgs/ddk-12x12.png');
+		background-position: -48px 4px;
+		background-repeat: no-repeat;
+		height: 12px;
+		width: 12px;
+	}
