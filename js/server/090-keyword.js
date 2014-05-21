@@ -369,11 +369,16 @@ _.extend(K, {
 	},
 */
 	toObject2: function(prefix) {
+		// http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
+		function escapeRegexp(s) {
+			return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+		}
+		
 		var prefixes = [].concat(prefix),
 			out = {};
 		
 		_.each(prefixes, function (prefix) {
-			var queryString = keywordsToURL(prefix).replace(new RegExp(prefix, "g"), "&");
+			var queryString = keywordsToURL(prefix).replace(new RegExp(escapeRegexp(prefix), "g"), "&");
 			
 			_.extend(out, _.string.parseQueryString(queryString));
 		});
