@@ -1,0 +1,27 @@
+.ps-atlanta .ps-content-example { background-color: #fbfdff; }
+.ps-atlanta .table-default tr.odd, .ps-atlanta .scorecard-default.striped tr.odd { background-color: #e3f2fe; }
+.ps-atlanta .table-default tr.even, .ps-atlanta .scorecard-default.striped tr.even { background-color: white; }
+.ps-atlanta .table-default tr.odd td.sorting_1, .ps-atlanta .scorecard-default.striped tr.odd td.sorting_1 { background-color: #d5eafd; }
+.ps-atlanta .table-default tr.odd td.sorting_2, .ps-atlanta .scorecard-default.striped tr.odd td.sorting_2 { background-color: #dbeefe; }
+.ps-atlanta .table-default tr.odd td.sorting_3, .ps-atlanta .scorecard-default.striped tr.odd td.sorting_3 { background-color: #e1f1fe; }
+.ps-atlanta .table-default tr.even td.sorting_1, .ps-atlanta .scorecard-default.striped tr.even td.sorting_1 { background-color: #eaf5fe; }
+.ps-atlanta .table-default tr.even td.sorting_2, .ps-atlanta .scorecard-default.striped tr.even td.sorting_2 { background-color: #f2f8fe; }
+.ps-atlanta .table-default tr.even td.sorting_3, .ps-atlanta .scorecard-default.striped tr.even td.sorting_3 { background-color: #fafdff; }
+.ps-atlanta .table-default .sorting_asc { background: url('resources/ddk/themes/ps-atlanta/table/sort-asc.png') no-repeat center right; }
+.ps-atlanta .table-default .sorting_desc { background: url('resources/ddk/themes/ps-atlanta/table/sort-desc.png') no-repeat center right; }
+.ps-atlanta .table-default tfoot th { border-top: 1px solid #ddd; }
+
+.ps-doral .ps-content-example { background-color: #fcfcfc; }
+.ps-doral .table-default tr.odd, .ps-doral .scorecard-default.striped tr.odd { background-color: #E2EEFF; }
+.ps-doral .table-default tr.even, .ps-doral .scorecard-default.striped tr.even { background-color: white; }
+.ps-doral .table-default tr.odd td.sorting_1, .ps-doral .scorecard-default.striped tr.odd td.sorting_1 { background-color: #D3E5FF; }
+.ps-doral .table-default tr.odd td.sorting_2, .ps-doral .scorecard-default.striped tr.odd td.sorting_2 { background-color: #DAE8FF; }
+.ps-doral .table-default tr.odd td.sorting_3, .ps-doral .scorecard-default.striped tr.odd td.sorting_3 { background-color: #E0ECFF; }
+.ps-doral .table-default tr.even td.sorting_1, .ps-doral .scorecard-default.striped tr.even td.sorting_1 { background-color: #EAF2FF; }
+.ps-doral .table-default tr.even td.sorting_2, .ps-doral .scorecard-default.striped tr.even td.sorting_2 { background-color: #F2F7FF; }
+.ps-doral .table-default tr.even td.sorting_3, .ps-doral .scorecard-default.striped tr.even td.sorting_3 { background-color: #F9FBFF; }
+.ps-doral .table-default .sorting_asc { background: url('resources/ddk/themes/ps-doral/table/sort-asc.png') no-repeat center right; }
+.ps-doral .table-default .sorting_desc { background: url('resources/ddk/themes/ps-doral/table/sort-desc.png') no-repeat center right; }
+.ps-doral .table-default tfoot th { border-top: 1px solid #ddd; }
+
+.ps-tampa .ps-content-example { background-color: #fffffb; }
