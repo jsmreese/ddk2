@@ -12,8 +12,8 @@ $.extend(true, DDK.eventHandler, {
 			exportWidget = "PSC_CCS_Data_Set",
 			exportData = data.url.slice(40).replace(/'/g, "''"),
 			detail = _.string.parseQueryString(exportData),
-			name = detail.component_name,
-			id = detail.component_id,
+			name = detail.componentName,
+			id = detail.componentId,
 			exportGetData = function (feid) {
 				var data = {
 					"config.mn": exportWidget,
@@ -24,9 +24,9 @@ $.extend(true, DDK.eventHandler, {
 				};
 				
 				data[name + "_id"] = id;
-				data[name + "_export_query_widget"] = detail[name + "_export_query_widget"];
-				data[name + "_query_widget"] = detail[name + "_query_widget"];
-				data[name + "_datasource"] = detail[name + "_datasource"];
+				data[name + "_export_query_widget"] = detail[name + "ExportQueryWidget"];
+				data[name + "_query_widget"] = detail[name + "QueryWidget"];
+				data[name + "_datasource"] = detail[name + "Datasource"];
 				data.filename = detail.filename;
 				
 				return data;
