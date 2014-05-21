@@ -121,10 +121,10 @@ module.exports = function(grunt) {
 					legacy_files("plugins")
 				]
 			},
-			addons: {
+			plugins_responsive: {
 				files: [
-					standard_files("addons"),
-					legacy_files("addons")
+					standard_responsive_files("plugins"),
+					legacy_responsive_files("plugins")
 				]
 			},
 			server: {
@@ -234,7 +234,7 @@ module.exports = function(grunt) {
 	grunt.registerTask("resp", ["clean:client", "concat:core_responsive", "uglify:client"]);
 	
 	// client tasks
-	_.each("core plugins addons".split(" "), function (value) {
+	_.each("core plugins".split(" "), function (value) {
 		grunt.registerTask(value, ["clean:client", "concat:" + value, "uglify:client"]);
 	});
 
