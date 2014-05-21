@@ -1,1 +1,1 @@
-// layout template does not execute dynamic script and resources load// so we just resolve the deferreds hereDDK.dynamicLoad.resolve();DDK.resourcesLoad.resolve();
+// layout template does not execute resources load// so we just resolve the deferred hereDDK.resourcesLoad.resolve();
