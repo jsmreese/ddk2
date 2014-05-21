@@ -136,6 +136,9 @@ module.exports = function(grunt) {
 				]
 			},
 			css: {
+				options: {
+					separator: "\n\n\n"
+				},
 				files: [
 					// standard build
 					{
