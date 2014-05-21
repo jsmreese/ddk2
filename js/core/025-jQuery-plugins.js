@@ -580,7 +580,14 @@
 				settings.editorSettings.lineWrapping = true;
 				
 				break;
-			
+			case "sql": 
+				settings.editorSettings.mode = "text/x-sql"
+				$.extend(settings.editorSettings, {
+					lineNumbers: true,
+					matchBrackets: true,
+					autoCloseBrackets: true
+				});
+				break;
 			default:
 			
 		}
