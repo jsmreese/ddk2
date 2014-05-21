@@ -343,6 +343,8 @@
 						}
 				, "sInfo": "Showing _TOTAL_ entries"
 				, "sInfoEmpty": "Showing 0 entries"
+				, "sLengthMenu": "Show _MENU_"
+				, "sSearch": "Search"
 				, "sProcessing": "<img src=\"" + (oldIE ? fullPath : "") + "resources/ddk/" + DDK_PATH + "/imgs/spinner_32x32.gif\" alt=\"Processing...\">"
 			}
 		};
