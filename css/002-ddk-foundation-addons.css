@@ -6,20 +6,6 @@
 	margin-bottom: 20px;
 }
 
-.column > [id^="psc_"][id$="_widget"]:before, .column > [id^="psc_"][id$="_widget"]:after,
-.columns > [id^="psc_"][id$="_widget"]:before, .columns > [id^="psc_"][id$="_widget"]:after {
-	content: " ";
-	display: table;
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-.column > [id^="psc_"][id$="_widget"]:after,
-.columns > [id^="psc_"][id$="_widget"]:after {
-	clear: both;
-}
-
 /* buttons in controls and ddk dialogs */
 [id^="psc_"][id$="_widget"] button,
 .ddk-dialog button {
