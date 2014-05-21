@@ -7,8 +7,8 @@
 .ps-atlanta .table-default tr.even td.sorting_1, .ps-atlanta .scorecard-default.striped tr.even td.sorting_1 { background-color: #eaf5fe; }
 .ps-atlanta .table-default tr.even td.sorting_2, .ps-atlanta .scorecard-default.striped tr.even td.sorting_2 { background-color: #f2f8fe; }
 .ps-atlanta .table-default tr.even td.sorting_3, .ps-atlanta .scorecard-default.striped tr.even td.sorting_3 { background-color: #fafdff; }
-.ps-atlanta .table-default .sorting_asc { background: url('resources/ddk/themes/ps-atlanta/table/sort-asc.png') no-repeat center right; }
-.ps-atlanta .table-default .sorting_desc { background: url('resources/ddk/themes/ps-atlanta/table/sort-desc.png') no-repeat center right; }
+.ps-atlanta .table-default .sorting_asc { background: url('../../themes/ps-atlanta/table/sort-asc.png') no-repeat center right; }
+.ps-atlanta .table-default .sorting_desc { background: url('../../themes/ps-atlanta/table/sort-desc.png') no-repeat center right; }
 .ps-atlanta .table-default tfoot th { border-top: 1px solid #ddd; }
 
 .ps-doral .ps-content-example { background-color: #fcfcfc; }
@@ -20,8 +20,8 @@
 .ps-doral .table-default tr.even td.sorting_1, .ps-doral .scorecard-default.striped tr.even td.sorting_1 { background-color: #EAF2FF; }
 .ps-doral .table-default tr.even td.sorting_2, .ps-doral .scorecard-default.striped tr.even td.sorting_2 { background-color: #F2F7FF; }
 .ps-doral .table-default tr.even td.sorting_3, .ps-doral .scorecard-default.striped tr.even td.sorting_3 { background-color: #F9FBFF; }
-.ps-doral .table-default .sorting_asc { background: url('resources/ddk/themes/ps-doral/table/sort-asc.png') no-repeat center right; }
-.ps-doral .table-default .sorting_desc { background: url('resources/ddk/themes/ps-doral/table/sort-desc.png') no-repeat center right; }
+.ps-doral .table-default .sorting_asc { background: url('../../themes/ps-doral/table/sort-asc.png') no-repeat center right; }
+.ps-doral .table-default .sorting_desc { background: url('../../themes/ps-doral/table/sort-desc.png') no-repeat center right; }
 .ps-doral .table-default tfoot th { border-top: 1px solid #ddd; }
 
 .ps-tampa .ps-content-example { background-color: #fffffb; }
