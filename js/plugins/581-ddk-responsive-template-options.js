@@ -95,7 +95,7 @@ PS.optionsAPI.formatElement = {
 				"label": "Set Defaults Widget",
 				"description": "Widget used to set keyword defaults and perform keyword value validation.",
 				"notes": "If it is defined, the Set Defaults widget will be rendered in the initial application load, and should be used to set default keyword values as well as perform keyword value validation. e.g. sanitizing keywords set via the URL query string.<p>The Set Defaults widget output (if any) is rendered in the document <code>head</code> element, and may be used to add custom content to the document <code>head</code> such as additional <code>meta</code> elements.<p>The Set Defaults widget should not be used to add script or style links to the dashboard. Use the CSS Link and JavaScript link options instead.<p>Be cautious when including dynamically created content in this widget because it will impact the overall dashboard render performance."
-			},
+			}
 		}
 	}                
 };
