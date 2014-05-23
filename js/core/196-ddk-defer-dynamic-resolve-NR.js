@@ -1,1 +1,1 @@
-// layout template does not execute resources load// so we just resolve the deferred hereDDK.resourcesLoad.resolve();
+// layout template does not execute resources load// so we just resolve the deferred hereDDK.deferPlugins(function () { DDK.resourcesLoad.resolve(); });
