@@ -59,7 +59,7 @@ PS.optionsAPI.responsiveTemplate = {
 				"id": "widget_css",
 				"label": "CSS Widget",
 				"description": "Widget used to render dashboard CSS.",
-				"notes": "<p>CSS widget is not rendered in the initial application load. It is requested using an AJAX call to the Data Request Framework that renders the CSS, JS, and Content widgets.<p>A best practice is to move dashboard style rules to external files using the CSS Link option once application development is stable.<p>The CSS widget must be rendered by AMEngine with <em>every dashboard request</em>. External files are cached by the browser and will imporove render performance."
+				"notes": "<p>Widget should render valid CSS code, not HTML. Do not wrap CSS code in HTML <code>style</code> tags.<p>CSS widget is not rendered in the initial application load. It is requested using an AJAX call to the Data Request Framework that renders the CSS, JS, and Content widgets.<p>A best practice is to move dashboard style rules to external files using the CSS Link option once application development is stable.<p>The CSS widget must be rendered by AMEngine with <em>every dashboard request</em>. External files are cached by the browser and will imporove render performance."
 			},
 
 			"error": {
@@ -73,7 +73,7 @@ PS.optionsAPI.responsiveTemplate = {
 				"id": "widget_js",
 				"label": "JavaScript Widget",
 				"description": "Widget used to render dashboard JavaScript.",
-				"notes": "<p>JavaScript widget is not rendered in the initial application load. It is requested using an AJAX call to the Data Request Framework that renders the CSS, JavaScript, and Content widgets.<p>While it is convenient to use widgets for dashboard JavaScript during development, a best practice is to move dashboard style rules to external files using the JavaScript Link option once the application is stable.<p>The JavaScript widget must be rendered by AMEngine with <em>every dashboard request</em>. External files are cached by the browser and will imporove dashboard render performance."
+				"notes": "<p>Widget should render valid JavaScript code, not HTML. Do not wrap JavaScript code in HTML <code>script</code> tags.<p>JavaScript widget is not rendered in the initial application load. It is requested using an AJAX call to the Data Request Framework that renders the CSS, JavaScript, and Content widgets.<p>While it is convenient to use widgets for dashboard JavaScript during development, a best practice is to move dashboard scripts to external files using the JavaScript Link option once the application is stable.<p>The JavaScript widget must be rendered by AMEngine with <em>every dashboard request</em>. External files are cached by the browser and will imporove dashboard render performance."
 			},
 			
 			"loading": {
