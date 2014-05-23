@@ -40,7 +40,7 @@ PS.optionsAPI.responsiveTemplate = {
 				"id": "link_js",
 				"label": "JavaScript File Links",
 				"description": "One or more external JavaScript files may be referenced by the dashboard.",
-				"notes": "<p>Value is a list of one or more JavaScript file path strings.<p>Paths are relative to the <code>amengine</code> folder.<p>Path strings may be delimited with a comma or with whitespace. e.g. <code>resources/sample/file_1.js,resources/sample/file_2.js</code><p>Files are requested after the <code>ddk2-responsive-core</code> file is parsed and executed. Files are downloaded asynchronously, so execution order cannot be guaranteed.<p>If dependencies on the <code>ddk2-responsive-plugins</code> file are required, wrap file code in a deferred function to be called after that file is loaded and executed. e.g. <code>DDK.deferPlugins(function () { /* code here... */ });</code><p>If dependencies on the dashboard content are required, wrap file code in a deferred function to be called after the content is loaded and inserted into the DOM. e.g. <code>DDK.defer(function () { /* code here... */ });</code>"
+				"notes": "<p>Value is a list of one or more JavaScript file path strings.<p>Paths are relative to the <code>amengine</code> folder.<p>Path strings may be delimited with a comma or with whitespace. e.g. <code>resources/sample/file_1.js,resources/sample/file_2.js</code><p>Files are requested after the <code>ddk2-responsive-core</code> file is parsed and executed. Files are downloaded asynchronously, so execution order cannot be guaranteed.<p>If dependencies on the <code>ddk2-responsive-plugins</code> file are required, wrap file code in a deferred function to be called after that file is loaded and executed. e.g. <pre><code class='language-javascript'>DDK.deferPlugins(function () { /* code here... */ });</code></pre><p>If dependencies on the dashboard content are required, wrap file code in a deferred function to be called after the content is loaded and inserted into the DOM. e.g. <pre><code class='language-javascript'>DDK.defer(function () { /* code here... */ });</code></pre>"
 			}}
 	},
 	"widgets": {
@@ -52,7 +52,7 @@ PS.optionsAPI.responsiveTemplate = {
 				"id": "widget_content",
 				"label": "Content Widget",
 				"description": "Widget used to render dashboard body content.",
-				"notes": "<p>Content widget is not rendered in the initial application load. It is requested using an AJAX call to the Data Request Framework that renders the CSS, JS, and Content widgets.<p>A best practice is to fully render at least one <em>above the fold</em> control or content item in the content widget (using <code>runFromFavorite()</code> or <code>run()</code> on the server).<p>Additional content may be requested after the initial content load is completed using deferred JavaScript. e.g. <code>DDK.defer(function () { DDK.reloadFromFavorite(); });</code>"
+				"notes": "<p>Content widget is not rendered in the initial application load. It is requested using an AJAX call to the Data Request Framework that renders the CSS, JS, and Content widgets.<p>A best practice is to fully render at least one <em>above the fold</em> control or content item in the content widget (using <code>runFromFavorite()</code> or <code>run()</code> on the server).<p>Additional content may be requested after the initial content load is completed using deferred JavaScript. e.g. <pre><code class='language-javascript'>DDK.defer(function () { DDK.reloadFromFavorite(); });</code></pre>"
 			},
 			
 			"css": {
