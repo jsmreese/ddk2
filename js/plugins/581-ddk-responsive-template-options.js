@@ -52,7 +52,7 @@ PS.optionsAPI.responsiveTemplate = {
 				"id": "widget_content",
 				"label": "Content Widget",
 				"description": "Widget used to render dashboard body content.",
-				"notes": "<p>Content widget is not rendered in the initial application load. It is requested using an AJAX call to the Data Request Framework that renders the CSS, JS, and Content widgets.<p>A best practice is to fully render at least one <em>above the fold</em> control or content item in the content widget (using <code>runFromFavorite()</code> or <code>run()</code> on the server).<p>Additional content may be requested after the initial content load is completed using deferred JavaScript. e.g. <pre><code class='language-javascript'>DDK.defer(function () { DDK.reloadFromFavorite(); });</code></pre>"
+				"notes": "<p>DDK Controls may be included in the initial content load using the <code>runFromFavorite</code> function in server JavaScript. DDK Controls included in the initial content render will be automatically initialized in client JavaScript.<p>Content widget is not rendered in the initial application load. It is requested using an AJAX call to the Data Request Framework that renders the CSS, JS, and Content widgets.<p>A best practice is to fully render at least one <em>above the fold</em> control or content item in the content widget (using <code>runFromFavorite()</code> or <code>run()</code> on the server).<p>Additional content may be requested after the initial content load is completed using deferred JavaScript. e.g. <pre><code class='language-javascript'>DDK.defer(function () { DDK.reloadFromFavorite(); });</code></pre>"
 			},
 			
 			"css": {
