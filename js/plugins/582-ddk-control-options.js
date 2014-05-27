@@ -210,7 +210,7 @@ DDK.controlOptions = function (id) {
 					id: "s_" + id + "_cjs",
 					label: "Control JavaScript",
 					description: "Arbitrary javascript may be included in control favorites for use with the Metrics Browser and View Designer.",
-					notes: "Option value will be automatically wrapped in a <code>script</code> element. Function calls are not allowed, so code such as <code>console.log(\"message\");</code> will have no effect. <p>Property assignments are allowed, and DDK keyword syntax will be evaluated."
+					notes: "Option value will be automatically wrapped in a <code>script</code> element. <p>DDK keyword syntax will be evaluated before JavaScript is parsed and executed."
 				},
 				mouseover: {
 					id: "s_" + id + "_mouse",
