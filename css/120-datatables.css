@@ -75,6 +75,7 @@
 
 .dataTables_paginate {
 	margin: 10px 0px 0px 0px;
+	height: 20px; /* added to fix cut-off pagination buttons */
 	width: 60%; /* changed from 44px */
 	/* * width: 50px; removed */
 	float: right;
