@@ -2407,7 +2407,7 @@
 	// selector can be an element id, a selector string, a jQuery collection
 	// a DOM element, or a DDK control id
 	DDK.format = function (selector) {
-		var $selection;
+		var $selection, $targets;
 			
 		if (typeof selector === "string") {	
 			$selection = $("[id^=\"psc_\"][id$=\"" + selector + "_widget\"]");
@@ -2435,25 +2435,12 @@
 		});
 		
 		// execute DDK2 formatting
-		$selection.find("[data-format]").each(function() {
+		$targets = $selection.find("[data-format]");
+		$targets.each(function() {
 			(new PS.Formatter(this)).exec();
 		});
-/*
-		$selection.find("[data-format]:visible").each(function() {
-			var $this = $(this),
-				data = $this.dataStack(),
-				formatObject = _.find(DDK.format.plugins, { id: data.format }),
-				formatter = formatObject.formatter;
-				
-			if (typeof formatter === "function") {
-				formattedValue = formatter(data, $this);
-				if (formattedValue) {
-					$this.html(formattedValue);
-				}
-				$this.removeAttr("data-format");
-			}
-		});
-*/
+		
+		return $targets.length;
 	};
 
 	// selector can be an element id, a selector string, a jQuery collection
