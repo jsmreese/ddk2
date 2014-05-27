@@ -1078,7 +1078,7 @@ DDK.template.render = {
 			sectionTypes = "header content footer".split(" "),
 			metricParameters,
 			columnCount = 0,
-			// colspan can only happen when not in grouped or sortable modes
+			// colspan can only happen when not in sortable mode (when DataTables is not instaniated)
 			canColspan = (co.groupingKey || !co.sortEnabled),
 			// transform runs .toLowerCase() on all keys to give a clean surface for matching
 			keywords = _.transform(_.extend({}, globals, record || {}), function (accumulator, value, key) {
@@ -1108,23 +1108,34 @@ DDK.template.render = {
 				columnClassName = DDK.template.render.ddkKeywordEval(column.className, keywords);
 			}
 			
-			// when colspans are enabled, only render an element if it has defined config properties
-			if (canColspan) {
-				if (!_.any(elem, function (value, key) {
-					if (typeof value === "string") {
-						return value;
-					}
+			// // when colspans are enabled, only render an element if it has defined config properties
+			// if (canColspan) {
+				// if (!_.any(elem, function (value, key) {
+					// if (typeof value === "string") {
+						// return value;
+					// }
 					
-					return !_.isEmpty(value); 
-				})) {
-					// skip this section in the loop
+					// return !_.isEmpty(value); 
+				// })) {
+					// // skip this section in the loop
+					// return;
+				// }
+			// }
+			
+			// when colspans are enabled, don't render elements that fall underneath colspan extensions of previous elements
+			if (canColspan && columnCount) {
+				if (columnCount) {
+					// decrement columnCount
+					columnCount -= 1;
+					
+					// skip rendering an element
 					return;
 				}
 			}
 			
 			// if colspans are enabled, track columnCount
 			if (canColspan) {
-				columnCount += (+elem.colspan || 1);
+				columnCount = (+elem.colspan || 1);
 			}
 			
 			// open td/th element
@@ -1184,8 +1195,16 @@ DDK.template.render = {
 			
 			// append to row output
 			out += cout;
+			
+			// if colspans are enabled, decrement columnCount
+			if (canColspan) {
+				columnCount -= 1;
+			}
 		});
-		
+
+/*
+	No need for auto-fill elements with the updated colspan behavior
+	
 		// if colspans are enabled
 		// create an autofill element if there are not enough column elements rendered
 		// but only autofill footer if there is a footer already defined
@@ -1200,6 +1219,7 @@ DDK.template.render = {
 				out += "</" + tagName + ">";
 			}
 		}
+*/
 		out += "</tr>";
 		
 		return out;
