@@ -214,6 +214,10 @@
 		width: 100%;
 	}
 */
+
+
+	th.sorting_disabled { cursor: initial !important; }
+
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * table-default
 	 */
