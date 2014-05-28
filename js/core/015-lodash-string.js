@@ -596,15 +596,16 @@
 		catch (error) { return typeof fallback === "function" ? fallback(str) : str; }
 	},
 
-	// parseQueryString(str)
+	// parseQueryString(isNested, str)
 	// attempts to parse a string as a query string
 	// will return an object if the string was successfully parsed
 	// will return the string if the string cannot be parsed
+	// will generate a nested object if keys contain '.' characters and isNested is `true`
 	//
 	// this is an intentionally basic implementation
 	// can improve the implementation later if required
 	// see http://benalman.com/projects/jquery-bbq-plugin/ for a more robust handling of query strings
-	parseQueryString: function(str) {
+	parseQueryString: function(isNested, str) {
 		var obj = {},
 			/* extend - 0.0.3.1
 			 * a teeny-tiny JavaScript namespacing script 
@@ -653,13 +654,23 @@
 				})(),
 			extendObj = extend(obj);
 		
+		// handle isNested object
+		if (typeof isNested === string) {
+			isNested = false;
+			str = isNested;
+		}
+		
 		_.each(str.replace(/\+/g, " ").replace(/^\?/g, "").split("&"), function (param) {
 			var pair = param.split("="),
 				key = pair[0] && decodeURIComponent(pair[0]),
 				value = pair[1] && decodeURIComponent(pair[1]);
 				
 			if (key && typeof value === "string" && value) {
-				extendObj(_.string.camelize(key), _.string.coerce(value));
+				if (isNested)
+					extendObj(_.string.camelize(key), _.string.coerce(value));
+				} else {
+					obj[_.string.camelize(key)] = _.string.coerce(value);
+				}
 			}
 		});
 		
