@@ -655,7 +655,7 @@
 			extendObj = extend(obj);
 		
 		// handle isNested object
-		if (typeof isNested === string) {
+		if (typeof isNested === "string") {
 			isNested = false;
 			str = isNested;
 		}
