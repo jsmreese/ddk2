@@ -666,7 +666,7 @@
 				value = pair[1] && decodeURIComponent(pair[1]);
 				
 			if (key && typeof value === "string" && value) {
-				if (isNested)
+				if (isNested) {
 					extendObj(_.string.camelize(key), _.string.coerce(value));
 				} else {
 					obj[_.string.camelize(key)] = _.string.coerce(value);
