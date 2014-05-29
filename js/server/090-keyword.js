@@ -314,7 +314,7 @@ _.extend(K, {
 	
 	// .toURL(prefix)
 	toURL: function(prefix) {
-		var prefixes = [].concat(prefix),
+		var prefixes = [].concat(prefix || ""),
 			prefixCount = prefixes.length,
 			i,
 			out = "";
@@ -327,7 +327,7 @@ _.extend(K, {
 	},
 
 	toObject: function (prefix) {
-		var prefixes = [].concat(prefix),
+		var prefixes = [].concat(prefix || ""),
 			out = {};
 			
 		_.each(prefixes, function (prefix) {
@@ -395,7 +395,7 @@ _.extend(K, {
 		_.each(prefixes, function (prefix) {
 			var queryString = keywordsToURL(prefix).replace(new RegExp(escapeRegexp(prefix), "g"), "&");
 			
-			_.extend(out, _.string.parseQueryString(queryString));
+			_.extend(out, _.string.parseQueryString(queryString, { toCase: "camel" }));
 		});
 		
 		return out;
@@ -413,7 +413,7 @@ _.extend(K, {
 		_.each(prefixes, function (prefix) {
 			var queryString = keywordsToURL(prefix).replace(new RegExp(escapeRegexp(prefix), "g"), "&");
 			
-			_.extend(out, _.string.parseQueryString(true, queryString));
+			_.extend(out, _.string.parseQueryString(queryString, { nested: true }));
 		});
 		
 		return out;

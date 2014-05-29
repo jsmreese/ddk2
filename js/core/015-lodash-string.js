@@ -605,7 +605,7 @@
 	// this is an intentionally basic implementation
 	// can improve the implementation later if required
 	// see http://benalman.com/projects/jquery-bbq-plugin/ for a more robust handling of query strings
-	parseQueryString: function(isNested, str) {
+	parseQueryString: function(str, settings) {
 		var obj = {},
 			/* extend - 0.0.3.1
 			 * a teeny-tiny JavaScript namespacing script 
@@ -654,11 +654,7 @@
 				})(),
 			extendObj = extend(obj);
 		
-		// handle isNested object
-		if (typeof isNested === "string") {
-			str = isNested;
-			isNested = false;
-		}
+		settings = settings || {};
 		
 		_.each(str.replace(/\+/g, " ").replace(/^\?/g, "").split("&"), function (param) {
 			var pair = param.split("="),
@@ -666,10 +662,22 @@
 				value = pair[1] && decodeURIComponent(pair[1]);
 				
 			if (key && typeof value === "string" && value) {
-				if (isNested) {
+				if (settings.nested) {
 					extendObj(_.string.camelize(key), _.string.coerce(value));
+				} else if (settings.toCase) {
+					switch (settings.toCase) {
+						case "camel":
+							obj[_.string.camelize(key)] = _.string.coerce(value);
+							break;
+						case "lower":
+							obj[key.toLowerCase()] = _.string.coerce(value);						
+							break;
+						case "upper":						
+							obj[key.toUpperCase()] = _.string.coerce(value);						
+							break;
+					}
 				} else {
-					obj[_.string.camelize(key)] = _.string.coerce(value);
+					obj[key] = _.string.coerce(value);
 				}
 			}
 		});
