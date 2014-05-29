@@ -656,8 +656,8 @@
 		
 		// handle isNested object
 		if (typeof isNested === "string") {
-			isNested = false;
 			str = isNested;
+			isNested = false;
 		}
 		
 		_.each(str.replace(/\+/g, " ").replace(/^\?/g, "").split("&"), function (param) {
