@@ -213,7 +213,9 @@
 	 */
 	$.fn.expandControlTableParents = function (threshold) {
 		var $controls = this.findControls().filter(function (index, elem) {
-				return $(elem).find("\[data-height\]").find("table").length > 1;
+				return $(elem).find("\[data-height\]").find("table").filter(function (index, elem) {
+					return $(elem).parents(".dataTables_wrapper").length === 0;
+				}).length > 1;
 			}),
 			$target;
 			

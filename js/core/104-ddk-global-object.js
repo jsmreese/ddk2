@@ -1879,7 +1879,10 @@
 						$(elem).children().unwrap();
 					});
 
-					$(document).find("table").breakTable();
+					// break tables that are not instantiated as DataTables
+					$(document).find("table").filter(function (index, elem) {
+						return $(elem).parents(".dataTables_wrapper").length === 0;
+					}).breakTable();
 					
 					$(document).expandControlTableParents()
 			
