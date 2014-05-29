@@ -699,7 +699,7 @@ DDK.query = {
 	set: function() {
 		var out = "",
 			controlName = K("component_name"),
-			co = K.toObject(controlName + "_"),
+			co = K.toObject3(controlName + "_"),
 			metricsStatic = (co.metrics_static ? co.metrics_static.replace(DDK.regex.singleQuote, "").split(",") : []),
 			metricsDynamic = (co.metrics_dynamic ? co.metrics_dynamic.replace(DDK.regex.singleQuote, "").split(",") : []),
 			metrics = [].concat(metricsStatic).concat(metricsDynamic),

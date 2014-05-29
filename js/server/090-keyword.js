@@ -325,11 +325,26 @@ _.extend(K, {
 		
 		return out;
 	},
+
+	toObject: function (prefix) {
+		var prefixes = [].concat(prefix),
+			out = {};
+			
+		_.each(prefixes, function (prefix) {
+			var queryString = keywordsToURL(prefix);
+			
+			_.extend(out, _.string.parseQueryString(queryString));
+		});
+		
+		return out;
+	},
 	
-	// .toObject(prefix)
-	// this .toObject function will strip all prefixes up to and including the first underscore character in the key
+	// .toObject3(prefix)
+	// legacy server toObject used by DDK 1 and 2 code
+	// renamed from toObject in DDK 2.2.0a2
+	// will strip all prefixes up to and including the first underscore character in the key
 	// for a more sensible prefix stripping, use toObject2
-	toObject: function(prefix) {
+	toObject3: function(prefix) {
 		var prefixes = [].concat(prefix),
 			prefixCount = prefixes.length,
 			i,
