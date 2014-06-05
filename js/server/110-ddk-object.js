@@ -526,6 +526,7 @@ DDK.options.list = [
 	"label_axisy2 lay2",
 	"label_axisy2_stacked_enabled lay2se true",
 	"legend_position lp right",
+	"list_mode lm list-unordered",
 	"metrics_choose_datasource mcd {{datasource}}",
 	"metrics_choose_enabled mce {{toolbar_default}}",
 	"metrics_choose_query_widget mcqw",

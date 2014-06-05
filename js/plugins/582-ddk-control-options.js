@@ -767,6 +767,33 @@ DDK.controlOptions = function (id) {
 			}
 		},
 
+		list: {
+			id: "list",
+			label: "List",
+			description: "Options specific to the List Control.",
+			options: {
+				nodesId: {
+					id: "s_" + id + "_lm",
+					label: "List Mode",
+					description: "Determines the type of list to render.",
+					notes: "(Not in Options Widget. For internal use) Highest priority over all option filters, if set to a value tree will ignore other option filters.",
+					defaultValue: "list-unordered",
+					values: [
+						{ "label": "Buttons - Large", "value": "buttons-large" },
+						{ "label": "Buttons - Medium", "value": "buttons-medium" },
+						{ "label": "Buttons - Small", "value": "buttons-small" },
+						{ "label": "List - Bulleted", "value": "list-unordered" },
+						{ "label": "list - Ordered", "value": "list-ordered" },
+						{ "label": "List - Definition", "value": "list-definition" },
+						{ "label": "Tabs - Horizontal", "value": "tabs-horizontal" },
+						{ "label": "Tabs - Vertical", "value": "tabs-vertical" },
+						{ "label": "Menubar - Horizontal", "value": "menubar-horizontal" },
+						{ "label": "Menubar - Vertical", "value": "menubar-vertical" }
+					]
+				}
+			}
+		},
+		
 		tree: {
 			id: "tree",
 			label: "Tree",
