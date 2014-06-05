@@ -10,6 +10,11 @@
 		DDK[name].reload(id);
 	}
 
+	function PSC_List_Resize() {}
+	
+	function PSC_List_Reload(id, callback, beforeInit, beforeReload, keywords) {
+		DDK.reloadControl("list", id, callback, beforeInit, beforeReload, keywords);
+	}
 	
 	function PSC_Bamset2_Resize() {}
 	

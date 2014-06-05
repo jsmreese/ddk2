@@ -2561,6 +2561,29 @@ DDK.chart.updateImage = function (controlId) {
 };
 
 $.extend(true, DDK, {
+	list: {
+		data: {},
+		init: function(id) {
+			var $control = $("#psc_list_" + id + "_widget"),
+				$data = $('#psc_list_data_' + id),
+				data = $data.data(),
+				config = data && data.config || null,
+				count = data && data.count || 0,
+				$content,
+				metrics,
+				attributes,
+				displays;
+
+			DDK.list.data[id] = DDK.list.data[id] || {};
+
+			DDK.format($control);
+			DDK.list.resize(id);
+
+			DDK.control.init($control);
+		},
+		resize: PSC_List_Resize,
+		reload: PSC_List_Reload
+	},
 	bamset2: {
 		data: {},
 		init: function(id) {

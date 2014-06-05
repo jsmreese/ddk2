@@ -782,7 +782,7 @@ DDK.controlOptions = function (id) {
 						{ "label": "Buttons - Medium", "value": "buttons-medium" },
 						{ "label": "Buttons - Small", "value": "buttons-small" },
 						{ "label": "List - Bulleted", "value": "list-unordered" },
-						{ "label": "list - Ordered", "value": "list-ordered" },
+						{ "label": "List - Ordered", "value": "list-ordered" },
 						{ "label": "List - Definition", "value": "list-definition" },
 						{ "label": "Tabs - Horizontal", "value": "tabs-horizontal" },
 						{ "label": "Tabs - Vertical", "value": "tabs-vertical" },
