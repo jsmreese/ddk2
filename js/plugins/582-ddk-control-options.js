@@ -244,7 +244,7 @@ DDK.controlOptions = function (id) {
 				toolbarDefault: {
 					id: "s_" + id + "_td",
 					label: "Toolbar Default",
-					description: "When <code>false</code>, sets the default value of all Control toolbar options to <code>false</code>. <p>Affects these toolbar options: <code>query.top.enabled</code>, <code>preview.enabled</code>, <code>metrics.choose.enabled</code>, <code>filter.enabled</code>, <code>favorite.enabled</code>, <code>export.csv.enabled</code>, <code>filter.global.enabled</code>, <code>refresh.enabled</code>, <code>type.enabled<code>, and <code>config.enabled</code>.", 
+					description: "When <code>false</code>, sets the default value of all Control toolbar options to <code>false</code>. <p>Affects these toolbar options: <code>query.top.enabled</code>, <code>preview.enabled</code>, <code>metrics.choose.enabled</code>, <code>filter.enabled</code>, <code>favorite.enabled</code>, <code>export.csv.enabled</code>, <code>filter.global.enabled</code>, <code>refresh.enabled</code>, <code>type.enabled</code>, and <code>config.enabled</code>.", 
 					notes: "Individual toolbars may be turned on by setting their specific options to <code>true</code>.",
 					values: ["false"]
 				}
