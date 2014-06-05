@@ -197,7 +197,7 @@ DDK.data.toArray = function(options) {
 		useRecordObjects = ((options && options.useRecordObjects != null) ? options.useRecordObjects : false),
 		columnPrefix = ((options && options.columnPrefix != null) ? options.columnPrefix : ""),
 		useCoercedTypes = ((options && options.useCoercedTypes != null) ? options.useCoercedTypes : true),
-		extendValue = ((options && useRecordObjects && columnPrefix && useCoercedTypes && options.extendValue != null) ? options.extendValue : false),
+		extendValue = ((options && useRecordObjects && useCoercedTypes && options.extendValue != null) ? options.extendValue : false),
 		iterator = ((options && typeof options.iterator === "function") ? options.iterator : null),
 		coerceMethod,
 		escapeMode = options && options.escapeMode || "none",
