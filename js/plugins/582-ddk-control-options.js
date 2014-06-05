@@ -776,7 +776,6 @@ DDK.controlOptions = function (id) {
 					id: "s_" + id + "_lm",
 					label: "List Mode",
 					description: "Determines the type of list to render.",
-					notes: "(Not in Options Widget. For internal use) Highest priority over all option filters, if set to a value tree will ignore other option filters.",
 					defaultValue: "list-unordered",
 					values: [
 						{ "label": "Buttons - Large", "value": "buttons-large" },
