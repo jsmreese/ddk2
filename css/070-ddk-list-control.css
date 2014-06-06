@@ -6,6 +6,7 @@
 .list-title {
 	font-size: 2.5em;
 	margin-bottom: 1rem;
+	margin-top: 1rem;
 }
 
 .list-button {
@@ -28,6 +29,7 @@
 
 .list-button-description {
 	color: #aaa;
+	font-size: 0.75em;
 }
 
 .buttons-large .list-button-label {
@@ -45,7 +47,4 @@
 
 .buttons-small .list-button-label {
 	font-weight: bold;
-}
-.buttons-small .list-button-description {
-	font-size: 0.75em;
 }
