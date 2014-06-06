@@ -1408,7 +1408,7 @@
 				spinner = "<img class=\"ddk-wait\" src=\"" + (oldIE ? fullPath : "") + "resources/ddk/" + DDK_PATH + "/imgs/spinner_16x16.gif\" alt=\"Saving...\" />",
 				name = data.ddkControlName || K("v_content_type") || "",
 				id = data.ddkControlId || "content",
-				record = data.record || this.value || 0,
+				record = data.record || this.value || K("s_content_fid") || 0,
 				stateKeys = (K.toURL("s_" + id + "_") + "&" + K.toURL("p_")).split("&"),
 				favValue = "";
 
