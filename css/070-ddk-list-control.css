@@ -1,0 +1,51 @@
+/* List Control */
+.ps-list {
+	font-size: 16px;
+}
+
+.list-title {
+	font-size: 2.5em;
+	margin-bottom: 1rem;
+}
+
+.list-button {
+	cursor: pointer;
+	color: #222;
+}
+
+.list-button:hover {
+	background-color: #F4F4F4;
+}
+
+.list-button-thumb,
+.list-button-text {
+	float: left;
+}
+
+.list-button-thumb {
+	margin-right: 0.5rem;
+}
+
+.list-button-description {
+	color: #aaa;
+}
+
+.buttons-large .list-button-label {
+	font-size: 2em;
+	margin-top: 1em;
+}
+.buttons-large .list-button-description {
+	margin-top: 0.5em;
+}
+
+.buttons-medium .list-button-label {
+	font-size: 1.5em;
+	margin-top: 0.5em;
+}
+
+.buttons-small .list-button-label {
+	font-weight: bold;
+}
+.buttons-small .list-button-description {
+	font-size: 0.75em;
+}
