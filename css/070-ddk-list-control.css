@@ -14,6 +14,7 @@
 	color: #222;
 }
 
+.list-item:hover,
 .list-button:hover {
 	background-color: #F4F4F4;
 }
@@ -27,6 +28,7 @@
 	margin-right: 0.5rem;
 }
 
+.list-item-description,
 .list-button-description {
 	color: #aaa;
 	font-size: 0.75em;
@@ -47,4 +49,8 @@
 
 .buttons-small .list-button-label {
 	font-weight: bold;
+}
+
+.list-item {
+	margin-bottom: 0.5em;
 }
