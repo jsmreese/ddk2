@@ -766,32 +766,6 @@ DDK.controlOptions = function (id) {
 				}
 			}
 		},
-
-		list: {
-			id: "list",
-			label: "List",
-			description: "Options specific to the List Control.",
-			options: {
-				nodesId: {
-					id: "s_" + id + "_lm",
-					label: "List Mode",
-					description: "Determines the type of list to render.",
-					defaultValue: "list-unordered",
-					values: [
-						{ "label": "List - Bullets", "value": "bullets" },
-						{ "label": "List - Ordered", "value": "ordered" },
-						{ "label": "List - Definitions", "value": "definitions" },
-						{ "label": "Buttons - Large", "value": "buttons-large" },
-						{ "label": "Buttons - Medium", "value": "buttons-medium" },
-						{ "label": "Buttons - Small", "value": "buttons-small" },
-						{ "label": "Tabs - Horizontal", "value": "tabs-horizontal" },
-						{ "label": "Tabs - Vertical", "value": "tabs-vertical" },
-						{ "label": "Menubar - Horizontal", "value": "menubar-horizontal" },
-						{ "label": "Menubar - Vertical", "value": "menubar-vertical" }
-					]
-				}
-			}
-		},
 		
 		tree: {
 			id: "tree",
