@@ -18,6 +18,10 @@
 	padding-left: 0;
 }
 
+.list-container .list-container {
+	padding-left: 1em;
+}
+
 .list-container .list-item {
 	margin-bottom: 1em;
 }
@@ -30,7 +34,6 @@
 	list-style-position: inside;
 }
 
-.list-item:hover,
 .list-anchor:hover {
 	background-color: #F4F4F4;
 }
@@ -66,4 +69,21 @@
 
 .list-buttons-small .list-label {
 	font-weight: bold;
+}
+
+/* list visibility */
+.hide-description .list-description {
+	display: none;
+}
+
+.hide-label .list-label {
+	display: none;
+}
+
+.hide-image .list-image {
+	display: none;
+}
+
+.hide-content .list-content {
+	display: none;
 }
