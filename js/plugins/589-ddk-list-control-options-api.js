@@ -32,7 +32,7 @@ PS.optionsAPI.listControl = {
 		"id": "list_class_name",
 		"label": "Classes",
 		"description": "Classes added to the list element.",
-		"notes": ""
+		"notes": "<p>Use these classes to control visiblity of list item components: <code>hide-label</code>, <code>hide-description</code>, <code>hide-image</code>, <code>hide-content</code>.<p>The class <code>compact</code> will remove spacing between list items."
 	},
 	
 	"listTagName": {
