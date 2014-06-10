@@ -9,8 +9,9 @@
 }
 
 .list-title {
-	font-size: 2.5em;
-	margin-bottom: 0.4em;
+	font-size: 2em;
+	margin-bottom: .5em;
+	color: #999;
 }
 
 .list-container {
@@ -51,7 +52,7 @@
 
 .list-buttons-large .list-label {
 	font-size: 2.5em;
-	margin-top: 0.5em;
+	margin-top: 0.75em;
 }
 
 .list-buttons-large .list-description {
@@ -60,7 +61,7 @@
 
 .list-buttons-medium .list-label {
 	font-size: 1.5em;
-	margin-top: 0.25em;
+	margin-top: 0.5em;
 }
 
 .list-buttons-small .list-label {

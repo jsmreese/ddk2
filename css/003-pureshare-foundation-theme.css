@@ -1,0 +1,10 @@
+/* anchor colors */
+a, a:visited {
+	color: #0D60BF; /* hsl(212, 87%, 40%) */
+}
+
+a:hover, a:focus {
+	color: #0A488F; /* hsl(212, 87%, 30%) */
+}
+
+
