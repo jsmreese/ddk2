@@ -9,8 +9,8 @@
 }
 
 .list-title {
-	font-size: 2em;
-	margin-bottom: 0.5em;
+	font-size: 2.5em;
+	margin-bottom: 0.4em;
 }
 
 .list-container {
@@ -36,7 +36,6 @@
 
 .list-anchor {
 	cursor: pointer;
-	color: #222;
 	text-decoration: none;
 }
 
