@@ -3,54 +3,67 @@
 	font-size: 16px;
 }
 
-.list-title {
-	font-size: 2.5em;
-	margin-bottom: 1rem;
-	margin-top: 2rem;
-}
-
-.list-button {
-	cursor: pointer;
-	color: #222;
-}
-
-.list-item:hover,
-.list-button:hover {
-	background-color: #F4F4F4;
-}
-
-.list-button-thumb,
-.list-button-text {
+.list-image {
 	float: left;
+	margin-right: 0.5em;
 }
 
-.list-button-thumb {
-	margin-right: 0.5rem;
-}
-
-.list-item-description,
-.list-button-description {
-	color: #aaa;
-	font-size: 0.75em;
-}
-
-.buttons-large .list-button-label {
+.list-title {
 	font-size: 2em;
-	margin-top: 1em;
-}
-.buttons-large .list-button-description {
-	margin-top: 0.5em;
+	margin-bottom: 0.5em;
 }
 
-.buttons-medium .list-button-label {
-	font-size: 1.5em;
-	margin-top: 0.5em;
+.list-container {
+	padding-left: 0;
 }
 
-.buttons-small .list-button-label {
-	font-weight: bold;
+.list-container .list-item {
+	margin-bottom: 1em;
+}
+
+.list-container.compact .list-item {
+	margin-bottom: 0;
 }
 
 .list-item {
-	margin-bottom: 0.5em;
+	list-style-position: inside;
+}
+
+.list-item:hover,
+.list-anchor:hover {
+	background-color: #F4F4F4;
+}
+
+.list-anchor {
+	cursor: pointer;
+	color: #222;
+	text-decoration: none;
+}
+
+.list-description {
+	color: #aaa;
+	font-size: 0.75em;
+
+}
+
+.list-label {
+	white-space: nowrap;
+}
+
+.list-buttons-large .list-label {
+	font-size: 2.5em;
+	margin-top: 0.5em;
+}
+
+.list-buttons-large .list-description {
+	font-size: 1em;
+}
+
+.list-buttons-medium .list-label {
+	font-size: 1.5em;
+	margin-top: 0.25em;
+}
+
+.list-buttons-small .list-label {
+	font-weight: bold;
 }
