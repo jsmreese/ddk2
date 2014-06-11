@@ -15,3 +15,7 @@ DDK.navset2.configOptionGroupModels = [
 	(new PS.MC.Models.OptionGroup()).setup(PS.optionsAPI.navElem),
 	(new PS.MC.Models.OptionGroup()).setup(PS.optionsAPI.navElemConfig)
 ];
+
+DDK.list.configOptionGroupModels = [
+	(new PS.MC.Models.OptionGroup()).setup(PS.optionsAPI.list)
+];
