@@ -1,5 +1,6 @@
 PS.optionsAPI.list = {
 	"id": "list",
+	"label": "List Control configuration options.",
 	"description": "List Control configuration options.",
 	"options": {
 		/* list */
