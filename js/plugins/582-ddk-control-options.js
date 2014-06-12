@@ -182,9 +182,9 @@ DDK.controlOptions = function (id) {
 				config: {
 					id: "s_" + id + "_con",
 					label: "Config",
-					dataType: "json",
+					dataType: "json-escaped",
 					description: "JSON data structure used to render Control content. Describes Scorecard Control columns as well as BAM Control BAMs.",
-					notes: "Keywords (globals, data, data aggregate) may be used via DDK Keyword syntax (<code>%%KEY%%</code>). <p>DDK Keyword Alias syntax (<code>%{ATTR}%</code>) may also be used to evaluate metric attributes in the context of each data record."
+					notes: "<p>Keywords (globals, data, data aggregate) may be used via DDK Keyword syntax (<code>%%KEY%%</code>). <p>DDK Keyword Alias syntax (<code>%{ATTR}%</code>) may also be used to evaluate metric attributes in the context of each data record.<p>Value is an object stored in JSON format with square brackets escaped."
 				},
 				configWidget: {
 					id: "s_" + id + "_cw",

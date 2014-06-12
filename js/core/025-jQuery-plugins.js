@@ -482,7 +482,7 @@
 	 * Accepts OptionGroup Models for line-based automatic help in JSON mode.
 	 * by: jsmreese
 	 */
-	 $.fn.editor = function (settings) {
+	$.fn.editor = function (settings) {
 		var elem = this.get(0),
 			editor,
 			waiting,
@@ -619,10 +619,15 @@
 	};
 	
 	$.fn.editor.defaults = {
-		// language defaults to "json" if value can be parsed as JSON
+		// language defaults to "json" if value is an object or
+		// can be parsed as JSON (with or without brackets unescaped)
 		// otherwise, language defaults to "text"
 		language: function () {
-			return (_.isPlainObject(this.value) ? "json" : "text");
+			if (_.isPlainObject(this.value) || _.isPlainObject(_.string.parseJSON(DDK.unescape.brackets(this.value)))) {
+				return "json";
+			}
+			
+			return "text";
 		},
 		messageCount: 1,
 		messageTemplate: "<div class=\"lint-error\"><%= reason %></div>",
