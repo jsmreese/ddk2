@@ -969,6 +969,7 @@ DDK.scorecard2.optionsAPI.config = {
 	"id": "scorecard_config_settings",
 	"label": "Scorecard Configuration Settings",
 	"description": "Settings for configuration of Scorecard and Build Scorecard Dialog.",
+	"exportGroupId": "scorecard_config_object_settings",
 	"dialog": {
 		"id": "scorecard_config_dialog_settings",
 		"label": "Scorecard Configuration Dialog Settings",
@@ -1035,6 +1036,7 @@ DDK.scorecard2.optionsAPI.columnConfig = {
 	"id": "scorecard_column_config_settings",
 	"label": "Scorecard Column Configuration Settings",
 	"description": "Settings for configuration of Scorecard Columns in the Build Scorecard Dialog.",
+	"exportGroupId": "scorecard_column_config_object_settings",
 	"dialog": {
 		"id": "scorecard_column_config_dialog_settings",
 		"label": "Scorecard Column Configuration Dialog Settings",
