@@ -686,7 +686,6 @@ button[data-action="closecolumndialog"]:hover {
 	}
 	
 	.config-dialog .config-dialog-settings label {
-		float: right;
 		cursor: pointer;
 		margin-left: 5px;
 	}
