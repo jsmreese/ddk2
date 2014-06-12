@@ -684,6 +684,18 @@ button[data-action="closecolumndialog"]:hover {
 	.config-dialog {
 		box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.3);	
 	}
+	
+	.config-dialog .config-dialog-settings label {
+		float: right;
+		cursor: pointer;
+		margin-left: 5px;
+	}
+	
+	.config-dialog .config-dialog-options {
+		overflow-x: hidden;
+		overflow-y: scroll;
+		border: 1px solid #DDD;
+	}
 
 	.config-editor {
 		overflow-x: auto;
