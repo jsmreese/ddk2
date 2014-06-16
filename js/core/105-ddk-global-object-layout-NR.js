@@ -35,25 +35,24 @@ DDK.layout = {
 	south: {}
 };
 
-DDK.spoofMediaQuery = function () {
-	var $center = $("#layout_content_center"),
-		width = $center.width(),
+DDK.spoofMediaQuery = function ($elem) {
+	var width = $elem.width(),
 		sizes = DDK.spoofMediaQuery.sizes,
 		ranges = DDK.spoofMediaQuery.ranges,
 		classList = _.map(sizes, function (size) {
 			return "ddk-mq-" + size;
 		});
 
-	$center.removeClass(classList.join(" "));
+	$elem.removeClass(classList.join(" "));
 		
 	_.each(sizes, function (size, index) {
 		if (width > ranges[size].min && width <= ranges[size].max) {
-			$center.addClass(classList[index]);
+			$elem.addClass(classList[index]);
 		}
 	});
 	
-	// resize controls in the center pane that are contained in grid row elements
-	$center.find(".row").findControls().resizeControls();
+	// resize controls in the pane that are contained in grid row elements
+	$elem.find(".row").findControls().resizeControls();
 };
 
 DDK.spoofMediaQuery.sizes = "small medium large".split(" ");
