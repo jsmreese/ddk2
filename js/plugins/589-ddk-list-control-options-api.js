@@ -221,13 +221,6 @@ PS.optionsAPI.list = {
 					"description": "Value rendered in each list item description element.",
 					"notes": "",
 					"defaultValue": "%%description%%"
-				},
-
-				"descriptionShow": {
-					"id": "description_show",
-					"label": "Show Description",
-					"description": "Determines whether list item description is displayed.",
-					"notes": "If <code>false</code>, description value will be added to the list item or list item anchor element's title attribute."
 				}
 			}
 		},
