@@ -623,7 +623,7 @@
 		// can be parsed as JSON (with or without brackets unescaped)
 		// otherwise, language defaults to "text"
 		language: function () {
-			if (_.isPlainObject(this.value) || _.isPlainObject(_.string.parseJSON(DDK.unescape.brackets(this.value)))) {
+			if (_.isPlainObject(this.value) || _.isPlainObject(_.string.parseJSON(DDK.unescape.brackets(this.value.toString())))) {
 				return "json";
 			}
 			

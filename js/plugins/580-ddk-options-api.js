@@ -1027,6 +1027,14 @@ DDK.scorecard2.optionsAPI.config = {
 				"label": "Table Classes",
 				"description": "Classes rendered on the scorecard table element.",
 				"notes": ""
+			},
+			
+			"columns": {
+				"id": "columns",
+				"label": "Columns",
+				"description": "Columns of the scorecard.",
+				"notes": "",
+				"optionsAPI": "scorecardColumn"
 			}
 		}
 	}
