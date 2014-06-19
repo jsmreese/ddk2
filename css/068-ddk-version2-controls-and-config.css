@@ -690,10 +690,27 @@ button[data-action="closecolumndialog"]:hover {
 		margin-left: 5px;
 	}
 	
-	.config-dialog .config-dialog-options {
+	.config-dialog .config-dialog-options,
+	.config-dialog .config-dialog-options-collection {
 		overflow-x: hidden;
 		overflow-y: scroll;
 		border: 1px solid #DDD;
+		position: relative;
+	}
+	
+	.config-dialog-options > .option-group,
+	.config-dialog-options-collection > .option-group	{
+		margin-bottom: 0.5em;
+		border-bottom: 1px solid #DDD;
+		padding-bottom: 0.5em;
+	}
+	
+	.config-dialog .option-label {
+		color: #0C59AB;
+	}
+	
+	.config-dialog .row input[type="text"] {
+		width: 100%;
 	}
 
 	.config-editor {
