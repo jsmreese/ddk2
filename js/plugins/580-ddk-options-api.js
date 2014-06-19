@@ -1065,8 +1065,8 @@ DDK.scorecard2.optionsAPI.columnConfig = {
 	},
 	"config": {
 		"id": "scorecard_column_config_object_settings",
-		"label": "Scorecard Column Configuration Object Settings",
-		"description": "Settings for controlling scorecard column configuration objects.",
+		"label": "Column",
+		"description": "Scorecard column configuration.",
 		"options": {
 			"prefix": {
 				"id": "prefix",
@@ -1105,9 +1105,9 @@ DDK.scorecard2.optionsAPI.columnConfig = {
 
 			"sortValue": {
 				"id": "sort_value",
-				"label": "",
-				"description": "",
-				"notes": ""
+				"label": "Sort Value",
+				"description": "Sets the value used for column sorting with sortable scorecards.",
+				"notes": "Defaults to the value of the bodyContentValue option."
 			}
 		}
 	}
