@@ -51,7 +51,7 @@ PS.optionsAPI.list = {
 				"id": "list_class_name",
 				"label": "Classes",
 				"description": "Classes added to the list element.",
-				"notes": "<p>The class <code>compact</code> will remove spacing between list items."
+				"notes": "<p>The class <code>compact</code> will remove spacing between list items.<p>The classes <code>small</code>, <code>medium</code>, and <code>large</code> will affect button size in <code>button</code> list mode."
 			},
 			
 			"listTagName": {
