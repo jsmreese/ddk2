@@ -10,10 +10,10 @@ PS.optionsAPI.list = {
 			"notes": "<p>list_mode value will determin default values for many other list configuration options.",
 			"defaultValue": "bullets",
 			"values": [
-				{ "label": "Bullets", "value": "bullets" },
+				{ "label": "Bullet", "value": "bullet" },
 				{ "label": "Ordered", "value": "ordered" },
-				{ "label": "Buttons", "value": "buttons" } /*,
-				{ "label": "Tabs", "value": "tabs" } */
+				{ "label": "Button", "value": "button" } /*,
+				{ "label": "Tab", "value": "tab" } */
 			]
 		},
 
@@ -58,7 +58,7 @@ PS.optionsAPI.list = {
 				"id": "list_tag_name",
 				"label": "Tag Name",
 				"description": "Tag name used for the list element.",
-				"notes": "<p>Default value depends on the list mode option.<table><thead><tr><th>List Mode</th><th>Default Value</th></thead><tbody><tr><td>bullets</td><td>ul</td></tr><tr><td>ordered</td><td>ol</td></tr><tr><td>buttons</td><td>div</td></tr><tr><td>tabs</td><td>ul</td></tr></tbody></table>"
+				"notes": "<p>Default value depends on the list mode option.<table><thead><tr><th>List Mode</th><th>Default Value</th></thead><tbody><tr><td>bullet</td><td>ul</td></tr><tr><td>ordered</td><td>ol</td></tr><tr><td>button</td><td>div</td></tr><tr><td>tab</td><td>ul</td></tr></tbody></table>"
 			},
 			
 			"listTemplate": {
@@ -94,7 +94,7 @@ PS.optionsAPI.list = {
 				"id": "item_tag_name",
 				"label": "Item Tag Name",
 				"description": "Tag name used for each list item element.",
-				"notes": "<p>Default value depends on the list mode option.<table><thead><tr><th>List Mode</th><th>Default Value</th></thead><tbody><tr><td>bullets</td><td>li</td></tr><tr><td>ordered</td><td>li</td></tr><tr><td>buttons</td><td>div</td></tr><tr><td>tabs</td><td>li</td></tr></tbody></table>"
+				"notes": "<p>Default value depends on the list mode option.<table><thead><tr><th>List Mode</th><th>Default Value</th></thead><tbody><tr><td>bullet</td><td>li</td></tr><tr><td>ordered</td><td>li</td></tr><tr><td>button</td><td>div</td></tr><tr><td>tab</td><td>li</td></tr></tbody></table>"
 			},
 			
 			"itemTitle": {
