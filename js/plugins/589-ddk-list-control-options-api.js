@@ -13,8 +13,7 @@ PS.optionsAPI.list = {
 				{ "label": "Bullets", "value": "bullets" },
 				{ "label": "Ordered", "value": "ordered" },
 				{ "label": "Buttons", "value": "buttons" },
-				{ "label": "Tabs", "value": "tabs" },
-				{ "label": "Custom", "value": "custom" }
+				{ "label": "Tabs", "value": "tabs" }
 			]
 		},
 
