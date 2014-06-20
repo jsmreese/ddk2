@@ -25,6 +25,9 @@
 .list-anchor {
 	cursor: pointer;
 	text-decoration: none;
+	display: inline-block;
+	width: 100%;
+	height: 100%;
 }
 
 .list-label {
