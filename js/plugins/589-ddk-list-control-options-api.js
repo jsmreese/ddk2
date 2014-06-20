@@ -12,8 +12,8 @@ PS.optionsAPI.list = {
 			"values": [
 				{ "label": "Bullets", "value": "bullets" },
 				{ "label": "Ordered", "value": "ordered" },
-				{ "label": "Buttons", "value": "buttons" },
-				{ "label": "Tabs", "value": "tabs" }
+				{ "label": "Buttons", "value": "buttons" } /*,
+				{ "label": "Tabs", "value": "tabs" } */
 			]
 		},
 
@@ -25,7 +25,8 @@ PS.optionsAPI.list = {
 		}
 		
 		/*,
-		
+		This option will likely be reworked to align with a forthcoming Tree Query API
+		Will probably use more generic itemId and itemParentId options that can be databound by default to %%id%% and %%parentId%%
 		"listNested": {
 			"id": "list_nested",
 			"label": "Nested",
@@ -37,7 +38,7 @@ PS.optionsAPI.list = {
 	"listElement": {
 		"id": "list_element",
 		"label": "List Element",
-		"description": "Attributes and classes applied to the list element.",
+		"description": "List element configuration.",
 		"options": {
 			"listAttr": {
 				"id": "list_attr",
@@ -51,23 +52,29 @@ PS.optionsAPI.list = {
 				"label": "Classes",
 				"description": "Classes added to the list element.",
 				"notes": "<p>Use these classes to control visiblity of list item components: <code>hide-label</code>, <code>hide-description</code>, <code>hide-image</code>, <code>hide-content</code>.<p>The class <code>compact</code> will remove spacing between list items."
-			}
-			
-			/*,
+			},
 			
 			"listTagName": {
 				"id": "list_tag_name",
 				"label": "Tag Name",
 				"description": "Tag name used for the list element.",
-				"notes": "<p>Default value depends on the list mode option.<table><thead><tr><th>List Mode</th><th>Default Value</th></thead><tbody><tr><td>bullets</td><td>ul</td></tr><tr><td>tabs-*</td><td>ul</td></tr><tr><td>ordered</td><td>ol</td></tr><tr><td>definitions</td><td>dl</td></tr><tr><td>general</td><td>div</td></tr><tr><td>buttons-*</td><td>div</td></tr></tbody></table>"
-			}*/
+				"notes": "<p>Default value depends on the list mode option.<table><thead><tr><th>List Mode</th><th>Default Value</th></thead><tbody><tr><td>bullets</td><td>ul</td></tr><tr><td>ordered</td><td>ol</td></tr><tr><td>buttons</td><td>div</td></tr><tr><td>tabs</td><td>ul</td></tr></tbody></table>"
+			},
+			
+			"listTemplate": {
+				"id": "list_template",
+				"label": "Template",
+				"description": "Template used to render the list element.",
+				"notes": "<p>Evaluated as a Lo-Dash template string.",
+				"defaultValue": '<<%= listTagName %> class="list-items row full list-<%= listMode %> <%= listClassName %>" <%= listAttr %>><%= items %></<%= listTagName %>>'
+			}
 		}
 	},
 	
 	"itemElement": {
 		"id": "item_element",
 		"label": "Item Element",
-		"description": "Attributes and classes applied to the list item element.",
+		"description": "List Item element configuration.",
 		"options": {
 			"itemAttr": {
 				"id": "item_attr",
@@ -83,18 +90,27 @@ PS.optionsAPI.list = {
 				"notes": ""
 			},
 			
-			/*"itemTagName": {
+			"itemTagName": {
 				"id": "item_tag_name",
 				"label": "Item Tag Name",
 				"description": "Tag name used for each list item element.",
-				"notes": "<p>Default value depends on the list mode option. List item elements are not rendered for every list mode."
-			},*/
+				"notes": "<p>Default value depends on the list mode option.<table><thead><tr><th>List Mode</th><th>Default Value</th></thead><tbody><tr><td>bullets</td><td>li</td></tr><tr><td>ordered</td><td>li</td></tr><tr><td>buttons</td><td>div</td></tr><tr><td>tabs</td><td>li</td></tr></tbody></table>"
+			},
 			
+			"itemTitle": {
+				"id": "item_title",
+				"label": "Classes",
+				"description": "Title attribute added to each list item element.",
+				"notes": "",
+				"defaultValue": "%%description%%"
+			},
+
 			"itemTemplate": {
 				"id": "item_template",
 				"label": "Template",
-				"description": "Template used to render the contents of each list item element.",
-				"notes": "<p>If a list item element is rendered, template will render the html content of each list item element. Otherwise, template will render the entire list item."
+				"description": "Template used to render each list item element.",
+				"notes": "<p>A list item is rendered for every record in the control dataset.<p>If there is anchor element configuration, the anchor element is rendered inside the list item. Otherwise, the image, label, and content elements are rendered inside the list element.",
+				"defaultValue": '<<%= itemTagName %> class="list-item column <%= itemClassName %>" title="<%= itemTitle %>" <%= itemAttr %>><%= (anchorHref || anchorAttr || anchorClassName) ? anchor : image + label + content %></<%= itemTagName %>>'
 			}
 		}
 	},
@@ -102,36 +118,45 @@ PS.optionsAPI.list = {
 	"anchorElement": {
 		"id": "anchor_element",
 		"label": "Anchor Element",
-		"description": "Attributes and classes applied to the anchor element.",
+		"description": "<p>Anchor element configuration.",
+		"notes": "<p>The anchor element is rendered if the <code>anchorAttr</code>, <code>anchorClassName</code>, or <code>anchorHref</code> options have a value.",
 		"options": {
 			"anchorAttr": {
 				"id": "anchor_attr",
 				"label": "Attributes",
-				"description": "Attributes added to each list anchor element.",
+				"description": "Attributes added to each anchor element.",
 				"notes": ""
 			},
 			
 			"anchorClassName": {
 				"id": "anchor_class_name",
 				"label": "Classes",
-				"description": "Classes added to each list anchor element.",
+				"description": "Classes added to each anchor element.",
 				"notes": ""
 			},
 			
 			"anchorHref": {
 				"id": "anchor_href",
 				"label": "URL",
-				"description": "<code>href</code> attribute for each list item anchor element.",
-				"notes": "",
+				"description": "<code>href</code> attribute for each anchor element.",
+				"notes": "Anchor element render is not triggered if this option resolves to an AMEngine keyword. e.g. <code>&#126;url&#126;</code>",
 				"defaultValue": "%%url%%"
 			},
 
 			"anchorTarget": {
 				"id": "anchor_target",
 				"label": "Target",
-				"description": "<code>target</code> attribute for each list item anchor element.",
+				"description": "<code>target</code> attribute for each anchor element.",
 				"notes": "",
 				"defaultValue": "_blank"
+			},
+			
+			"anchorTemplate": {
+				"id": "anchor_template",
+				"label": "Template",
+				"description": "Template used to render each anchor element.",
+				"notes": "<p>The image, label, and content elements are rendered inside the anchor element.",
+				"defaultValue": '<a class="list-anchor <%= anchorClassName %>" href="<%= anchorHref %>" target="<%= anchorTarget %>" <%= anchorAttr %>><%= image + label + content %></a>'
 			}
 		}
 	},
@@ -139,28 +164,36 @@ PS.optionsAPI.list = {
 	"labelElement": {
 		"id": "label_element",
 		"label": "Label Element",
-		"description": "Attributes and classes applied to the label element.",
+		"description": "Label element configuration.",
+		"notes": "<p>The label element is rendered if the <code>labelAttr</code>, <code>labelClassName</code>, or <code>labelValue</code> options have a value.",
 		"options": {
 			"labelAttr": {
 				"id": "label_attr",
 				"label": "Attributes",
-				"description": "Attributes added to each list item label element.",
+				"description": "Attributes added to each label element.",
 				"notes": ""
 			},
 			
 			"labelClassName": {
 				"id": "label_class_name",
 				"label": "Classes",
-				"description": "Classes added to each list item label element.",
+				"description": "Classes added to each label element.",
 				"notes": ""
 			},
 			
 			"labelValue": {
 				"id": "label_value",
 				"label": "Label",
-				"description": "Value rendered in each list item label element.",
-				"notes": "",
+				"description": "HTML rendered in each label element.",
+				"notes": "Label element render is not triggered if this option resolves to an AMEngine keyword. e.g. <code>&#126;label&#126;</code>",
 				"defaultValue": "%%label%%"
+			},
+			
+			"labelTemplate": {
+				"id": "label_template",
+				"label": "Template",
+				"description": "Template used to render each label element.",
+				"defaultValue": '<div class="list-label <%= labelClassName %>" <%= labelAttr %>><%= labelValue %></div>'
 			}
 		}
 	},
@@ -168,63 +201,42 @@ PS.optionsAPI.list = {
 	"imageElement": {
 		"id": "image_element",
 		"label": "Image Element",
-		"description": "Attributes and classes applied to the image element.",
+		"description": "Image element configuration.",
 		"options": {
 			"imageAttr": {
 				"id": "image_attr",
 				"label": "Attributes",
-				"description": "Attributes added to each list item image element.",
+				"description": "Attributes added to each image element.",
 				"notes": ""
 			},
 			
 			"imageClassName": {
 				"id": "image_class_name",
 				"label": "Classes",
-				"description": "Classes added to each list item image element.",
+				"description": "Classes added to each image element.",
 				"notes": ""
 			},
 			
 			"imageSrc": {
 				"id": "image_src",
-				"label": "Image Source",
-				"description": "<code>src</code> attribute for each list item image element.",
-				"notes": "Default value varies by list mode.<p>For <code>buttons-large</code>, default value is <code>%%img1%%</code> and images are expected to be 128x128 px.<p>For <code>buttons-medium</code>, default value is <code>%%img2%%</code> and images are expected to be 64x64 px.<p>For all other modes, default value is <code>%%img3%%</code> and images are expected to be 32x32 px."
+				"label": "Source",
+				"description": "<code>src</code> attribute for each image element.",
+				"notes": "Image element render is not triggered if this option resolves to an AMEngine keyword. e.g. <code>&#126;img1&#126;</code>",
+				"defaultValue": "%%img1%%"
 			},
 
 			"imageAlt": {
 				"id": "image_alt",
-				"label": "Image Alt",
-				"description": "<code>alt</code> attribute for each list item image element.",
-				"notes": ""
-			}
-		}
-	},
-
-	"descriptionElement": {
-		"id": "description_element",
-		"label": "Description Element",
-		"description": "Attributes and classes applied to the description element.",
-		"options": {
-			"descriptionAttr": {
-				"id": "description_attr",
-				"label": "Attributes",
-				"description": "Attributes added to each list item description element.",
+				"label": "Alt",
+				"description": "<code>alt</code> attribute for each image element.",
 				"notes": ""
 			},
 			
-			"descriptionClassName": {
-				"id": "description_class_name",
-				"label": "Classes",
-				"description": "Classes added to each list item description element.",
-				"notes": ""
-			},
-			
-			"descriptionValue": {
-				"id": "description_value",
-				"label": "Description",
-				"description": "Value rendered in each list item description element.",
-				"notes": "",
-				"defaultValue": "%%description%%"
+			"imageTemplate": {
+				"id": "image_template",
+				"label": "Template",
+				"description": "Template used to render each image element.",
+				"defaultValue": '<img class="list-image <%= imageClassName %>" src="<%= imageSrc %>" alt="<%= imageAlt %>" <%= imageAttr %>>'
 			}
 		}
 	},
@@ -232,38 +244,45 @@ PS.optionsAPI.list = {
 	"contentElement": {
 		"id": "content_element",
 		"label": "Content Element",
-		"description": "Attributes and classes applied to the content element.",
+		"description": "Content element configuration.",
 		"options": {
 			"contentAttr": {
 				"id": "content_attr",
 				"label": "Attributes",
-				"description": "Attributes added to each list item content element.",
+				"description": "Attributes added to each content element.",
 				"notes": ""
 			},
 			
 			"contentClassName": {
 				"id": "content_class_name",
 				"label": "Classes",
-				"description": "Classes added to each list item content element.",
+				"description": "Classes added to each content element.",
 				"notes": ""
 			},
 			
 			"contentValue": {
 				"id": "content_value",
 				"label": "Description",
-				"description": "Value rendered in each list item content element.",
-				"notes": ""
+				"description": "HTML rendered in each content element.",
+				"notes": "<p>Content widget render output is appended to the <code>content_value</code> option before template evaluation.<p>Both options <code>content_value</code> and <code>content_widget</code> may have a value, and the combined result will be rendered as the content element HTML."
 			},
 
 			"contentWidget": {
 				"id": "content_widget",
 				"label": "Content Widget",
-				"description": "Widget rendered inside each list item content element.",
-				"notes": "Overrides <code>content_value</code> option."
+				"description": "Widget rendered inside each content element.",
+				"notes": "<p>Content widget render output is appended to the <code>content_value</code> option before template evaluation.<p>Both options <code>content_value</code> and <code>content_widget</code> may have a value, and the combined result will be rendered as the content element HTML."
+			},
+			
+			"contentTemplate": {
+				"id": "content_template",
+				"label": "Template",
+				"description": "Template used to render each content element.",
+				"defaultValue": '<div class="list-content <%= contentClassName %>" <%= contentAttr %>><%= contentValue %></div>'
 			}
 		}
 	},
-
+/*
 	"panelsElement": {
 		"id": "panels_element",
 		"label": "Panels Element",
@@ -284,4 +303,5 @@ PS.optionsAPI.list = {
 			}
 		}
 	}
+*/
 }
