@@ -23,14 +23,16 @@ PS.optionsAPI.list = {
 			"label": "Title",
 			"description": "Title appears as a header above the list element.",
 			"notes": ""
-		},
+		}
+		
+		/*,
 		
 		"listNested": {
 			"id": "list_nested",
 			"label": "Nested",
 			"description": "If <code>true</code>, list is rendered as a nested collection of items.",
 			"notes": "<p>Dataset fields <code>child_count</code> and <code>level</code> are used to traverse nested item structure.<p>Tabs and buttons cannot be rendered as nested strucutres."
-		}
+		}*/
 	},
 
 	"listElement": {
@@ -50,14 +52,16 @@ PS.optionsAPI.list = {
 				"label": "Classes",
 				"description": "Classes added to the list element.",
 				"notes": "<p>Use these classes to control visiblity of list item components: <code>hide-label</code>, <code>hide-description</code>, <code>hide-image</code>, <code>hide-content</code>.<p>The class <code>compact</code> will remove spacing between list items."
-			},
+			}
+			
+			/*,
 			
 			"listTagName": {
 				"id": "list_tag_name",
 				"label": "Tag Name",
 				"description": "Tag name used for the list element.",
 				"notes": "<p>Default value depends on the list mode option.<table><thead><tr><th>List Mode</th><th>Default Value</th></thead><tbody><tr><td>bullets</td><td>ul</td></tr><tr><td>tabs-*</td><td>ul</td></tr><tr><td>ordered</td><td>ol</td></tr><tr><td>definitions</td><td>dl</td></tr><tr><td>general</td><td>div</td></tr><tr><td>buttons-*</td><td>div</td></tr></tbody></table>"
-			}
+			}*/
 		}
 	},
 	
@@ -80,12 +84,12 @@ PS.optionsAPI.list = {
 				"notes": ""
 			},
 			
-			"itemTagName": {
+			/*"itemTagName": {
 				"id": "item_tag_name",
 				"label": "Item Tag Name",
 				"description": "Tag name used for each list item element.",
 				"notes": "<p>Default value depends on the list mode option. List item elements are not rendered for every list mode."
-			},
+			},*/
 			
 			"itemTemplate": {
 				"id": "item_template",
@@ -261,22 +265,22 @@ PS.optionsAPI.list = {
 		}
 	},
 
-	"tabsElement": {
-		"id": "tabs_element",
-		"label": "Tabs Element",
-		"description": "Attributes and classes applied to the tabs container element.",
+	"panelsElement": {
+		"id": "panels_element",
+		"label": "Panels Element",
+		"description": "Attributes and classes applied to the panels container element.",
 		"options": {
 			"tabsAttr": {
-				"id": "tabs_attr",
+				"id": "panels_attr",
 				"label": "Attributes",
-				"description": "Attributes added to the tabs container element.",
+				"description": "Attributes added to the panels container element.",
 				"notes": ""
 			},
 			
 			"tabsClassName": {
-				"id": "tabs_class_name",
+				"id": "panels_class_name",
 				"label": "Classes",
-				"description": "Classes added to the tabs container element.",
+				"description": "Classes added to the panels container element.",
 				"notes": ""
 			}
 		}
