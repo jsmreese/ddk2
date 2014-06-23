@@ -660,7 +660,7 @@
 							.addClass("ddk-format-metricname")
 							// add +/- image and toggle event
 							.prepend("<img class='detail-toggle' src='" + (oldIE ? fullPath : "") + "resources/ddk/" + DDK_PATH + "/imgs/scorecard/" + (isExpanded ? "minus.png" : "plus.png") + "'>")
-								.click(function() {
+								.click(function(e) {
 									var $this = $(this),
 										$img = $this.find("img:first"),
 										src = $img.attr("src");
