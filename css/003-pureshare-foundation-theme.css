@@ -8,3 +8,29 @@ a:hover, a:focus {
 }
 
 
+.tabs.vertical {
+	margin-bottom: 1em !important;
+}
+
+.tabs .tab-title.active a {
+	color: #fff;
+	background-color: #2462A8;
+	font-weight: bold;
+}
+
+.vertical .tab-title {
+	width: 100%;
+	border-right: 1px solid #2462A8;
+}
+
+.tabs-content {
+	border: 1px solid #2462A8;
+}
+
+button {
+	background-color: #2462A8;
+}
+
+button:hover {
+	background-color: #1B497E;
+}

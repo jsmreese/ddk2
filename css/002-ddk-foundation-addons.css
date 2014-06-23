@@ -17,6 +17,21 @@
 	max-width: none;
 }
 
+/* tabs content should have consitent padding */
+.tabs-content > .content,
+.tabs-content.vertical > .content {
+  padding: 0.9375rem; }
+
+/* tabs only need vertical class on .tabs element, not .tabs-content element */
+.tabs.vertical + .tabs-content {
+  display: block; }
+
+@media only screen and (min-width: 40.063em) {
+  .tabs.vertical + .tabs-content {
+    width: 80%;
+    float: left;
+    margin-left: -1px; } }
+
 
 /* block grid for any child */
 .row[class*="-block-grid-"] > * {

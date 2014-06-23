@@ -2577,6 +2577,9 @@ $.extend(true, DDK, {
 			DDK.list.data[id] = DDK.list.data[id] || {};
 
 			DDK.format($control);
+			
+			$(document).foundation();
+			
 			DDK.list.resize(id);
 
 			DDK.control.init($control);
