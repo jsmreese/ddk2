@@ -54,19 +54,12 @@ PS.optionsAPI.list = {
 				"notes": "<p>The classes <code>small</code>, <code>medium</code>, and <code>large</code> will affect button size in <code>button</code> list mode.<p>The class <code>vertical</code> will render tabs in vertical mode instead of the default horizontal."
 			},
 			
-			"listTagName": {
-				"id": "list_tag_name",
-				"label": "Tag Name",
-				"description": "Tag name used for the list element.",
-				"notes": "<p>Default value depends on the list mode option.<table><thead><tr><th>List Mode</th><th>Default Value</th></thead><tbody><tr><td>bullet</td><td>ul</td></tr><tr><td>ordered</td><td>ol</td></tr><tr><td>button</td><td>div</td></tr><tr><td>tab</td><td>ul</td></tr></tbody></table>"
-			},
-			
 			"listTemplate": {
 				"id": "list_template",
 				"label": "Template",
 				"description": "Template used to render the list element.",
 				"notes": "<p>Evaluated as a Lo-Dash template string.",
-				"defaultValue": '<<%= listTagName %> class="list-items row full list-<%= listMode %> <%= listClassName %>" <%= listAttr %>><%= items %></<%= listTagName %>>'
+				"defaultValue": '<ul class="list-items row full list-<%= listMode %> <%= listClassName %>" <%= listAttr %>><%= items %></ul>'
 			}
 		}
 	},
@@ -90,13 +83,6 @@ PS.optionsAPI.list = {
 				"notes": ""
 			},
 			
-			"itemTagName": {
-				"id": "item_tag_name",
-				"label": "Item Tag Name",
-				"description": "Tag name used for each list item element.",
-				"notes": "<p>Default value depends on the list mode option.<table><thead><tr><th>List Mode</th><th>Default Value</th></thead><tbody><tr><td>bullet</td><td>li</td></tr><tr><td>ordered</td><td>li</td></tr><tr><td>button</td><td>div</td></tr><tr><td>tab</td><td>li</td></tr></tbody></table>"
-			},
-			
 			"itemTitle": {
 				"id": "item_title",
 				"label": "Classes",
@@ -110,7 +96,7 @@ PS.optionsAPI.list = {
 				"label": "Template",
 				"description": "Template used to render each list item element.",
 				"notes": "<p>A list item is rendered for every record in the control dataset.<p>If there is anchor element configuration, the anchor element is rendered inside the list item. Otherwise, the image, label, and content elements are rendered inside the list element.",
-				"defaultValue": '<<%= itemTagName %> class="list-item column <%= itemClassName %>" title="<%= itemTitle %>" <%= itemAttr %>><%= (anchorHref || anchorAttr || anchorClassName) ? anchor : image + label + content %></<%= itemTagName %>>'
+				"defaultValue": '<li class="list-item column <%= itemClassName %>" title="<%= itemTitle %>" <%= itemAttr %>><%= (anchorHref || anchorAttr || anchorClassName) ? anchor : image + label + content %></li>'
 			}
 		}
 	},
