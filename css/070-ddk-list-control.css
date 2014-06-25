@@ -30,10 +30,6 @@
 	height: 100%;
 }
 
-.list-label {
-	white-space: nowrap;
-}
-
 /* List Mode: button */
 .list-mode-button .list-content {
 	color: #aaa;
@@ -50,7 +46,9 @@
 }
 
 .list-mode-button .list-image + .list-label {
-	margin-top: 7px;
+	display: table-cell;
+	vertical-align: middle;
+	height: 32px;
 }
 
 .list-mode-button .list-content {
@@ -63,7 +61,7 @@
 	}
 
 	.list-mode-button .list-image + .list-label {
-		margin-top: 14px;
+		height: 48px;
 	}
 	
 	.list-mode-button .list-image {
@@ -78,7 +76,7 @@
 	}
 	
 	.list-mode-button .list-image + .list-label {
-		margin-top: 20px;
+		height: 64px;
 	}
 
 	.list-mode-button .list-image {
@@ -102,7 +100,7 @@
 }
 
 .list-mode-button.large .list-image + .list-label {
-	margin-top: 20px;
+	height: 64px;
 }
 
 .list-mode-button.large .list-content {
@@ -115,7 +113,7 @@
 	}
 
 	.list-mode-button.large .list-image + .list-label {
-		margin-top: 30px;
+		height: 96px;
 	}
 	
 	.list-mode-button.large .list-image {
@@ -130,7 +128,7 @@
 	}
 
 	.list-mode-button.large .list-image + .list-label {
-		margin-top: 40px;
+		height: 128px;
 	}
 	
 	.list-mode-button.large .list-image {
@@ -155,7 +153,7 @@
 }
 
 .list-mode-button.small .list-image + .list-label {
-	margin-top: 0;
+	height: 16px;
 }
 
 .list-mode-button.small .list-content {
@@ -169,7 +167,7 @@
 	}
 	
 	.list-mode-button.small .list-image + .list-label {
-		margin-top: 4px;
+		height: 24px;
 	}
 }
 
@@ -184,6 +182,6 @@
 	}
 	
 	.list-mode-button.small .list-image + .list-label {
-		margin-top: 7px;
+		height: 32px;
 	}
 }
