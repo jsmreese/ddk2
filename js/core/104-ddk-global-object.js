@@ -1905,7 +1905,9 @@
 				$(this).toggleClass('ui-priority-secondary ps-filter-bar-border');
 			});
 			//$control.find("[data-ddk-mouseover]").on("mouseenter mouseleave", DDK.mouseover);
-			$control.find("[data-ddk-mouseover]").each(DDK.mouseover);
+			if (!DDK.outputPDF) {
+				$control.find("[data-ddk-mouseover]").each(DDK.mouseover);
+			}
 
 			if (controlData && typeof controlData.customInit === "function") {
 				controlData.customInit.call(this, controlName, controlId);
