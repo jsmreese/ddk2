@@ -1863,18 +1863,6 @@
 					$("#ddk_page_header").remove();
 					$("#ddk_page_content").children().unwrap();
 					
-					/*
-					$("#layout_container").children().unwrap();
-					//2013.06.17 ray siy: check if layout_outer_ exists
-					if ($("#layout_outer_north").length) {
-						$("#layout_outer_north, #layout_outer_center").children().unwrap();
-						$("#layout_middle_center").children().unwrap();
-					} else {
-						$("#layout_north, #layout_center").children().unwrap();
-					}
-					$("#layout_content_center").children().unwrap();
-					*/
-					
 					$("[id^=\"layout_\"]").not("[id^=\"layout_header\"], [id^=\"layout_footer\"]").each(function (index, elem) {
 						$(elem).children().unwrap();
 					});
