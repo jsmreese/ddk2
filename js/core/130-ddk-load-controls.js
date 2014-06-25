@@ -387,8 +387,9 @@ DDK.reloadControl = function (controlName, controlId, callback, beforeInit, befo
 
 		// grab the data-keywords from the control container, and merge them
 		// into any existing `s_<id>_keywords` keyword value
-		var oldKeys = _.zipObject(_.map(decodeURIComponent(K("s_" + controlId + "_keywords") || "").split("&"), function (value) {
-			return value.split("=");
+		var oldKeys = _.zipObject(_.map((K("s_" + controlId + "_keywords") || "").split("&"), function (value) {
+		  var pair = value.split("=");
+		  return [ pair[0], decodeURIComponent(pair[1]) ];
 		}));
 
 		var newKeys = _.zipObject(_.map(controlData.keywords ? controlData.keywords.split("&") : [], function (value) {
@@ -398,7 +399,7 @@ DDK.reloadControl = function (controlName, controlId, callback, beforeInit, befo
 
 		K("s_" + controlId + "_keywords", _.reduce(_.extend({}, oldKeys, newKeys), function (memo, value, key) {
 			return memo + (key ? "&" + key + "=" + (value ? encodeURIComponent(value) : "") : "");
-		}, ""));
+		}, ""), { silent: true });
 
 		$("body").children(".ps-tooltip-dialog").not(".ddk-dialog-persist").remove();
 

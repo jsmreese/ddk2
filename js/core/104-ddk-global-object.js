@@ -812,7 +812,7 @@
 				fmt = $data.data('fmt'),
 				qm = $data.data('qm') || "",
 				sv = ($data.data('sv')? $data.data('sv').split("^") : ["'0','asc'"]),
-				keywords = $widget.data("keywords"),
+				keywords = K("s_" + id + "_keywords") || $widget.data("keywords") || "",
 				//sv = $data.data('sv') || ["'0','asc'"],
 				sort = [],
 				sortFav = (K("s_" + id + "_tsort")? K("s_" + id + "_tsort").split("^") : undefined),
@@ -849,7 +849,7 @@
 					});
 					data.push({name: "table_metrics_static", value: ms});
 					data.push({name: "table_metrics_dynamic", value: md});
-					data.push({name: "table_keywords", value: decodeURIComponent(keywords) });
+					data.push({name: "table_keywords", value: keywords });
 					settings.jqXHR = $.ajax( {
 						"url": url,
 						"data": data,
@@ -2501,8 +2501,9 @@ DDK.chart.updateImage = function (controlId) {
 
 		// grab the data-keywords from the control container, and merge them
 		// into any existing `s_<id>_keywords` keyword value
-		var oldKeys = _.zipObject(_.map(decodeURIComponent(K("s_" + controlId + "_keywords") || "").split("&"), function (value) {
-			return value.split("=");
+		var oldKeys = _.zipObject(_.map((K("s_" + controlId + "_keywords") || "").split("&"), function (value) {
+		  var pair = value.split("=");
+		  return [ pair[0], decodeURIComponent(pair[1]) ];
 		}));
 
 		var newKeys = _.zipObject(_.map(controlData.keywords ? controlData.keywords.split("&") : [], function (value) {
@@ -2512,7 +2513,7 @@ DDK.chart.updateImage = function (controlId) {
 
 		K("s_" + controlId + "_keywords", _.reduce(_.extend({}, oldKeys, newKeys), function (memo, value, key) {
 			return memo + (key ? "&" + key + "=" + (value ? encodeURIComponent(value) : "") : "");
-		}, ""));
+		}, ""), { silent: true });
 
 		DDK.log("Updating chart image: " + controlId);				
 
