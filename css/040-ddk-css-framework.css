@@ -260,6 +260,26 @@ table.striped-blue .odd td { background-color: #f5faff; }
 table.striped-brown .even td { background-color: #fff; }
 table.striped-brown .odd td { background-color: #fdf9f7; }
 
+table.striped-grey tbody .even td.sorting_1, table.striped-gray tbody .even td.sorting_1 { background-color: #f2f2f2; }
+table.striped-grey tbody .even td.sorting_2, table.striped-gray tbody .even td.sorting_2 { background-color: #f7f7f7; }
+table.striped-grey tbody .even td.sorting_3, table.striped-gray tbody .even td.sorting_3 { background-color: ##fcfcfc; }
+table.striped-grey tbody .odd td.sorting_1, table.striped-gray tbody .odd td.sorting_1 { background-color: #e6e6e6; }
+table.striped-grey tbody .odd td.sorting_2, table.striped-gray tbody .odd td.sorting_2 { background-color: #ededed; }
+table.striped-grey tbody .odd td.sorting_3, table.striped-gray tbody .odd td.sorting_3 { background-color: #f5f5f5; }
+
+table.striped-blue tbody .even td.sorting_1 { background-color: #e5f2ff; }
+table.striped-blue tbody .even td.sorting_2 { background-color: #f0f7ff; }
+table.striped-blue tbody .even td.sorting_3 { background-color: #fafcff; }
+table.striped-blue tbody .odd td.sorting_1 { background-color: #cce5ff; }
+table.striped-blue tbody .odd td.sorting_2 { background-color: #dbedff; }
+table.striped-blue tbody .odd td.sorting_3 { background-color: #ebf5ff; }
+
+table.striped-brown tbody .even td.sorting_1 { background-color: #faf0eb; }
+table.striped-brown tbody .even td.sorting_2 { background-color: #fcf6f3; }
+table.striped-brown tbody .even td.sorting_3 { background-color: #fefcfb; }
+table.striped-brown tbody .odd td.sorting_1 { background-color: #f5e0d6; }
+table.striped-brown tbody .odd td.sorting_2 { background-color: #f8eae2; }
+table.striped-brown tbody .odd td.sorting_3 { background-color: #fbf3ef; }
 
 table.hover-grey tbody tr:not(.footable-row-detail):hover td, table.hover-gray tbody tr:hover td { background-color: #e6e6e6 !important; }
 table.hover-blue tbody tr:not(.footable-row-detail):hover td { background-color: #cce4ff !important; }
