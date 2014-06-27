@@ -8,7 +8,7 @@ PS.optionsAPI.list = {
 			"label": "Mode",
 			"description": "Determines the type of list to be rendered.",
 			"notes": "<p>list_mode value will determin default values for many other list configuration options.",
-			"defaultValue": "bullets",
+			"defaultValue": "bullet",
 			"values": [
 				{ "label": "Bullet", "value": "bullet" },
 				{ "label": "Ordered", "value": "ordered" },
