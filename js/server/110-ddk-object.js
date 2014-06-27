@@ -1065,7 +1065,7 @@ DDK.template.render = {
 		return JSON.parse(JSON.stringify(value).replace(DDK.regex.ddkKeyword, keywordEval));
 	},
 	
-	scorecard2Row: function(rowType, co, config, globals, record) {
+	scorecard2Row: function(rowType, co, config, globals, record, recordIndex) {
 		"use strict";
 		var out = "",
 			rowClassName = rowType + " " + config[rowType + "RowClassName"],
@@ -1085,6 +1085,14 @@ DDK.template.render = {
 			keywords = _.transform(_.extend({}, globals, record || {}), function (accumulator, value, key) {
 				accumulator[key.toLowerCase()] = value;
 			}, {});
+		
+		if (rowType === "body") {
+			if ((recordIndex % 2) === 0) {
+				rowClassName += " odd";
+			} else {
+				rowClassName += " even ";
+			}
+		}
 		
 		out += "<tr class=\"" + rowClassName + "\" " + rowAttr + ">";
 		
