@@ -871,6 +871,14 @@ DDK.controlOptions = function (id) {
 					notes: "Use &#126;reccount&#126; keyword to indicate result count. e.g. <code>&#126;reccount&#126; matching metric(s).</code>",
 					defaultValue: "Found &#126;reccount&#126; object(s)"
 				},
+				nodesSearchTextEnabled: {
+					id: "s_" + id + "_nste",
+					label: "Nodes Search Text Enabled",
+					description: "Flag to enable the text displayed when user is searching",
+					notes: "",
+					values: ["true", "false"],
+					defaultValue: "true"
+				},
 				nodesSort: {
 					id: "s_" + id + "_nso",
 					label: "Nodes Sort",

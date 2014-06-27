@@ -111,18 +111,233 @@
 		
 		return this;
 	};
+	/* $.fn.appendEachCol jQuery plugin
+	 * Matches the given jquery collection and append it to the selected collection
+	 * Useful for tables like moving a set of td (columns) to a different table with same number of rows
+	 * Supports column spans for tds, skips appending tds with colspans
+	 * by: jtan
+	 */
+	$.fn.appendEachCol = function ($objToAppend) {
+		this.each(function(index, item){
+			var $this = $(this), 
+				$colToAdd = $($objToAppend[index]),
+				$prevCol = $this.find("td:last-child, th:last-child"),	//gets the previous column
+				colspanCtr;
+			if($prevCol.length && $prevCol.attr("colspancont") && $colToAdd.attr("colspan") && $prevCol.text() === $colToAdd.text()){
+				$prevCol.attr("colspan", parseInt($prevCol.attr("colspan")) + 1);
+				$colToAdd.attr("colspan", parseInt($colToAdd.attr("colspan")) - 1);
+				//remove colspan flag
+				if($colToAdd.attr("colspan") === "0"){
+					$prevCol.removeAttr("colspancont");
+				}
+			}
+			else{	//if column is not a continuation of colspan add or clone it
+				if($colToAdd.attr("colspan") && $colToAdd.attr("colspan") > 1){
+					//set a attribute flag that a column has multiple colspan
+					$colToAdd.attr("colspancont", "true");
+					//clone column
+					$this.append($colToAdd.clone(true).attr("colspan", 1));
+					//decrease colspan on original column
+					$colToAdd.attr("colspan", parseInt($colToAdd.attr("colspan")) - 1);
+				}
+				else{
+					$this.append($colToAdd);
+				}
+			}
+		});
+		return this;
+	}
+	
+	/* $.fn.maxWidth jQuery plugin
+	 * Get the maximum width on the selected jQuery objects
+	 * Returns an integer
+	 * by: jtan
+	 */
+	$.fn.maxWidth = function () {
+		return Math.max.apply(null, this.map(function ()
+		{
+			return $(this).width();
+		}).get());
+	}
+	/* $.fn.maxHeight jQuery plugin
+	 * Get the maximum height on the selected jQuery objects
+	 * Returns an integer
+	 * by: jtan
+	 */
+	$.fn.maxHeight = function () {
+		return Math.max.apply(null, this.map(function ()
+		{
+			return $(this).height();
+		}).get());
+	}
+	/* $.fn.convertToHtmlTable jQuery plugin
+	 * Converts DDK datatable to HTML table 
+	 * also removes paging and other ddk features.
+	 * This is for the PDF output
+	 * Returns the created HTML table
+	 * by: jtan
+	 */
+	$.fn.convertToHtmlTable = function (threshold) {
+		var newTables = [], $table;
+		
+		this.each(function (item, elem) {
+			var $this = $(this),
+				tableId = $this.attr("id");
+			tableId = tableId.substr(0, tableId.indexOf("_wrapper"));
 
-	/* $.fn.breakTable jQuery plugin
+			var $thead = $this.find(".dataTables_scrollHead thead"),
+				$tbody = $this.find(".dataTables_scrollBody tbody"),
+				$tfoot = $this.find(".dataTables_scrollFoot tfoot");
+			$table = $("<table>");
+			//remove filter row on thead
+			$thead.find(".ps-filter").parent().remove();
+			//remove sorting class
+			$thead.find("th.sorting, th.sorting_asc, th.sorting_desc").removeClass("sorting").removeClass("sorting_asc").removeClass("sorting_desc");
+			
+			$table.append($thead).append($tbody).append($tfoot);
+			$table.addClass("table-default");
+			$table.insertAfter($this);
+			$this.remove();
+		});
+		return $table;
+	}
+	/* $.fn.breakTableByWidth jQuery plugin
+	 * Breaks an HTML table element into multiple tables
+	 * with specified threshold break width.
+	 * Returns a jQuery collection containing the newly created table elements.
+	 * by: jtan
+	 */
+	$.fn.breakTableByWidth = function (threshold) {
+		var newTables = [];
+
+		if (!threshold) {
+			threshold = $.fn.breakTableByWidth.defaults.threshold;
+		}
+		
+		this.each(function (item, elem) {
+			var	$elem = $(elem), colCount, colIndex, cellHeight,
+				$table, $thead, $tbody, $tfoot, $rows, $headers, $newTable, $tempColumns, $newHead, $newBody, $newFoot;
+			
+			// do nothing if the table is already smaller than the threshold
+			if ($elem.width() <= threshold) {
+				return;
+			}
+			
+			// if the table is larger, split it into multiple tables
+			// add to each table a page-break-before: always rule
+			// add the thead to each table
+			// add the tfoot to the final table
+			colCount = $elem.find("thead th").length || $elem.find("thead td").length;
+			
+			//clone the first column if it has a colspan
+			$elem.find("th:first-child, td:first-child").each(function(){
+				var $this = $(this);
+				if($this.attr("colspan") > 1){
+					$this.attr("colspan", parseInt($this.attr("colspan")) - 1).attr("colspancont", "true");
+					$this.clone(true).attr("colspan", 1).insertBefore($this);
+				}
+			});
+			$rows = $elem.find("tr").clone();
+			//always copy the first column on each table
+			$elem.find("th:not(:first-child), td:not(:first-child)").remove();	
+			// grab the sections of the existing table
+			$thead = $elem.find("thead").remove();
+			$tfoot = $elem.find("tfoot").remove();
+			$tbody = $elem.find("tbody").remove();
+						
+			// remove the table id attribute so we don't create duplicate ids through cloning
+			$table = $elem.clone().removeAttr("id").append($thead).append($tbody).append($tfoot);
+			// create the first new table
+			$newTable = $table.clone().insertAfter($elem);
+			
+			// add new table element to the new tables array
+			newTables.push($newTable.get(0));
+			
+			// iterate through the columns
+			// start at the second column since the first column is initially copied
+			// creating new tables as needed
+			for(colIndex = 2; colIndex <= colCount; colIndex++){
+				//removed attribute is added by appendEachCol to notify column not to be added
+				$rows.find("[colspan=0]").remove();
+				var $columns = $rows.find("td:nth-child(2), th:nth-child(2)");
+				
+				$newTable.find("tr").appendEachCol($columns);
+				
+				// if the table width is larger than the threshold
+				// remove the row from the table
+				// and add it to a new table
+				if ($newTable.width() > threshold) {
+					//revert colspancont atribute flag on multiple colspan since a column will be removed
+					$newTable.find("th:last-child, td:last-child").each(function(){ 
+						var $this = $(this);
+						if($this.attr("colspan") && parseInt($this.attr("colspan")) > 1){
+							$this.attr("colspancont", "true");
+						}
+					});
+					var ctr = 0
+					while(ctr < 2){	//remove 2 columns because table still truncated if only remove 1
+						//remove added column, store the second column remove to add later
+						$tempColumns = $newTable.find("th:last-child, td:last-child");
+						$tempColumns.not(function(){
+							var $this = $(this);
+							return $this.attr("colspan") > 1 && $this.attr("colspancont");
+						}).remove();
+						ctr++;
+					}
+					//subtract 1 on the colspan counter since a whole column was removed
+					$newTable.find("th:last-child[colspancont], td:last-child[colspancont]").each(function(){
+						var $this = $(this);
+						//decrease colspan on cloned column
+						$this.attr("colspan", parseInt($this.attr("colspan")) - 1);
+					});
+						//increase colspan on original column
+						$columns.filter("[colspancont]").each(function(){
+							var $this = $(this);
+							$this.attr("colspan", parseInt($this.attr("colspan")) + 1);
+						});
+					
+					
+					$newTable = $table.clone().insertAfter($newTable);	
+					newTables.push($newTable.get(0));
+					
+					$newTable.find("tr").appendEachCol($tempColumns).appendEachCol($columns);
+				}
+			}
+			
+			// remove the existing table from the DOM
+			$elem.remove();
+			//set max cell height accross all created tables for consistency
+			$(newTables[0]).find("thead tr").each(function(rowIndex){
+				var $cells = $($.map(newTables, function(el){return $(el).get(0);})).find("thead tr:nth-child(" + (rowIndex + 1) + ")").find("td:first-child, th:first-child");
+				$cells.height($cells.maxHeight());
+				
+			});
+			$(newTables[0]).find("tbody tr").each(function(rowIndex){
+				var $cells = $($.map(newTables, function(el){return $(el).get(0);})).find("tbody tr:nth-child(" + (rowIndex + 1) + ")").find("td:first-child, th:first-child");
+				$cells.height($cells.maxHeight());
+				
+			});
+			$(newTables[0]).find("tfoot tr").each(function(rowIndex){
+				var $cells = $($.map(newTables, function(el){return $(el).get(0);})).find("tfoot tr:nth-child(" + (rowIndex + 1) + ")").find("td:first-child, th:first-child");
+				$cells.height($cells.maxHeight());
+				
+			});
+		});
+		// return the collection of newly created tables
+		return this.pushStack(newTables, "breakTableByWidth", "");
+	}
+	
+	/* $.fn.breakTableByHeight jQuery plugin
 	 * Breaks an HTML table element into multiple tables
 	 * with specified threshold break height.
 	 * Returns a jQuery collection containing the newly created table elements.
 	 * by: jsmreese
 	 */
-	$.fn.breakTable = function (threshold) {
+	$.fn.breakTableByHeight = function (threshold) {
 		var newTables = [];
 
 		if (!threshold) {
-			threshold = $.fn.breakTable.defaults.threshold;
+			threshold = $.fn.breakTableByHeight.defaults.threshold;
 		}
 		
 		this.each(function (item, elem) {
@@ -130,7 +345,7 @@
 				$table, $thead, $tbody, $tfoot, $rows, $newTable, $newBody;
 			
 			// do nothing if the table is already smaller than the threshold
-			if ($elem.height() < threshold) {
+			if ($elem.height() <= threshold) {
 				return;
 			}
 			
@@ -162,6 +377,7 @@
 				
 				$newBody.append($row);
 				
+			
 				// if the table height is larger than the threshold
 				// and there is more than one body row
 				// remove the row from the table
@@ -194,14 +410,23 @@
 				
 			// remove the existing table from the DOM
 			$elem.remove();
+			//set max cell width accross all created tables for consistency
+			$(newTables[0]).find("thead th, thead td").each(function(index){
+				var $cells = $($.map(newTables, function(el){return $(el).get(0);})).find("thead th:nth-child(" + (index + 1) + "), thead td:nth-child(" + (index + 1) + ")");
+				$cells.width($cells.maxWidth());
+				
+			});
 		});
-		
 		// return the collection of newly created tables
-		return this.pushStack(newTables, "breakTable", "");
+		return this.pushStack(newTables, "breakTableByHeight", "");
 	};
 	
-	$.fn.breakTable.defaults = {
-		threshold: 1200
+	$.fn.breakTableByWidth.defaults = {
+		threshold: 940
+	};
+	
+	$.fn.breakTableByHeight.defaults = {
+		threshold: 1100
 	};
 
 	
@@ -222,7 +447,7 @@
 		$controls.each(function (index, control) {
 			var $control = $(control),
 				$tables = $control.find("\[data-height\]").find("table"),
-				$controlParents = $control.parentsUntil("body"),
+				$controlParents = $control.parentsUntil("body").andSelf(),
 				$target = $target || $controlParents.last();
 				
 			$tables.each(function (index, table) {
@@ -237,6 +462,8 @@
 				
 				// insert new stack into the DOM
 				$stack.insertAfter($target);
+					//add page-break-before always rule for table to be on a new page
+				//	$("<div style='page-break-before: always'/>").insertBefore($stack);
 				
 				// redirect target to the element just inserted
 				$target = $stack;
