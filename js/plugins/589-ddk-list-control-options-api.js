@@ -85,7 +85,7 @@ PS.optionsAPI.list = {
 			
 			"itemTitle": {
 				"id": "item_title",
-				"label": "Classes",
+				"label": "Title",
 				"description": "Title attribute added to each list item element.",
 				"notes": "",
 				"defaultValue": "%%description%%"
@@ -169,7 +169,7 @@ PS.optionsAPI.list = {
 			
 			"labelValue": {
 				"id": "label_value",
-				"label": "Label",
+				"label": "Value",
 				"description": "HTML rendered in each label element.",
 				"notes": "Label element render is not triggered if this option resolves to an AMEngine keyword. e.g. <code>&#126;label&#126;</code>",
 				"defaultValue": "%%label%%"
@@ -248,14 +248,14 @@ PS.optionsAPI.list = {
 			
 			"contentValue": {
 				"id": "content_value",
-				"label": "Description",
+				"label": "Value",
 				"description": "HTML rendered in each content element.",
 				"notes": "<p>Content widget render output is appended to the <code>content_value</code> option before template evaluation.<p>Both options <code>content_value</code> and <code>content_widget</code> may have a value, and the combined result will be rendered as the content element HTML."
 			},
 
 			"contentWidget": {
 				"id": "content_widget",
-				"label": "Content Widget",
+				"label": "Widget",
 				"description": "Widget rendered inside each content element.",
 				"notes": "<p>Content widget render output is appended to the <code>content_value</code> option before template evaluation.<p>Both options <code>content_value</code> and <code>content_widget</code> may have a value, and the combined result will be rendered as the content element HTML."
 			},
