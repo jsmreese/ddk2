@@ -30,6 +30,12 @@
 	height: 100%;
 }
 
+.list-mode-menu .ddk-icon {
+	line-height: initial;
+	font-size: 24px;
+	vertical-align: middle;
+}
+
 /* List Mode: button */
 .list-mode-button .list-content {
 	color: #aaa;
