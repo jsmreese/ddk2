@@ -3,6 +3,7 @@
 .column > [id^="psc_"][id$="_widget"],
 .columns > [id^="psc_"][id$="_widget"] {
 	margin-bottom: 20px;
+	margin-top: 20px;
 }
 
 /* buttons in controls and ddk dialogs */
@@ -40,8 +41,12 @@
 
 /* off-canvas bottom should not be fixed to the content bottom, but should take up the full viewport height */
 .left-off-canvas-menu {
-	bottom: initial;
-	height: 100vh;
+	/* bottom: initial; Can't do this because off-canvas pane won't scroll for small content */
+	/* height: 100vh; 
+	 * Would like to do this, but support isn't there for old android, 
+	 * and it turns out a little weird. Really would like:
+	 * height: max(100vh, 100%); 
+	 */ 
 }
 
 /* tabs content should have consitent padding */

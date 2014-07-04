@@ -1,4 +1,10 @@
 /* List Control */
+
+/* List Controls do not display control toolbars */
+[id^="psc_list_"] > .ps-toolbar {
+	display: none;
+}
+
 .ps-list {
 	font-size: 16px;
 }
