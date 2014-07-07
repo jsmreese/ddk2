@@ -1818,9 +1818,10 @@ DDK.template.render = {
 				out += DDK.PAGE_HEADER.CONTENT;
 			}
 		} else {
-			K("v_menubar_is_page_header", "true");
-			K("v_menubar_fcat", "PS_HEADER_MENUBAR");
-			out += run("DDK2_Menubar");
+			// not doing this anymore as of DDK 2.2.0b2
+			//K("v_menubar_is_page_header", "true");
+			//K("v_menubar_fcat", "PS_HEADER_MENUBAR");
+			//out += run("DDK2_Menubar");
 		}
 		return out;
 	}
