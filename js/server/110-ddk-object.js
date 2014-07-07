@@ -1827,6 +1827,88 @@ DDK.template.render = {
 	}
 };
 
+// use DDK.PAGE_HEADER header configuration only if it is setup by a global shared code library
+if (cwpo.header_content_widget || DDK.PAGE_HEADER) {
+	DDK.PAGE_HEADER = DDK.PAGE_HEADER || {};
+	
+	_.defaults(DDK.PAGE_HEADER, {
+		CONTENT: function (options) {
+			function renderRegion(region) {
+				var template = DDK.PAGE_HEADER[region],
+					temp = "";
+				
+				if (typeof template === "function") {
+					temp += template(options);
+				} else if (typeof template === "string") {
+					temp += template;
+				}
+				
+				if (temp) {
+					// if the generated string is not wrapped in html li tags,
+					// wrap it before appending to the header
+					if (temp.match(/^<li.*<\/li>$/i)) {
+						out += temp;
+					} else {
+						out += "<li>" + temp + "</li>";
+					}
+				}
+			}
+			
+			var out = "",
+				regionsLeft = "HOME GROUP SUBGROUP".split(" "),
+				regionsRight = "USER SETTINGS".split(" ");
+			
+			out += "<div id=\"ddk_page_header\" class=\"ddk-menu-bar ddk-page-header\">\n";
+			out += "<ul class=\"left\">";
+			_.each(regionsLeft, renderRegion);
+			out += "</ul>";
+			
+			out += "<ul class=\"right\">";
+			_.each(regionsRight, renderRegion);
+			out += "</ul></div>";
+			
+			return out;
+		},
+		HOME: function (options) {
+			var link = (typeof DDK.PAGE_HEADER.HOME_LINK === "function" ? DDK.PAGE_HEADER.HOME_LINK(options) : DDK.PAGE_HEADER.HOME_LINK);
+			
+			if (link) {
+				return "<a class=\"ddk-icon\" href=\"" + link + "\">&#270;</a>";		
+			}
+			
+			return "";
+		},
+		GROUP: function (options) {
+			return options && options.header_group_widget ? run(options.header_group_widget) : "";
+		},
+		SUBGROUP: function (options) {
+			return options && options.header_subgroup_widget ? run(options.header_subgroup_widget) : "";
+		},
+		USER: function (options) {
+			var out = "";
+			
+			out += "<li>" + K("sec.username") + " <span class=\"ddk-icon\">&#286;</span>";
+			out += "<ul>";
+			out += "<li><a href=\"" + ((typeof DDK.PAGE_HEADER.LOGOUT_LINK === "function" ? DDK.PAGE_HEADER.LOGOUT_LINK(options) : DDK.PAGE_HEADER.LOGOUT_LINK) || "#") + "\">logout</a></li>";
+			out += "</ul></li>";
+			
+			return out;
+		},
+		SETTINGS: function (options) {
+			var link = (typeof DDK.PAGE_HEADER.SETTINGS_LINK === "function" ? DDK.PAGE_HEADER.SETTINGS_LINK(options) : DDK.PAGE_HEADER.SETTINGS_LINK);
+			
+			if (link) {
+				return "<a class=\"ddk-icon\" href=\"" + link + "\">&#304;</a>";		
+			}
+			
+			return "";
+		},
+		HOME_LINK: "amengine.aspx?config.mn=View",
+		LOGOUT_LINK: "logout.aspx",
+		SETTINGS_LINK: ""
+	});
+};
+
 DDK.formatObject = function(obj) {
 	var formattedObject = {};
 	_.each(obj, function(value, key) {
