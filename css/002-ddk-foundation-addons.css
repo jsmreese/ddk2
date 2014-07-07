@@ -18,6 +18,10 @@
 	max-width: none;
 }
 
+.off-canvas-wrap {
+	min-height: 100%;
+}
+
 /* off-canvas-list dropdowns */
 .off-canvas-list li > a {
 	position: relative;

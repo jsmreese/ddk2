@@ -34,3 +34,28 @@ button {
 button:hover {
 	background-color: #1B497E;
 }
+
+.page-background {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.75, #F8F8F8), color-stop(1, #CCC));
+	background-image: -webkit-linear-gradient(bottom, #F8F8F8 75%, #CCC 100%);
+	background-image: linear-gradient(to bottom, #F8F8F8 75%, #CCC 100%);
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+}
+
+@media only screen and (min-height: 480px) and (min-width: 480px) {
+	.page-background {
+		background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FFF), color-stop(0.9, #B8CBE0));
+		background-image: -webkit-linear-gradient(bottom, #FFF 10%, #B8CBE0 90%);
+		background-image: linear-gradient(to bottom, #FFF 10%, #B8CBE0 90%);
+	}
+}
+
+.row {
+	background-color: #FFF;
+}
