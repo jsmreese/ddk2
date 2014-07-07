@@ -49,21 +49,6 @@
 	 */ 
 }
 
-.left-off-canvas-menu .w-20 {
-	display: inline-block !important;
-	width: 20%;
-}
-
-.left-off-canvas-menu .w-60 {
-	display: inline-block !important;
-	width: 60%;
-}
-
-.left-off-canvas-menu .w-80 {
-	display: inline-block !important;
-	width: 80%;
-}
-
 /* tabs content should have consitent padding */
 .tabs-content > .content,
 .tabs-content.vertical > .content {
