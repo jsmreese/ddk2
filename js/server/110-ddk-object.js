@@ -1817,11 +1817,13 @@ DDK.template.render = {
 			} else if (typeof DDK.PAGE_HEADER.CONTENT === "string") {
 				out += DDK.PAGE_HEADER.CONTENT;
 			}
-		} else {
+		} else if (oldIE) {
 			// not doing this anymore as of DDK 2.2.0b2
-			//K("v_menubar_is_page_header", "true");
-			//K("v_menubar_fcat", "PS_HEADER_MENUBAR");
-			//out += run("DDK2_Menubar");
+			// except for IE8!
+			// redirecting to PS_MENU
+			K("v_menubar_is_page_header", "true");
+			K("v_menubar_fcat", "PS_MENU");
+			out += run("DDK2_Menubar");
 		}
 		return out;
 	}

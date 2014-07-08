@@ -7,7 +7,7 @@ module.exports = function(grunt) {
 		return {
 			expand: true,
 			cwd: "js/" + folder,
-			src: ["*.js", "!*-LEGACY.js", "!*-R.js"],
+			src: ["*.js", "!*-LEGACY*.js", "!*-R.js"],
 			dest: "dist/js/client/",
 			rename: function (dest) {
 				return dest + "ddk2-" + folder + "-standard.js";
@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 		return {
 			expand: true,
 			cwd: "js/" + folder,
-			src: ["*.js", "!*-STANDARD.js", "!*-R.js"],
+			src: ["*.js", "!*-STANDARD*.js", "!*-R.js"],
 			dest: "dist/js/client/",
 			rename: function (dest) {
 				return dest + "ddk2-" + folder + "-legacy.js";
@@ -31,7 +31,7 @@ module.exports = function(grunt) {
 		return {
 			expand: true,
 			cwd: "js/" + folder,
-			src: ["*.js", "!999-outro.js", "foundation/foundation.js", "foundation/*.js", "!*-LEGACY.js", "!*-NR.js", "999-outro.js"],
+			src: ["*.js", "!999-outro.js", "foundation/foundation.js", "foundation/*.js", "!*-LEGACY*.js", "!*-NR.js", "999-outro.js"],
 			dest: "dist/js/client/",
 			rename: function (dest) {
 				return dest + "ddk2-" + folder + "-responsive-standard.js";
@@ -43,7 +43,7 @@ module.exports = function(grunt) {
 		return {
 			expand: true,
 			cwd: "js/" + folder,
-			src: ["*.js", "!999-outro.js", "foundation/foundation.js", "foundation/*.js", "!*-STANDARD.js", "!*-NR.js", "999-outro.js"],
+			src: ["*.js", "!999-outro.js", "foundation/foundation.js", "foundation/*.js", "!*-STANDARD*.js", "!*-NR.js", "999-outro.js"],
 			dest: "dist/js/client/",
 			rename: function (dest) {
 				return dest + "ddk2-" + folder + "-responsive-legacy.js";
