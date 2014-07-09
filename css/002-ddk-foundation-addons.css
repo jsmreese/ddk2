@@ -6,6 +6,12 @@
 	margin-top: 20px;
 }
 
+/* responsive template header modes */
+.ddk-header-mode-basic .hide-for-basic {
+	display: none;
+}
+
+
 /* buttons in controls and ddk dialogs */
 [id^="psc_"][id$="_widget"] button,
 .ddk-dialog button {
