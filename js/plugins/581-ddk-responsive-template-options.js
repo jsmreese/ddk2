@@ -22,7 +22,7 @@ PS.optionsAPI.responsiveTemplate = {
 				"label": "Title",
 				"description": "Dashboard title.",
 				"notes": "<p>Will be used in the rendered page title element, and will be used as the nav bar title text."
-			}},
+			},
 			
 			"headerMode": {
 				"id": "header_mode",
@@ -31,7 +31,8 @@ PS.optionsAPI.responsiveTemplate = {
 				"notes": "<p>If <code>none</code>, will not render page header.<p>If <code>basic</code>, will render a limited page header including only the Home and User Settings links by default.<p>Header Mode is added as a class on the document body element using the <code>ddk-header-mode-&lt;headerMode&gt;</code> class.<p>For custom headers, hide menu items in <code>basic</code> mode using the <code>hide-for-basic</code> class.",
 				"defaultValue": "auto",
 				"acceptedValues": ["basic", "none"]
-			}}
+			}
+		}
 	},
 	"links": {
 		"id": "links",
@@ -50,7 +51,8 @@ PS.optionsAPI.responsiveTemplate = {
 				"label": "JavaScript File Links",
 				"description": "One or more external JavaScript files may be referenced by the dashboard.",
 				"notes": "<p>Value is a list of one or more JavaScript file path strings.<p>Paths are relative to the <code>amengine</code> folder.<p>Path strings may be delimited with a comma or with whitespace. e.g. <code>resources/sample/file_1.js,resources/sample/file_2.js</code><p>Files are requested after the <code>ddk2-responsive-core</code> file is parsed and executed. Files are downloaded asynchronously, so execution order cannot be guaranteed.<p>If dependencies on the <code>ddk2-responsive-plugins</code> file are required, wrap file code in a deferred function to be called after that file is loaded and executed. e.g. <pre><code class='language-javascript'>DDK.deferPlugins(function () { /* code here... */ });</code></pre><p>If dependencies on the dashboard content are required, wrap file code in a deferred function to be called after the content is loaded and inserted into the DOM. e.g. <pre><code class='language-javascript'>DDK.defer(function () { /* code here... */ });</code></pre>"
-			}}
+			}
+		}
 	},
 	"widgets": {
 		"id": "widgets",
