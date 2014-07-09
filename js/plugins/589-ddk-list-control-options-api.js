@@ -24,16 +24,6 @@ PS.optionsAPI.list = {
 			"description": "Title appears as a header above the list element.",
 			"notes": ""
 		}
-		
-		/*,
-		This option will likely be reworked to align with a forthcoming Tree Query API
-		Will probably use more generic itemId and itemParentId options that can be databound by default to %%id%% and %%parentId%%
-		"listNested": {
-			"id": "list_nested",
-			"label": "Nested",
-			"description": "If <code>true</code>, list is rendered as a nested collection of items.",
-			"notes": "<p>Dataset fields <code>child_count</code> and <code>level</code> are used to traverse nested item structure.<p>Tabs and buttons cannot be rendered as nested strucutres."
-		}*/
 	},
 
 	"listElement": {
