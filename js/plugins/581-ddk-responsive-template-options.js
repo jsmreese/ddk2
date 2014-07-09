@@ -30,7 +30,7 @@ PS.optionsAPI.responsiveTemplate = {
 				"description": "Mode used to render page header.",
 				"notes": "<p>If <code>none</code>, will not render page header.<p>If <code>basic</code>, will render a limited page header including only the Home and User Settings links by default.<p>Header Mode is added as a class on the document body element using the <code>ddk-header-mode-&lt;headerMode&gt;</code> class.<p>For custom headers, hide menu items in <code>basic</code> mode using the <code>hide-for-basic</code> class.",
 				"defaultValue": "auto",
-				"acceptedValues": ["basic", "none"]
+				"values": ["basic", "none"]
 			}
 		}
 	},
