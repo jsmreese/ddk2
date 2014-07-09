@@ -147,6 +147,16 @@ var K = function(key, value, prefix) {
 	// K(key) : return value associated with key in hash
 	// typeof key === "string" && key.indexOf("=") == -1 && !value && !prefix
 	if (typeof key === "string" && key.indexOf("=") == -1 && typeof value === "undefined" && typeof prefix === "undefined") {
+	
+		// 'ddk' is always an object keyword and should be returned as such
+		// making this special case because there is so much code all over the DDK (and elsewhere?)
+		// that converts JSON keyword values to objects
+		// and making that conversion automatic would break all that code
+		// hoping to remedy the object as keyword issue in DDK 3
+		if (key === "ddk") {
+			return _.string.parseJSON(DDK.unescape.brackets(keywordOrDefault(key, "")));
+		}
+		
 		return keywordOrDefault(key, "");
 	}
 	
