@@ -549,6 +549,7 @@ DDK.options.list = [
 	"nodes_open no",
 	"nodes_search ns",
 	"nodes_search_text nst",
+	"nodes_search_text_enabled nste",
 	"nodes_sort nso",
 	"nodes_sort_default nsod",
 	"nodes_title nt",

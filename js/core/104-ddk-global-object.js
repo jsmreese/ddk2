@@ -1845,6 +1845,12 @@
 		function loadControlQueue() {
 			var control = controlQueue.shift();
 			if (control) { DDK.log("Load control from queue (loadControlQueue): " + control.name + " " + control.id); }
+			//remove client/server paging on controls if outputPDF is turned on
+			if(DDK.modePDF){
+				K("s_" + control.id + "_pt", "none");	//page type
+				K("s_" + control.id + "_ptc", "10000");	//client paging threshold
+				K("s_" + control.id + "_pts", "10000");	//server paging threshold
+			}
 			DDK[control.name].reload(control.id, function() {
 				if (controlQueue.length) {
 					setTimeout(loadControlQueue, 0);
@@ -1866,12 +1872,9 @@
 					$("[id^=\"layout_\"]").not("[id^=\"layout_header\"], [id^=\"layout_footer\"]").each(function (index, elem) {
 						$(elem).children().unwrap();
 					});
-
-					// break tables that are not instantiated as DataTables
-					$(document).find("table").filter(function (index, elem) {
-						return $(elem).parents(".dataTables_wrapper").length === 0;
-					}).breakTable();
-					
+					$(document).find(".dataTables_wrapper").convertToHtmlTable();
+					$(document).find("table").breakTableByHeight();
+					$(document).find("table").breakTableByWidth();
 					$(document).expandControlTableParents()
 			
 					window.ABCpdf_go = true;
