@@ -426,7 +426,7 @@
 	};
 	
 	$.fn.breakTableByHeight.defaults = {
-		threshold: 1100
+		threshold: 1000
 	};
 
 	
