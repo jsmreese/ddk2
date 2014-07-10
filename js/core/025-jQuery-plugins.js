@@ -426,6 +426,8 @@
 	};
 	
 	$.fn.breakTableByHeight.defaults = {
+		// reduced this to 1000 from 1100 to allow room on a page for
+		// some sort of header to appear above a table
 		threshold: 1000
 	};
 
