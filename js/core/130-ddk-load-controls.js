@@ -80,11 +80,32 @@ DDK.reloadFromFavoriteRequest = function () {
 			"config.mn": "DDK_Data_Request"
 		},
 		success: function (data) {
-			var control = data.datasets[1];
+			var control = data.datasets[1],
+				controlFavorite = data.datasets[0][0],
+				$controlLabel,
+				$controlNotes,
+				$controlDescription;
 			
 			settings.$target.am("hidemask").empty().html(DDK.unescape.brackets(control.html));
 			reloadControlContainer(control.name, control.id, settings, settings.callback, settings.$target.children().eq(0));
 			K(control.stateKeywords);
+			
+			// update control_label, control_description, and control_notes
+			$controlLabel = $(document).find("#control_label");
+			$controlNotes = $(document).find("#control_notes");
+			$controlDescription = $(document).find("#control_description");
+			
+			if ($controlLabel.length) {
+				$controlLabel.html(controlFavorite.label);
+			}
+			
+			if ($controlNotes.length) {
+				$controlNotes.html(controlFavorite.notes);
+			}
+			
+			if ($controlDescription.length) {
+				$controlDescription.html(controlFavorite.description);
+			}
 			
 			// clear loading status
 			DDK.reloadFromFavoriteLoading = false;
@@ -223,3 +244,49 @@ DDK.reloadControl = function (controlName, controlId, callback, beforeInit, befo
 	DDK.warn(controlTitle + " Control Reload: " + controlId + " not found.");
 	return request.reject();
 };
+
+function reloadControlContainer(controlName, controlId, options, callback, $control) {
+	var $controlDebugOutput,
+		$controlDebug,
+		beforeInit,
+		beforeReload;
+
+	// create a control data object if one does not already exist
+	DDK[controlName].data[controlId] = DDK[controlName].data[controlId] || {};
+		
+	// cache the callback, beforeInit, and beforeReload functions
+	// to custom control options, or grab them from custom control options
+	// if they are not passed to this function
+	if (callback) {
+		DDK[controlName].data[controlId].callback = callback;
+	} else if (options.callback) {
+		DDK[controlName].data[controlId].callback = callback = options.callback;
+	}
+	if (options.beforeInit) {
+		DDK[controlName].data[controlId].beforeInit = beforeInit = options.beforeInit;
+	}
+	if (options.beforeReload) {
+		DDK[controlName].data[controlId].beforeReload = beforeReload = options.beforeReload;
+	}
+		
+	if (typeof options.beforeInit === "function") {
+		options.beforeInit(controlName, controlId);
+	}
+	DDK[controlName].init(controlId);
+	if (typeof callback === "function") {
+		callback(controlName, controlId);
+	}
+
+	if (_.string.toBoolean(K("control_debug"))) {
+		$controlDebug = $control.find(".control-debug");
+		$controlDebugOutput = $("body").find("#control_debug");
+		
+		$controlDebugOutput.text("");
+		$controlDebug.children().each(function (index, elem) {
+			var $elem = $(elem);
+			$controlDebugOutput.text(function (textIndex, text) {
+				return text + (index ? "\n\n\n\n" : "") + "--------------------\n" + $elem.attr("title") + "\n--------------------\n\n" + $elem.text();
+			});
+		});
+	}
+}
