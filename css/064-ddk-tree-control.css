@@ -3,14 +3,18 @@
 		color: black !important;
 		font-style: normal !important;
 	}
+	
+	/*
 	.ps-tree {
-		/* float: left; */
 		padding: 5px;
-		/* width: 97%; */
 	}
+	*/
+	
+	
 	.ps-tree>div{
 		overflow-y: auto;
-		width: 100%;
+		max-height: initial !important;
+	/*	width: 100%; */
 	}
 	
 	.ps-tree-chooser{
