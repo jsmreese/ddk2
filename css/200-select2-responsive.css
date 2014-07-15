@@ -1,5 +1,7 @@
 	.select2-container {
 		border: 1px solid #aaa;
+		width: 100%;
+		margin: 0 0 1.25rem;
 	}
 	
 	.select2-container-multi .select2-choices .select2-search-field input {
@@ -45,7 +47,7 @@
 	.select2-container-multi .select2-choices .select2-search-choice {
 		line-height: 2.25;
 		padding-left: 32px;
-		padding-right: 12px;
+		padding-right: 16px;
 	}
 	
 	.select2-search-choice-close {
