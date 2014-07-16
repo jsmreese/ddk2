@@ -3,10 +3,6 @@
 		width: 100%;
 		margin: 0 0 1.25rem;
 	}
-	
-	.select2-container-multi .select2-choices .select2-search-field input {
-		height: 48px;
-	}
 
 	.select2-container-multi .select2-choices .select2-search-field input:focus {
 		box-sizing: border-box;
@@ -45,12 +41,13 @@
 	}
 	
 	.select2-container-multi .select2-choices .select2-search-choice {
-		line-height: 2.25;
+		line-height: 21px;
 		padding-left: 32px;
 		padding-right: 16px;
 	}
 	
 	.select2-search-choice-close {
-		top: 14px;
+		top: 8px;
 		width: 23px;
 	}
+	
