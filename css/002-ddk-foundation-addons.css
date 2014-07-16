@@ -18,6 +18,11 @@
 	margin-bottom: 0;
 }
 
+/* postfix buttons */
+button.postfix, .button.postfix {
+	padding-left: 1em;
+	padding-right: 1em;
+}
 
 /* full width rows */
 .row.full {
