@@ -1015,9 +1015,22 @@ PS.NavFormatter.fn.functions = {
 			}, this), 200);
 		});
 		if(settings.targetKeyword){
-			this.$el.on("change", function(e){
-				K(settings.targetKeyword, $(this).val());
+			var keywords = settings.targetKeyword.split(",");
+			
+			this.$el.on("change", ".nav-date-type", function(e){
+				var $dateDiv = $(this).parent();
+				K(keywords[0], $(this).val());
+				$dateDiv.find(".nav-date-start").trigger("change");
+				$dateDiv.find(".nav-date-end").trigger("change");
 			});
+			this.$el.on("change", ".nav-date-start", function(e){
+				K((keywords[1] || keywords[0]).trim(), $(this).val());
+			});
+			this.$el.on("change", ".nav-date-end", function(e){
+				K((keywords[2] || keywords[0]).trim(), $(this).val());
+			});
+			//trigger date type change to set keywords default values
+			this.$el.find(".nav-date-type").trigger("change");
 		}
 	}
 };
