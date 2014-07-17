@@ -11,7 +11,7 @@ $.extend(true, DDK.eventHandler, {
 			insertWidget = "PSC_CCS_Export_Parameters",
 			exportWidget = "PSC_CCS_Data_Set",
 			exportData = data.url.slice(40).replace(/'/g, "''"),
-			detail = _.string.parseQueryString(exportData),
+			detail = _.toCase("camel", _.string.parseQueryString(exportData)),
 			name = detail.componentName,
 			id = detail.componentId,
 			exportGetData = function (feid) {
