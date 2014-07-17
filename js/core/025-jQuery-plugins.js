@@ -422,7 +422,7 @@
 	};
 	
 	$.fn.breakTableByWidth.defaults = {
-		threshold: 940
+		threshold: 960
 	};
 	
 	$.fn.breakTableByHeight.defaults = {

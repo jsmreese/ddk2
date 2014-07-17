@@ -910,67 +910,71 @@ PS.NavFormatter.fn.functions = {
 				$selectedOption = $this.find("option:selected"),
 				type = $selectedOption.data("tp-type"),
 				optionData = $selectedOption.data(),
-				startValue = optionData.tpStartDiff,
-				endValue = optionData.tpEndDiff || startValue;
+				startValue,
+				endValue;
 			;
-			$dateStart.add($dateEnd).add($dateLabel).show();
-			//destroy datepicker and reset onchange event 
-			$dateStart.add($dateEnd).datepicker("destroy").off("change");
-			//set default format if not specified
-			if($hiddenType.data("tp-type") && type !== $hiddenType.data("tp-type")){
-				settings.momentDateFormat = momentDefaultFormat[type];
-				settings.dateFormat = _this.functions.mapDateFormat(settings.momentDateFormat);
-				settings.altFormat = settings.dateFormat
+			if($selectedOption.length){
+				startValue = optionData.tpStartDiff;
+				endValue = optionData.tpEndDiff || startValue;
+				$dateStart.add($dateEnd).add($dateLabel).show();
+				//destroy datepicker and reset onchange event 
+				$dateStart.add($dateEnd).datepicker("destroy").off("change");
+				//set default format if not specified
+				if($hiddenType.data("tp-type") && type !== $hiddenType.data("tp-type")){
+					settings.momentDateFormat = momentDefaultFormat[type];
+					settings.dateFormat = _this.functions.mapDateFormat(settings.momentDateFormat);
+					settings.altFormat = settings.dateFormat
+				}
+				else{
+					settings.momentDateFormat = settings.momentDateFormat || momentDefaultFormat[type];
+					settings.dateFormat = settings.dateFormat || _this.functions.mapDateFormat(settings.momentDateFormat);
+					settings.altFormat = settings.altFormat || settings.dateFormat
+				}
+				settings.altField = _this.$el.find(".nav-hidden-date-start");
+				_this.functions.initDate(type, $dateStart, settings);
+				if($dateStart.val()){
+					$dateStart.datepicker("setDate", moment($dateStart.val(), settings.momentDateFormat).toDate());
+				}
+				settings.altField = _this.$el.find(".nav-hidden-date-end");
+				_this.functions.initDate(type, $dateEnd, settings);
+				if($dateEnd.val()){
+					$dateEnd.datepicker("setDate", moment($dateEnd.val(), settings.momentDateFormat).toDate());
+				}
+				//clear date values if date type has changed
+				if($hiddenType.data("tp-type") && type !== $hiddenType.data("tp-type")){
+					$dateStart.datepicker("setDate", "");
+					$dateEnd.datepicker("setDate", "");	
+				}
+				
+				//if date fields are blank and no user defined default value, set it to current date
+				if(!$dateStart.val() && typeof(startValue) === "undefined"){
+					startValue = "0";
+				}
+				//set value of dateStart and dateEnd
+				if(typeof(startValue) !== "undefined"){
+					$dateStart.datepicker("setDate", startValue.toString()).trigger("change");
+				}
+				//if date fields are blank set it to current date
+				if(!$dateEnd.val() && typeof(endValue) === "undefined"){
+					endValue = "0";
+				}
+				//set value of dateStart and dateEnd
+				if(typeof(endValue) !== "undefined"){
+					$dateEnd.datepicker("setDate", endValue.toString()).trigger("change");
+				}
+				if(typeof(optionData.showTpStart) !== "undefined" && !optionData.showTpStart){
+					//hide date end and label
+					$dateStart.hide();
+				}
+				if(!optionData.showTpEnd){
+					//hide date end and label
+					$dateLabel.add($dateEnd).hide();
+				}
+				else if(type === "DATEDAY" || type === "DATEWEEK"){	//if selection is a DAY and not a range set min and max dates
+					$dateEnd.datepicker("option", "minDate", moment($dateStart.val(), settings.momentDateFormat).toDate()).trigger("change");
+				}
+				$hiddenType.data("tp-type", type).val(value);
 			}
-			else{
-				settings.momentDateFormat = settings.momentDateFormat || momentDefaultFormat[type];
-				settings.dateFormat = settings.dateFormat || _this.functions.mapDateFormat(settings.momentDateFormat);
-				settings.altFormat = settings.altFormat || settings.dateFormat
-			}
-			settings.altField = _this.$el.find(".nav-hidden-date-start");
-			_this.functions.initDate(type, $dateStart, settings);
-			if($dateStart.val()){
-				$dateStart.datepicker("setDate", moment($dateStart.val(), settings.momentDateFormat).toDate());
-			}
-			settings.altField = _this.$el.find(".nav-hidden-date-end");
-			_this.functions.initDate(type, $dateEnd, settings);
-			if($dateEnd.val()){
-				$dateEnd.datepicker("setDate", moment($dateEnd.val(), settings.momentDateFormat).toDate());
-			}
-			//clear date values if date type has changed
-			if($hiddenType.data("tp-type") && type !== $hiddenType.data("tp-type")){
-				$dateStart.datepicker("setDate", "");
-				$dateEnd.datepicker("setDate", "");	
-			}
-			
-			//if date fields are blank and no user defined default value, set it to current date
-			if(!$dateStart.val() && typeof(startValue) === "undefined"){
-				startValue = "0";
-			}
-			//set value of dateStart and dateEnd
-			if(typeof(startValue) !== "undefined"){
-				$dateStart.datepicker("setDate", startValue.toString()).trigger("change");
-			}
-			//if date fields are blank set it to current date
-			if(!$dateEnd.val() && typeof(endValue) === "undefined"){
-				endValue = "0";
-			}
-			//set value of dateStart and dateEnd
-			if(typeof(endValue) !== "undefined"){
-				$dateEnd.datepicker("setDate", endValue.toString()).trigger("change");
-			}
-			if(typeof(optionData.showTpStart) !== "undefined" && !optionData.showTpStart){
-				//hide date end and label
-				$dateStart.hide();
-			}
-			if(!optionData.showTpEnd){
-				//hide date end and label
-				$dateLabel.add($dateEnd).hide();
-			}
-			else if(type === "DATEDAY" || type === "DATEWEEK"){	//if selection is a DAY and not a range set min and max dates
-				$dateEnd.datepicker("option", "minDate", moment($dateStart.val(), settings.momentDateFormat).toDate()).trigger("change");
-			}
-			$hiddenType.data("tp-type", type).val(value);
 		});
 		//set types value if user specified
 		if(settings.typeDefault){
@@ -1015,9 +1019,22 @@ PS.NavFormatter.fn.functions = {
 			}, this), 200);
 		});
 		if(settings.targetKeyword){
-			this.$el.on("change", function(e){
-				K(settings.targetKeyword, $(this).val());
+			var keywords = settings.targetKeyword.split(",");
+			
+			this.$el.on("change", ".nav-date-type", function(e){
+				var $dateDiv = $(this).parent();
+				K(keywords[0], $(this).val());
+				$dateDiv.find(".nav-date-start").trigger("change");
+				$dateDiv.find(".nav-date-end").trigger("change");
 			});
+			this.$el.on("change", ".nav-date-start", function(e){
+				K((keywords[1] || keywords[0]).trim(), $(this).val());
+			});
+			this.$el.on("change", ".nav-date-end", function(e){
+				K((keywords[2] || keywords[0]).trim(), $(this).val());
+			});
+			//trigger date type change to set keywords default values
+			this.$el.find(".nav-date-type").trigger("change");
 		}
 	}
 };
