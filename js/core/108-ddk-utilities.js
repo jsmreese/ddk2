@@ -33,6 +33,7 @@ DDK.regex = {
 	ampersand: /\x26/g,
 	underscore: /\x5F/g,
 	whitespace: /\s+/g,
+	delimiter: /\s|,/,
 	backslash: /\x5C/g
 };
 
