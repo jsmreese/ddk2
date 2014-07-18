@@ -1108,13 +1108,16 @@ $.extend(true, DDK.dialog, {
 					return value.split("=");
 				}));
 
-				var newKeys = _.zipObject(_.map(data.keywords.split("&"), function (value) {
-					return value.split("=");
-				}));
+				var newKeys = _.string.parseQueryString(data.keywords);
 
 				K("s_" + data.ddkControlId + "_keywords", _.reduce(_.extend({}, oldKeys, newKeys), function (memo, value, key) {
 					return memo + (key ? "&" + key + "=" + (value ? encodeURIComponent(value) : "") : "");
 				}, ""));
+			}
+			
+			if (K("ddk")) {
+				K("ddk.path", K("ddk").path);
+				K("ddk.theme", K("ddk").theme);
 			}
 			run("ddk_dialog_content", "PSC_CMS_Dialog_Frame");
 		}

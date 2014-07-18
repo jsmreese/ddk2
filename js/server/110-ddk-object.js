@@ -1,5 +1,7 @@
 /*jshint bitwise: true, curly: true, eqeqeq: true, forin: true, immed: true, latedef: true, newcap: true, noarg: true, noempty: true, nonew: true, plusplus: true, regexp: true, undef: true, strict: true, trailing: true, onevar: true, unused: true */
 
+var isPDF = isPDF || false;
+
 // DDK.COLUMN_OBJECT_PROPERTIES
 // list of properties for column objects returned by DDK.columns()
 // list format: "ddkPropName amenginePropName ddkPropNamePlural"

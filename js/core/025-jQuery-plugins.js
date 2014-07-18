@@ -550,8 +550,7 @@
 		// initControls is automatically called
 		// which means that all control must be loaded via
 		// runFromFavorite on the server
-		isLoading = false;
-		pdfGo();
+		DDK.pdfGo();
 		
 		return this;
 	};
