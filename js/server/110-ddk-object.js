@@ -445,11 +445,22 @@ DDK.options.evalDefault = function(controlName, optionDefault) {
 			case "EXPORT_CSV_FILENAME":
 				return "data_export_" + (new Date(Date.now())).toISOString().slice(0,10);
 			case "SERIES_CONFIG_POSITION":
+				if (isPDF) { return "none"; }
 				return (K(controlName + "_toolbar_enabled") === "true" ? "left" : "none");
 			case "MOUSEOVER":
 				return controlName + "Default";
 			case "PAGING_THRESHOLD_SERVER":
+				if (isPDF) { return "10000"; }
 				return controlName === "tree" ? "100" : "1000";
+			case "PAGING_THRESHOLD_CLIENT":
+				if (isPDF) { return "10000"; }
+				return "200";
+			case "PAGING_TYPE":
+				if (isPDF) { return "none"; }
+				return "";
+			case "QUERY_TOP":
+				if (isPDF) { return "10000"; }
+				return "";
 			case "SORT_ENABLED":
 				return (controlName !== "scorecard2").toString();
 			case "GROUPING_EXPANDED":
@@ -554,9 +565,9 @@ DDK.options.list = [
 	"nodes_sort_default nsod",
 	"nodes_title nt",
 	"nodes_types nty",
-	"paging_threshold_client ptc 200",
+	"paging_threshold_client ptc {{PAGING_THRESHOLD_CLIENT}}",
 	"paging_threshold_server pts {{PAGING_THRESHOLD_SERVER}}",
-	"paging_type pt",
+	"paging_type pt {{PAGING_TYPE}}",
 	"preview_enabled pe {{toolbar_default}}",
 	"query_beforeRender qbr",
 	"query_dimension qd",
@@ -566,7 +577,7 @@ DDK.options.list = [
 	"query_header_widget qhw",
 	"query_mode qm tsql",
 	"query_order qo",
-	"query_top qt",
+	"query_top qt {{QUERY_TOP}}",
 	"query_top_enabled qte {{toolbar_default}}",
 	"query_url qu",
 	"refresh_enabled re {{toolbar_default}}",

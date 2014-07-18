@@ -932,6 +932,7 @@
 
 			if (options && typeof options.ptype === "string") {
 				if (
+						(DDK.outputPDF) ||
 						(	(count < options.ptc)
 						 && (count < options.pts)
 						 && (options.ptype.toLowerCase() !== "client")
@@ -943,10 +944,12 @@
 						)
 				) {
 					options.table = $('#' + id).dataTable( $.extend(true, tableOptions, DDK.table.data[id].customOptions || {}) );
-					fixColumnSizing('#psc_table_' + id + '_widget');
-					setTimeout( function() { addColumnFilters(id); }, 0);
-					//PSDDK-280: Allow users to Save the Sorting done on the Table Control
-					if (K("ddk.useVersion2Up") === "True") addDTSortListener(id);
+					if (!DDK.outputPDF) {
+						fixColumnSizing('#psc_table_' + id + '_widget');
+						setTimeout( function() { addColumnFilters(id); }, 0);
+						//PSDDK-280: Allow users to Save the Sorting done on the Table Control
+						if (K("ddk.useVersion2Up") === "True") addDTSortListener(id);
+					}
 				} else if (
 					   ((count < options.pts) || (options.ptype.toLowerCase() == 'client'))
 					&& (options.ptype.toLowerCase() !== 'server')
@@ -1845,12 +1848,7 @@
 		function loadControlQueue() {
 			var control = controlQueue.shift();
 			if (control) { DDK.log("Load control from queue (loadControlQueue): " + control.name + " " + control.id); }
-			//remove client/server paging on controls if outputPDF is turned on
-			if(DDK.modePDF){
-				K("s_" + control.id + "_pt", "none");	//page type
-				K("s_" + control.id + "_ptc", "10000");	//client paging threshold
-				K("s_" + control.id + "_pts", "10000");	//server paging threshold
-			}
+
 			DDK[control.name].reload(control.id, function() {
 				if (controlQueue.length) {
 					setTimeout(loadControlQueue, 0);

@@ -539,12 +539,21 @@
 	 * by: jsmreese
 	 */
 	$.fn.initControls = function () {
-		return this.each(function (index, elem) {
+		this.each(function (index, elem) {
 			var data = $(elem).controlData();
 			if (data && data.name && data.id) {
 				DDK[data.name].init(data.id);
 			}
 		});
+		
+		// when using PDF output in the responsive template
+		// initControls is automatically called
+		// which means that all control must be loaded via
+		// runFromFavorite on the server
+		isLoading = false;
+		pdfGo();
+		
+		return this;
 	};
 	
 	/* $.fn.findControls jQuery plugin

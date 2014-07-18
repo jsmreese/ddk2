@@ -223,6 +223,7 @@ PS.Formatter.colorRange.green = { h: 100 / 360, s: 1, l: { min: 0.35, max: 0.9 }
 PS.Formatter.colorRange.blue = { h: 212 / 360, s: 1, l: { min: 0.35, max: 0.9 } };
 PS.Formatter.colorRange.gray = { h: 0, s: 0, l: { min: 0.35, max: 0.9 } };
 PS.Formatter.colorRange.neutral = PS.Formatter.colorRange.gray;
+PS.Formatter.colorRange.grey = PS.Formatter.colorRange.gray;
 
 PS.Formatter.fn.getSettings = function () {
 	return _.extend(
@@ -253,6 +254,7 @@ PS.Formatter.fn.defaults = {
 	precision: 0,
 	nullToZero: true,
 	zero: "-",
+	negative: "-n",
 	"null": "",
 	units: "",
 	unitsPosition: "right",
@@ -268,7 +270,10 @@ PS.Formatter.fn.defaults = {
 	orientation: 1,
 	direction: 0,
 	method: "format",
-	valueColor: "neutral"
+	valueColor: "neutral",
+	positiveColor: "",
+	negativeColor: "",
+	zeroColor: ""
 };
 
 // default formatter functions
@@ -724,12 +729,29 @@ PS.Formatter.fn.arrow = function () {
 			this.formatValue
 		),
 		num = +value,
-		settings = this.getSettings();
+		settings = this.getSettings(),
+		colors = settings.color.split(",");
 	
-	if (!settings.direction) {	
-		if (num > 0 && settings.orientation === 1 || num < 0 && settings.orientation === -1) {
+	settings.colors = {
+		up: "",
+		down: "",
+		neutral: ""
+	};
+	
+	if (colors.length === 1) {
+		settings.colors.up = settings.positiveColor || colors[0];
+		settings.colors.down = settings.negativeColor || colors[0];
+		settings.colors.neutral = settings.zeroColor || colors[0];
+	} else if (colors.length === 3) {
+		settings.colors.up = settings.positiveColor || colors[0];
+		settings.colors.down = settings.negativeColor || colors[1];
+		settings.colors.neutral = settings.zeroColor || colors[2];
+	}
+	
+	if (!settings.direction) {
+		if (num > 0) {
 			settings.direction = "up";
-		} else if (num > 0 && settings.orientation === -1 || num < 0 && settings.orientation === 1) {
+		} else if (num < 0) {
 			settings.direction = "down";
 		} else {
 			settings.direction = "neutral";		
