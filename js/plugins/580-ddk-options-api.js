@@ -548,6 +548,12 @@ PS.optionsAPI.navElemConfig = {
 				"description": "Default value of the input",
 				"notes": ""
 			},
+			"label": {
+				"id": "label",
+				"label": "Default Label",
+				"description": "Default selected label for the select2",
+				"notes": "This is used to avoid triggering server request on set of default values"
+			},
 			"valueField": {
 				"id": "value_field",
 				"label": "Value Field",
