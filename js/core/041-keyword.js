@@ -112,7 +112,7 @@
 			// and making that conversion automatic would break all that code
 			// hoping to remedy the object as keyword issue in DDK 3
 			if (key === "ddk") {
-				return _.string.parseJSON(DDK.unescape.brackets(daaHash.get(key)));
+				return _.string.parseJSON(DDK.unescape.brackets(daaHash.get(key) || ""));
 			}
 
 			return daaHash.get(key);

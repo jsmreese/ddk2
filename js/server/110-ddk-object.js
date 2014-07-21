@@ -463,6 +463,12 @@ DDK.options.evalDefault = function(controlName, optionDefault) {
 			case "QUERY_TOP":
 				if (isPDF) { return "10000"; }
 				return "";
+			case "HEIGHT":
+				if (K("ddk")) { return "540"; }
+				return "500";
+			case "WIDTH":
+				if (K("ddk")) { return "960"; }
+				return "680";
 			case "SORT_ENABLED":
 				return (controlName !== "scorecard2").toString();
 			case "GROUPING_EXPANDED":
@@ -529,7 +535,7 @@ DDK.options.list = [
 	"header_tooltip hdt",
 	"header_widget hw",
 	"header_enabled he {{toolbar_default}}",
-	"height h 500",
+	"height h {{HEIGHT}}",
 	"help_enabled helpe {{toolbar_default}}",
 	"help_widget helpw",
 	"label_auto_enabled lae true",
@@ -614,7 +620,7 @@ DDK.options.list = [
 	"toolbar_top_right_widget ttrw",
 	"type ty column",
 	"type_enabled tye {{toolbar_default}}",
-	"width w 680"
+	"width w {{WIDTH}}"
 ];
 
 

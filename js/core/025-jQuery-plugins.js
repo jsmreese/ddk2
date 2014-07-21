@@ -16,11 +16,21 @@
 
 	/* $.fn.scaleAreas jQuery plugin
 	 * Scales the area coords within a target by an arbitrary factor.
+	 * If cache is `true`, will cache original coords in data-coords
+	 * and scale off the original cords.
 	 * by: jsmreese
 	 */
-	$.fn.scaleAreas = function (factor) {
+	$.fn.scaleAreas = function (factor, cache) {
 		this.find("area").attr("coords", function (index, coords) {
-			return _.map(coords.split(","), function (coord) {
+			var $this = $(this),
+				originalCoords = $this.data("coords");
+			
+			if (cache && !originalCoords) {
+				originalCoords = coords;
+				$this.data("coords", coords);
+			}
+			
+			return _.map((cache ? originalCoords : coords).split(","), function (coord) {
 				return Math.round(coord * factor);
 			}).join(",");
 		});
@@ -595,9 +605,14 @@
 			if (elemIdParts[0] !== "psc" || elemIdParts[3] !== "widget" || !id || !name ) { return null; }
 			
 			controlData = $.extend(true,
-				{ id: id, name: name, $control: $elem },
+				{
+					id: id,
+					name: name,
+					$control: $elem
+				},
 				$elem.find("#psc_" + name + "_data_" + id).data(),
-				$elem.find("[data-ddk-metrics]").data()
+				$elem.find("[data-ddk-metrics]").data(),
+				$elem.data()
 			);
 			
 			prefixes = _.sortBy(_.uniq(_.pluck(controlData.ddkMetrics, "columnMetric")));
