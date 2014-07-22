@@ -77,7 +77,8 @@ DDK.reloadFromFavoriteRequest = function () {
 		url: "amengine.aspx",
 		dataType: "json",
 		data: {
-			"config.mn": "DDK_Data_Request"
+			"config.mn": "DDK_Data_Request",
+			"chart_container_width": settings.$target.width()
 		},
 		success: function (data) {
 			var control = data.datasets[1],

@@ -45,7 +45,8 @@ function PSC_Chart_Resize(id, forceResize) {
 		DDK.chart.data[id].scaleFactor = scaleFactor;
 	}
 	
-	if (Math.abs(DDK.chart.data[id].scaleFactor - scaleFactor) > 0.1) {
+	// update image if the current change is greater than approx 10% larger or smaller
+	if (Math.abs(1 - scaleFactor) > 0.1) {
 		// cache scale factor
 		DDK.chart.data[id].scaleFactor = scaleFactor;
 		DDK.chart.data[id].updateImage();
