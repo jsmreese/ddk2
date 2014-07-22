@@ -253,41 +253,60 @@ PS.NavFormatter.fn.functions = {
 		};
 	},
 	initSelection: function (settings, element, callback) {
-		var dataToPass = {}, newData, ids, selectedData;
-		if(settings.queryWidget){
-			$.extend(true, dataToPass, K.toObject("p_"), {
-				"config.mn": "DDK_Data_Request",
-				"filterColumn": settings.filterColumn,
-				"columnPrefix": settings.columnPrefix,
-				"data.config": JSON.stringify($.extend(true, {}, settings, {"id": element.val()}))
-			});
-			$.post("amengine.aspx", dataToPass, 
-				function(data) {
-					var dataset = data && data.datasets && data.datasets[0],
-						records = dataset && dataset.rows,
-						results = [],
-						valueWrapString = settings.valueWrapString || "";
-					if(records && records.length){
-						newData = _.map(records, function(record, key){
-							return {"id": record[0], "text": record[1]};
-						});
-						if(settings.multiple){
-							callback(newData);
-						}
-						else{
-							callback(newData[0]);
-						}
+		var dataToPass = {}, ids, selectedData = [], labelArr, valArr;
+		//if label is specified, display label and skip server retrieval
+		if(settings.label){
+			if(settings.multiple && settings.label.indexOf(",") > -1){
+				labelArr = settings.label.split(",");
+				valArr = settings.value.split(",");
+				_.each(labelArr, function(item, index){
+					if(valArr[index]){
+						selectedData.push({id: _.string.trim(valArr[index]), text: _.string.trim(item)});
 					}
-				}, "json");
-		}
-		else{
-			ids = element.val().split(",");
-			selectedData = _.filter(settings.data, function(item){ return _.contains(ids, item.id)});
-			if(settings.multiple){
+				});
 				callback(selectedData);
 			}
 			else{
-				callback(selectedData[0]);
+				callback({id: _.string.trim(settings.value), text: _.string.trim(settings.label)});
+			}
+		}
+		else{
+			if(settings.queryWidget){
+				$.extend(true, dataToPass, K.toObject("p_"), {
+					"config.mn": "DDK_Data_Request",
+					"filterColumn": settings.filterColumn,
+					"columnPrefix": settings.columnPrefix,
+					"data.config": JSON.stringify($.extend(true, {}, settings, {"id": element.val()}))
+				});
+				$.post("amengine.aspx", dataToPass, 
+					function(data) {
+						var dataset = data && data.datasets && data.datasets[0],
+							records = dataset && dataset.rows,
+							results = [],
+							valueWrapString = settings.valueWrapString || "";
+						if(records && records.length){
+							selectedData = _.map(records, function(record, key){
+								return {"id": record[0], "text": record[1]};
+							});
+							if(settings.multiple){
+								callback(selectedData);
+							}
+							else{
+								callback(selectedData[0]);
+							}
+						}
+						return;
+					}, "json");
+			}
+			else{
+				ids = element.val().split(",");
+				selectedData = _.filter(settings.data, function(item){ return _.contains(ids, item.id)});
+				if(settings.multiple){
+					callback(selectedData);
+				}
+				else{
+					callback(selectedData[0]);
+				}
 			}
 		}
 	},
@@ -395,7 +414,7 @@ PS.NavFormatter.fn.functions = {
 		return {
 			initSelection: function (item, callback) {
 				var ids = item.val().split(","),
-					options = navFormatter.data || [],
+					options = settings.data || [],
 					selectedOptions = _.filter(options, function(item){ return _.contains(ids, item.id)});
 				if(settings.cached){
 					//clear page 
@@ -1028,10 +1047,10 @@ PS.NavFormatter.fn.functions = {
 				$dateDiv.find(".nav-date-end").trigger("change");
 			});
 			this.$el.on("change", ".nav-date-start", function(e){
-				K((keywords[1] || keywords[0]).trim(), $(this).val());
+				K(_.string.trim(keywords[1] || keywords[0]), $(this).val());
 			});
 			this.$el.on("change", ".nav-date-end", function(e){
-				K((keywords[2] || keywords[0]).trim(), $(this).val());
+				K(_.string.trim(keywords[2] || keywords[0]), $(this).val());
 			});
 			//trigger date type change to set keywords default values
 			this.$el.find(".nav-date-type").trigger("change");
