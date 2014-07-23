@@ -18,7 +18,7 @@
 		// Will organize a flat array of item objects into a nested structure of parent/child items.
 		// Uses the `id` and `parentId` properties of each item object to generate an array of item `children`.
 		// Will throw an error if a circular structure is found (if an item ever appears in the list of its own ancestors).
-		// Items with `parentId` of `0`, `null`, or `undefined` will be treated root nodes.
+		// Items with `parentId` of `0`, `null`, or `undefined` will be treated as root nodes.
 		//
 		// array: Required. The array of items to convert to a tree.
 		//
