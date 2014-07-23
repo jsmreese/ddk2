@@ -25,6 +25,7 @@ $.extend(true, DDK.eventHandler, {
 				
 				data[name + "_id"] = id;
 				data[name + "_export_query_widget"] = detail[name + "ExportQueryWidget"];
+				data[name + "_query_header_widget"] = detail[name + "QueryHeaderWidget"];
 				data[name + "_query_widget"] = detail[name + "QueryWidget"];
 				data[name + "_datasource"] = detail[name + "Datasource"];
 				data.filename = detail.filename;
