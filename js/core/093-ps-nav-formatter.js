@@ -43,10 +43,13 @@ PS.NavFormatter.formats = [];
 
 // register method for adding formats to the formats array
 PS.NavFormatter.register = function (settings) {
-	// verify that the format function exists
+	// if the format function does not exist
+	// register it anyway, as the datecustom function will be used
 	if (typeof PS.NavFormatter.fn[settings.id] !== "function") {
-		DDK.error("Unable to register formatter. `PS.NavFormatter.fn." + settings.id + "` is not a function.");
-		return;
+		PS.NavFormatter.fn[settings.id] = function () {
+			PS.NavFormatter.fn.datecustom.call(this);
+		};
+		DDK.log("`PS.NavFormatter.fn." + settings.id + "` is not a function. `" + settings.id + "` will redirect to `datecustom`.");
 	}
 	
 	// add format to the formats array
