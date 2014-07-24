@@ -849,7 +849,13 @@
 					});
 					data.push({name: "table_metrics_static", value: ms});
 					data.push({name: "table_metrics_dynamic", value: md});
-					data.push({name: "table_keywords", value: keywords });
+					// data.push({name: "table_keywords", value: keywords });
+					if (keywords) {
+						_.forOwn(_.string.parseQueryString(keywords), function (value, key) {
+							data.push({ name: key, value: value });
+						});
+					}
+					
 					settings.jqXHR = $.ajax( {
 						"url": url,
 						"data": data,
