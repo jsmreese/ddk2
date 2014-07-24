@@ -812,7 +812,7 @@
 				fmt = $data.data('fmt'),
 				qm = $data.data('qm') || "",
 				sv = ($data.data('sv')? $data.data('sv').split("^") : ["'0','asc'"]),
-				keywords = K("s_" + id + "_keywords") || $widget.data("keywords") || "",
+				keywords = _.extend({}, _.string.parseQueryString(K("s_" + id + "_keywords") || ""), _.string.parseQueryString($widget.data("keywords") || "")),
 				//sv = $data.data('sv') || ["'0','asc'"],
 				sort = [],
 				sortFav = (K("s_" + id + "_tsort")? K("s_" + id + "_tsort").split("^") : undefined),
@@ -849,12 +849,11 @@
 					});
 					data.push({name: "table_metrics_static", value: ms});
 					data.push({name: "table_metrics_dynamic", value: md});
-					// data.push({name: "table_keywords", value: keywords });
-					if (keywords) {
-						_.forOwn(_.string.parseQueryString(keywords), function (value, key) {
-							data.push({ name: key, value: value });
-						});
-					}
+					data.push({name: "table_keywords", value: $.param(keywords) });
+					//data.push({name: "table_keywords", value: keywords });
+					//_.forOwn(keywords, function (value, key) {
+					//	data.push({ name: key, value: value });
+					//});
 					
 					settings.jqXHR = $.ajax( {
 						"url": url,

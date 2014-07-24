@@ -88,8 +88,8 @@ DDK.reloadFromFavoriteRequest = function () {
 				$controlDescription;
 			
 			settings.$target.am("hidemask").empty().html(DDK.unescape.brackets(control.html));
-			reloadControlContainer(control.name, control.id, settings, settings.callback, settings.$target.children().eq(0));
 			K(control.stateKeywords);
+			reloadControlContainer(control.name, control.id, settings, settings.callback, settings.$target.children().eq(0));
 			
 			// update control_label, control_description, and control_notes
 			$controlLabel = $(document).find("#control_label");
