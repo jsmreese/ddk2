@@ -1,3 +1,13 @@
+/*
+ update collateTree, should look for, in this order:
+	custom parent and id field names (in snake- and camel-cased versions).
+	tree_parent_id and tree_id
+	treeParentId and treeId
+	parent_id and id
+	parentId and id
+	- collateTree should check for duplicate id values
+*/
+
 (function (undefined) {
 	function isRootNode(id, parentId, item, index, array) {
 		// return all root nodes that have no parentId
@@ -13,8 +23,10 @@
 		return item[parentId] == this[id];
 	}
 	
-	function isUnique(id, array) {
-		return array.length === _.unique(array, id).length;
+	function isUnique(id, parentId, array) {
+		return !_.any(array, function (item) {
+			return item[id] === item[parentId];
+		});
 	}
 	
 	function findId(ids, record) {
@@ -53,8 +65,10 @@
 		// or find all matching child items
 		// - those with a parentId matching the supplied parent object
 		items = _.filter(array, parent ? config.isChildNode : config.isRootNode, parent);
-		
+
 		_.each(items, function (item, index) {	
+			item.parent = parent;
+		
 			// this check stops loop structures on root nodes with id of `0`, "", `null`, or `undefined`
 			if (item[config.id]) {
 				item.children = collate(config, array, item);
@@ -103,11 +117,11 @@
 			// setup config object
 			config.isChildNode = _.partial(isChildNode, config.id, config.parentId);
 			config.isRootNode = _.partial(isRootNode, config.id, config.parentId);
-			config.isUnique = _.partial(isUnique, config.id);
-			
-			// throw error if there are duplicate id values
-			if (!config.isUnique(array)) { throw "collateTree: array ids are not unique. id: " + config.id; }
-			
+			config.isUnique = _.partial(isUnique, config.id, config.parentId);
+
+			// throw error if there are any items that have identical id and parentId values
+			if (!config.isUnique(array)) { throw "collateTree: array item has identical id and parentId." }
+								
 			return collate(config, array);
 		}
 	});	
