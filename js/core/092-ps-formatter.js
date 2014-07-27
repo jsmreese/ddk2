@@ -221,11 +221,18 @@ PS.Formatter.colorRange = function (color, steps) {
 	}
 };
 
+/*
 PS.Formatter.colorRange.red = { h: 0, s: 1, l: { min: 0.35, max: 0.9 } };
 PS.Formatter.colorRange.yellow = { h: 36 / 360, s: 1, l: { min: 0.5, max: 0.9 } };
 PS.Formatter.colorRange.green = { h: 100 / 360, s: 1, l: { min: 0.35, max: 0.9 } };
 PS.Formatter.colorRange.blue = { h: 212 / 360, s: 1, l: { min: 0.35, max: 0.9 } };
 PS.Formatter.colorRange.gray = { h: 0, s: 0, l: { min: 0.35, max: 0.9 } };
+*/
+PS.Formatter.colorRange.red = { h: 0, s: 1, l: { min: 0.2, max: 0.85 } };
+PS.Formatter.colorRange.yellow = { h: 36 / 360, s: 1, l: { min: 0.4, max: 0.9 } };
+PS.Formatter.colorRange.green = { h: 100 / 360, s: 1, l: { min: 0.2, max: 0.85 } };
+PS.Formatter.colorRange.blue = { h: 212 / 360, s: 1, l: { min: 0.2, max: 0.85 } };
+PS.Formatter.colorRange.gray = { h: 0, s: 0, l: { min: 0.2, max: 0.9 } };
 PS.Formatter.colorRange.neutral = PS.Formatter.colorRange.gray;
 PS.Formatter.colorRange.grey = PS.Formatter.colorRange.gray;
 
