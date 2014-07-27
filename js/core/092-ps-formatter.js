@@ -302,7 +302,7 @@ PS.Formatter.fn.html = function () {
 PS.Formatter.fn.auto = function () {
 	var num = +this.formatValue,
 		settings = this.getSettings(),
-		time = "milliseconds seconds minutes hours days weeks months quarters years".split(" "),
+		time = "milliseconds seconds minutes hours days weeks months years".split(" "),
 		currency = "dollars".split(" "),
 		percent = "percent".split(" ");
 	

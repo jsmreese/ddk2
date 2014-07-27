@@ -12,6 +12,13 @@ PS.optionsAPI.formatFunction = {
 			"notes": "<p>Arrow color may be set via element classes using the text color classes. e.g. <code>text-green</code>. Databind arrow color by using a DDK Keyword Alias in the class name. e.g. <code>text-%{RESULT}%</code> or <code>text-dk%{RESULT}%</code>.<p>Arrow direction is calculated using the orientation option compared to the format value. <p>If the format value is a comma-separated list, a change calculation will be performed using the first and last values <code>(last - first)</code> and then compared to the orientation. <p>Databind arrow orientation using <code>data-format-orientation='%{ORIENTATION}%'</code>. <p>Set arrow direction directly via the direction option using <code>data-format-direction</code> to bypass orientation comparison. <p>Use element classes to change the displayed indicator: <code>arrow-xthin</code>, <code>arrow-thin</code>, <code>triangle</code>, <code>caret-thick</code>, <code>caret</code>, <code>chevron</code>, <code>plus-minus</code>, <code>plus-minus-circle</code>, <code>plus-minus-square</code>, <code>check-x</code>, and <code>thumb</code>." 
 		}, 
 		
+		"auto": { 
+			"id": "auto", 
+			"label": "Auto", 
+			"description": "<p>Automatically formats a value based on the units.", 
+			"notes": "<p>Must be used in conjunction with format units, usually <code>data-format-units='%{UNITS}%'</code>.<p>Recognized units:<table><thead><tr><th>Units</th><th>Format</th></tr></thead><tbody><tr><td>milliseconds</td><td rowspan=8>time</td><td>seconds</td><td>minutes</td><td>hours</td><td>days</td><td>weeks</td><td>months</td><td>years</td></tr><tr><td>dollars</td><td rowspan=1>currency</td></tr><tr><td>percent</td><td rowspan=1>percent</td></tr><tr><td><em>no unit</em></td><td rowspan=1>number or text (based on value)</td></tr></tbody></table>"
+		}, 
+		
 		"bar": { 
 			"id": "bar", 
 			"label": "Bar", 
