@@ -801,7 +801,7 @@ PS.Formatter.fn.bulb = function () {
 PS.Formatter.calcs = {};
 
 PS.Formatter.calcs.percentChange = function (input) {
-	// performs calculation of (last - first) / first
+	// performs calculation of (last - first) / abs(first)
 	// given a comma-separated list of inputs
 	var values = (input ? input.split(",") : []),
 		firstValue = values[0],
@@ -826,7 +826,7 @@ PS.Formatter.calcs.percentChange = function (input) {
 		return 100;
 	}
 
-	return (lastNum - firstNum) / firstNum * 100;
+	return (lastNum - firstNum) / Math.abs(firstNum) * 100;
 };
 
 PS.Formatter.calcs.change = function (input) {
