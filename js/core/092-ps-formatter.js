@@ -180,6 +180,10 @@ PS.Formatter.colorRange = function (color, steps) {
 		l;
 	
 	switch (steps) {
+		case -1: 
+			// for a single step, output the 1/3 point for a darker color
+			return [hsl2hex([settings.h, settings.s, settings.l.min + range * 0.33333])];
+
 		case 1:
 			// for a single step, output the 2/3 point
 			return [hsl2hex([settings.h, settings.s, settings.l.min + range * 0.66667])];
@@ -765,7 +769,7 @@ PS.Formatter.fn.arrow = function () {
 	// evaluate color keywords	
 	_.each("favorable unfavorable neutral".split(" "), function (status) {
 		if (PS.Formatter.colorRange[settings.colors[status]]) {
-			settings.colors[status] = PS.Formatter.colorRange(settings.colors[status], 1);
+			settings.colors[status] = PS.Formatter.colorRange(settings.colors[status], -1);
 		}
 	});
 		
