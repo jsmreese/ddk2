@@ -342,7 +342,19 @@ PS.Formatter.fn.number = function () {
 	if (!isNum || (!settings.nullToZero && this.formatValue === "")) {
 		if (!_.isNumber(settings["null"])) {
 			// if settings["null"] is not a number, return the text directly without further formatting
-			return settings["null"];
+			if (settings.zeroColor) {
+				if (PS.Formatter.colorRange[settings.zeroColor]) {
+					settings.zeroColor = PS.Formatter.colorRange(settings.zeroColor, -1);
+				}
+			
+				settings.valueColor = settings.zeroColor;
+			}
+			
+			settings.value = settings["null"];
+			
+			settings.value =  _.template(settings.valueTemplate, settings);
+			
+			return settings.value;
 		}
 		
 		// if settings["null"] is a number, format it with units and proper number formatting
@@ -350,7 +362,19 @@ PS.Formatter.fn.number = function () {
 	} else if (num === 0) {
 		if (!_.isNumber(settings.zero)) {
 			// if settings.zero is not a number, return the text directly without further formatting
-			return settings.zero;
+			if (settings.zeroColor) {
+				if (PS.Formatter.colorRange[settings.zeroColor]) {
+					settings.zeroColor = PS.Formatter.colorRange(settings.zeroColor, -1);
+				}
+			
+				settings.valueColor = settings.zeroColor;
+			}
+			
+			settings.value = settings.zero;
+			
+			settings.value =  _.template(settings.valueTemplate, settings);
+			
+			return settings.value;
 		}
 		
 		// if settings.zero is a number, format it with units and proper number formatting
@@ -409,7 +433,19 @@ PS.Formatter.fn.currency = function () {
 	if (!isNum || (!settings.nullToZero && this.formatValue === "")) {
 		if (!_.isNumber(settings["null"])) {
 			// if settings["null"] is not a number, return the text directly without further formatting
-			return settings["null"];
+			if (settings.zeroColor) {
+				if (PS.Formatter.colorRange[settings.zeroColor]) {
+					settings.zeroColor = PS.Formatter.colorRange(settings.zeroColor, -1);
+				}
+			
+				settings.valueColor = settings.zeroColor;
+			}
+			
+			settings.value = settings["null"];
+			
+			settings.value =  _.template(settings.valueTemplate, settings);
+			
+			return settings.value;
 		}
 		
 		// if settings["null"] is a number, format it with units and proper number formatting
@@ -417,7 +453,19 @@ PS.Formatter.fn.currency = function () {
 	} else if (num === 0) {
 		if (!_.isNumber(settings.zero)) {
 			// if settings.zero is not a number, return the text directly without further formatting
-			return settings.zero;
+			if (settings.zeroColor) {
+				if (PS.Formatter.colorRange[settings.zeroColor]) {
+					settings.zeroColor = PS.Formatter.colorRange(settings.zeroColor, -1);
+				}
+			
+				settings.valueColor = settings.zeroColor;
+			}
+			
+			settings.value = settings.zero;
+			
+			settings.value =  _.template(settings.valueTemplate, settings);
+			
+			return settings.value;
 		}
 		
 		// if settings.zero is a number, format it with units and proper number formatting
@@ -971,7 +1019,19 @@ PS.Formatter.fn.percent = function () {
 	if (!isNum || (!settings.nullToZero && value === "")) {
 		if (!_.isNumber(settings["null"])) {
 			// if settings["null"] is not a number, return the text directly without further formatting
-			return settings["null"];
+			if (settings.zeroColor) {
+				if (PS.Formatter.colorRange[settings.zeroColor]) {
+					settings.zeroColor = PS.Formatter.colorRange(settings.zeroColor, -1);
+				}
+			
+				settings.valueColor = settings.zeroColor;
+			}
+			
+			settings.value = settings["null"];
+			
+			settings.value =  _.template(settings.valueTemplate, settings);
+			
+			return settings.value;
 		}
 		
 		// if settings["null"] is a number, format it with units and proper number formatting
@@ -979,7 +1039,19 @@ PS.Formatter.fn.percent = function () {
 	} else if (num === 0) {
 		if (!_.isNumber(settings.zero)) {
 			// if settings.zero is not a number, return the text directly without further formatting
-			return settings.zero;
+			if (settings.zeroColor) {
+				if (PS.Formatter.colorRange[settings.zeroColor]) {
+					settings.zeroColor = PS.Formatter.colorRange(settings.zeroColor, -1);
+				}
+			
+				settings.valueColor = settings.zeroColor;
+			}
+			
+			settings.value = settings.zero;
+			
+			settings.value =  _.template(settings.valueTemplate, settings);
+			
+			return settings.value;
 		}
 		
 		// if settings.zero is a number, format it with units and proper number formatting
