@@ -299,6 +299,37 @@ PS.Formatter.fn.html = function () {
 	return this.formatValue;
 };
 
+PS.Formatter.fn.auto = function () {
+	var num = +this.formatValue,
+		settings = this.getSettings(),
+		time = "milliseconds seconds minutes hours days weeks months quarters years".split(" "),
+		currency = "dollars".split(" "),
+		percent = "percent".split(" ");
+	
+	if (_.contains(time, settings.units)) {
+		this.format = "time";
+		return PS.Formatter.fn.time.apply(this);
+	}
+	
+	if (_.contains(currency, settings.units)) {
+		this.format = "currency";
+		return PS.Formatter.fn.currency.apply(this);
+	}
+	
+	if (_.contains(percent, settings.units)) {
+		this.format = "percent";
+		return PS.Formatter.fn.percent.apply(this);
+	}
+	
+	if (!_.isNaN(num)) {
+		this.format = "number";
+		return PS.Formatter.fn.number.apply(this);
+	}
+	
+	this.format = "text";
+	return PS.Formatter.fn.text.apply(this);
+};
+
 PS.Formatter.fn.number = function () {
 	var num = +this.formatValue,
 		isNum = !(num == null || isNaN(num)),
