@@ -734,15 +734,6 @@ PS.Formatter.fn.arrow = function () {
 		// arrow format defaults color to "green red gray"
 		colors = settings.color.split(",");
 	
-	// evaluate color keywords	
-	_.map(colors, function (color) {
-		if (PS.Formatter.colorRange[color]) {
-			return PS.Formatter.colorRange(color, 1);
-		}
-		
-		return color;
-	});
-	
 	settings.colors = {
 		favorable: "",
 		unfavorable: "",
@@ -770,7 +761,14 @@ PS.Formatter.fn.arrow = function () {
 			settings.colors.neutral = settings.zeroColor || colors[2];
 		}
 	}
-	
+
+	// evaluate color keywords	
+	_.each("favorable unfavorable neutral".split(" "), function (status) {
+		if (PS.Formatter.colorRange[settings.colors[status]]) {
+			settings.colors[status] = PS.Formatter.colorRange(settings.colors[status], 1);
+		}
+	});
+		
 	if (!settings.direction) {
 		if (num > 0) {
 			settings.direction = "up";
