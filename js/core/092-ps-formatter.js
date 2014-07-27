@@ -281,10 +281,13 @@ PS.Formatter.fn.defaults = {
 	orientation: 1,
 	direction: 0,
 	method: "format",
-	valueColor: "neutral",
+	valueColor: "",
 	positiveColor: "",
 	negativeColor: "",
-	zeroColor: ""
+	zeroColor: "",
+	valueTemplate: '<span <%= (valueColor ? \'style="color: \' + valueColor + \';"\' : \'\') %> class="format-value <%= valueClassName %>" <%= valueAttr %>><%= value %></span>',
+	valueClassName: "",
+	valueAttr: ""
 };
 
 // default formatter functions
@@ -326,9 +329,40 @@ PS.Formatter.fn.number = function () {
 	if (settings.units) {
 		settings.units = _.template(settings.unitsTemplate, settings);
 	}
-		
+	
+	// format number
+	settings.value = numeral(Math.abs(num)).format("0,0" + (settings.precision ? "." + _.string.repeat("0", settings.precision) : ""));
+	
+	// apply negative value format
+	if (num < 0) {
+		settings.value = settings.negative.replace("n", settings.value);
+	}
+	
+	// set valueColor
+	if (num < 0 && settings.negativeColor) {
+		if (PS.Formatter.colorRange[settings.negativeColor]) {
+			settings.negativeColor = PS.Formatter.colorRange(settings.negativeColor, -1);
+		}
+	
+		settings.valueColor = settings.negativeColor;
+	} else if (num === 0 && settings.zeroColor) {
+		if (PS.Formatter.colorRange[settings.zeroColor]) {
+			settings.zeroColor = PS.Formatter.colorRange(settings.zeroColor, -1);
+		}
+	
+		settings.valueColor = settings.zeroColor;
+	} else if (num > 0 && settings.positiveColor) {
+		if (PS.Formatter.colorRange[settings.positiveColor]) {
+			settings.positiveColor = PS.Formatter.colorRange(settings.positiveColor, -1);
+		}
+	
+		settings.valueColor = settings.positiveColor;
+	}
+	
+	settings.value =  _.template(settings.valueTemplate, settings);
+	
 	return (settings.unitsPosition === "left" ? " " + settings.units : "") +
-		numeral(num).format("0,0" + (settings.precision ? "." + _.string.repeat("0", settings.precision) : "")) +
+		settings.value +
 		(settings.unitsPosition === "right" ? " " + settings.units : "");
 };
 
@@ -364,8 +398,39 @@ PS.Formatter.fn.currency = function () {
 		settings.units = _.template(settings.unitsTemplate, settings);
 	}
 	
+	// format number
+	settings.value = numeral(Math.abs(num)).format("0,0" + (settings.precision ? "." + _.string.repeat("0", settings.precision) : ""));
+	
+	// apply negative value format
+	if (num < 0) {
+		settings.value = settings.negative.replace("n", settings.value);
+	}
+
+	// set valueColor
+	if (num < 0 && settings.negativeColor) {
+		if (PS.Formatter.colorRange[settings.negativeColor]) {
+			settings.negativeColor = PS.Formatter.colorRange(settings.negativeColor, -1);
+		}
+	
+		settings.valueColor = settings.negativeColor;
+	} else if (num === 0 && settings.zeroColor) {
+		if (PS.Formatter.colorRange[settings.zeroColor]) {
+			settings.zeroColor = PS.Formatter.colorRange(settings.zeroColor, -1);
+		}
+	
+		settings.valueColor = settings.zeroColor;
+	} else if (num > 0 && settings.positiveColor) {
+		if (PS.Formatter.colorRange[settings.positiveColor]) {
+			settings.positiveColor = PS.Formatter.colorRange(settings.positiveColor, -1);
+		}
+	
+		settings.valueColor = settings.positiveColor;
+	}
+	
+	settings.value =  _.template(settings.valueTemplate, settings);
+	
 	return (settings.unitsPosition === "left" ? " " + settings.units : "") +
-		numeral(num).format("0,0" + (settings.precision ? "." + _.string.repeat("0", settings.precision) : "")) +
+		settings.value +
 		(settings.unitsPosition === "right" ? " " + settings.units : "");
 };
 
@@ -892,6 +957,37 @@ PS.Formatter.fn.percent = function () {
 	
 	settings.units = "%";
 	settings.units = _.template(settings.unitsTemplate, settings);
-		
-	return numeral(num).format("0,0" + (settings.precision ? "." + _.string.repeat("0", settings.precision) : "")) + settings.units;
+
+	// format number
+	settings.value = numeral(Math.abs(num)).format("0,0" + (settings.precision ? "." + _.string.repeat("0", settings.precision) : ""));
+	
+	// apply negative value format
+	if (num < 0) {
+		settings.value = settings.negative.replace("n", settings.value);
+	}
+
+	// set valueColor
+	if (num < 0 && settings.negativeColor) {
+		if (PS.Formatter.colorRange[settings.negativeColor]) {
+			settings.negativeColor = PS.Formatter.colorRange(settings.negativeColor, -1);
+		}
+	
+		settings.valueColor = settings.negativeColor;
+	} else if (num === 0 && settings.zeroColor) {
+		if (PS.Formatter.colorRange[settings.zeroColor]) {
+			settings.zeroColor = PS.Formatter.colorRange(settings.zeroColor, -1);
+		}
+	
+		settings.valueColor = settings.zeroColor;
+	} else if (num > 0 && settings.positiveColor) {
+		if (PS.Formatter.colorRange[settings.positiveColor]) {
+			settings.positiveColor = PS.Formatter.colorRange(settings.positiveColor, -1);
+		}
+	
+		settings.valueColor = settings.positiveColor;
+	}
+	
+	settings.value =  _.template(settings.valueTemplate, settings);
+	
+	return settings.value + settings.units;
 };
