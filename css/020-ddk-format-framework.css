@@ -36,7 +36,7 @@
 .format-arrow.down:before {
 	content: '\01F2';
 }
-.format-arrow.neutral:before {
+.format-arrow.nochange:before {
 	content: '-';	
 }
 
@@ -88,7 +88,7 @@
 .plus-minus .format-arrow.down:before {
 	content: '\0207';
 }
-.plus-minus .format-arrow.neutral:before {
+.plus-minus .format-arrow.nochange:before {
 	content: '';
 }
 
@@ -98,7 +98,7 @@
 .plus-minus-circle .format-arrow.down:before {
 	content: '\01FC';
 }
-.plus-minus-circle .format-arrow.neutral:before {
+.plus-minus-circle .format-arrow.nochange:before {
 	content: '';
 }
 
@@ -108,7 +108,7 @@
 .plus-minus-square .format-arrow.down:before {
 	content: '\01FE';
 }
-.plus-minus-square .format-arrow.neutral:before {
+.plus-minus-square .format-arrow.nochange:before {
 	content: '';
 }
 
@@ -118,7 +118,7 @@
 .check-x .format-arrow.down:before {
 	content: '\0204';
 }
-.check-x .format-arrow.neutral:before {
+.check-x .format-arrow.nochange:before {
 	content: '';
 }
 

@@ -260,13 +260,13 @@ PS.Formatter.fn.defaults = {
 	unitsPosition: "right",
 	unitsAttr: "",
 	unitsClassName: "",
-	unitsTemplate: "<span class=\"format-units <%= unitsClassName %>\" <%= unitsAttr %>><%= units %></span>",
+	unitsTemplate: '<span class="format-units <%= unitsClassName %>" <%= unitsAttr %>><%= units %></span>',
 	arrowAttr: "",
 	arrowClassName: "",
-	arrowTemplate: "<span class=\"format-arrow <%= direction %> <%= arrowClassName %>\" <%= arrowAttr %>></span>",
+	arrowTemplate: '<span style="color: <%= colors[status] %>;" class="format-arrow <%= direction %> <%= arrowClassName %>" <%= arrowAttr %>></span>',
 	bulbAttr: "",
 	bulbClassName: "",
-	bulbTemplate: "<span class=\"format-bulb <%= bulbClassName %>\" <%= bulbAttr %>></span>",
+	bulbTemplate: '<span class="format-bulb <%= bulbClassName %>" <%= bulbAttr %>></span>',
 	orientation: 1,
 	direction: 0,
 	method: "format",
@@ -730,22 +730,45 @@ PS.Formatter.fn.arrow = function () {
 		),
 		num = +value,
 		settings = this.getSettings(),
+		// color option is "positive,negative,zero" or "up,down,nochange"
+		// arrow format defaults color to "green red gray"
 		colors = settings.color.split(",");
 	
+	// evaluate color keywords	
+	_.map(colors, function (color) {
+		if (PS.Formatter.colorRange[color]) {
+			return PS.Formatter.colorRange(color, 1);
+		}
+		
+		return color;
+	});
+	
 	settings.colors = {
-		up: "",
-		down: "",
+		favorable: "",
+		unfavorable: "",
 		neutral: ""
 	};
 	
 	if (colors.length === 1) {
-		settings.colors.up = settings.positiveColor || colors[0];
-		settings.colors.down = settings.negativeColor || colors[0];
+		settings.colors.favorable = settings.positiveColor || colors[0];
+		settings.colors.unfavorable = settings.negativeColor || colors[0];
 		settings.colors.neutral = settings.zeroColor || colors[0];
 	} else if (colors.length === 3) {
-		settings.colors.up = settings.positiveColor || colors[0];
-		settings.colors.down = settings.negativeColor || colors[1];
-		settings.colors.neutral = settings.zeroColor || colors[2];
+		// set colors based on orientation or positive/negative/zero colors
+		if (settings.orientation === 1) {
+			settings.colors.favorable = settings.positiveColor || colors[0];
+			settings.colors.unfavorable = settings.negativeColor || colors[1];
+			settings.colors.neutral = settings.zeroColor || colors[2];
+		} else if (settings.orientation === -1) {
+			settings.colors.favorable = settings.negativeColor || colors[0];
+			settings.colors.unfavorable = settings.positiveColor || colors[1];
+			settings.colors.neutral = settings.zeroColor || colors[2];
+		} else if (settings.orientation === 0) {
+			// for orientation '0', default all colors (fav/unfav/neutral) to the neutral color
+			settings.colors.favorable = settings.positiveColor || colors[2];
+			settings.colors.unfavorable = settings.negativeColor || colors[2];
+			settings.colors.neutral = settings.zeroColor || colors[2];
+		}
 	}
 	
 	if (!settings.direction) {
@@ -754,7 +777,17 @@ PS.Formatter.fn.arrow = function () {
 		} else if (num < 0) {
 			settings.direction = "down";
 		} else {
-			settings.direction = "neutral";		
+			settings.direction = "nochange";		
+		}
+	}
+	
+	if (!settings.status) {
+		if (num === 0) {
+			settings.status = "neutral";
+		} else if ((num > 0 && settings.orientation >= 0) || (num < 0 && settings.orientation === -1)) {
+			settings.status = "favorable";
+		} else if ((num > 0 && settings.orientation === -1) || (num < 0 && settings.orientation >= 0)) {
+			settings.status = "unfavorable";
 		}
 	}
 	
