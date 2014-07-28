@@ -443,6 +443,7 @@ button[data-action="showadvancedoptions"] {
 .format-units {
 	font-size: 0.75em;
 	margin-left: 2px;
+	margin-right: 2px;
 }
 
 button[data-action="closecolumndialog"] {
