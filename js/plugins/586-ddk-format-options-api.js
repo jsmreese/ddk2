@@ -9,7 +9,14 @@ PS.optionsAPI.formatFunction = {
 			"id": "arrow", 
 			"label": "Arrow", 
 			"description": "<p>Draws an arrow (or other up/down indicator).", 
-			"notes": "<p>Arrow color may be set via element classes using the text color classes. e.g. <code>text-green</code>. Databind arrow color by using a DDK Keyword Alias in the class name. e.g. <code>text-%{RESULT}%</code> or <code>text-dk%{RESULT}%</code>.<p>Arrow direction is calculated using the orientation option compared to the format value. <p>If the format value is a comma-separated list, a change calculation will be performed using the first and last values <code>(last - first)</code> and then compared to the orientation. <p>Databind arrow orientation using <code>data-format-orientation='%{ORIENTATION}%'</code>. <p>Set arrow direction directly via the direction option using <code>data-format-direction</code> to bypass orientation comparison. <p>Use element classes to change the displayed indicator: <code>arrow-xthin</code>, <code>arrow-thin</code>, <code>triangle</code>, <code>caret-thick</code>, <code>caret</code>, <code>chevron</code>, <code>plus-minus</code>, <code>plus-minus-circle</code>, <code>plus-minus-square</code>, <code>check-x</code>, and <code>thumb</code>." 
+			"notes": "<p>If the format value is a comma-separated list, a change calculation will be performed using the first and last values <code>(last - first)</code>.<p>Arrow direction may be set via <code>data-format-direction</code>, or is automatically determined by the value, with a positive value using an <code>up</code> arrow, a negative value using a <code>down</code> arrow, and a zero value using a <code>nochange</code> arrow (typically a dash).<p>Arrow color is determined based on the <code>data-format-color</code> option, which can be a single CSS color value or DDK Color Keyword (red, yellow, green, blue, gray, grey, neutral), or a comma-separated list of three CSS color values or DDK Color Keywords. Color list is in the order <code>favorable</code>, <code>unfavorable</code>, <code>neutral</code>, corresponding to the element's status. Element status may be set via <code>data-format-status</code>, or is automatically determined based on the value and the orientation. Colors may be overridden using the <code>data-format-positive-color</code>, <code>data-format-negative-color</code>, and <code>data-format-zero-color</code> options. Databind arrow color by using a DDK Keyword Alias in the <code>data-format-color</code> option, e.g. <code>data-format-color='%{RESULT}%'</code>.<p>Use element classes to change the displayed indicator: <code>arrow-xthin</code>, <code>arrow-thin</code>, <code>triangle</code>, <code>caret-thick</code>, <code>caret</code>, <code>chevron</code>, <code>plus-minus</code>, <code>plus-minus-circle</code>, <code>plus-minus-square</code>, <code>check-x</code>, and <code>thumb</code>."
+		}, 
+		
+		"auto": { 
+			"id": "auto", 
+			"label": "Auto", 
+			"description": "<p>Automatically formats a value based on the units.", 
+			"notes": "<p>Must be used in conjunction with format units, usually <code>data-format-units='%{UNITS}%'</code>.<p>Recognized units:<table><thead><tr><th>Units</th><th>Format</th></tr></thead><tbody><tr><td>milliseconds</td><td rowspan=8>time</td><td>seconds</td><td>minutes</td><td>hours</td><td>days</td><td>weeks</td><td>months</td><td>years</td></tr><tr><td>dollars</td><td rowspan=1>currency</td></tr><tr><td>percent</td><td rowspan=1>percent</td></tr><tr><td><em>no unit</em></td><td rowspan=1>number or text (based on value)</td></tr></tbody></table>"
 		}, 
 		
 		"bar": { 
@@ -51,7 +58,7 @@ PS.optionsAPI.formatFunction = {
 			"id": "currency", 
 			"label": "Currency", 
 			"description": "<p>Formats a numeric value as currency.", 
-			"notes": "<p>Use <code>data-format-precision</code> to set displayed decimal places. <p>Use <code>data-format-null-to-zero</code>, <code>data-format-null</code>, and <code>data-format-zero</code> to change the way <code>null</code> and <code>zero</code> data values are formatted. <p>Defualt <code>units</code> value is <code>dollars</code>. Use <code>data-format-units</code> to set a different <code>units</code> value." 
+			"notes": "<p>Use <code>data-format-precision</code> to set displayed decimal places. <p>Use <code>data-format-null-to-zero</code>, <code>data-format-null</code>, and <code>data-format-zero</code> to change the way <code>null</code> and <code>zero</code> data values are formatted. <p>Default <code>units</code> value is <code>dollars</code>. Use <code>data-format-units</code> to set a different <code>units</code> value.<p>Colors may be set using the <code>data-format-value-color</code>, <code>data-format-positive-color</code>, <code>data-format-negative-color</code>, and <code>data-format-zero-color</code> options." 
 		}, 
 
 		"date": { 
@@ -72,14 +79,14 @@ PS.optionsAPI.formatFunction = {
 			"id": "number", 
 			"label": "Number", 
 			"description": "<p>Formats a numeric value.", 
-			"notes": "<p>Use <code>data-format-precision</code> to set displayed decimal places. <p>Use <code>data-format-null-to-zero</code>, <code>data-format-null</code>, and <code>data-format-zero</code> to change the way <code>null</code> and <code>zero</code> data values are formatted." 
+			"notes": "<p>Use <code>data-format-precision</code> to set displayed decimal places. <p>Use <code>data-format-null-to-zero</code>, <code>data-format-null</code>, and <code>data-format-zero</code> to change the way <code>null</code> and <code>zero</code> data values are formatted.<p>Colors may be set using the <code>data-format-value-color</code>, <code>data-format-positive-color</code>, <code>data-format-negative-color</code>, and <code>data-format-zero-color</code> options." 
 		},
 		
 		"percent": { 
 			"id": "percent", 
 			"label": "Percent", 
 			"description": "<p>Formats a numeric value as a percent.", 
-			"notes": "<p>If format value is a single number, will be directly formatted as a percent. <p>If format value is a comma-separated list of multiple numbers, a percent change calculation will be made on the first and last values <code>(last - first) / first * 100</code> and the result formatted as a percent. <p>Use <code>data-format-precision</code> to set displayed decimal places. <p>Automatically updates <code>units</code> format option to <code>percent</code>. <p>Use <code>data-format-null-to-zero</code>, <code>data-format-null</code>, and <code>data-format-zero</code> to change the way <code>null</code> and <code>zero</code> data values are formatted." 
+			"notes": "<p>If format value is a single number, will be directly formatted as a percent. <p>If format value is a comma-separated list of multiple numbers, a percent change calculation will be made on the first and last values <code>(last - first) / first * 100</code> and the result formatted as a percent. <p>Use <code>data-format-precision</code> to set displayed decimal places. <p>Automatically updates <code>units</code> format option to <code>percent</code>. <p>Use <code>data-format-null-to-zero</code>, <code>data-format-null</code>, and <code>data-format-zero</code> to change the way <code>null</code> and <code>zero</code> data values are formatted.<p>Colors may be set using the <code>data-format-value-color</code>, <code>data-format-positive-color</code>, <code>data-format-negative-color</code>, and <code>data-format-zero-color</code> options." 
 		},
 		
 		"text": { 
@@ -133,6 +140,15 @@ PS.optionsAPI.format = {
 			"description": "<p>Number or text string to be displayed in place of a <code>0</code> data value. <p>As a configuration attribute, use <code>data-format-zero</code>.",
 			"notes": "<p>If a number, value will be formatted as a number using precision, units, etc. If text, value will be rendered as text without number formatting.", 
 			"defaultValue": "-"
+		},
+		
+		"negative": { 
+			"id": "negative", 
+			"label": "Negative", 
+			"description": "<p>Format template for negative numbers. <p>As a configuration attribute, use <code>data-format-negative</code>.",
+			"notes": "<p>The character <code>n</code> will be replaced with the formatted output value.", 
+			"defaultValue": "-n",
+			"values": ["-n", "(n)", "n"]
 		}, 
 	
 		"units": { 
@@ -151,7 +167,26 @@ PS.optionsAPI.format = {
 			"defaultValue": "right", 
 			"values": ["right", "left"] 
 		}, 
+
+		"valueClassName": { 
+			"id": "value_class_name", 
+			"label": "Value Classes", 
+			"description": "<p>Classes added to the Value element for the number, currency, and percent format functions. <p>As a configuration attribute, use <code>data-format-value-class-name</code>."
+		}, 
 	
+		"valueAttr": { 
+			"id": "value_attr", 
+			"label": "Value Attributes", 
+			"description": "<p>Attributes added to the Value element for the number, currency, and percent format functions. <p>As a configuration attribute, use <code>data-format-value-attr</code>."
+		}, 
+	
+		"valueTemplate": { 
+			"id": "value_template", 
+			"label": "Value Template", 
+			"description": "<p>Micro-template used to render the value element for the number, currency, and percent format functions. <p>As a configuration attribute, use <code>data-format-value-template</code>.",
+			"defaultValue": "<span <%= (valueColor ? \'style=\"color: \' + valueColor + \';\"\' : \'\') %> class=\"format-value <%= valueClassName %>\" <%= valueAttr %>><%= value %></span>" 
+		}, 
+		
 		"unitsClassName": { 
 			"id": "units_class_name", 
 			"label": "Units Classes", 
@@ -188,7 +223,7 @@ PS.optionsAPI.format = {
 			"label": "Arrow Template", 
 			"description": "<p>Micro-template used to render the arrow element. <p>As a configuration attribute, use <code>data-format-arrow-template</code>.",
 			"notes": "<p>Renders an up or a down arrow, based on the direction, or based on the value and orientation.", 
-			"defaultValue": "<span class=\"format-arrow <%= direction %> <%= arrowClassName %>\" <%= arrowAttr %>></span>" 
+			"defaultValue": "<span style=\"color: <%= colors[status] %>;\" class=\"format-arrow <%= direction %> <%= arrowClassName %>\" <%= arrowAttr %>></span>" 
 		}, 
 	
 		"bulbClassName": { 
@@ -213,19 +248,56 @@ PS.optionsAPI.format = {
 		"orientation": { 
 			"id": "orientation", 
 			"label": "Orientation", 
-			"description": "<p>Used by the arrow format to determine arrow direction based on value. <p>As a configuration attribute, use <code>data-format-orientation</code>.",
+			"description": "<p>Used by the arrow format to determine arrow status based on value. <p>As a configuration attribute, use <code>data-format-orientation</code>.<p>When <code>1</code>, an increase in value is favorable.<p>When <code>-1</code>, an increase in value is unfavorable.",
 			"notes": "<p>Data-bind orientation based on a metric <code>ORIENTATION</code> field, e.g. <code>data-format-orientation='%{ORIENTATION}%'</code>.", 
-			"defaultValue": 1 
+			"defaultValue": "1",
+			"values": ["1", "0", "-1"]
 		}, 
 	
 		"direction": { 
 			"id": "direction", 
 			"label": "Direction", 
-			"description": "<p>Arrow direction output by the arrow format. Overrides direction determination via orientation and value. <p>As a configuration attribute, use <code>data-format-direction</code>.",
-			"notes": "<p>The arrow format automatically determines arrow direction via the orientation and value. This option will override the automatic direction. Data-bind direction based on a metric <code>DIRECTION</code> field, e.g. <code>data-format-direction='%{DIRECTION}%'</code>.", 
+			"description": "<p>Arrow direction output by the arrow format. Overrides direction determination from value. <p>As a configuration attribute, use <code>data-format-direction</code>.",
+			"notes": "<p>The arrow format automatically determines arrow direction from the value. This option will override the automatic direction. Data-bind direction based on a metric <code>DIRECTION</code> field, e.g. <code>data-format-direction='%{DIRECTION}%'</code>.", 
 			"values": ["up", "down"] 
 		}, 
-	
+
+		"status": { 
+			"id": "status", 
+			"label": "Status", 
+			"description": "<p>Arrow status output by the arrow format. Overrides status determination from value and orientation. <p>As a configuration attribute, use <code>data-format-status</code>.",
+			"notes": "<p>The arrow format automatically determines arrow status from the value. This option will override the automatic status.", 
+			"values": ["favorable", "neutral", "unfavorable"] 
+		},
+		
+		"color": { 
+			"id": "color", 
+			"label": "Color", 
+			"description": "<p>Used by the arrow format along with the value and orientation to determine the arrow color. <p>As a configuration attribute, use <code>data-format-color</code>.",
+			"notes": "<p>Can be a single color, or a comma-separated list of three colors. Colors must be valid CSS color values or DDK Color Keywords. List colors in this order: <code>favorable</code>,<code>unfavorable</code>,<code>neutral</code>. If a single color value, that color will be used for all three statuses. Will be overridden by <code>data-format-positive-color</code>, <code>data-format-negative-color</code>, and <code>data-format-zero-color</code>."
+		},
+		
+		"positiveColor": { 
+			"id": "positive_color", 
+			"label": "Positive Color", 
+			"description": "<p>Used by the arrow, number, currency, and percent formats to determine the value or arrow color for positive values. <p>As a configuration attribute, use <code>data-format-positive-color</code>.",
+			"notes": "<p>Can be a valid CSS color value or a DDK Color Keyword. Will override <code>data-format-color</code> and <code>data-format-value-color</code> options."
+		},
+		
+		"negativeColor": { 
+			"id": "negative_color", 
+			"label": "Negative Color", 
+			"description": "<p>Used by the arrow, number, currency, and percent formats to determine the value or arrow color for negative values. <p>As a configuration attribute, use <code>data-format-negative-color</code>.",
+			"notes": "<p>Can be a valid CSS color value or a DDK Color Keyword. Will override <code>data-format-color</code> and <code>data-format-value-color</code> options."
+		},
+		
+		"zeroColor": { 
+			"id": "zero_color", 
+			"label": "Zero Color", 
+			"description": "<p>Used by the arrow, number, currency, and percent formats to determine the value or arrow color for zero and null values. <p>As a configuration attribute, use <code>data-format-zero-color</code>.",
+			"notes": "<p>Can be a valid CSS color value or a DDK Color Keyword. Will override <code>data-format-color</code> and <code>data-format-value-color</code> options."
+		},
+		
 		"template": { 
 			"id": "template", 
 			"label": "Template", 
@@ -258,8 +330,8 @@ PS.optionsAPI.format = {
 		"valueColor": { 
 			"id": "value_color", 
 			"label": "Value Color",
-			"description": "<p>Used by the bar, stackedbar, and stackedbar100 formats to determine the bar range colors for each value.. <p>As a configuration attribute, use <code>data-format-value-color</code>.",
-			"notes": "<p>Can contain one or more comma-separated color values or a color keyword. <p>If using color values, the color list cannot be longer than the values list. <p>A sample comma-separated list of color values: <code>data-format-value-color='#aaa,#ccc,#eee'</code>. <p>Valid color keywords are <code>blue</code>, <code>gray</code>, <code>green</code>, <code>red</code>, <code>yellow</code>, and <code>neutral</code>, and are used like this: <code>data-format-value-color='blue'</code>. <p>Color keywords will be automatically expanded into a gradient of color values to match the values list, and can be used to data-bind bar colors based on a metric <code>RESULT</code> field, e.g. <code>data-format-value-color='%{RESULT}%'</code>. <p>Neutral and gray give the same gray-scale bar colors. <p>This option will be ignored if the <code>rangeColors</code> option has a value.",
+			"description": "<p>Used by the bar, stackedbar, and stackedbar100 formats to determine the bar range colors for each value. <p>Used by the number, currency, and percent format functions to determine value element text color. <p>As a configuration attribute, use <code>data-format-value-color</code>.",
+			"notes": "<p>Can contain one or more comma-separated CSS color values or a DDK Color Keyword. <p>If using color values, the color list cannot be longer than the values list. <p>A sample comma-separated list of color values: <code>data-format-value-color='#aaa,#ccc,#eee'</code>. <p>Valid color keywords are <code>blue</code>, <code>gray</code>, <code>green</code>, <code>red</code>, <code>yellow</code>, and <code>neutral</code>, and are used like this: <code>data-format-value-color='blue'</code>. <p>Color keywords will be automatically expanded into a gradient of color values to match the values list, and can be used to data-bind bar colors based on a metric <code>RESULT</code> field, e.g. <code>data-format-value-color='%{RESULT}%'</code>. <p>Neutral and gray give the same gray-scale bar colors. <p>This option will be ignored if the <code>rangeColors</code> option has a value.",
 			"defaultValue": "neutral"
 		},
 		

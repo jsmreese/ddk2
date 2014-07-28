@@ -180,6 +180,10 @@ PS.Formatter.colorRange = function (color, steps) {
 		l;
 	
 	switch (steps) {
+		case -1: 
+			// for a single step, output the 1/3 point for a darker color
+			return [hsl2hex([settings.h, settings.s, settings.l.min + range * 0.33333])];
+
 		case 1:
 			// for a single step, output the 2/3 point
 			return [hsl2hex([settings.h, settings.s, settings.l.min + range * 0.66667])];
@@ -217,11 +221,18 @@ PS.Formatter.colorRange = function (color, steps) {
 	}
 };
 
+/*
 PS.Formatter.colorRange.red = { h: 0, s: 1, l: { min: 0.35, max: 0.9 } };
 PS.Formatter.colorRange.yellow = { h: 36 / 360, s: 1, l: { min: 0.5, max: 0.9 } };
 PS.Formatter.colorRange.green = { h: 100 / 360, s: 1, l: { min: 0.35, max: 0.9 } };
 PS.Formatter.colorRange.blue = { h: 212 / 360, s: 1, l: { min: 0.35, max: 0.9 } };
 PS.Formatter.colorRange.gray = { h: 0, s: 0, l: { min: 0.35, max: 0.9 } };
+*/
+PS.Formatter.colorRange.red = { h: 0, s: 1, l: { min: 0.2, max: 0.85 } };
+PS.Formatter.colorRange.yellow = { h: 36 / 360, s: 1, l: { min: 0.4, max: 0.9 } };
+PS.Formatter.colorRange.green = { h: 100 / 360, s: 1, l: { min: 0.2, max: 0.85 } };
+PS.Formatter.colorRange.blue = { h: 212 / 360, s: 1, l: { min: 0.2, max: 0.85 } };
+PS.Formatter.colorRange.gray = { h: 0, s: 0, l: { min: 0.2, max: 0.9 } };
 PS.Formatter.colorRange.neutral = PS.Formatter.colorRange.gray;
 PS.Formatter.colorRange.grey = PS.Formatter.colorRange.gray;
 
@@ -260,20 +271,23 @@ PS.Formatter.fn.defaults = {
 	unitsPosition: "right",
 	unitsAttr: "",
 	unitsClassName: "",
-	unitsTemplate: "<span class=\"format-units <%= unitsClassName %>\" <%= unitsAttr %>><%= units %></span>",
+	unitsTemplate: '<span class="format-units <%= unitsClassName %>" <%= unitsAttr %>><%= units %></span>',
 	arrowAttr: "",
 	arrowClassName: "",
-	arrowTemplate: "<span class=\"format-arrow <%= direction %> <%= arrowClassName %>\" <%= arrowAttr %>></span>",
+	arrowTemplate: '<span style="color: <%= colors[status] %>;" class="format-arrow <%= direction %> <%= arrowClassName %>" <%= arrowAttr %>></span>',
 	bulbAttr: "",
 	bulbClassName: "",
-	bulbTemplate: "<span class=\"format-bulb <%= bulbClassName %>\" <%= bulbAttr %>></span>",
+	bulbTemplate: '<span class="format-bulb <%= bulbClassName %>" <%= bulbAttr %>></span>',
 	orientation: 1,
 	direction: 0,
 	method: "format",
-	valueColor: "neutral",
+	valueColor: "",
 	positiveColor: "",
 	negativeColor: "",
-	zeroColor: ""
+	zeroColor: "",
+	valueTemplate: '<span <%= (valueColor ? \'style="color: \' + valueColor + \';"\' : \'\') %> class="format-value <%= valueClassName %>" <%= valueAttr %>><%= value %></span>',
+	valueClassName: "",
+	valueAttr: ""
 };
 
 // default formatter functions
@@ -283,6 +297,37 @@ PS.Formatter.fn.text = function () {
 
 PS.Formatter.fn.html = function () {
 	return this.formatValue;
+};
+
+PS.Formatter.fn.auto = function () {
+	var num = +this.formatValue,
+		settings = this.getSettings(),
+		time = "milliseconds seconds minutes hours days weeks months years".split(" "),
+		currency = "dollars".split(" "),
+		percent = "percent".split(" ");
+	
+	if (_.contains(time, settings.units)) {
+		this.format = "time";
+		return PS.Formatter.fn.time.apply(this);
+	}
+	
+	if (_.contains(currency, settings.units)) {
+		this.format = "currency";
+		return PS.Formatter.fn.currency.apply(this);
+	}
+	
+	if (_.contains(percent, settings.units)) {
+		this.format = "percent";
+		return PS.Formatter.fn.percent.apply(this);
+	}
+	
+	if (!_.isNaN(num)) {
+		this.format = "number";
+		return PS.Formatter.fn.number.apply(this);
+	}
+	
+	this.format = "text";
+	return PS.Formatter.fn.text.apply(this);
 };
 
 PS.Formatter.fn.number = function () {
@@ -297,7 +342,19 @@ PS.Formatter.fn.number = function () {
 	if (!isNum || (!settings.nullToZero && this.formatValue === "")) {
 		if (!_.isNumber(settings["null"])) {
 			// if settings["null"] is not a number, return the text directly without further formatting
-			return settings["null"];
+			if (settings.zeroColor) {
+				if (PS.Formatter.colorRange[settings.zeroColor]) {
+					settings.zeroColor = PS.Formatter.colorRange(settings.zeroColor, -1);
+				}
+			
+				settings.valueColor = settings.zeroColor;
+			}
+			
+			settings.value = settings["null"];
+			
+			settings.value =  _.template(settings.valueTemplate, settings);
+			
+			return settings.value;
 		}
 		
 		// if settings["null"] is a number, format it with units and proper number formatting
@@ -305,7 +362,19 @@ PS.Formatter.fn.number = function () {
 	} else if (num === 0) {
 		if (!_.isNumber(settings.zero)) {
 			// if settings.zero is not a number, return the text directly without further formatting
-			return settings.zero;
+			if (settings.zeroColor) {
+				if (PS.Formatter.colorRange[settings.zeroColor]) {
+					settings.zeroColor = PS.Formatter.colorRange(settings.zeroColor, -1);
+				}
+			
+				settings.valueColor = settings.zeroColor;
+			}
+			
+			settings.value = settings.zero;
+			
+			settings.value =  _.template(settings.valueTemplate, settings);
+			
+			return settings.value;
 		}
 		
 		// if settings.zero is a number, format it with units and proper number formatting
@@ -315,9 +384,40 @@ PS.Formatter.fn.number = function () {
 	if (settings.units) {
 		settings.units = _.template(settings.unitsTemplate, settings);
 	}
-		
+	
+	// format number
+	settings.value = numeral(Math.abs(num)).format("0,0" + (settings.precision ? "." + _.string.repeat("0", settings.precision) : ""));
+	
+	// apply negative value format
+	if (num < 0) {
+		settings.value = settings.negative.replace("n", settings.value);
+	}
+	
+	// set valueColor
+	if (num < 0 && settings.negativeColor) {
+		if (PS.Formatter.colorRange[settings.negativeColor]) {
+			settings.negativeColor = PS.Formatter.colorRange(settings.negativeColor, -1);
+		}
+	
+		settings.valueColor = settings.negativeColor;
+	} else if (num === 0 && settings.zeroColor) {
+		if (PS.Formatter.colorRange[settings.zeroColor]) {
+			settings.zeroColor = PS.Formatter.colorRange(settings.zeroColor, -1);
+		}
+	
+		settings.valueColor = settings.zeroColor;
+	} else if (num > 0 && settings.positiveColor) {
+		if (PS.Formatter.colorRange[settings.positiveColor]) {
+			settings.positiveColor = PS.Formatter.colorRange(settings.positiveColor, -1);
+		}
+	
+		settings.valueColor = settings.positiveColor;
+	}
+	
+	settings.value =  _.template(settings.valueTemplate, settings);
+	
 	return (settings.unitsPosition === "left" ? " " + settings.units : "") +
-		numeral(num).format("0,0" + (settings.precision ? "." + _.string.repeat("0", settings.precision) : "")) +
+		settings.value +
 		(settings.unitsPosition === "right" ? " " + settings.units : "");
 };
 
@@ -333,7 +433,19 @@ PS.Formatter.fn.currency = function () {
 	if (!isNum || (!settings.nullToZero && this.formatValue === "")) {
 		if (!_.isNumber(settings["null"])) {
 			// if settings["null"] is not a number, return the text directly without further formatting
-			return settings["null"];
+			if (settings.zeroColor) {
+				if (PS.Formatter.colorRange[settings.zeroColor]) {
+					settings.zeroColor = PS.Formatter.colorRange(settings.zeroColor, -1);
+				}
+			
+				settings.valueColor = settings.zeroColor;
+			}
+			
+			settings.value = settings["null"];
+			
+			settings.value =  _.template(settings.valueTemplate, settings);
+			
+			return settings.value;
 		}
 		
 		// if settings["null"] is a number, format it with units and proper number formatting
@@ -341,7 +453,19 @@ PS.Formatter.fn.currency = function () {
 	} else if (num === 0) {
 		if (!_.isNumber(settings.zero)) {
 			// if settings.zero is not a number, return the text directly without further formatting
-			return settings.zero;
+			if (settings.zeroColor) {
+				if (PS.Formatter.colorRange[settings.zeroColor]) {
+					settings.zeroColor = PS.Formatter.colorRange(settings.zeroColor, -1);
+				}
+			
+				settings.valueColor = settings.zeroColor;
+			}
+			
+			settings.value = settings.zero;
+			
+			settings.value =  _.template(settings.valueTemplate, settings);
+			
+			return settings.value;
 		}
 		
 		// if settings.zero is a number, format it with units and proper number formatting
@@ -353,8 +477,39 @@ PS.Formatter.fn.currency = function () {
 		settings.units = _.template(settings.unitsTemplate, settings);
 	}
 	
+	// format number
+	settings.value = numeral(Math.abs(num)).format("0,0" + (settings.precision ? "." + _.string.repeat("0", settings.precision) : ""));
+	
+	// apply negative value format
+	if (num < 0) {
+		settings.value = settings.negative.replace("n", settings.value);
+	}
+
+	// set valueColor
+	if (num < 0 && settings.negativeColor) {
+		if (PS.Formatter.colorRange[settings.negativeColor]) {
+			settings.negativeColor = PS.Formatter.colorRange(settings.negativeColor, -1);
+		}
+	
+		settings.valueColor = settings.negativeColor;
+	} else if (num === 0 && settings.zeroColor) {
+		if (PS.Formatter.colorRange[settings.zeroColor]) {
+			settings.zeroColor = PS.Formatter.colorRange(settings.zeroColor, -1);
+		}
+	
+		settings.valueColor = settings.zeroColor;
+	} else if (num > 0 && settings.positiveColor) {
+		if (PS.Formatter.colorRange[settings.positiveColor]) {
+			settings.positiveColor = PS.Formatter.colorRange(settings.positiveColor, -1);
+		}
+	
+		settings.valueColor = settings.positiveColor;
+	}
+	
+	settings.value =  _.template(settings.valueTemplate, settings);
+	
 	return (settings.unitsPosition === "left" ? " " + settings.units : "") +
-		numeral(num).format("0,0" + (settings.precision ? "." + _.string.repeat("0", settings.precision) : "")) +
+		settings.value +
 		(settings.unitsPosition === "right" ? " " + settings.units : "");
 };
 
@@ -730,31 +885,62 @@ PS.Formatter.fn.arrow = function () {
 		),
 		num = +value,
 		settings = this.getSettings(),
+		// color option is "positive,negative,zero" or "up,down,nochange"
+		// arrow format defaults color to "green red gray"
 		colors = settings.color.split(",");
 	
 	settings.colors = {
-		up: "",
-		down: "",
+		favorable: "",
+		unfavorable: "",
 		neutral: ""
 	};
 	
 	if (colors.length === 1) {
-		settings.colors.up = settings.positiveColor || colors[0];
-		settings.colors.down = settings.negativeColor || colors[0];
+		settings.colors.favorable = settings.positiveColor || colors[0];
+		settings.colors.unfavorable = settings.negativeColor || colors[0];
 		settings.colors.neutral = settings.zeroColor || colors[0];
 	} else if (colors.length === 3) {
-		settings.colors.up = settings.positiveColor || colors[0];
-		settings.colors.down = settings.negativeColor || colors[1];
-		settings.colors.neutral = settings.zeroColor || colors[2];
+		// set colors based on orientation or positive/negative/zero colors
+		if (settings.orientation === 1) {
+			settings.colors.favorable = settings.positiveColor || colors[0];
+			settings.colors.unfavorable = settings.negativeColor || colors[1];
+			settings.colors.neutral = settings.zeroColor || colors[2];
+		} else if (settings.orientation === -1) {
+			settings.colors.favorable = settings.negativeColor || colors[0];
+			settings.colors.unfavorable = settings.positiveColor || colors[1];
+			settings.colors.neutral = settings.zeroColor || colors[2];
+		} else if (settings.orientation === 0) {
+			// for orientation '0', default all colors (fav/unfav/neutral) to the neutral color
+			settings.colors.favorable = settings.positiveColor || colors[2];
+			settings.colors.unfavorable = settings.negativeColor || colors[2];
+			settings.colors.neutral = settings.zeroColor || colors[2];
+		}
 	}
-	
+
+	// evaluate color keywords	
+	_.each("favorable unfavorable neutral".split(" "), function (status) {
+		if (PS.Formatter.colorRange[settings.colors[status]]) {
+			settings.colors[status] = PS.Formatter.colorRange(settings.colors[status], -1);
+		}
+	});
+		
 	if (!settings.direction) {
 		if (num > 0) {
 			settings.direction = "up";
 		} else if (num < 0) {
 			settings.direction = "down";
 		} else {
-			settings.direction = "neutral";		
+			settings.direction = "nochange";		
+		}
+	}
+	
+	if (!settings.status) {
+		if (num === 0) {
+			settings.status = "neutral";
+		} else if ((num > 0 && settings.orientation >= 0) || (num < 0 && settings.orientation === -1)) {
+			settings.status = "favorable";
+		} else if ((num > 0 && settings.orientation === -1) || (num < 0 && settings.orientation >= 0)) {
+			settings.status = "unfavorable";
 		}
 	}
 	
@@ -770,7 +956,7 @@ PS.Formatter.fn.bulb = function () {
 PS.Formatter.calcs = {};
 
 PS.Formatter.calcs.percentChange = function (input) {
-	// performs calculation of (last - first) / first
+	// performs calculation of (last - first) / abs(first)
 	// given a comma-separated list of inputs
 	var values = (input ? input.split(",") : []),
 		firstValue = values[0],
@@ -795,7 +981,7 @@ PS.Formatter.calcs.percentChange = function (input) {
 		return 100;
 	}
 
-	return (lastNum - firstNum) / firstNum * 100;
+	return (lastNum - firstNum) / Math.abs(firstNum) * 100;
 };
 
 PS.Formatter.calcs.change = function (input) {
@@ -833,7 +1019,19 @@ PS.Formatter.fn.percent = function () {
 	if (!isNum || (!settings.nullToZero && value === "")) {
 		if (!_.isNumber(settings["null"])) {
 			// if settings["null"] is not a number, return the text directly without further formatting
-			return settings["null"];
+			if (settings.zeroColor) {
+				if (PS.Formatter.colorRange[settings.zeroColor]) {
+					settings.zeroColor = PS.Formatter.colorRange(settings.zeroColor, -1);
+				}
+			
+				settings.valueColor = settings.zeroColor;
+			}
+			
+			settings.value = settings["null"];
+			
+			settings.value =  _.template(settings.valueTemplate, settings);
+			
+			return settings.value;
 		}
 		
 		// if settings["null"] is a number, format it with units and proper number formatting
@@ -841,7 +1039,19 @@ PS.Formatter.fn.percent = function () {
 	} else if (num === 0) {
 		if (!_.isNumber(settings.zero)) {
 			// if settings.zero is not a number, return the text directly without further formatting
-			return settings.zero;
+			if (settings.zeroColor) {
+				if (PS.Formatter.colorRange[settings.zeroColor]) {
+					settings.zeroColor = PS.Formatter.colorRange(settings.zeroColor, -1);
+				}
+			
+				settings.valueColor = settings.zeroColor;
+			}
+			
+			settings.value = settings.zero;
+			
+			settings.value =  _.template(settings.valueTemplate, settings);
+			
+			return settings.value;
 		}
 		
 		// if settings.zero is a number, format it with units and proper number formatting
@@ -850,6 +1060,37 @@ PS.Formatter.fn.percent = function () {
 	
 	settings.units = "%";
 	settings.units = _.template(settings.unitsTemplate, settings);
-		
-	return numeral(num).format("0,0" + (settings.precision ? "." + _.string.repeat("0", settings.precision) : "")) + settings.units;
+
+	// format number
+	settings.value = numeral(Math.abs(num)).format("0,0" + (settings.precision ? "." + _.string.repeat("0", settings.precision) : ""));
+	
+	// apply negative value format
+	if (num < 0) {
+		settings.value = settings.negative.replace("n", settings.value);
+	}
+
+	// set valueColor
+	if (num < 0 && settings.negativeColor) {
+		if (PS.Formatter.colorRange[settings.negativeColor]) {
+			settings.negativeColor = PS.Formatter.colorRange(settings.negativeColor, -1);
+		}
+	
+		settings.valueColor = settings.negativeColor;
+	} else if (num === 0 && settings.zeroColor) {
+		if (PS.Formatter.colorRange[settings.zeroColor]) {
+			settings.zeroColor = PS.Formatter.colorRange(settings.zeroColor, -1);
+		}
+	
+		settings.valueColor = settings.zeroColor;
+	} else if (num > 0 && settings.positiveColor) {
+		if (PS.Formatter.colorRange[settings.positiveColor]) {
+			settings.positiveColor = PS.Formatter.colorRange(settings.positiveColor, -1);
+		}
+	
+		settings.valueColor = settings.positiveColor;
+	}
+	
+	settings.value =  _.template(settings.valueTemplate, settings);
+	
+	return settings.value + settings.units;
 };

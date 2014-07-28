@@ -105,27 +105,31 @@ module.exports = function(grunt) {
 			},
 			core: {
 				files: [
-					standard_files("core"),
-					legacy_files("core")
+					standard_files("core")
 				]
 			},
 			core_responsive: {
 				files: [
-					standard_responsive_files("core"),
-					legacy_responsive_files("core")
+					standard_responsive_files("core")
 				]
 			},
 			plugins: {
 				files: [
-					standard_files("plugins"),
-					legacy_files("plugins")
+					standard_files("plugins")
 				]
 			},
 			plugins_responsive: {
 				files: [
-					standard_responsive_files("plugins"),
-					legacy_responsive_files("plugins")
+					standard_responsive_files("plugins")
 				]
+			},
+			legacy: {
+				files: [
+					legacy_files("core"),
+					legacy_files("plugins"),
+					legacy_responsive_files("core"),
+					legacy_responsive_files("plugins")
+				]			
 			},
 			server: {
 				options: {
@@ -230,8 +234,11 @@ module.exports = function(grunt) {
 	// server task
 	grunt.registerTask("server", ["clean:server", "concat:server", "uglify:server"]);
 
-	// server task
-	grunt.registerTask("resp", ["clean:client", "concat:core_responsive", "uglify:client"]);
+	// resp task
+	grunt.registerTask("rcore", ["clean:client", "concat:core_responsive", "uglify:client"]);
+
+	// respp task
+	grunt.registerTask("rplugins", ["clean:client", "concat:plugins_responsive", "uglify:client"]);
 	
 	// client tasks
 	_.each("core plugins".split(" "), function (value) {
