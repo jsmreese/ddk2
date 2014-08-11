@@ -1522,8 +1522,8 @@ DDK.template.render = {
 				"dateyear": function(options){
 					return "<div id=\"" + (options.elemId || "") + "\" data-nav=\"dateyear\" placeholder=\"" + options.elemLabel + "\" class=\"nav-element " + options.elemClassName + "\" " + options.elemAttr + addDataNav(options.elemFormat, options.elemConfig) + "></div>";
 				},
-				"dateany": function(options){
-					return "<div id=\"" + (options.elemId || "") + "\" data-nav=\"dateany\" placeholder=\"" + options.elemLabel + "\" class=\"nav-element " + options.elemClassName + "\" " + options.elemAttr + addDataNav(options.elemFormat, options.elemConfig) + "></div>";
+				"datecustom": function(options){
+					return "<div id=\"" + (options.elemId || "") + "\" data-nav=\"datecustom\" placeholder=\"" + options.elemLabel + "\" class=\"nav-element " + options.elemClassName + "\" " + options.elemAttr + addDataNav(options.elemFormat, options.elemConfig) + "></div>";
 				}
 			}, "label");
 		

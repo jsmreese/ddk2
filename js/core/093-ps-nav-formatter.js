@@ -139,7 +139,7 @@ PS.NavFormatter.fn.date = {};
 PS.NavFormatter.fn.date.defaults = {
 	dateFormat: "",	//defualt format depends on date type, set on initDate function
 	altFormat: "",	//defualt format depends on date type, set on initDate function
-	dateTypeHidden: false,	//hides the date type
+	hideDateType: false,	//hides the date type
 	dateTypeDisabled: false,	//disables the date type
 	typeDefault: "",		//default value of the date type
 	dateStart: "",		//default value of the date start field
@@ -190,7 +190,22 @@ PS.NavFormatter.fn.date.defaults = {
 	}
 };
 PS.NavFormatter.fn.functions = {
+	getColumnIndex: function(columns, field, isSuffix){
+		var column;
+		if(field){
+			column = _.find(columns, function(item, index){
+				if(isSuffix){
+					return item.metricAttr.toLowerCase() === field.toLowerCase();
+				}
+				else{
+					return item.name.toLowerCase() === field.toLowerCase();
+				}
+			});
+			return (column && column.index) || -1;
+		}
+	},
 	ajaxSetup: function (settings) {
+		var navFormatter = this;
 		return {
 			url: "amengine.aspx?config.mn=DDK_Data_Request",
 			type: "POST",
@@ -226,10 +241,10 @@ PS.NavFormatter.fn.functions = {
 						}
 					};
 				//if value and label field is specified, use it
-				valueIndex = getColumnIndex(valueField) || getColumnIndex("name", true);
-				labelIndex = getColumnIndex(labelField) || getColumnIndex("label", true);
-				groupIndex = getColumnIndex(groupField);
-				iconIndex = getColumnIndex(iconField);
+				valueIndex = navFormatter.getColumnIndex(dataset.columns, valueField) || navFormatter.getColumnIndex(dataset.columns, "name", true);
+				labelIndex = navFormatter.getColumnIndex(dataset.columns, labelField) || navFormatter.getColumnIndex(dataset.columns, "label", true);
+				groupIndex = navFormatter.getColumnIndex(dataset.columns, groupField);
+				iconIndex = navFormatter.getColumnIndex(dataset.columns, iconField);
 				if (records && records.length) {
 					_.each(records, function (record) {
 						if (groupIndex > -1 && optionGroup !== record[groupIndex]) {
@@ -256,7 +271,7 @@ PS.NavFormatter.fn.functions = {
 		};
 	},
 	initSelection: function (settings, element, callback) {
-		var dataToPass = {}, ids, selectedData = [], labelArr, valArr;
+		var dataToPass = {}, ids, selectedData = [], labelArr, valArr, navFormatter = this;
 		//if label is specified, display label and skip server retrieval
 		if(settings.label){
 			if(settings.multiple && settings.label.indexOf(",") > -1){
@@ -286,8 +301,12 @@ PS.NavFormatter.fn.functions = {
 						var dataset = data && data.datasets && data.datasets[0],
 							records = dataset && dataset.rows,
 							results = [],
-							valueWrapString = settings.valueWrapString || "";
+							valueWrapString = settings.valueWrapString || "",
+							valueIndex, labelIndex;
 						if(records && records.length){
+							//if value and label field is specified, use it
+							valueIndex = navFormatter.getColumnIndex(dataset.columns, settings.valueField) || navFormatter.getColumnIndex(dataset.columns, "name", true);
+							labelIndex = navFormatter.getColumnIndex(dataset.columns, settings.labelField) || navFormatter.getColumnIndex(dataset.columns, "label", true);
 							selectedData = _.map(records, function(record, key){
 								return {"id": record[0], "text": record[1]};
 							});
@@ -443,7 +462,6 @@ PS.NavFormatter.fn.functions = {
 					dataLoaded = false;
 				if(query.term){
 					//if not all data has been loaded search in server
-		//			if(modelDataSize < _this.model.get("totalPage")){
 					if(settings.cached){
 						delay(function(){
 							settings.page = "";
@@ -460,8 +478,6 @@ PS.NavFormatter.fn.functions = {
 					}
 				}
 				else{
-					//clear search term
-				//	settings.term = "";
 					//calculate current page to use
 					if(query.page <= modelPage){
 						currentPage = modelPage;
@@ -509,132 +525,14 @@ PS.NavFormatter.fn.functions = {
 	},
 	createDateType: function(type, settings){
 		var elem = "",
-			dateTypes = _.find(PS.NavFormatter.formats, function(format){
-				return format.id === type;
-			}),
-			optionList = {
-				"DAY": {
-					"optgroup": "Daily",
-					"options": [
-						{
-							"label": "Today",
-							"tp-start-diff": "0",
-							"order": 10
-						}, 
-						{
-							"label": "Yesterday",
-							"tp-start-diff": "-1",
-							"order": 20
-						},
-						{
-							"label": "Day",
-							"order": 30
-						},
-						{
-							"label": "Day Range",
-							"order": 40
-						}
-					]
-				},
-				"WEEK": {
-					"optgroup": "Weekly",
-					"options": [
-						{
-							"label": "This Week",
-							"tp-start-diff": "0",
-							"order": 10
-						},
-						{
-							"label": "Last Week",
-							"tp-start-diff": "-1w",
-							"order": 20
-						},
-						{
-							"label": "Week",
-							"order": 30
-						},
-						{
-							"label": "Week Range",
-							"order": 40
-						}
-					]
-				},
-				"MONTH": {
-					"optgroup": "Monthly",
-					"options": [
-						{
-							"label": "This Month",
-							"tp-start-diff": "0",
-							"order": 10
-						},
-						{
-							"label": "Last Month",
-							"tp-start-diff": "-1m",
-							"order": 20
-						},
-						{
-							"label": "Month",
-							"order": 30
-						},
-						{
-							"label": "Month Range",
-							"order": 40
-						}
-					]
-				},
-				"QUARTER": {
-					"optgroup": "Quarterly",
-					"options": [
-						{
-							"label": "This Quarter",
-							"tp-start-diff": "0",
-							"order": 10
-						},
-						{
-							"label": "Last Quarter",
-							"tp-start-diff": "-3m",
-							"order": 20
-						},
-						{
-							"label": "Quarter",
-							"order": 30
-						},
-						{
-							"label": "Quarter Range",
-							"order": 40
-						}
-					]
-				},
-				"YEAR": {
-					"optgroup": "Yearly",
-					"options": [
-						{
-							"label": "This Year",
-							"tp-start-diff": "0",
-							"order": 10
-						},
-						{
-							"label": "Last Year",
-							"tp-start-diff": "-1y",
-							"order": 20
-						},
-						{
-							"label": "Year",
-							"order": 30
-						},
-						{
-							"label": "Year Range",
-							"order": 40
-						}
-					]
-				}
-			},
-			createOption = function(optionType, optionData){
+			dateTypes,
+			createOption = function(optionData){
 				var optionHtml = "";
 				_.each(optionData, function(option, index){
-					var value = option.value || option.text || option.label;
+					var value = option.value;
+					
 					value = value.replace(/ /g, "").toUpperCase();
-					optionHtml += "<option data-tp-type=\"" + optionType.toUpperCase() + "\" value=\"" + value + "\" ";
+					optionHtml += "<option value=\"" + value + "\" ";
 					//add other data attributes
 					_.each(option, function(attrValue, attr){
 						if(attrValue){
@@ -648,40 +546,19 @@ PS.NavFormatter.fn.functions = {
 				return optionHtml;
 			};
 		elem += "<select class=\"nav-date-type medium-2\">";
-/*		if(optionList[type.toUpperCase()]){ 
-			if(settings.typeOptions && settings.typeOptions.length){
-				optionList[type.toUpperCase()].options = optionList[type.toUpperCase()].options.concat(settings.typeOptions);
+		//if type is a date custom expect a dateCustomType target
+		if(type === "datecustom"){
+			if(settings.dateCustomType && typeof(settings.dateCustomType) === "string"){
+				type = settings.dateCustomType;
 			}
-			optionList[type.toUpperCase()].options = _.sortBy(optionList[type.toUpperCase()].options, function(item){
-				return item.order;
-			});
-			_.each(optionList[type.toUpperCase()].options, function(option, index){
-				var value = option.value || option.label.replace(/ /g, "").toUpperCase();
-				elem += "<option data-tp-type=\"" + type.toUpperCase() + "\" value=\"" + value + "\" ";
-				//add other attributes except label and value
-				_.each(option, function(attrValue, attr){
-					elem += "data-" + attr + "=\"" + attrValue + "\" ";
-				});
-				elem += ">";
-				elem += option.label;
-				elem += "</option>";
-			});
+			else if(settings.dateCustomType instanceof Array){
+				dateTypes = {"styles": settings.dateCustomType};
+			}
 		}
-*/		if(dateTypes && dateTypes.styles.length){
-			elem += createOption(dateTypes.id, dateTypes.styles);
-/*			_.each(dateTypes.styles, function(option, index){
-				var value = option.value || option.text || option.label;
-				value = value.replace(/ /g, "").toUpperCase();
-				elem += "<option data-tp-type=\"" + type.toUpperCase() + "\" value=\"" + value + "\" ";
-				//add other data attributes
-				_.each(option, function(attrValue, attr){
-					elem += "data-" + attr + "=\"" + attrValue + "\" ";
-				});
-				elem += ">";
-				elem += option.text || option.label;
-				elem += "</option>";
-			});
-*/		}
+		dateTypes = dateTypes ? dateTypes : _.findWhere(PS.NavFormatter.formats, {id: type});
+		if(dateTypes && dateTypes.styles.length){
+			elem += createOption(dateTypes.styles);
+		}
 		else{
 			dateTypes = _.filter(PS.NavFormatter.formats, function(format){
 				return format.id === "dateday" || format.id === "dateweek" || format.id === "datemonth" ||
@@ -692,24 +569,7 @@ PS.NavFormatter.fn.functions = {
 				elem += createOption(item.id, item.styles);
 				elem += "</optgroup>";
 			});
-/*			_.each(optionList, function(typeOptions, dateType){
-				elem += "<optgroup label=\"" + typeOptions.optgroup + "\">";
-					_.each(typeOptions.options, function(option, index){
-						var value = option.value || option.label.replace(/ /g, "").toUpperCase();
-						elem += "<option data-tp-type=\"" + dateType.toUpperCase() + "\" value=\"" + value + "\" ";
-						//add other attributes except label and value
-						_.each(option, function(attrValue, attr){
-							if(attr !== "value" && attr !== "label"){
-								elem += attr + "=\"" + attrValue + "\" ";
-							}
-						});
-						elem += ">";
-						elem += option.label;
-						elem += "</option>";
-					});
-				elem += "</optgroup>";
-			});
-*/		}
+		}
 		elem += "</select>";
 		return $(elem);
 	},
@@ -930,7 +790,8 @@ PS.NavFormatter.fn.functions = {
 				value = $this.val(),
 				dateToday = new moment(),
 				$selectedOption = $this.find("option:selected"),
-				type = $selectedOption.data("tp-type"),
+				typeVal = value ? value.split("_")[0] : "",	//parse value to get type <TYPE>_<KEY>, type should be a CMQ tp_type DAY,WEEK,MONTH,QUARTER,YEAR
+				hiddenTypeVal = $hiddenType.val().split("_")[0],	//hidden type is used to check if the date format should be changed like from day to month
 				optionData = $selectedOption.data(),
 				startValue,
 				endValue;
@@ -942,28 +803,28 @@ PS.NavFormatter.fn.functions = {
 				//destroy datepicker and reset onchange event 
 				$dateStart.add($dateEnd).datepicker("destroy").off("change");
 				//set default format if not specified
-				if($hiddenType.data("tp-type") && type !== $hiddenType.data("tp-type")){
-					settings.momentDateFormat = momentDefaultFormat[type];
+				if(hiddenTypeVal && typeVal !== hiddenTypeVal){
+					settings.momentDateFormat = momentDefaultFormat["DATE" + typeVal];
 					settings.dateFormat = _this.functions.mapDateFormat(settings.momentDateFormat);
 					settings.altFormat = settings.dateFormat
 				}
 				else{
-					settings.momentDateFormat = settings.momentDateFormat || momentDefaultFormat[type];
+					settings.momentDateFormat = settings.momentDateFormat || momentDefaultFormat["DATE" + typeVal];
 					settings.dateFormat = settings.dateFormat || _this.functions.mapDateFormat(settings.momentDateFormat);
 					settings.altFormat = settings.altFormat || settings.dateFormat
 				}
 				settings.altField = _this.$el.find(".nav-hidden-date-start");
-				_this.functions.initDate(type, $dateStart, settings);
+				_this.functions.initDate("DATE" + typeVal, $dateStart, settings);
 				if($dateStart.val()){
 					$dateStart.datepicker("setDate", moment($dateStart.val(), settings.momentDateFormat).toDate());
 				}
 				settings.altField = _this.$el.find(".nav-hidden-date-end");
-				_this.functions.initDate(type, $dateEnd, settings);
+				_this.functions.initDate("DATE" + typeVal, $dateEnd, settings);
 				if($dateEnd.val()){
 					$dateEnd.datepicker("setDate", moment($dateEnd.val(), settings.momentDateFormat).toDate());
 				}
 				//clear date values if date type has changed
-				if($hiddenType.data("tp-type") && type !== $hiddenType.data("tp-type")){
+				if(hiddenTypeVal && typeVal !== hiddenTypeVal){
 					$dateStart.datepicker("setDate", "");
 					$dateEnd.datepicker("setDate", "");	
 				}
@@ -992,10 +853,13 @@ PS.NavFormatter.fn.functions = {
 					//hide date end and label
 					$dateLabel.add($dateEnd).hide();
 				}
-				else if(type === "DATEDAY" || type === "DATEWEEK"){	//if selection is a DAY and not a range set min and max dates
+				else if(typeVal === "DAY" || typeVal === "WEEK"){	//if selection is a DAY and not a range set min and max dates
 					$dateEnd.datepicker("option", "minDate", moment($dateStart.val(), settings.momentDateFormat).toDate()).trigger("change");
 				}
-				$hiddenType.data("tp-type", type).val(value);
+				$hiddenType.val(value);
+			}
+			else{
+				DDK.error("Date Type change: No valid date type selected");
 			}
 		});
 		//set types value if user specified
@@ -1016,8 +880,8 @@ PS.NavFormatter.fn.functions = {
 		if(settings.dateTypeDisabled){
 			$dateType.attr("disabled", "disabled");
 		}
-		//hide data type if set by user
-		if(settings.dateTypeHidden){
+		//hide data type if set by user, dateTypeHidden is an old option deprecated
+		if(settings.hideDateType || settings.dateTypeHidden){
 			$dateType.hide();
 		}
 		$($dateStart).add($dateEnd).on("keyup", function(e){
@@ -1105,8 +969,8 @@ PS.NavFormatter.fn.datequarter = function () {
 PS.NavFormatter.fn.dateyear = function () {
 	this.functions.createNavDate.call(this, "dateyear");
 };
-PS.NavFormatter.fn.dateany = function () {
-	this.functions.createNavDate.call(this, "dateany");
+PS.NavFormatter.fn.datecustom = function () {
+	this.functions.createNavDate.call(this, "datecustom");
 };
 
 PS.NavFormatter.fn.checkbox = function () {

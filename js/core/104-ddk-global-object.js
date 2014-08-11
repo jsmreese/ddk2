@@ -2446,19 +2446,22 @@
 	// a DOM element, or a DDK control id
 	DDK.navFormat = function (selector) {
 		var $selection;
-			
-		if (typeof selector === "string") {	
-			$selection = $("[id^=\"psc_\"][id$=\"" + selector + "_widget\"]");
-			
-			if (!$selection.length) {
-				$selection = $("#" + selector);
+		if(selector !== undefined){	
+			if (typeof selector === "string") {	
+				$selection = $("[id^=\"psc_\"][id$=\"" + selector + "_widget\"]");
+				
+				if (!$selection.length) {
+					$selection = $("#" + selector);
+				}
+			}
+
+			if (!$selection || !$selection.length) {
+				$selection = $(selector);
 			}
 		}
-
-		if (!$selection || !$selection.length) {
-			$selection = $(selector);
+		else{
+			$selection = $(document);
 		}
-		
 		// execute DDK2 formatting
 		$selection.find("[data-nav]").each(function() {
 			(new PS.NavFormatter(this)).exec();

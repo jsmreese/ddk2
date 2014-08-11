@@ -577,6 +577,34 @@ PS.optionsAPI.navElemConfig = {
 				"label": "Icon Field",
 				"description": "Icon Field mapping for select2",
 				"notes": ""
+			},
+			"typeDefault": {
+				"id": "type_default",
+				"label": "Type Default",
+				"description": "Default value for the date type dropdown",
+				"notes": ""
+			},
+			"dateCustomType": {
+				"id": "date_custom_type",
+				"label": "Date Custom Type",
+				"description": "A string target fav (id in the fav value) or an array of json object to be used in the type dropdown",
+				"notes": ""
+			},
+			"hideDateType": {
+				"id": "hide_date_type",
+				"label": "Hide Date Type",
+				"description": "Flag to show/hide the date type dropdown",
+				"notes": "",
+				"values": [
+					{
+						"value": "true",
+						"label": "True"
+					},
+					{
+						"value": "false",
+						"label": "False"
+					}
+				]
 			}
 		}
 	}		
