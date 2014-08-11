@@ -72,7 +72,7 @@
 	select.nav-date-type{
 		margin-right: 5px;
 	}
-	input.nav-date-start[type="text"], input.nav-date-end[type="text"]{
+	.nav-element input.nav-date-start[type="text"], .nav-element input.nav-date-end[type="text"]{
 		display: inline;
 	}
 	.nav-date-label{
