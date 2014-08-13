@@ -291,3 +291,6 @@ function reloadControlContainer(controlName, controlId, options, callback, $cont
 		});
 	}
 }
+
+var runFromFavorite = DDK.reloadFromFavorite;
+var runFav = DDK.reloadFromFavorite;

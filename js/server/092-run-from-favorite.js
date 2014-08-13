@@ -34,3 +34,5 @@ var runFromFavorite = function (favoriteId, keywords) {
 			
 	return "\n\n" + control.html + "\n\n<script>K(\"" + control.stateKeywords + "\");</script>\n\n";
 };
+
+var runFav = runFromFavorite;
