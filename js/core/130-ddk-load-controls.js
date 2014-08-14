@@ -212,15 +212,9 @@ DDK.reloadControl = function (controlName, controlId, callback, beforeInit, befo
 
 		// grab the data-keywords from the control container, and merge them
 		// into any existing `s_<id>_keywords` keyword value
-		var oldKeys = _.zipObject(_.map((K("s_" + controlId + "_keywords") || "").split("&"), function (value) {
-		  var pair = value.split("=");
-		  return [ pair[0], decodeURIComponent(pair[1]) ];
-		}));
+		var oldKeys = _.string.parseQueryString(K("s_" + controlId + "_keywords") || "");
 
-		var newKeys = _.zipObject(_.map(controlData.keywords ? controlData.keywords.split("&") : [], function (value) {
-		  var pair = value.split("=");
-		  return [ pair[0], decodeURIComponent(pair[1]) ];
-		}));
+		var newKeys = _.string.parseQueryString(controlData.keywords || "");
 
 		K("s_" + controlId + "_keywords", _.reduce(_.extend({}, oldKeys, newKeys), function (memo, value, key) {
 			return memo + (key ? "&" + key + "=" + (value ? encodeURIComponent(value) : "") : "");
@@ -294,3 +288,21 @@ function reloadControlContainer(controlName, controlId, options, callback, $cont
 
 var runFromFavorite = DDK.reloadFromFavorite;
 var runFav = DDK.reloadFromFavorite;
+
+function runFavs(target) {
+	var $target = $.target(target, document),
+		$elems;
+	
+	// find all descendant elements that have a data-fav attribute
+	// and also includ the target element if it has a data-fav attribute
+	$elems = $target.find("[data-fav]").addBack("[data-fav]");
+	
+	$elems.each(function (index, elem) {
+		var $elem = $(elem),
+			fav = $elem.data("fav");
+			
+		$elem.removeAttr("data-fav");
+		
+		DDK.reloadFromFavorite(elem, fav);
+	});
+}

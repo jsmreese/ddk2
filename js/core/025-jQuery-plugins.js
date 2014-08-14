@@ -3,6 +3,35 @@
 
 	$.fn.reverse = [].reverse;
 
+	/* $.target jQuery plugin
+	 * Evaluates a target into a jQuery object.
+	 * Target may be a jQuery object, a DOM element, a valid selector, or an id string without the hash (#).
+	 * Optional default target will be returned if the target is not found in the document.
+	 * Default target will be evaluated using $.target, so follows the same rules.
+	 * Returns an empty jQuery object is target is not found and no default is specified.
+	 * by: jsmreese
+	 */
+	$.target = function (target, defaultTarget) {
+		var $target;
+		
+		// per PureShare standards
+		// element ids must start with a lowercase letter
+		// and can contain only lowercase letters, numbers, and underscores
+		// and cannot end in an underscore
+		if (typeof target === "string" && /^[a-z][a-z0-9\_]*[a-z0-9]$/.test(target)) {
+			$target = $("#" + target);
+			
+			if ($target.length) { return $target; }
+		}
+
+		$target = $(target);
+	
+		// evaluate default target
+		if (!$target.length && defaultTarget) { $target = $.target(defaultTarget); }
+	
+		return $target;
+	};
+	
 	/* $.topZ jQuery plugin
 	 * Based on http://abcoder.com/javascript/a-better-process-to-find-maximum-z-index-within-a-page
 	 * Returns one plus the maximum z-index of all elements that are children of the document body.
