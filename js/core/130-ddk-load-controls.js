@@ -108,6 +108,9 @@ DDK.reloadFromFavoriteRequest = function () {
 				$controlDescription.html(controlFavorite.description);
 			}
 			
+			// execute runFavs on just-loaded content
+			runFavs(settings.$target);
+			
 			// clear loading status
 			DDK.reloadFromFavoriteLoading = false;
 			
