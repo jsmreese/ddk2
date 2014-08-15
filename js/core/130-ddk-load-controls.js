@@ -83,29 +83,16 @@ DDK.reloadFromFavoriteRequest = function () {
 		success: function (data) {
 			var control = data.datasets[1],
 				controlFavorite = data.datasets[0][0],
+				type = controlFavorite.typeLabel,
 				$controlLabel,
 				$controlNotes,
 				$controlDescription;
 			
-			settings.$target.am("hidemask").empty().html(DDK.unescape.brackets(control.html));
-			K(control.stateKeywords);
-			reloadControlContainer(control.name, control.id, settings, settings.callback, settings.$target.children().eq(0));
+			settings.$target.am("hidemask").empty().removeAttr("data-fav").html(DDK.unescape.brackets(control.html));
 			
-			// update control_label, control_description, and control_notes
-			$controlLabel = $(document).find("#control_label");
-			$controlNotes = $(document).find("#control_notes");
-			$controlDescription = $(document).find("#control_description");
-			
-			if ($controlLabel.length) {
-				$controlLabel.html(controlFavorite.label);
-			}
-			
-			if ($controlNotes.length) {
-				$controlNotes.html(controlFavorite.notes);
-			}
-			
-			if ($controlDescription.length) {
-				$controlDescription.html(controlFavorite.description);
+			if (type === "Component") {
+				K(control.stateKeywords);
+				reloadControlContainer(control.name, control.id, settings, settings.callback, settings.$target.children().eq(0));
 			}
 			
 			// execute runFavs on just-loaded content
@@ -304,8 +291,10 @@ function runFavs(target) {
 		var $elem = $(elem),
 			fav = $elem.data("fav");
 			
-		$elem.removeAttr("data-fav");
-		
-		DDK.reloadFromFavorite(elem, fav);
+		if (fav) {
+			// clear jQuery data cache for fav so that it will not be loaded again
+			$elem.data("fav", null);
+			DDK.reloadFromFavorite(elem, fav);
+		}
 	});
 }
