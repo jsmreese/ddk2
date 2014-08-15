@@ -59,7 +59,7 @@ DDK.reloadFromFavoriteRequest = function () {
 	
 	dataConfig = [
 		{
-			queryWidget: "PSC_Favorites_Record_Query",
+			queryWidget: "PSC_Favorites_Record_Query_" + (_.isNaN(+settings.favoriteId) ? "Name" : "Id"),
 			columnPrefix: "sci_fav_",
 			datasetMode: "array",
 			keywords: "&ddk_fav_id=" + settings.favoriteId,
@@ -68,7 +68,7 @@ DDK.reloadFromFavoriteRequest = function () {
 			escapeMode: "keyword"
 		},
 		{
-			method: "renderControlFromFavorite"
+			method: "runFav"
 		}
 	];
 	

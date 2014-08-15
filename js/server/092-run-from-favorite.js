@@ -3,7 +3,7 @@ var runFromFavorite = function (favoriteId, keywords) {
 		control,
 		dataConfig = [
 			{
-				queryWidget: "PSC_Favorites_Record_Query",
+				queryWidget: "PSC_Favorites_Record_Query_" + (_.isNaN(+favoriteId) ? "Name" : "Id"),
 				columnPrefix: "sci_fav_",
 				datasetMode: "array",
 				keywords: "&ddk_fav_id=" + favoriteId,
@@ -11,7 +11,7 @@ var runFromFavorite = function (favoriteId, keywords) {
 				useCoercedTypes: false
 			},
 			{
-				method: "renderControlFromFavorite"
+				method: "runFav"
 			}
 		];
 	
