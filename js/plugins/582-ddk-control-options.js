@@ -383,12 +383,12 @@ DDK.controlOptions = function (id) {
 						description: "Widget to render in the Control's top right toolbar."
 					},
 					topTopLeft: {
-						id: "s_" + id + "_tttlw",
+						id: "s_" + id + "_ttltw",
 						label: "Top Top Left Widget",
 						description: "Widget to render in the Control's top top left toolbar."
 					},
 					topTopRight: {
-						id: "s_" + id + "_tttrw",
+						id: "s_" + id + "_ttrtw",
 						label: "Top Top Right Widget",
 						description: "Widget to render in the Control's top top right toolbar."
 					},
