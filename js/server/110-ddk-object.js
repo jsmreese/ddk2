@@ -449,6 +449,15 @@ DDK.options.evalDefault = function(controlName, optionDefault) {
 			case "SERIES_CONFIG_POSITION":
 				if (isPDF) { return "none"; }
 				return (K(controlName + "_toolbar_enabled") === "true" ? "left" : "none");
+			case "HELP_ENABLED":
+				// help button is 'off' for PDF
+				if (isPDF) { return "false"; }
+				
+				// help button defaults to 'on' if there is a custom widget
+				if (K(controlName + "_help_widget")) { return "true"; }
+				
+				// help button is 'off' by default
+				return "false";
 			case "MOUSEOVER":
 				return controlName + "Default";
 			case "PAGING_THRESHOLD_SERVER":
@@ -492,6 +501,7 @@ DDK.options.list = [
 	"toolbar_default td true",
 	"query_widget qw",
 	"datasource d db.amdb",
+	"help_widget helpw",
 	
 	// options with no downstream dependencies
 	// {{lowercase}} denotes an option that takes its default from the value of another option
@@ -536,8 +546,7 @@ DDK.options.list = [
 	"header_widget hw",
 	"header_enabled he {{toolbar_default}}",
 	"height h {{HEIGHT}}",
-	"help_enabled helpe {{toolbar_default}}",
-	"help_widget helpw",
+	"help_enabled helpe {{HELP_ENABLED}}",
 	"label_auto_enabled lae true",
 	"label_axisx lax",
 	"label_axisy lay",
