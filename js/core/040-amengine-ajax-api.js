@@ -702,13 +702,37 @@ xReq =null;
 		}
 		
 		// contruct the query string from the global keyword hash
-		url += _.reduce(_.extend(_.omit(options && options.stateFilter ? _.omit(globals, function (value, key) { 
-			 return _.string.startsWith(key, "s_") && !_.string.startsWith(key, options.stateFilter.toLowerCase()); 
-		}) : globals, function (value, key) {
-			return _.string.startsWith(key, "sec.");
-		}), keywords), function (memo, value, key) {
-			return memo + "&" + key + "=" + encodeURIComponent(value);
-		}, "");
+		url += _.reduce(_.extend(
+		
+			_.omit(globals, function (value, key) {
+				// don't send sec. keywords with run requests
+				if (_.string.startsWith(key, "sec.")) { return true; }
+				
+				// don't send any DDK state keywords with run requests
+				// except when reloading a control via DDK[control].reload(id)
+				// in which case there is an options.stateFilter value set
+				if (_.string.startsWith(key, "s_")) {
+					if (options && options.stateFilter && _.string.startsWith(key, options.stateFilter.toLowerCase())) {
+						return false;
+					}
+					
+					return true;
+				}
+				
+				// send all other keywords
+				return false;
+			}),
+			
+			keywords),
+			
+			// reduce callback
+			function (memo, value, key) {
+				return memo + "&" + key + "=" + encodeURIComponent(value);
+			}, 
+			
+			// reduce accumulator
+			""
+		);
 
 /*
 		if (daa_urlitem) {

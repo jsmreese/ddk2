@@ -114,8 +114,8 @@ DDK.reloadFromFavoriteRequest = function () {
 	ajaxSettings.data["data.config"] = DDK.escape.brackets(JSON.stringify(dataConfig));
 	
 	// send the global keyword hash
+	// ignoring all state keywords and sec.keywords
 	_.extend(ajaxSettings.data, _.transform(K.toObject(), function (accumulator, value, key) {
-		// ignore all state keywords and sec.keywords
 		if (key === "sectoken" || _.string.startsWith(key, "s_") || _.string.startsWith(key, "sec.")) {
 			return;
 		}
