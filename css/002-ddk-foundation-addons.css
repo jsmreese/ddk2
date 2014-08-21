@@ -3,6 +3,10 @@
 	min-height: 100px;
 }
 
+/* fix text-align on select2 containers for the 'prefix' option */
+.select2-container.prefix {
+	text-align: inherit;
+}
 
 /* using controls within the grid */
 
