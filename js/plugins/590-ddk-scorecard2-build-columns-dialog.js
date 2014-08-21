@@ -494,7 +494,7 @@ if (Backbone.Epoxy) {
 
 
 			// render column settings toolbar
-			toolbarName = "column_settings";
+			toolbarName = "scorecard_column";
 			
 			var toolbarView = new PS.Views.Scorecard2.Toolbar({
 				model: this.columnConfig,
@@ -876,7 +876,7 @@ if (Backbone.Epoxy) {
 			optionModel.app = this.app;
 
 			// render column-global-settings toolbar
-			var toolbarName = "column_settings";
+			var toolbarName = "scorecard_column";
 			var toolbarSettings = {
 				model: this.model,
 				className: function () {
@@ -977,7 +977,7 @@ if (Backbone.Epoxy) {
 			this.$content = this.$el.find(".sc-column-dialog-row-content");
 
 			// render cell-settings toolbar
-			var toolbarName = "column_settings";
+			var toolbarName = "scorecard_column";
 			var toolbarSettings = {
 				model: this.model,
 				className: function () {
@@ -1101,7 +1101,7 @@ if (Backbone.Epoxy) {
 			this.model.getOptionGroup("scorecard_column_config_object_settings").each(this.renderOption, { id: [this.options.rowType, this.options.type, "value"].join("_"), includeEmpty: true }, this);
 
 			// render section-settings toolbar
-			var toolbarName = "column_settings";
+			var toolbarName = "scorecard_column";
 			var toolbarSettings = {
 				model: this.model,
 				className: function () {

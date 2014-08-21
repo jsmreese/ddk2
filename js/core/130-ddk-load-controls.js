@@ -59,7 +59,7 @@ DDK.reloadFromFavoriteRequest = function () {
 	
 	dataConfig = [
 		{
-			queryWidget: "PSC_Favorites_Record_Query",
+			queryWidget: "PSC_Favorites_Record_Query_" + (_.isNaN(+settings.favoriteId) ? "Name" : "Id"),
 			columnPrefix: "sci_fav_",
 			datasetMode: "array",
 			keywords: "&ddk_fav_id=" + settings.favoriteId,
@@ -68,7 +68,7 @@ DDK.reloadFromFavoriteRequest = function () {
 			escapeMode: "keyword"
 		},
 		{
-			method: "renderControlFromFavorite"
+			method: "runFav"
 		}
 	];
 	
@@ -83,30 +83,20 @@ DDK.reloadFromFavoriteRequest = function () {
 		success: function (data) {
 			var control = data.datasets[1],
 				controlFavorite = data.datasets[0][0],
+				type = controlFavorite.typeLabel,
 				$controlLabel,
 				$controlNotes,
 				$controlDescription;
 			
-			settings.$target.am("hidemask").empty().html(DDK.unescape.brackets(control.html));
-			K(control.stateKeywords);
-			reloadControlContainer(control.name, control.id, settings, settings.callback, settings.$target.children().eq(0));
+			settings.$target.am("hidemask").empty().removeAttr("data-fav").html(DDK.unescape.brackets(control.html));
 			
-			// update control_label, control_description, and control_notes
-			$controlLabel = $(document).find("#control_label");
-			$controlNotes = $(document).find("#control_notes");
-			$controlDescription = $(document).find("#control_description");
-			
-			if ($controlLabel.length) {
-				$controlLabel.html(controlFavorite.label);
+			if (type === "Component") {
+				K(control.stateKeywords);
+				reloadControlContainer(control.name, control.id, settings, settings.callback, settings.$target.children().eq(0));
 			}
 			
-			if ($controlNotes.length) {
-				$controlNotes.html(controlFavorite.notes);
-			}
-			
-			if ($controlDescription.length) {
-				$controlDescription.html(controlFavorite.description);
-			}
+			// execute runFavs on just-loaded content
+			runFavs(settings.$target);
 			
 			// clear loading status
 			DDK.reloadFromFavoriteLoading = false;
@@ -124,8 +114,8 @@ DDK.reloadFromFavoriteRequest = function () {
 	ajaxSettings.data["data.config"] = DDK.escape.brackets(JSON.stringify(dataConfig));
 	
 	// send the global keyword hash
+	// ignoring all state keywords and sec.keywords
 	_.extend(ajaxSettings.data, _.transform(K.toObject(), function (accumulator, value, key) {
-		// ignore all state keywords and sec.keywords
 		if (key === "sectoken" || _.string.startsWith(key, "s_") || _.string.startsWith(key, "sec.")) {
 			return;
 		}
@@ -212,15 +202,9 @@ DDK.reloadControl = function (controlName, controlId, callback, beforeInit, befo
 
 		// grab the data-keywords from the control container, and merge them
 		// into any existing `s_<id>_keywords` keyword value
-		var oldKeys = _.zipObject(_.map((K("s_" + controlId + "_keywords") || "").split("&"), function (value) {
-		  var pair = value.split("=");
-		  return [ pair[0], decodeURIComponent(pair[1]) ];
-		}));
+		var oldKeys = _.string.parseQueryString(K("s_" + controlId + "_keywords") || "");
 
-		var newKeys = _.zipObject(_.map(controlData.keywords ? controlData.keywords.split("&") : [], function (value) {
-		  var pair = value.split("=");
-		  return [ pair[0], decodeURIComponent(pair[1]) ];
-		}));
+		var newKeys = _.string.parseQueryString(controlData.keywords || "");
 
 		K("s_" + controlId + "_keywords", _.reduce(_.extend({}, oldKeys, newKeys), function (memo, value, key) {
 			return memo + (key ? "&" + key + "=" + (value ? encodeURIComponent(value) : "") : "");
@@ -290,4 +274,27 @@ function reloadControlContainer(controlName, controlId, options, callback, $cont
 			});
 		});
 	}
+}
+
+var runFromFavorite = DDK.reloadFromFavorite;
+var runFav = DDK.reloadFromFavorite;
+
+function runFavs(target) {
+	var $target = $.target(target, document),
+		$elems;
+	
+	// find all descendant elements that have a data-fav attribute
+	// and also includ the target element if it has a data-fav attribute
+	$elems = $target.find("[data-fav]").addBack("[data-fav]");
+	
+	$elems.each(function (index, elem) {
+		var $elem = $(elem),
+			fav = $elem.data("fav");
+			
+		if (fav) {
+			// clear jQuery data cache for fav so that it will not be loaded again
+			$elem.data("fav", null);
+			DDK.reloadFromFavorite(elem, fav);
+		}
+	});
 }

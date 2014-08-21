@@ -1083,7 +1083,7 @@ $.extend(true, DDK.dialog, {
 			//	id: id
 			//}, "component_");
 
-			run("ddk_dialog_content", "PSC_WPS_Dialog_Content", keywords);
+			run("ddk_dialog_content", "PSC_WPS_Dialog_Content", keywords, null, { stateFilter: "s_" + id + "_" });
 		},
 		dlgTitle: "Control Link"
 	},
@@ -1119,7 +1119,7 @@ $.extend(true, DDK.dialog, {
 				K("ddk.path", K("ddk").path);
 				K("ddk.theme", K("ddk").theme);
 			}
-			run("ddk_dialog_content", "PSC_CMS_Dialog_Frame");
+			run("ddk_dialog_content", "PSC_CMS_Dialog_Frame", null, null, { stateFilter: "s_" + data.ddkControlId + "_" });
 		}
 	},
 	saveFavorite: {
@@ -1278,7 +1278,7 @@ $.extend(true, DDK.dialog, {
 
 			K("fav_comp_id", data.ddkControlId);
 			K("fav_comp_name", data.ddkControlName);
-			run("ddk_dialog_content", "PSC_Favorites_Comp_Dialog_Content", function() {
+			run("ddk_dialog_content", "PSC_Favorites_Comp_Dialog_Content", null, function() {
 				// console.log("favorites content loaded");
 				$("#ddk_dialog_content")
 					.on("click", ".ps-button-favorite", function() {
@@ -1300,7 +1300,7 @@ $.extend(true, DDK.dialog, {
 						offset: "-9 3",
 						collision: "fit"
 				});
-			});
+			}, { stateFilter: "s_" + data.ddkControlId + "_" });
 		},
 		dlgTitle: "Favorites"
 	},
@@ -1397,12 +1397,12 @@ $.extend(true, DDK.dialog, {
 			});
 
 			if (helpWidget) {
-				run("ddk_dialog_content", helpWidget, function() {
+				run("ddk_dialog_content", helpWidget, null, function() {
 					callback = DDK[controlName].data && DDK[controlName].data[controlId] && DDK[controlName].data[controlId].customHelpCallback;
 					if (typeof callback === "function") {
 						callback.call(window, $dialog);
 					}
-				});
+				}, { stateFilter: "s_" + controlId + "_" });
 			}
 		},
 		dlgTitle: "Help"

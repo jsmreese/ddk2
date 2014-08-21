@@ -1,10 +1,12 @@
 /* List Control */
 
-/* List Controls do not display control toolbars */
+/* List Controls do not display control toolbars
+   Except that they need to because of the new strategy for displaying favorite record data using DDK2_Fav_Record_Detail as a toolbar widget.
 [id^="psc_list_"] > .ps-toolbar {
 	display: none;
 }
-
+*/
+ 
 .ps-list {
 	font-size: 16px;
 }

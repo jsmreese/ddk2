@@ -188,12 +188,12 @@ if (Backbone.Epoxy) {
 			_.each(this.options.optionId, this.renderToolbarOption, this);
 			
 			// render buttons
-			this.renderButtons("format", this.options.optionId.className, "bamset_format_settings");
+			this.renderButtons("format", this.options.optionId.className, "bamset_format");
 			
 			if (this.options.type === "bam" || this.options.type === "element") {
-				this.renderButtons("grid", this.options.optionId.gridClassName, "grid_settings");
+				this.renderButtons("grid", this.options.optionId.gridClassName, "grid");
 			} else {
-				this.renderButtons("grid", this.options.optionId.gridClassName, "block_grid_settings");
+				this.renderButtons("grid", this.options.optionId.gridClassName, "block_grid");
 			}
 			
 			return this;
@@ -566,13 +566,13 @@ if (Backbone.Epoxy) {
 
 /*			// render settings toolbar
 			this.renderToolbar(this.options.type === "element" ? this.$el : this.$title, {
-				toolbarName: "grid_settings",
+				toolbarName: "grid",
 				optionId: [
 					this.optionId.gridAttr,
 					this.optionId.gridClassName
 				], 
 				buttons: {
-					toolbarId: "grid_settings",
+					toolbarId: "grid",
 					optionId: this.optionId.gridClassName
 				}
 			});
@@ -838,7 +838,7 @@ if (Backbone.Epoxy) {
 
 
 			// render settings toolbar
-			//this.renderToolbar(this.$title, { toolbarName: "block_grid_settings", buttons: { toolbarId: "block_grid_settings", optionId: this.optionId.className } });
+			//this.renderToolbar(this.$title, { toolbarName: "block_grid", buttons: { toolbarId: "block_grid", optionId: this.optionId.className } });
 			//this.renderToolbar(this.$title);
 
 

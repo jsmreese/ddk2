@@ -624,6 +624,9 @@ PS.Formatter.fn.bar = function () {
 		$cell = $parents.filter("th, td"),
 		$cells,
 		hasTable = !!$table.length;
+		
+	// do nothing if there is no value
+	if (!settings.value) { return; }
 	
 	// calculate and cache max value if it is not provided or already calculated
 	if (!settings.max) {
@@ -716,7 +719,7 @@ PS.Formatter.fn.stackedbar = function () {
 		$cell = $parents.filter("th, td"),
 		$cells,
 		hasTable = !!$table.length;
-	
+		
 	// calculate and cache max value if it is not provided or already calculated
 	if (!settings.max) {
 		if (hasTable) {
@@ -760,6 +763,9 @@ PS.Formatter.fn.stackedbar = function () {
 			var values = _.map(settings.value.toString().split(","), function (value, index, collection) {
 				return sum.apply(null, collection.slice(0, index + 1));
 			});
+			
+			// do nothing the last value is not greater than 0
+			if (!values[values.length - 1]) { return; }
 			
 			if (hasTable) {
 				// use 160px as the default width for charts in a table
@@ -840,7 +846,10 @@ PS.Formatter.fn.stackedbar100 = function () {
 			var values = _.map(settings.value.toString().split(","), function (value, index, collection) {
 				return sum.apply(null, collection.slice(0, index + 1));
 			});
-			
+
+			// do nothing the last value is not greater than 0
+			if (!values[values.length - 1]) { return; }
+						
 			if (hasTable) {
 				// use 160px as the default width for charts in a table
 				// use the element font size as the default height for charts in a table

@@ -138,7 +138,7 @@
 		isRealNumber: function (num) {
 			var n = +num;
 			
-			if (num == null) { return false; }
+			if (num == null || num === "") { return false; }
 			
 			return !isNaN(n) && isFinite(n);
 		},

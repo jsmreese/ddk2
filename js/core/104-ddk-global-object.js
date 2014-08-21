@@ -267,7 +267,7 @@
 				//K("column_name", column);
 				keywords["column_name"] = column;
 
-				load('psc_chart_' + id + '_series_config_dialog_' + column, 'PSC_Chart_Config_Dialog_Frame', keywords);
+				load('psc_chart_' + id + '_series_config_dialog_' + column, 'PSC_Chart_Config_Dialog_Frame', keywords, null, { stateFilter: "s_" + id + "_" });
 			} else {
 				$('#pscChartFrame' + id + column).attr('src', '').remove();
 				$('#psc_chart_' + id + '_series_config_dialog_' + column).addClass('ps-hidden').insertAfter('#psc_chart_' + id + '_series_config_container_' + column);

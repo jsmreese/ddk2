@@ -110,9 +110,9 @@
 			config.id = findId(settings.id.split(" "), array[0]);
 			config.parentId = findId(settings.parentId.split(" "), array[0]);
 
-			// throw error if there is no id or parent id propery
-			if (!config.id) { throw "collateTree: cannot find id. settings.id: " + settings.id; }
-			if (!config.parentId) { throw "collateTree: cannot find parentId. settings.parentId: " + settings.parentId; }
+			// if there is no id or parent id property found
+			// then return the original array
+			if (!config.id || !config.parentId) { return array; }
 			
 			// setup config object
 			config.isChildNode = _.partial(isChildNode, config.id, config.parentId);
