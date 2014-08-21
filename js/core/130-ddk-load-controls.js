@@ -1,7 +1,7 @@
 DDK.reloadFromFavoriteQueue = [];
 DDK.reloadFromFavoriteLoading = false;
 
-DDK.reloadFromFavorite = function (target, favoriteId, callback, beforeInit, beforeReload, unshift) {
+DDK.reloadFromFavorite = function (target, favoriteId, callback, beforeInit, beforeReload, unshift, favDetail, keywords) {
 
 	// target could be a DOM node, a jQuery selector, or a jQuery collection, or an id string
 	var $target = $(target);
@@ -34,7 +34,9 @@ DDK.reloadFromFavorite = function (target, favoriteId, callback, beforeInit, bef
 		favoriteId: favoriteId,
 		callback: callback,
 		beforeInit: beforeInit,
-		beforeReload: beforeReload
+		beforeReload: beforeReload,
+		favDetail: favDetail,
+		keywords: keywords
 	});
 	
 	_.defer(function () {
@@ -62,15 +64,24 @@ DDK.reloadFromFavoriteRequest = function () {
 			queryWidget: "PSC_Favorites_Record_Query_" + (_.isNaN(+settings.favoriteId) ? "Name" : "Id"),
 			columnPrefix: "sci_fav_",
 			datasetMode: "array",
-			keywords: "&ddk_fav_id=" + settings.favoriteId,
+			keywords: "&ddk_fav_id=" + settings.favoriteId + "&" + (settings.keywords || ""),
 			shouldCamelizeKeys: true,
 			useCoercedTypes: false,
-			escapeMode: "keyword"
-		},
-		{
-			method: "runFav"
+			escapeMode: "keyword",
+			datasetKey: "fav"
 		}
 	];
+	
+	if (settings.favDetail) {
+		dataConfig.push({
+			method: "runFavDetail",
+			keywords: settings.favDetail
+		});	
+	}
+	
+	dataConfig.push({
+		method: "runFav"
+	});
 	
 	ajaxSettings = {
 		type: "POST",
@@ -81,14 +92,15 @@ DDK.reloadFromFavoriteRequest = function () {
 			"chart_container_width": settings.$target.width()
 		},
 		success: function (data) {
-			var control = data.datasets[1],
+			var control = (settings.favDetail ? data.datasets[2] : data.datasets[1]),
+				favDetail = data.datasets[1],
 				controlFavorite = data.datasets[0][0],
 				type = controlFavorite.typeLabel,
 				$controlLabel,
 				$controlNotes,
 				$controlDescription;
 			
-			settings.$target.am("hidemask").empty().removeAttr("data-fav").html(DDK.unescape.brackets(control.html));
+			settings.$target.am("hidemask").empty().removeAttr("data-fav").html(DDK.unescape.brackets((settings.favDetail ? favDetail : "") + control.html));
 			
 			if (type === "Component") {
 				K(control.stateKeywords);
@@ -276,8 +288,16 @@ function reloadControlContainer(controlName, controlId, options, callback, $cont
 	}
 }
 
-var runFromFavorite = DDK.reloadFromFavorite;
-var runFav = DDK.reloadFromFavorite;
+var runFromFavorite = function (target, favId, keywords, favDetail) {
+	if (typeof keywords === "boolean") {
+		favDetail = keywords;
+		keywords = "";
+	}
+	
+	DDK.reloadFromFavorite(target, favId, null, null, null, null, favDetail, keywords);
+};
+
+var runFav = runFromFavorite;
 
 function runFavs(target) {
 	var $target = $.target(target, document),
@@ -289,12 +309,15 @@ function runFavs(target) {
 	
 	$elems.each(function (index, elem) {
 		var $elem = $(elem),
-			fav = $elem.data("fav");
+			data = $elem.data(),
+			fav = data.fav,
+			favDetail = data.favDetail,
+			keywords = data.keywords;
 			
 		if (fav) {
 			// clear jQuery data cache for fav so that it will not be loaded again
 			$elem.data("fav", null);
-			DDK.reloadFromFavorite(elem, fav);
+			runFav(elem, fav, keywords, favDetail);
 		}
 	});
 }

@@ -36,6 +36,10 @@
 				_.favTreeToOptionGroup(child, topId, group);
 			});
 			
+			// clean up tree parent/children references
+			delete group.children;
+			delete group.parent;
+			
 			return group;
 		}
 	});

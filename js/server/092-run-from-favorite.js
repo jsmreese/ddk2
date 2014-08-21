@@ -1,6 +1,7 @@
-var runFromFavorite = function (favoriteId, keywords) {
+var runFromFavorite = function (favoriteId, keywords, favDetail) {
 	var controlData,
 		control,
+		detail,
 		dataConfig = [
 			{
 				queryWidget: "PSC_Favorites_Record_Query_" + (_.isNaN(+favoriteId) ? "Name" : "Id"),
@@ -8,12 +9,26 @@ var runFromFavorite = function (favoriteId, keywords) {
 				datasetMode: "array",
 				keywords: "&ddk_fav_id=" + favoriteId,
 				shouldCamelizeKeys: true,
-				useCoercedTypes: false
-			},
-			{
-				method: "runFav"
+				useCoercedTypes: false,
+				datasetKey: "fav"
 			}
 		];
+
+	if (typeof keywords === "boolean") {
+		favDetail = keywords;
+		keywords = "";
+	}
+	
+	if (favDetail) {
+		dataConfig.push({
+			method: "runFavDetail",
+			keywords: favDetail
+		});	
+	}
+	
+	dataConfig.push({
+		method: "runFav"
+	});
 	
 	// Throw exception if favoriteId does not evaluate to a positive number
 	// or is not a name
@@ -30,9 +45,15 @@ var runFromFavorite = function (favoriteId, keywords) {
 		return "AMEngine JScript runtime error - runFromFavorite: unable to parse favorite '" + favoriteId + "'.";
 	}
 	
-	control = controlData.datasets[1];
+	if (favDetail) {
+		detail = controlData.datasets[1];
+		control = controlData.datasets[2];
+	} else {
+		detail = "";
+		control = controlData.datasets[1];
+	}
 			
-	return "\n\n" + control.html + "\n\n<script>K(\"" + control.stateKeywords + "\");</script>\n\n";
+	return "\n\n" + detail + control.html + "\n\n<script>K(\"" + control.stateKeywords + "\");</script>\n\n";
 };
 
 var runFav = runFromFavorite;
