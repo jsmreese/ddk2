@@ -288,7 +288,7 @@ function reloadControlContainer(controlName, controlId, options, callback, $cont
 	}
 }
 
-var runFromFavorite = function (target, favId, keywords, favDetail) {
+var runFromFavorite = function (target, favId, keywords, favHeader, favFooter) {
 	if (typeof keywords === "boolean") {
 		favDetail = keywords;
 		keywords = "";
