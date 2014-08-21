@@ -29,7 +29,12 @@ $.extend(true, DDK.eventHandler, {
 				data[name + "_query_widget"] = detail[name + "QueryWidget"];
 				data[name + "_datasource"] = detail[name + "Datasource"];
 				data.filename = detail.filename;
-				
+				//extend data json and keywords p_ and v_ with values
+				_.each(_.extend({}, K.toObject("p_"), K.toObject("v_")), function(value, key){
+					if(value !== ""){
+						data[key] = value;
+					}
+				});
 				return data;
 			},
 			loadingMessage = "<html><head><title>Building CSV Output...</title><style>body { background: #f4f4f4; text-align: center; font-family: sans-serif; font-size: 1em; line-height: 1.414em; color: #444; }</style></head><body><div>Building CSV Output...</div></body></html>",
