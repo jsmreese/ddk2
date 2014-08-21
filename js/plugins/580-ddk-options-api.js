@@ -505,7 +505,7 @@ PS.optionsAPI.navElemConfig = {
 				"id": "target_keyword",
 				"label": "Target Keyword",
 				"description": "Keyword to be updated on change of input",
-				"notes": "Keyword to be updated on change of input"
+				"notes": "Can have multiple string separated by comma eg. tp_type, tp_start, tp_end"
 			},
 			"multiple": {
 				"id": "multiple",
@@ -557,32 +557,32 @@ PS.optionsAPI.navElemConfig = {
 			"valueField": {
 				"id": "value_field",
 				"label": "Value Field",
-				"description": "Value Field mapping for select2",
-				"notes": ""
+				"description": "Value Field mapping for select2, if this is empty navset will use the column with a 'name' suffix in the sql",
+				"notes": "This is the alias name of the column set in the sql statement Eg. SQL: SELECT sci_m_id AS dp_value; valueField: dp_value"
 			},
 			"labelField": {
 				"id": "label_field",
 				"label": "Label Field",
-				"description": "Label Field mapping for select2",
-				"notes": ""
+				"description": "Label Field mapping for select2, if this is empty navset will use the column with a 'label' suffix in the sql",
+				"notes": "This is the alias name of the column set in the sql statement Eg. SQL: SELECT sci_m_label AS dp_label; labelField: dp_label"
 			},
 			"groupField": {
 				"id": "group_field",
 				"label": "Group Field",
 				"description": "Group Field mapping for select2",
-				"notes": ""
+				"notes": "This is the alias name of the column set in the sql statement Eg. SQL: SELECT sci_m_type AS dp_group; labelField: dp_group"
 			},
 			"iconField": {
 				"id": "icon_field",
 				"label": "Icon Field",
 				"description": "Icon Field mapping for select2",
-				"notes": ""
+				"notes": "This is the alias name of the column set in the sql statement Eg. SQL: SELECT sci_m_img AS dp_icon; iconField: dp_icon"
 			},
 			"typeDefault": {
 				"id": "type_default",
 				"label": "Type Default",
 				"description": "Default value for the date type dropdown",
-				"notes": ""
+				"notes": "Only used in a date format which specifies the type of date Eg. DAY_THIS, MONTH_RANGE"
 			},
 			"dateCustomType": {
 				"id": "date_custom_type",
