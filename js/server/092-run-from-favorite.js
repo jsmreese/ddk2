@@ -22,11 +22,11 @@ var runFromFavorite = function (favoriteId, keywords, favHeader, favFooter) {
 			datasetKey: "fav"
 		},
 		{
-			method: "runFavDetail",
+			method: "runFavHeader",
 			keywords: favHeader
 		},
 		{
-			method: "runFavDetail",
+			method: "runFavFooter",
 			keywords: favFooter
 		},
 		{

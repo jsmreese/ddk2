@@ -72,11 +72,11 @@ DDK.reloadFromFavoriteRequest = function () {
 			datasetKey: "fav"
 		},
 		{
-			method: "runFavDetail",
+			method: "runFavHeader",
 			keywords: settings.favHeader
 		},
 		{
-			method: "runFavDetail",
+			method: "runFavFooter",
 			keywords: settings.favFooter
 		},
 		{
@@ -102,7 +102,7 @@ DDK.reloadFromFavoriteRequest = function () {
 				$controlNotes,
 				$controlDescription;
 			
-			settings.$target.am("hidemask").empty().removeAttr("data-fav").html(DDK.unescape.brackets((favHeader + control.html + favFooter));
+			settings.$target.am("hidemask").empty().removeAttr("data-fav").html(DDK.unescape.brackets((favHeader + control.html + favFooter)));
 			
 			if (type === "Component") {
 				K(control.stateKeywords);
@@ -313,9 +313,10 @@ function runFavs(target) {
 	$elems.each(function (index, elem) {
 		var $elem = $(elem),
 			data = $elem.data(),
+			dataStack = $elem.dataStack(),
 			fav = data.fav,
-			favHeader = data.favHeader,
-			favFooter = data.favFooter,
+			favHeader = dataStack.favHeader,
+			favFooter = dataStack.favFooter,
 			keywords = data.keywords;
 			
 		if (fav) {
