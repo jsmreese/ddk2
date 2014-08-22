@@ -1,35 +1,39 @@
-var runFromFavorite = function (favoriteId, keywords, favDetail) {
+var runFromFavorite = function (favoriteId, keywords, favHeader, favFooter) {
 	var controlData,
 		control,
-		detail,
-		dataConfig = [
-			{
-				queryWidget: "PSC_Favorites_Record_Query_" + (_.isNaN(+favoriteId) ? "Name" : "Id"),
-				columnPrefix: "sci_fav_",
-				datasetMode: "array",
-				keywords: "&ddk_fav_id=" + favoriteId,
-				shouldCamelizeKeys: true,
-				useCoercedTypes: false,
-				datasetKey: "fav"
-			}
-		];
+		header,
+		footer,
+		dataConfig;
 
 	if (typeof keywords === "boolean") {
-		favDetail = keywords;
+		favFooter = favHeader;
+		favHeader = keywords;
 		keywords = "";
 	}
-	
-	if (favDetail) {
-		dataConfig.push({
+
+	dataConfig = [
+		{
+			queryWidget: "PSC_Favorites_Record_Query_" + (_.isNaN(+favoriteId) ? "Name" : "Id"),
+			columnPrefix: "sci_fav_",
+			datasetMode: "array",
+			keywords: "&ddk_fav_id=" + favoriteId,
+			shouldCamelizeKeys: true,
+			useCoercedTypes: false,
+			datasetKey: "fav"
+		},
+		{
 			method: "runFavDetail",
-			keywords: favDetail
-		});	
-	}
-	
-	dataConfig.push({
-		method: "runFav"
-	});
-	
+			keywords: favHeader
+		},
+		{
+			method: "runFavDetail",
+			keywords: favFooter
+		},
+		{
+			method: "runFav"
+		}
+	];
+		
 	// Throw exception if favoriteId does not evaluate to a positive number
 	// or is not a name
 	if (!(+favoriteId > 0)) {
@@ -44,16 +48,12 @@ var runFromFavorite = function (favoriteId, keywords, favDetail) {
 	if (!_.isPlainObject(controlData)) {
 		return "AMEngine JScript runtime error - runFromFavorite: unable to parse favorite '" + favoriteId + "'.";
 	}
+
+	header = controlData.datasets[1];
+	footer = controlData.datasets[2];
+	control = controlData.datasets[3];
 	
-	if (favDetail) {
-		detail = controlData.datasets[1];
-		control = controlData.datasets[2];
-	} else {
-		detail = "";
-		control = controlData.datasets[1];
-	}
-			
-	return "\n\n" + detail + control.html + "\n\n<script>K(\"" + control.stateKeywords + "\");</script>\n\n";
+	return "\n\n" + header + control.html + footer + "\n\n<script>K(\"" + control.stateKeywords + "\");</script>\n\n";
 };
 
 var runFav = runFromFavorite;
