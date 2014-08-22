@@ -94,7 +94,11 @@ button.postfix, .button.postfix {
 .row[class*="-block-grid-"] > * {
 	height: auto;
 	float: left !important;
-	padding: 0 0.9375rem 1.25rem;
+	padding: 0 0.5rem 0.5rem;
+}
+
+.row.collapse[class*="-block-grid-"] > * {
+	padding: 0;
 }
 
 .small-block-grid-1 > * { width: 100%; }
