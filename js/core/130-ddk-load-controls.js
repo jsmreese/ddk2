@@ -104,6 +104,9 @@ DDK.reloadFromFavoriteRequest = function () {
 			
 			settings.$target.am("hidemask").empty().removeAttr("data-fav").html(DDK.unescape.brackets((favHeader + control.html + favFooter)));
 			
+			DDK.navFormat(settings.$target);
+			DDK.format(settings.$target);
+			
 			if (type === "Component") {
 				K(control.stateKeywords);
 				reloadControlContainer(control.name, control.id, settings, settings.callback, settings.$target.children().eq(0));
