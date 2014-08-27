@@ -93,27 +93,33 @@ DDK.reloadFromFavoriteRequest = function () {
 			"chart_container_width": settings.$target.width()
 		},
 		success: function (data) {
-			var control = data.datasets[3],
-				favHeader = data.datasets[1],
-				favFooter = data.datasets[2],
-				controlFavorite = data.datasets[0][0],
-				type = controlFavorite.typeLabel,
-				$controlLabel,
-				$controlNotes,
-				$controlDescription;
-			
-			settings.$target.am("hidemask").empty().removeAttr("data-fav").html(DDK.unescape.brackets((favHeader + control.html + favFooter)));
-			
-			DDK.navFormat(settings.$target);
-			DDK.format(settings.$target);
-			
-			if (type === "Component") {
-				K(control.stateKeywords);
-				reloadControlContainer(control.name, control.id, settings, settings.callback, settings.$target.children().eq(0));
+			var control, favHeader, favFooter, controlFavorite, type,
+				$controlLabel, $controlNotes, $controlDescription;
+				
+			settings.$target.am("hidemask").empty();
+		
+			if (data.apiResult === "ERROR") {
+				settings.$target.html("<div class='text-bold text-xdkred'>Error loading favorite</div><div><code>" + settings.favoriteId + "</code></div>");
+			} else {
+				control = data.datasets[3];
+				favHeader = data.datasets[1];
+				favFooter = data.datasets[2];
+				controlFavorite = data.datasets[0][0];
+				type = controlFavorite.typeLabel;
+				
+				settings.$target.removeAttr("data-fav").html(DDK.unescape.brackets((favHeader + control.html + favFooter)));
+				
+				DDK.navFormat(settings.$target);
+				DDK.format(settings.$target);
+				
+				if (type === "Component") {
+					K(control.stateKeywords);
+					reloadControlContainer(control.name, control.id, settings, settings.callback, settings.$target.children().eq(0));
+				}
+				
+				// execute runFavs on just-loaded content
+				runFavs(settings.$target);
 			}
-			
-			// execute runFavs on just-loaded content
-			runFavs(settings.$target);
 			
 			// clear loading status
 			DDK.reloadFromFavoriteLoading = false;
