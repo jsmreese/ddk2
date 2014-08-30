@@ -19,6 +19,7 @@ var runFromFavorite = function (favoriteId, keywords, favHeader, favFooter) {
 			keywords: "&ddk_fav_id=" + favoriteId,
 			shouldCamelizeKeys: true,
 			useCoercedTypes: false,
+			escapeMode: "keyword",
 			datasetKey: "fav"
 		},
 		{
