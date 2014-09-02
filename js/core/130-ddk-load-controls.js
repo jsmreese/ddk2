@@ -315,8 +315,15 @@ function runFavs(target) {
 	var $target = $.target(target, document),
 		$elems;
 	
+	// init child controls
+	// that were server-rendered via `serverRender: true` in a content favorite
+	$elems = $target.find("[data-fav-init]").addBack("[data-fav-init]");
+	$elems.findControls().initControls();
+	$elems.removeAttr("data-fav-init").data("favInit", null);
+	
+	// run child favs
 	// find all descendant elements that have a data-fav attribute
-	// and also includ the target element if it has a data-fav attribute
+	// and also include the target element if it has a data-fav attribute
 	$elems = $target.find("[data-fav]").addBack("[data-fav]");
 	
 	$elems.each(function (index, elem) {
