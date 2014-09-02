@@ -16,6 +16,16 @@
 	margin-top: 20px;
 }
 
+.postfix.small-vertical-postfix {
+	margin-top: -1.25rem;
+}
+
+@media only screen and (min-width: 40.063em) {
+	.postfix.small-vertical-postfix {
+		margin-top: auto;
+	}
+}
+
 /* responsive template header modes */
 .ddk-header-mode-basic .hide-for-basic {
 	display: none;
