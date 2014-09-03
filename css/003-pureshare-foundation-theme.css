@@ -63,7 +63,7 @@ button:hover, button:focus {
 }
 
 .block-header {
-	padding: 5px;
+	padding: 5px 10px;
 	color: #555;
 	background-color: #F4F4F4;
 	min-height: 36px;
@@ -78,7 +78,7 @@ button:hover, button:focus {
 }
 
 .block-content {
-	padding: 5px;
+	padding: 5px 10px 10px;
 }
 
 .block-title {
