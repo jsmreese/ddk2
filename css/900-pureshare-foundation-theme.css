@@ -62,6 +62,10 @@ button:hover, button:focus {
 	background-color: #FFF;
 }
 
+.block .nav-label {
+	color: #AAA;
+}
+
 .block-header {
 	padding: 5px 10px;
 	color: #555;
@@ -82,10 +86,8 @@ button:hover, button:focus {
 }
 
 .block-title {
-	color: #2462A8;
-	font-weight: bold;
-	font-size: 1.25em;
-	line-height: 1.25;
+	color: #666;
+	line-height: 1.5;
 }
 
 .block:before, .block:after {
@@ -125,4 +127,17 @@ button:hover, button:focus {
 	margin: 32px auto 16px;
 	width: 280px;
 	text-align: center;
+}
+
+
+
+
+.jstree-default .jstree-clicked {
+	background: #BDDCFF;
+	border: 1px solid #9BC9FD;
+}
+
+.jstree-default .jstree-hovered {
+	background: #E7EFF9;
+	border: 1px solid #D6E7FA;
 }
