@@ -605,6 +605,22 @@ PS.optionsAPI.navElemConfig = {
 						"label": "False"
 					}
 				]
+			},
+			"cached": {
+				"id": "cached",
+				"label": "Cached",
+				"description": "A feature to cache dropdown options on select2 to improve performance",
+				"notes": "",
+				"values": [
+					{
+						"value": "true",
+						"label": "True"
+					},
+					{
+						"value": "false",
+						"label": "False"
+					}
+				]
 			}
 		}
 	}		
