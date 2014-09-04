@@ -56,6 +56,88 @@ button:hover, button:focus {
 	}
 }
 
-.row {
+.block {
+	margin: 5px;
+	border: 1px solid #CCC;
 	background-color: #FFF;
+}
+
+.block .nav-label {
+	color: #AAA;
+}
+
+.block-header {
+	padding: 5px 10px;
+	color: #555;
+	background-color: #F4F4F4;
+	min-height: 36px;
+	border-bottom: 1px solid #CCC;
+}
+
+.block-header .select2-container,
+.block-header select,
+.block-header input,
+.block-header button {
+	margin-bottom: 3px;
+}
+
+.block-content {
+	padding: 5px 10px 10px;
+}
+
+.block-title {
+	color: #666;
+	line-height: 1.5;
+}
+
+.block:before, .block:after {
+  content: " ";
+  display: table; }
+.block:after {
+  clear: both; }
+  
+.block-header:before, .block-header:after {
+  content: " ";
+  display: table; }
+.block-header:after {
+  clear: both; }
+
+.block-content:before, .block-content:after {
+  content: " ";
+  display: table; }
+.block-content:after {
+  clear: both; }
+  
+.page-title h1 {
+	font-size: 2rem;
+}
+
+.page-message .ddk-icon {
+	font-size: 6em;
+	color: #EEE;
+}
+.page-message p {
+	font-size: inherit;
+	margin-top: -1em;
+	line-height: 1.1;
+}
+.page-message {
+	font-size: 32px;
+	color: #DDD;
+	margin: 32px auto 16px;
+	width: 280px;
+	text-align: center;
+}
+
+
+
+
+.jstree-default .jstree-clicked {
+	background: #BDDCFF;
+	border: 1px solid #9BC9FD;
+}
+
+.jstree-default .jstree-hovered {
+	background: #E7EFF9;
+	border: 1px solid #D6E7FA;
 }

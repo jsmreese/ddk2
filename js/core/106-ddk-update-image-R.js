@@ -35,34 +35,38 @@ DDK.chart.updateImage = function (controlId) {
 
 		DDK.log("Updating chart image: " + controlId);				
 
-		load("", "PSC_" + controlTitle + "_Widget", function (data, header, id) {
+		load("", "PSC_" + controlTitle + "_Widget", null, function (data, header, id) {
 			var $data = $(data),
 				$container = $data.find("#" + controlId).children("span"),
 				$img = $container.find("img"),
 				$table,
 				$map;
-				
-			$img.get(0).onload = function (e) {
-				// put new chart image and map in the DOM
-				$controlImageContainer.replaceWith($container);
-				
-				// initialize DDK Mouseovers
-				$container.find("[data-ddk-mouseover]").each(DDK.mouseover);
-				
-				// adjust data-width and data-height
-				$container.parents(".ps-chart").data("width", $img.width()).data("height", $img.height());
-				
-				// resize chart datatable
-				$table = $control.find("#" + controlId + "_datatable");
-				$map = $container.find("#" + controlId + "_imageImageMap");
-				$table.size() && isVertical && DDK.chart.resizeDatatable($table, $map, isVertical);
-		
-				DDK.log("Updated chart image: " + controlId);				
-			};
 			
-			$img.get(0).onerror = function (e) {
-				DDK.warn("Unable to update chart image: " + controlId);
-			};
+			if ($img.get(0)) {
+				$img.get(0).onload = function (e) {
+					// put new chart image and map in the DOM
+					$controlImageContainer.replaceWith($container);
+					
+					// initialize DDK Mouseovers
+					$container.find("[data-ddk-mouseover]").each(DDK.mouseover);
+					
+					// adjust data-width and data-height
+					$container.parents(".ps-chart").data("width", $img.width()).data("height", $img.height());
+					
+					// resize chart datatable
+					$table = $control.find("#" + controlId + "_datatable");
+					$map = $container.find("#" + controlId + "_imageImageMap");
+					$table.size() && isVertical && DDK.chart.resizeDatatable($table, $map, isVertical);
+			
+					DDK.log("Updated chart image: " + controlId);				
+				};
+				
+				$img.get(0).onerror = function (e) {
+					DDK.warn("Chart Control resize error: unable to update chart image for control " + controlId);
+				};
+			} else {
+				DDK.error("Chart Control resize error: image not found.");
+			}
 		}, { 
 			stateFilter: "s_" + controlId + "_"
 		});

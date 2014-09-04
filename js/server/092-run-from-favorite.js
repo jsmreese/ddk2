@@ -1,20 +1,40 @@
-var runFromFavorite = function (favoriteId, keywords) {
+var runFromFavorite = function (favoriteId, keywords, favHeader, favFooter) {
 	var controlData,
 		control,
-		dataConfig = [
-			{
-				queryWidget: "PSC_Favorites_Record_Query_" + (_.isNaN(+favoriteId) ? "Name" : "Id"),
-				columnPrefix: "sci_fav_",
-				datasetMode: "array",
-				keywords: "&ddk_fav_id=" + favoriteId,
-				shouldCamelizeKeys: true,
-				useCoercedTypes: false
-			},
-			{
-				method: "runFav"
-			}
-		];
-	
+		header,
+		footer,
+		dataConfig;
+
+	if (typeof keywords === "boolean") {
+		favFooter = favHeader;
+		favHeader = keywords;
+		keywords = "";
+	}
+
+	dataConfig = [
+		{
+			queryWidget: "PSC_Favorites_Record_Query_" + (_.isNaN(+favoriteId) ? "Name" : "Id"),
+			columnPrefix: "sci_fav_",
+			datasetMode: "array",
+			keywords: "&ddk_fav_id=" + favoriteId,
+			shouldCamelizeKeys: true,
+			useCoercedTypes: false,
+			escapeMode: "keyword",
+			datasetKey: "fav"
+		},
+		{
+			method: "runFavHeader",
+			keywords: favHeader
+		},
+		{
+			method: "runFavFooter",
+			keywords: favFooter
+		},
+		{
+			method: "runFav"
+		}
+	];
+		
 	// Throw exception if favoriteId does not evaluate to a positive number
 	// or is not a name
 	if (!(+favoriteId > 0)) {
@@ -29,10 +49,12 @@ var runFromFavorite = function (favoriteId, keywords) {
 	if (!_.isPlainObject(controlData)) {
 		return "AMEngine JScript runtime error - runFromFavorite: unable to parse favorite '" + favoriteId + "'.";
 	}
+
+	header = controlData.datasets[1];
+	footer = controlData.datasets[2];
+	control = controlData.datasets[3];
 	
-	control = controlData.datasets[1];
-			
-	return "\n\n" + control.html + "\n\n<script>K(\"" + control.stateKeywords + "\");</script>\n\n";
+	return "\n\n" + header + control.html + footer + "\n\n<script>K(\"" + control.stateKeywords + "\");</script>\n\n";
 };
 
 var runFav = runFromFavorite;
