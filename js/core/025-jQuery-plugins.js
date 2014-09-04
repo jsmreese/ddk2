@@ -105,6 +105,32 @@
 		return ret.then(settings.success).fail(settings.error);
 	};
 	
+	/* $.createStylesheet jQuery plugin
+	 * Adds a new style element to the page.
+	 * Structured as a jQuery plugin because that's where DOM Manipulation tools are found.
+	 * Returns a reference to the created style element's sheet property.
+	 * Accepts a media query applied to the created stylesheet.
+	 * by: jsmreese
+	 * http://davidwalsh.name/add-rules-stylesheets
+	 */
+	$.createStylesheet = function (media) {
+		// Create a style element
+		var style = document.createElement("style");
+		
+		// WebKit hack
+		style.appendChild(document.createTextNode(""));
+		
+		if (media) {
+			style.setAttribute("media", media)
+		}
+
+		// Add the style element to the page
+		document.head.appendChild(style);
+		
+		return style.sheet;
+	};
+	
+	
 	/* $.fn.rowspan jQuery plugin
 	 * Adds rowspans to an html table element
 	 * for td elements at the provided column index.
