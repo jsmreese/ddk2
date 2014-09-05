@@ -347,7 +347,31 @@
 		// .eval(key)
 		eval: function (key) {
 			return evalKeywordValue(K(key), [key]);
-		}		
+		},
+
+		// .GC()
+		// Garbage Collection to delete orphaned state keywords
+		GC: function () {
+			var documentIds, hashIds, orphanIds;
+
+			documentIds = _.unique($(document).findControls().map(function (index, elem) {
+				return $(elem).controlData().id;
+			}).get());
+			
+			hashIds = _.unique(_.map(_.keys(K.toObject("s_")), function (value) {
+				return value.split("_")[1];
+			}));
+			
+			orphanIds = _.difference(hashIds, documentIds);
+			
+			if (orphanIds.length) {
+				DDK.log("Garbage Collection -- Deleting keywords for these controls:", orphanIds);
+				
+				K.flush(_.map(orphanIds, function (id) {
+					return "s_" + id;
+				}));
+			}
+		}
 	});
 
 	// Expose K to the global object

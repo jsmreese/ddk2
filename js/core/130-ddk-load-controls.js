@@ -54,6 +54,10 @@ DDK.reloadFromFavoriteRequest = function () {
 	
 	if (!DDK.reloadFromFavoriteQueue.length) {
 		DDK.log("DDK.reloadFromFavoriteQueue is empty.");
+		
+		// execute keyword has garbage cleanup
+		// to remove orphaned state keywords
+		K.GC();
 		return false;
 	}
 
