@@ -1122,6 +1122,8 @@
 							}
 							setTimeout(function(){	//uses timeout for IE8 because of slow browser render
 								var searchCount = $(".jstree-search", "#"+id).length;
+								//Add count of found nodes on id match
+								searchCount += $("#"+id).find("li[id*='" + $search.val() + "']").length;
 								// Displays result text
 								if($search.val()){
 									if(nodesSearchText){

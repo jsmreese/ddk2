@@ -57,9 +57,10 @@ button:hover, button:focus {
 }
 
 .block {
-	margin: 5px;
+	margin: 10px 5px 0;
 	border: 1px solid #CCC;
 	background-color: #FFF;
+	overflow: auto;
 }
 
 .block .nav-label {
@@ -110,23 +111,6 @@ button:hover, button:focus {
   
 .page-title h1 {
 	font-size: 2rem;
-}
-
-.page-message .ddk-icon {
-	font-size: 6em;
-	color: #EEE;
-}
-.page-message p {
-	font-size: inherit;
-	margin-top: -1em;
-	line-height: 1.1;
-}
-.page-message {
-	font-size: 32px;
-	color: #DDD;
-	margin: 32px auto 16px;
-	width: 280px;
-	text-align: center;
 }
 
 
