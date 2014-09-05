@@ -112,6 +112,9 @@ DDK.reloadFromFavoriteRequest = function () {
 				DDK.navFormat(settings.$target);
 				DDK.format(settings.$target);
 				
+				// initialize Prism.js syntax highlighting
+				Prism && Prism.highlightAll();
+				
 				if (type === "Component") {
 					K(control.stateKeywords);
 					reloadControlContainer(control.name, control.id, settings, settings.callback, settings.$target.children().eq(0));
@@ -125,7 +128,7 @@ DDK.reloadFromFavoriteRequest = function () {
 			DDK.reloadFromFavoriteLoading = false;
 			
 			return DDK.reloadFromFavoriteRequest();
-		}		
+		}
 	};
 		
 	// beforeReload
