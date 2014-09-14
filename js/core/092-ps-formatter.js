@@ -527,8 +527,7 @@ PS.Formatter.fn.date = function () {
 		args.push(settings.units);
 	}
 		
-	mom = moment.utc.apply(null, args);
-	mom.local();
+	mom = moment.apply(null, args);
 
 	// pass settings.template argument to fromNow
 	if (settings.method === "format") {
