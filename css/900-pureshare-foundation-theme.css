@@ -1,3 +1,7 @@
+code {
+	color: #2962A3; /* hsl(212, 60%, 40%) */
+}
+
 /* anchor colors */
 a, a:visited {
 	color: #2462A8; /* hsl(212, 65%, 40%) */
