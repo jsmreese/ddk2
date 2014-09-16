@@ -2,6 +2,11 @@ code {
 	color: #3D638F; /* hsl(212, 40%, 40%) */
 }
 
+h2 {
+	margin-top: 0.5em;
+	border-bottom: 1px solid #888;
+}
+
 /* anchor colors */
 a, a:visited {
 	color: #2462A8; /* hsl(212, 65%, 40%) */
