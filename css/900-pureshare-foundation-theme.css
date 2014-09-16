@@ -82,6 +82,8 @@ button:hover, button:focus {
 	border: 1px solid #CCC;
 	background-color: #FFF;
 	overflow: auto;
+	border-radius: 8px;
+	box-shadow: 0px 1px 1px rgba(255, 255, 255, 0.8) inset, 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .block .nav-label {
@@ -89,8 +91,9 @@ button:hover, button:focus {
 }
 
 .block-header {
-	padding: 5px 10px;
-	color: #555;
+	padding: 6px 10px 5px;
+	color: #666;
+	line-height: 1.5;
 	background-color: #F4F4F4;
 	min-height: 36px;
 	border-bottom: 1px solid #CCC;
@@ -105,11 +108,6 @@ button:hover, button:focus {
 
 .block-content {
 	padding: 5px 10px 10px;
-}
-
-.block-title {
-	color: #666;
-	line-height: 1.5;
 }
 
 .block:before, .block:after {
@@ -130,8 +128,12 @@ button:hover, button:focus {
 .block-content:after {
   clear: both; }
   
-.page-title h1 {
+.page-title {
 	font-size: 2rem;
+	line-height: 1;
+	
+	/* use padding instead of margin so that height measurements return a correct value when this is hidden */
+	padding: 10px 5px 0;
 }
 
 
