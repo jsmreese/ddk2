@@ -3,8 +3,20 @@ code {
 }
 
 h2 {
-	margin-top: 0.5em;
-	border-bottom: 1px solid #888;
+	margin-top: 1.5em;
+}
+
+h3 {
+	margin-top: 1.5em;
+	border-bottom: 1px solid #CCC;
+}
+
+h4 {
+	margin-top: 1.5em;
+}
+
+.subheader {
+	margin-top: 1em;
 }
 
 /* anchor colors */
