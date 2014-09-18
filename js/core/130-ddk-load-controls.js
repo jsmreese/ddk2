@@ -69,7 +69,7 @@ DDK.reloadFromFavoriteRequest = function () {
 			queryWidget: "PSC_Favorites_Record_Query_" + (_.isNaN(+settings.favoriteId) ? "Name" : "Id"),
 			columnPrefix: "sci_fav_",
 			datasetMode: "array",
-			keywords: "&ddk_fav_id=" + settings.favoriteId + "&" + (settings.keywords || ""),
+			keywords: "&ddk_fav_id=" + settings.favoriteId,
 			shouldCamelizeKeys: true,
 			useCoercedTypes: false,
 			escapeMode: "keyword",
@@ -152,6 +152,15 @@ DDK.reloadFromFavoriteRequest = function () {
 		
 		accumulator[key] = value;
 	}));
+	
+	// send any request-specific keywords values
+	if (settings.keywords) {
+		if (typeof settings.keywords === "string") {
+			_.extend(ajaxSettings.data, _.string.parse(settings.keywords));
+		} else {
+			_.extend(ajaxSettings.data, settings.keywords);
+		}
+	}
 	
 	// set loading status
 	DDK.reloadFromFavoriteLoading = true;
