@@ -8,7 +8,7 @@ var require = (function () {
 		
 		keywordUpdate("html.bypass", "true");
 		
-		code = run(id);
+		code = DDK.unescape.brackets(run(id));
 		
 		keywordFlush("html.bypass");
 		
