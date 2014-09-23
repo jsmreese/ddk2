@@ -12,6 +12,13 @@
 	width: 300px;
 }
 
+
+.left-off-canvas-menu .select2-drop {
+	border: 0;
+	border-radius: 0;
+}
+
+
 /* min height for content loading */
 [data-fav] {
 	min-height: 100px;
