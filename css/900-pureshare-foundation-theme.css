@@ -132,15 +132,3 @@ button:hover, button:focus {
 	padding: 10px 5px 0;
 }
 
-
-
-
-.jstree-default .jstree-clicked {
-	background: #BDDCFF;
-	border: 1px solid #9BC9FD;
-}
-
-.jstree-default .jstree-hovered {
-	background: #E7EFF9;
-	border: 1px solid #D6E7FA;
-}
