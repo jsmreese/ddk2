@@ -34,7 +34,7 @@
         .on('click.fndtn.offcanvas', '.left-off-canvas-toggle', function (e) {
           self.click_toggle_class(e, move_class + right_postfix);
         })
-        .on('click.fndtn.offcanvas', '.left-off-canvas-menu a', function (e) {
+        .on('click.fndtn.offcanvas', '.left-off-canvas-menu a:not(.jstree-anchor)', function (e) {
           var settings = self.get_settings(e);
           if (settings.close_on_click) {
             self.hide.call(self, move_class + right_postfix, self.get_wrapper(e));

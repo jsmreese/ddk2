@@ -42,20 +42,21 @@
 		ccp_inst = false,
 		themes_loaded = [],
 		src = $('script:last').attr('src'),
-		_d = document, _node = _d.createElement('LI'), _temp1, _temp2;
+		_d = document, _node = _d.createElement('LI'), _temp1, _temp2, _temp3;
 
 	_node.setAttribute('role', 'treeitem');
-	_temp1 = _d.createElement('I');
-	_temp1.className = 'jstree-icon jstree-ocl';
-	_node.appendChild(_temp1);
 	_temp1 = _d.createElement('A');
 	_temp1.className = 'jstree-anchor';
 	_temp1.setAttribute('href','#');
+	_node.appendChild(_temp1);
 	_temp2 = _d.createElement('I');
 	_temp2.className = 'jstree-icon jstree-themeicon';
+	_temp3 = _d.createElement('I');
+	_temp3.className = 'jstree-icon jstree-ocl';
 	_temp1.appendChild(_temp2);
 	_node.appendChild(_temp1);
-	_temp1 = _temp2 = null;
+	_node.appendChild(_temp3);
+	_temp1 = _temp2 = _temp3 = null;
 
 
 	/**
@@ -2114,7 +2115,7 @@
 				if(obj.a_attr.hasOwnProperty(j)) {
 					if(j === 'href' && obj.a_attr[j] === '#') { continue; }
 					if(j !== 'class') {
-						node.childNodes[1].setAttribute(j, obj.a_attr[j]);
+						node.childNodes[0].setAttribute(j, obj.a_attr[j]);
 					}
 					else {
 						c += ' ' + obj.a_attr[j];
@@ -2122,28 +2123,28 @@
 				}
 			}
 			if(c.length) {
-				node.childNodes[1].className = 'jstree-anchor ' + c;
+				node.childNodes[0].className = 'jstree-anchor ' + c;
 			}
 			if((obj.icon && obj.icon !== true) || obj.icon === false) {
 				if(obj.icon === false) {
-					node.childNodes[1].childNodes[0].className += ' jstree-themeicon-hidden';
+					node.childNodes[0].childNodes[0].className += ' jstree-themeicon-hidden';
 				}
 				else if(obj.icon.indexOf('/') === -1 && obj.icon.indexOf('.') === -1) {
-					node.childNodes[1].childNodes[0].className += ' ' + obj.icon + ' jstree-themeicon-custom';
+					node.childNodes[0].childNodes[0].className += ' ' + obj.icon + ' jstree-themeicon-custom';
 				}
 				else {
-					node.childNodes[1].childNodes[0].style.backgroundImage = 'url('+obj.icon+')';
-					node.childNodes[1].childNodes[0].style.backgroundPosition = 'center center';
-					node.childNodes[1].childNodes[0].style.backgroundSize = 'auto';
-					node.childNodes[1].childNodes[0].className += ' jstree-themeicon-custom';
+					node.childNodes[0].childNodes[0].style.backgroundImage = 'url('+obj.icon+')';
+					node.childNodes[0].childNodes[0].style.backgroundPosition = 'center center';
+					node.childNodes[0].childNodes[0].style.backgroundSize = 'auto';
+					node.childNodes[0].childNodes[0].className += ' jstree-themeicon-custom';
 				}
 			}
 
 			if(this.settings.core.force_text) {
-				node.childNodes[1].appendChild(d.createTextNode(obj.text));
+				node.childNodes[0].appendChild(d.createTextNode(obj.text));
 			}
 			else {
-				node.childNodes[1].innerHTML += obj.text;
+				node.childNodes[0].innerHTML += obj.text;
 			}
 
 			if(deep && obj.children.length && obj.state.opened && obj.state.loaded) {
