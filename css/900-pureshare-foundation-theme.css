@@ -169,62 +169,64 @@ button:hover, button:focus {
 	color: #666;
 }
 
-.main-section .jstree ul .jstree-node.jstree-open > .jstree-ocl:before,
-.main-section .jstree ul .jstree-node.jstree-closed > .jstree-ocl:before {
-	top: 6px;
+.main-section .jstree ul .jstree-node > .jstree-ocl:before {
+	top: 4px;
 }
 
+.main-section .off-canvas-list .jstree-themeicon {
+	margin-left: 1.4em;
+}
 
+.main-section ul li ol, .main-section ul li ul {
+	margin-left: 1em;
+}
+
+.left-off-canvas-menu .section-header:before {
+	text-transform: none;
+	top: 6px;
+	position: absolute;
+	right: 10px;
+	font-family: ddk_icon;
+	font-size: 24px;
+}
 
 .left-off-canvas-menu .section-header.open:before {
-	content: '\01F7';
-	top: 11px;
-	position: absolute;
-	left: 14px;
-	font-family: ddk_icon;
-	font-size: 1rem;
+	content: '\01FC';
 }
 
 .left-off-canvas-menu .section-header.closed:before {
-	content: '\01F8';
-	top: 11px;
-	position: absolute;
-	left: 14px;
-	font-family: ddk_icon;
-	font-size: 1rem;
+	content: '\01FB';
 }
 
 
-.off-canvas-list .has-dropdown.closed > a:before {
-	content: '\01F8';
+.off-canvas-list .has-dropdown > a:before {
 	top: 12px;
 	position: absolute;
-	left: 14px;
+	left: 6px;
 	font-family: ddk_icon;
+}
+
+.off-canvas-list .has-dropdown.closed > a:before {
+	content: '\01F8';
 }
 
 .off-canvas-list .has-dropdown.open > a:before {
 	content: '\01F7';
+}
+
+.off-canvas-list .jstree-node > .jstree-ocl:before {
 	top: 12px;
 	position: absolute;
-	left: 14px;
+	left: 6px;
 	font-family: ddk_icon;
 }
 
 .off-canvas-list .jstree-node.jstree-closed > .jstree-ocl:before {
 	content: '\01F8';
-	top: 12px;
-	position: absolute;
-	left: 14px;
-	font-family: ddk_icon;
 }
 
 .off-canvas-list .jstree-node.jstree-open > .jstree-ocl:before {
 	content: '\01F7';
-	top: 12px;
-	position: absolute;
-	left: 14px;
-	font-family: ddk_icon;
 }
 
 .left-off-canvas-menu .section-header {
@@ -239,10 +241,6 @@ button:hover, button:focus {
 	position: relative;
 }
 
-.left-off-canvas-menu .section-header > span:first-child {
-	margin-left: 2rem;
-}
-
 
 .jstree ul.off-canvas-list li a {
 	white-space: nowrap;
@@ -255,8 +253,9 @@ button:hover, button:focus {
 	background-color: rgba(255, 255, 255, 0.075);
 }
 
-.left-off-canvas-menu .list-label {
-	margin-left: 2em;
+.left-off-canvas-menu .list-label,
+.off-canvas-list .jstree-themeicon {
+	margin-left: 1em;
 }
 
 .left-off-canvas-menu .settings-list li .list-label {
@@ -264,7 +263,7 @@ button:hover, button:focus {
 }
 
 ul li ol, ul li ul {
-	margin-left: 0.75em;
+	margin-left: 0.5em;
 	margin-bottom: 0;
 }
 
@@ -274,10 +273,10 @@ ul li ol, ul li ul {
 	position: relative;
 }
 
-.off-canvas-list .jstree-themeicon {
-	margin-left: 2em;
-}
-
 .off-canvas-list .jstree-ocl {
 	color: rgba(255, 255, 255, 0.7);
+}
+
+i.jstree-icon {
+	font-style: normal;
 }
