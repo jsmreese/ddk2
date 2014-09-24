@@ -123,7 +123,19 @@ button:hover, button:focus {
   display: table; }
 .block-content:after {
   clear: both; }
-  
+ 
+ 
+.nav-label {
+	font-size: .875rem;
+	display: block;
+	line-height: 1.5;
+	margin-bottom: 0;
+}
+
+.block-content .nav-label {
+	color: #AAA;
+}
+
 .page-title {
 	font-size: 2rem;
 	line-height: 1;
@@ -132,3 +144,140 @@ button:hover, button:focus {
 	padding: 10px 5px 0;
 }
 
+
+
+.main-section .jstree ul li a {
+	color: #444;
+	border: 0;
+	padding: 0.25rem;
+}
+
+.main-section .jstree ul {
+	background-color: #FFF;
+}
+
+.main-section .jstree ul ul {
+	background-color: rgba(0, 0, 0, 0.04);
+}
+
+.main-section .jstree ul li a:hover {
+	background: rgba(0, 0, 0, 0.15);
+}
+
+.main-section .jstree ul li .jstree-ocl,
+.main-section .jstree ul li button.fav-select {
+	color: #666;
+}
+
+.main-section .jstree ul .jstree-node.jstree-open > .jstree-ocl:before,
+.main-section .jstree ul .jstree-node.jstree-closed > .jstree-ocl:before {
+	top: 6px;
+}
+
+
+
+.left-off-canvas-menu .section-header.open:before {
+	content: '\01F7';
+	top: 11px;
+	position: absolute;
+	left: 14px;
+	font-family: ddk_icon;
+	font-size: 1rem;
+}
+
+.left-off-canvas-menu .section-header.closed:before {
+	content: '\01F8';
+	top: 11px;
+	position: absolute;
+	left: 14px;
+	font-family: ddk_icon;
+	font-size: 1rem;
+}
+
+
+.off-canvas-list .has-dropdown.closed > a:before {
+	content: '\01F8';
+	top: 12px;
+	position: absolute;
+	left: 14px;
+	font-family: ddk_icon;
+}
+
+.off-canvas-list .has-dropdown.open > a:before {
+	content: '\01F7';
+	top: 12px;
+	position: absolute;
+	left: 14px;
+	font-family: ddk_icon;
+}
+
+.off-canvas-list .jstree-node.jstree-closed > .jstree-ocl:before {
+	content: '\01F8';
+	top: 12px;
+	position: absolute;
+	left: 14px;
+	font-family: ddk_icon;
+}
+
+.off-canvas-list .jstree-node.jstree-open > .jstree-ocl:before {
+	content: '\01F7';
+	top: 12px;
+	position: absolute;
+	left: 14px;
+	font-family: ddk_icon;
+}
+
+.left-off-canvas-menu .section-header {
+	border-top: 1px solid #AAA;
+	border-bottom: 1px solid #111;
+	padding: 0.8rem .66667rem;
+	color: #DDD;
+	background: #666;
+	font-size: .75em;
+	display: block;
+	text-transform: uppercase;
+	position: relative;
+}
+
+.left-off-canvas-menu .section-header > span:first-child {
+	margin-left: 2rem;
+}
+
+
+.jstree ul.off-canvas-list li a {
+	white-space: nowrap;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+	padding-right: 1em;
+}
+
+.off-canvas-list ul {
+	background-color: rgba(255, 255, 255, 0.075);
+}
+
+.left-off-canvas-menu .list-label {
+	margin-left: 2em;
+}
+
+.left-off-canvas-menu .settings-list li .list-label {
+	margin-left: 0;
+}
+
+ul li ol, ul li ul {
+	margin-left: 0.75em;
+	margin-bottom: 0;
+}
+
+
+
+.off-canvas-list .jstree-node {
+	position: relative;
+}
+
+.off-canvas-list .jstree-themeicon {
+	margin-left: 2em;
+}
+
+.off-canvas-list .jstree-ocl {
+	color: rgba(255, 255, 255, 0.7);
+}
