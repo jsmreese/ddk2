@@ -69,21 +69,7 @@ button.postfix, .button.postfix {
 	position: relative;
 }
 
-.off-canvas-list .has-dropdown.closed > a:after {
-	content: '\0206';
-	top: 12px;
-	position: absolute;
-	right: 14px;
-	font-family: ddk_icon;
-}
 
-.off-canvas-list .has-dropdown.open > a:after {
-	content: '\0207';
-	top: 12px;
-	position: absolute;
-	right: 14px;
-	font-family: ddk_icon;
-}
 
 /* off-canvas bottom should not be fixed to the content bottom, but should take up the full viewport height */
 .left-off-canvas-menu {
