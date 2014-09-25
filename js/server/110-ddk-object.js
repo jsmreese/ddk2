@@ -1048,7 +1048,7 @@ DDK.template.render = {
 				columnMetricParameters = DDK.template.render.columnMetricParameters({
 					columnMetricName: columnMetricName,
 					columnMetricDisplay: columnMetricDisplay,
-					columns: DDK_COLUMNS
+					columns: DDK.DDK_COLUMNS
 				});
 				if (columnelement) {
 					out += DDK.template.render.scorecardColumnelement(rowType, columnelement)
@@ -1274,7 +1274,7 @@ DDK.template.render = {
 				aggregate,
 				metric = prefix.toUpperCase(),
 				isNamedMetric,
-				columns = _.filter(DDK_COLUMNS, { metric: metric }),
+				columns = _.filter(DDK.DDK_COLUMNS, { metric: metric }),
 				valueAttrSequence;
 			
 			match = match.slice(2, -2).toUpperCase().split(" ");
@@ -1340,7 +1340,7 @@ DDK.template.render = {
 	
 	dataDetail: function () {
 		var detail = {},
-			columns = DDK_COLUMNS;
+			columns = DDK.DDK_COLUMNS;
 		
 		_.each(columns, function (column) {
 			var columnName = column.columnName.toLowerCase();
@@ -1354,7 +1354,7 @@ DDK.template.render = {
 	//	dataDetail: function() {
 	//		var detail = [],
 	//			i,
-	//			columns = DDK_COLUMNS,
+	//			columns = DDK.DDK_COLUMNS,
 	//			columnCount = columns.length;
 	//		
 	//		for (i = 0; i < columnCount; i += 1) {
@@ -1778,7 +1778,7 @@ DDK.template.render = {
 				metricParameters = DDK.template.render.columnMetricParameters({
 					columnMetricName: metricName,
 					columnMetricDisplay: metricDisplay,
-					columns: DDK_COLUMNS
+					columns: DDK.DDK_COLUMNS
 				});
 				return out
 					.replace(/{{trend}}/gi, metricParameters.trend)
