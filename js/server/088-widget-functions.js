@@ -78,28 +78,6 @@ var widgetFunctions = {
 	
 };
 
-
-<!-- Set CCS Options -->
-[KeywordUpdate("component_name","tree")]
-[KeywordUpdate("component_id","~tree_id~")]
-[KeywordUpdate("component_choose_metrics_label","")]
-[KeywordUpdate("component_fod_resize","true")]
-[KeywordUpdate("component_content_widget","PSC_Tree_Content")]
-[KeywordUpdate("component_toolbar_top_left_widget","")]
-[KeywordUpdate("component_toolbar_top_right_buttonset_widget","")]
-[KeywordUpdate("component_toolbar_top_right_widget", "")]
-[KeywordUpdate("component_toolbar_bottom_left_widget","")]
-[KeywordUpdate("component_toolbar_bottom_right_widget","")]
-[KeywordUpdate("component_toolbar_filter_widget","")]
-[KeywordUpdate("component_content_mode","nav")]
-[KeywordUpdate("component_query_widget",)]
-[KeywordUpdate("component_query_header_widget",)]
-
-[Run("PSC_CCS_Wrapper")]
-
-[KeywordFlush("minireport.detail")&KeywordFlush("component_")&KeywordFlush("tree_")]
-
-
 // DDK Controls
 _.each([
 	{
