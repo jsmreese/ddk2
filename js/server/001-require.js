@@ -15,7 +15,12 @@ var require = (function () {
 		try {
 			cache[id] = eval(code);
 		} catch (err) {
-			throw new Error("Error loading module '" + id + "'. " + err.name + ". " + err.message + ".");
+			// on error, check to see if the widget actually exists
+			if (+getMetricIdByName(id) > 0) {
+				throw new Error("Error loading module '" + id + "'. " + err.name + ". " + err.message + ".");
+			}
+			
+			throw new Error("Error loading module '" + id + "'. Widget does not exist.");
 		}
 		
 		return cache[id];

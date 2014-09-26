@@ -46,6 +46,41 @@ var runDelegator = _.delegator({
 		return out;
 	},
 	
+	"PSC_Bamset2_Widget": function () {
+		var out;
+		
+		K({
+			name: "bamset2",
+			id: keywordOrDefault("bamset2_id", ""),
+			choose_metrics_label: "Build Bamset",
+			content_widget: "PSC_Bamset2_Content"
+		}, "component_");
+
+		out = require("DDK2_Control_Module").wrapper();
+	
+		K.flush(["minireport.detail", "component_", "bamset2_"]);
+	
+		return out;
+	},	
+
+	"PSC_List_Widget": function () {
+		var out;
+		
+		K({
+			name: "list",
+			id: keywordOrDefault("list_id", ""),
+			choose_metrics_label: "Build List",
+			content_widget: "PSC_List_Content",
+			content_mode: "nav"
+		}, "component_");
+
+		out = require("DDK2_Control_Module").wrapper();
+	
+		K.flush(["minireport.detail", "component_", "list_"]);
+	
+		return out;
+	},
+	
 	"PSC_Favorites_Record_Query_Id": function () {
 		var favId = K("ddk_fav_id");
 		
