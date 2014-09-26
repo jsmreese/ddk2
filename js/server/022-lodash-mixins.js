@@ -223,7 +223,8 @@
 			
 			settings = _.defaults(settings || {}, {
 				toCase: "lower",
-				prefix: ""
+				prefix: "",
+				escape: "none"
 			});
 			
 			columns = _.sortBy(dataset.columns, "index");
@@ -240,7 +241,9 @@
 						name = name.slice(prefixLength);
 					}
 					
-					accumulator[_.toCase(settings.toCase, name)] = row[column.index];
+					// todo: use escapeMode functions from existing DDK.data.toArray API
+					// and convert to a function call
+					accumulator[_.toCase(settings.toCase, name)] = _.string.escapeData(row[column.index], settings.escape);
 				}, {});
 			});
 			
