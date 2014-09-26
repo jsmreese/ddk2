@@ -12,6 +12,10 @@ var runDelegator = _.delegator({
 		return FunctionLib.run(widgetName);
 	},
 	
+	"DDK2_Data_Request": function () {
+		return require("DDK2_Data_Request_Module").render();
+	},
+	
 	"PSC_Scorecard2_Widget": function () {
 		var out;
 		
