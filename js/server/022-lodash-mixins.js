@@ -224,7 +224,9 @@
 			settings = _.defaults(settings || {}, {
 				toCase: "lower",
 				prefix: "",
-				escape: "none"
+				escape: "",
+				coerce: false,
+				overlay: ""
 			});
 			
 			columns = _.sortBy(dataset.columns, "index");
@@ -232,19 +234,32 @@
 			prefixLength = settings.prefix.length;
 				
 			dataset.rows = _.map(rows, function (row) {
-				return _.transform(columns, function (accumulator, column) {
-					var name;
+				var newRow = _.transform(columns, function (accumulator, column) {
+					var name, point;
 					
 					name = column.name;
+					point = row[column.index];
 					
 					if (prefixLength && _.string.startsWith(name, settings.prefix)) {
 						name = name.slice(prefixLength);
 					}
 					
-					// todo: use escapeMode functions from existing DDK.data.toArray API
-					// and convert to a function call
-					accumulator[_.toCase(settings.toCase, name)] = _.string.escapeData(row[column.index], settings.escape);
+					if (settings.coerce && typeof point === "string") {
+						point = _.string.coerce(point);
+					}
+					
+					if (settings.escape && typeof point === "string") {
+						point = _.string.escapeData(point, settings.escape);
+					}
+					
+					accumulator[_.toCase(settings.toCase, name)] = point;
 				}, {});
+				
+				if (settings.overlay) {
+					newRow = _.overlay(newRow, settings.overlay);
+				}
+				
+				return newRow;
 			});
 			
 			return dataset;
