@@ -83,6 +83,29 @@
 		return trimmedData.match(/^undefined$/i) ? undefined : data;
 	}
   }, "string");
+
+	var escapeData = _.delegator({
+		"html": function (data) {
+			return _.escape(data).replace(DDK.regex.openBracket, "&#91;").replace(DDK.regex.closeBracket, "&#93;");
+		},
+		"html-script": function (data) {
+			return data
+				.replace(/<script/g, "&lt;script")
+				.replace(/<iframe/g, "&lt;iframe")
+				.replace(/<!\-\-/g, "&lt;!--")
+				.replace(/<\/script>/g, "&lt;/script&gt;")
+				.replace(/<\/iframe>/g, "&lt;/iframe&gt;")
+				.replace(/\-\->/g, "--&gt;")
+				.replace(DDK.regex.openBracket, "&#91;")
+				.replace(DDK.regex.closeBracket, "&#93;");		
+		},
+		"keyword": function (data) {
+			return data.replace(DDK.regex.tilde, "%7E").replace(DDK.regex.openBracket, "%5B").replace(DDK.regex.closeBracket, "%5D;");
+		},
+		"none": function (data) {
+			return data;
+		}
+	}, "none");
   
   var coerceTriggers = {
 	"0": "number",
@@ -757,6 +780,10 @@
 		}
 		
 		return coercedValue;
+	},
+	
+	escapeData: function (data, mode) {
+		return escapeData(mode, data);
 	}
 	
   };
