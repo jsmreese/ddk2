@@ -219,15 +219,28 @@
 		// converts a dataset containing record arrays into a dataset containing record objects
 		// will modify the original dataset object, and will also return a reference to the dataset object
 		toRecordObjects: function (dataset, settings) {
-			var columns = _.sortBy(dataset.columns, "index"),
-				rows = dataset.rows,
-				settings = _.defaults(settings || {}, {
-					toCase: "lower"
-				});
+			var columns, rows, prefixLength;
+			
+			settings = _.defaults(settings || {}, {
+				toCase: "lower",
+				prefix: ""
+			});
+			
+			columns = _.sortBy(dataset.columns, "index");
+			rows = dataset.rows;
+			prefixLength = settings.prefix.length;
 				
 			dataset.rows = _.map(rows, function (row) {
 				return _.transform(columns, function (accumulator, column) {
-					accumulator[_.toCase(settings.toCase, column.name)] = row[column.index];
+					var name;
+					
+					name = column.name;
+					
+					if (prefixLength && _.string.startsWith(name, settings.prefix)) {
+						name = name.slice(prefixLength);
+					}
+					
+					accumulator[_.toCase(settings.toCase, name)] = row[column.index];
 				}, {});
 			});
 			
