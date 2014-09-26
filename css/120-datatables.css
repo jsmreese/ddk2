@@ -64,7 +64,7 @@
 .dataTables_filter {
 	width: 50%;
 	float: right;
-	text-align: right;
+	/* text-align: right; not needed in responsive template */
 }
 
 .dataTables_info {
