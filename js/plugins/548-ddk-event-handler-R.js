@@ -5,3 +5,13 @@ $(window).on("resize", _.debounce(function () { $(document).findControls().resiz
 $(".left-off-canvas-menu").on("click", ".select2-choice", function (e) { 
 	e.stopPropagation();
 });
+
+// section expand/collapse
+$(".left-off-canvas-menu").on("click", ".section-header", function (e) {
+	var $this;
+	
+	$this = $(this);
+	
+	$this.toggleClass("open closed");
+	$this.next(".section-content").slideToggle(DDK.ease);
+});
