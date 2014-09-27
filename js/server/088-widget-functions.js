@@ -90,7 +90,7 @@ _.each([
 			query_header_widget: "PSC_Tree_Query_Header_" + tilde + "tree_query_mode" + tilde
 		}
 	},
-	{ name: "navset2", component: { choose_metrics_label: "Build Navset", query_widget: "PSC_Navset2_Query" } },
+	{ name: "navset2", component: { choose_metrics_label: "Build Navset", content_mode: "nav2" } },
 	{ name: "bamset", component: { choose_metrics_label: "Choose Metrics" } },
 	{ name: "scorecard", component: { choose_metrics_label: "Choose Columns" } },
 	{ name: "scorecard2", component: { choose_metrics_label: "Build Scorecard" } },
