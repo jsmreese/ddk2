@@ -79,13 +79,15 @@ var widgetFunctions = {
 };
 
 // DDK Controls
+var tilde = String.fromCharCode(126);
+
 _.each([
 	{
 		name: "tree",
 		component: { 
 			choose_metrics_label: "",
-			query_widget: "PSC_Tree_Query_" + DDK.char.tilde + "tree_query_mode" + DDK.char.tilde,
-			query_header_widget: "PSC_Tree_Query_Header_" + DDK.char.tilde + "tree_query_mode" + DDK.char.tilde
+			query_widget: "PSC_Tree_Query_" + tilde + "tree_query_mode" + tilde,
+			query_header_widget: "PSC_Tree_Query_Header_" + tilde + "tree_query_mode" + tilde
 		}
 	},
 	{ name: "navset2", component: { choose_metrics_label: "Build Navset", query_widget: "PSC_Navset2_Query" } },

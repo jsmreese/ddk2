@@ -1343,7 +1343,7 @@ DDK.template.render = {
 			columns = DDK.DDK_COLUMNS;
 		
 		_.each(columns, function (column) {
-			var columnName = column.columnName.toLowerCase();
+			var columnName = (column.columnName ? column.columnName.toLowerCase() : column.name.toLowerCase());
 			detail[columnName] = "%%-" + columnName + "%%";
 			//detail[columnName] = DDK.char.openBracket + "Replace(Replace(\"" + DDK.char.tilde + columnName + DDK.char.tilde + "\",CHR(34),\"&quot;\"),CHR(39),\"&#39;\")" + DDK.char.closeBracket;
 		});
