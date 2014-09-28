@@ -341,7 +341,7 @@ DDK.data.escapeModes = {
 			.replace(DDK.regex.closeBracket, "&#93;");		
 	},
 	"keyword": function (data) {
-		return data.replace(DDK.regex.tilde, "%7E").replace(DDK.regex.openBracket, "%5B").replace(DDK.regex.closeBracket, "%5D;");
+		return data.replace(DDK.regex.tilde, "%25%25").replace(DDK.regex.openBracket, "%5B").replace(DDK.regex.closeBracket, "%5D;");
 	}
 };
 
