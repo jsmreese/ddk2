@@ -35,7 +35,8 @@ DDK.chart.updateImage = function (controlId) {
 			id: controlId,
 			init_widget: K("s_" + controlId + "_iw") || K(controlName + "__" + controlId + "_init_widget") || controlData.options,
 			container_height: options.height || containerHeight || 0,
-			container_width: options.width || containerWidth || 0
+			container_width: options.width || containerWidth || 0,
+			container_block: (options.isBlock ? "true" : "false")
 		}, controlName + "_");
 
 		// grab the data-keywords from the control container, and merge them

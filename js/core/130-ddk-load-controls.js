@@ -229,8 +229,9 @@ DDK.reloadControl = function (controlName, controlId, callback, beforeInit, befo
 		K({
 			id: controlId,
 			init_widget: K("s_" + controlId + "_iw") || K(controlName + "__" + controlId + "_init_widget") || controlData.options,
-			container_height: options.height || containerHeight || 0,
-			container_width: options.width || containerWidth || 0
+			container_height: containerHeight || options.height || 0,
+			container_width: containerWidth || options.width || 0,
+			container_block: (options.isBlock ? "true" : "false")
 		}, controlName + "_");
 
 		if (controlName === "bamset" || controlName === "scorecard") {
