@@ -1973,6 +1973,13 @@ DDK.parseScriptBlockMatch = function (match) {
 	
 	match = DDK.unescape.brackets(match.slice(2, -2));
 
+	// hitting this with a hammer
+	// not sure why the Tools List Control doesn't render image paths properly
+	// in the Metrics Browser
+	if (match === ' K("ddk").path; ') {
+		return 'v' + DDK.VERSION.replace(/\./g, '');
+	}
+
 	try {
 		out = eval(match);
 	} catch (e) { 
