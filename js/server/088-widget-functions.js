@@ -54,7 +54,8 @@ _.each([
 		component: { 
 			choose_metrics_label: "",
 			query_widget: "PSC_Tree_Query_" + tilde + "tree_query_mode" + tilde,
-			query_header_widget: "PSC_Tree_Query_Header_" + tilde + "tree_query_mode" + tilde
+			query_header_widget: "PSC_Tree_Query_Header_" + tilde + "tree_query_mode" + tilde,
+			content_mode: "nav"
 		}
 	},
 	{ name: "navset2", component: { choose_metrics_label: "Build Navset", content_mode: "nav2" } },
