@@ -156,16 +156,16 @@
 
 /* large buttons */
 .list-mode-button.large .list-label {
-	font-size: 24px;
+	font-size: 22px;
 }
 
 .list-mode-button.large .list-image {
-	height: 64px;
-	width: 64px;
+	height: 48px;
+	width: 48px;
 }
 
 .list-mode-button.large .list-image + .list-label {
-	height: 64px;
+	height: 48px;
 }
 
 .list-mode-button.large .list-content {
@@ -174,7 +174,22 @@
 
 @media only screen and (min-width: 40.063em) {
 	.list-mode-button.large .list-label {
-		font-size: 36px;
+		font-size: 24px;
+	}
+
+	.list-mode-button.large .list-image + .list-label {
+		height: 60px;
+	}
+	
+	.list-mode-button.large .list-image {
+		height: 60px;
+		width: 60px;
+	}
+}
+
+@media only screen and (min-width: 64.063em) {
+	.list-mode-button.large .list-label {
+		font-size: 32px;
 	}
 
 	.list-mode-button.large .list-image + .list-label {
@@ -184,21 +199,6 @@
 	.list-mode-button.large .list-image {
 		height: 96px;
 		width: 96px;
-	}
-}
-
-@media only screen and (min-width: 64.063em) {
-	.list-mode-button.large .list-label {
-		font-size: 48px;
-	}
-
-	.list-mode-button.large .list-image + .list-label {
-		height: 128px;
-	}
-	
-	.list-mode-button.large .list-image {
-		height: 128px;
-		width: 128px;
 	}
 
 	.list-mode-button.large .list-content {
