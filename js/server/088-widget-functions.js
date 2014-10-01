@@ -5,6 +5,14 @@ var widgetFunctions = {
 	
 	"DDK_Data_Request": function () {
 		return require("DDK_Data_Request_Module").render();
+	},
+	
+	"SCIDIM_Query": function () {
+		return require("SCIDIM_Query_Module").query();
+	},
+	
+	"SCIDIM_Query_Header": function () {
+		return require("SCIDIM_Query_Module").queryHeader();
 	}
 };
 
