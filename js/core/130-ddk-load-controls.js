@@ -124,6 +124,9 @@ DDK.reloadFromFavoriteRequest = function () {
 					reloadControlContainer(control.name, control.id, settings, settings.callback, settings.$target.children().eq(0));
 				}
 				
+				// trigger window resize to update responsive block height classes
+				$(window).trigger("resize");
+				
 				// execute runFavs on just-loaded content
 				runFavs(settings.$target);
 			}
