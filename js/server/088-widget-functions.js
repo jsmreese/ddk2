@@ -21,7 +21,9 @@ _.each(["Id", "Name"], function (config, index) {
 	widgetFunctions["PSC_Favorites_Record_Query_" + config] = function () {
 		var favId = K("ddk_fav_id");
 		
-		return "SELECT" + 
+		return "SELECT * FROM (" +
+			"\n SELECT" + 
+			"\n\t 0 AS sci_fav_list_order," + 
 			"\n\t t.sci_type_label AS sci_fav_type_label," + 
 			"\n\t fav.*" + 
 			"\n FROM sci_areas a WITH(NOLOCK)" + 
@@ -36,6 +38,7 @@ _.each(["Id", "Name"], function (config, index) {
 			"\n UNION ALL" + 
 
 			"\n SELECT" + 
+			"\n\t cfav.sci_fav_sort_order AS sci_fav_list_order," + 
 			"\n\t t.sci_type_label AS sci_fav_type_label," + 
 			"\n\t cfav.*" + 
 			"\n FROM sci_areas a WITH(NOLOCK)" + 
@@ -49,7 +52,9 @@ _.each(["Id", "Name"], function (config, index) {
 			"\n INNER JOIN sci_favorite_rel fr WITH(NOLOCK)" + 
 			"\n\t ON pfav.sci_fav_id = fr.sci_fr_fav1_id" + 
 			"\n INNER JOIN sci_favorites cfav WITH(NOLOCK)" + 
-			"\n\t ON fr.sci_fr_fav2_id = cfav.sci_fav_id";	
+			"\n\t ON fr.sci_fr_fav2_id = cfav.sci_fav_id" +
+			"\n ) LIST_DETAIL" +
+			"\n ORDER BY sci_fav_list_order";	
 	};
 });
 
