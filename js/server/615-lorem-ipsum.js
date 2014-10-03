@@ -6,10 +6,10 @@ function loremIpsum(settings) {
 	var text, length, min, max;
 	
 	settings = _.extend({
-		length: "medium"
+		size: "medium"
 	}, settings);
 	
-	switch (settings.length) {
+	switch (settings.size) {
 		case "large":
 			min = 0.8;
 			max = 1;
