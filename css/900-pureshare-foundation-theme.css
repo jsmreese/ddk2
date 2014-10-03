@@ -78,6 +78,7 @@ button:hover, button:focus {
 }
 
 .block {
+	position: relative;
 	margin: 10px 5px 0;
 	border: 1px solid #CCC;
 	background-color: #FFF;
@@ -91,7 +92,7 @@ button:hover, button:focus {
 	color: #666;
 	line-height: 1.5;
 	background-color: #F4F4F4;
-	min-height: 36px;
+	height: 36px;
 	border-bottom: 1px solid #CCC;
 }
 
