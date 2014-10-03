@@ -880,6 +880,7 @@ DDK.regex = {
 	tab: /\x09/g,	
 	ddkKeyword: /%%[a-zA-Z0-9_\-\.]+?%%/g,	
 	ddkKeywordTest: /%%[a-zA-Z0-9_\-\.]+?%%/,	
+	ddkScriptBlockTest: /%@.+@%/,	
 	ddkKeywordOnly: /^%%[a-zA-Z0-9_\-\.]+?%%$/
 };
 

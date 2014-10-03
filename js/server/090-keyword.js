@@ -476,6 +476,18 @@ _.extend(K, {
 		return _.string.toBoolean(containsKeyword(key));
 	},
 	
+	evalGlobals: function () {
+		var globals = K.toObject("p_");
+		
+		_.each(globals, function (value, key) {
+			// execute a keyword update on all global keywords
+			// that have DDK Keywords or Script Blocks in their values
+			if (DDK.regex.ddkKeywordTest.test(value) || DDK.regex.ddkScriptBlockTest.test(value)) {
+				K(key, DDK.eval(value));
+			}
+		});
+	},
+	
 	scope: function (func, keywords) {
 		var hasKeywords,
 			result,
