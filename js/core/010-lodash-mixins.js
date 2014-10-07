@@ -219,20 +219,22 @@
 		// converts a dataset containing record arrays into a dataset containing record objects
 		// will modify the original dataset object, and will also return a reference to the dataset object
 		toRecordObjects: function (dataset, settings) {
-			var columns, rows, prefixLength;
+			var columns, rows, prefixLength, pruneRegexp;
 			
 			settings = _.defaults(settings || {}, {
 				toCase: "lower",
 				prefix: "",
 				escape: "",
 				coerce: false,
-				overlay: ""
+				overlay: "",
+				prune: false
 			});
 			
 			columns = _.sortBy(dataset.columns, "index");
 			rows = dataset.rows;
 			prefixLength = settings.prefix.length;
-				
+			pruneRegexp = /^~.*~$/;
+
 			dataset.rows = _.map(rows, function (row) {
 				var newRow = _.transform(columns, function (accumulator, column) {
 					var name, point;
@@ -244,15 +246,23 @@
 						name = name.slice(prefixLength);
 					}
 					
-					if (settings.coerce && typeof point === "string") {
-						point = _.string.coerce(point);
+					if (typeof point === "string") {
+						if (settings.coerce) {
+							point = _.string.coerce(point);
+						}
+						
+						if (settings.escape) {
+							point = _.string.escapeData(point, settings.escape);
+						}
+
+						if (settings.prune) {
+							point = point.replace(pruneRegexp, "");
+						}
 					}
 					
-					if (settings.escape && typeof point === "string") {
-						point = _.string.escapeData(point, settings.escape);
+					if (!settings.prune || point) {
+						accumulator[_.toCase(settings.toCase, name)] = point;
 					}
-					
-					accumulator[_.toCase(settings.toCase, name)] = point;
 				}, {});
 				
 				if (settings.overlay) {
