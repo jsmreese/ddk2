@@ -237,38 +237,39 @@ if (Backbone.Epoxy) {
 			config = data.config,
 			columns = config && config.columns || [];
 		
-		if (!$dialog) {
-			DDK.navset2.data[data.id].$dialog = $dialog = $("<div/>").dialog({
-				autoOpen: false,
-				title: "Build Navset",
-				dialogClass: "ddk-dialog sc-dialog",
-				width: 650,
-				height: 400,
-				minWidth: 500,
-				minHeight: 300,
-				open: dialogOpen,
-				close: dialogClose,
-				resize: dialogResize,
-				drag: dialogDrag,
-				dragStop: dialogDrag,
-				buttons: [
-					{ text: "Apply", click: dialogApply },
-					{ text: "Cancel", click: dialogCancel },
-					{ text: "OK", click: dialogOK }
-				]
-			});
-		}
+		DDK.loadTools().done(function () {			
+			if (!$dialog) {
+				DDK.navset2.data[data.id].$dialog = $dialog = $("<div/>").dialog({
+					autoOpen: false,
+					title: "Build Navset",
+					dialogClass: "ddk-dialog sc-dialog",
+					width: 650,
+					height: 400,
+					minWidth: 500,
+					minHeight: 300,
+					open: dialogOpen,
+					close: dialogClose,
+					resize: dialogResize,
+					drag: dialogDrag,
+					dragStop: dialogDrag,
+					buttons: [
+						{ text: "Apply", click: dialogApply },
+						{ text: "Cancel", click: dialogCancel },
+						{ text: "OK", click: dialogOK }
+					]
+				});
+			}
 
-		// pass the control data object along to the dialog
-		$dialog.data("control", data);
-		
-		// show the dialog
-		if ($dialog.dialog("isOpen")) {
-			$dialog.dialog("moveToTop");
-		} else {
-			$dialog.dialog("open");
-			$dialog.data("ui-dialog")._trigger("resize");
-		}
-		
+			// pass the control data object along to the dialog
+			$dialog.data("control", data);
+			
+			// show the dialog
+			if ($dialog.dialog("isOpen")) {
+				$dialog.dialog("moveToTop");
+			} else {
+				$dialog.dialog("open");
+				$dialog.data("ui-dialog")._trigger("resize");
+			}
+		});
 	};
 }
