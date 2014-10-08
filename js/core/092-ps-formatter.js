@@ -331,7 +331,11 @@ PS.Formatter.fn.auto = function () {
 };
 
 PS.Formatter.fn.number = function () {
-	var num = +this.formatValue,
+	var value = ((this.formatValue && this.formatValue.toString().indexOf(",") > -1) ? 
+			PS.Formatter.calcs.change(this.formatValue) : 
+			this.formatValue
+		),
+		num = +value,
 		isNum = !(num == null || isNaN(num)),
 		settings = this.getSettings();
 
