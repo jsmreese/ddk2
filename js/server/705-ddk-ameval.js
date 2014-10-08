@@ -73,7 +73,7 @@ DDK.AMEval = function (keys, query, settings) {
 			settings.datasource = "db.amdb";
 		}
 		
-		K("ddk_ameval_query", settings.query);
+		K("ddk_ameval_query", DDK.escape.brackets(settings.query));
 		K("ddk_ameval_datasource", settings.datasource);
 		settings.widget = "DDK2_AMEval";
 	} else {
