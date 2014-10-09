@@ -1103,10 +1103,8 @@ DDK.template.render = {
 	scorecard2Row: function(rowType, co, config, globals, record, recordIndex) {
 		"use strict";
 		var out = "",
-			rowClassName = rowType + " " + config[rowType + "RowClassName"],
-			//rowClassName = rowType + " " + config[rowType + "RowClassName"] + 
-			//(((rowType === "body") && co.groupingKey && !_.string.toBoolean(co.groupingExpanded)) ? " ps-hidden" : ""),
-			rowAttr = config[rowType + "RowAttr"] + 
+			rowClassName = rowType + " " + (config[rowType + "RowClassName"] || ""),
+			rowAttr = (config[rowType + "RowAttr"] || "") + 
 			(((rowType === "body" || rowType === "group") && co.groupingKey) ? " data-key=\"%%" + co.groupingKey + "%%\" " : "") + 
 			(((rowType === "body") && co.mouseover) ? " data-ddk-mouseover=\"" + co.mouseover + "\" " : "") + 
 			((rowType === "body" && config.bodyRowDetail !== "false")  ? " data-ddk-detail='" + DDK.renderJSON(record) + "' " : ""),

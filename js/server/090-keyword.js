@@ -476,7 +476,7 @@ _.extend(K, {
 		return _.string.toBoolean(containsKeyword(key));
 	},
 	
-	evalGlobals: function (prefix) {
+	evalGlobals: function (prefix, settings) {
 		var prefixes;
 		
 		prefixes = ["p_"];
@@ -488,7 +488,9 @@ _.extend(K, {
 		_.each(K.toObject(prefixes), function (value, key) {
 			// execute a keyword update on all global keywords
 			// that have DDK Keywords or Script Blocks in their values
+			// except for settings.except
 			if (DDK.regex.ddkKeywordTest.test(value) || DDK.regex.ddkScriptBlockTest.test(value)) {
+				if (settings && settings.except && key === settings.except) { return; }
 				K(key, DDK.eval(value));
 			}
 		});
