@@ -13,6 +13,12 @@
 		margin-right: auto;
 		margin-left: auto;
 	}
+
+	.set-subtitle, .bam-subtitle {
+		color: #CCC;
+		font-size: 0.75em;
+		font-weight: normal;
+	}
 	
 	.bamset canvas {
 		vertical-align: baseline !important;
