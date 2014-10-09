@@ -476,10 +476,16 @@ _.extend(K, {
 		return _.string.toBoolean(containsKeyword(key));
 	},
 	
-	evalGlobals: function () {
-		var globals = K.toObject("p_");
+	evalGlobals: function (prefix) {
+		var prefixes;
 		
-		_.each(globals, function (value, key) {
+		prefixes = ["p_"];
+		
+		if (prefix) {
+			prefixes = _.unique(prefixes.concat(prefix));
+		}
+		
+		_.each(K.toObject(prefixes), function (value, key) {
 			// execute a keyword update on all global keywords
 			// that have DDK Keywords or Script Blocks in their values
 			if (DDK.regex.ddkKeywordTest.test(value) || DDK.regex.ddkScriptBlockTest.test(value)) {

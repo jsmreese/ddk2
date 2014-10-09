@@ -30,3 +30,23 @@ var require = (function () {
 	
 	return require;
 })();
+
+require.exec = function (moduleName, methodName) {
+	var module, method, rMethod, args;
+	
+	// any additional arguments are passed to the method
+	args = [].slice.call(arguments, 2);
+	
+	rMethod = new RegExp("^" + methodName, "i");
+	module = require(moduleName);
+	
+	if (module) {
+		method = _.findKey(module, function (value, key) {
+			return rMethod.test(key);
+		});
+	}
+	
+	if (method) {
+		return module[method].apply(null, args);
+	}
+};
