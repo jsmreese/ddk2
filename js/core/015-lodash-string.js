@@ -291,11 +291,13 @@
     },
 
     underscored: function(str){
-      return _s.trim(str).replace(/([A-Z])/g, '_$1').replace(/[-_\s]+/g, '_').toLowerCase();
+		if (/^[A-Z0-9\_\- ]+$/.test(str)) { str = str.toLowerCase(); }
+		return _s.trim(str).replace(/([A-Z])/g, '_$1').replace(/[-_\s]+/g, '_').toLowerCase();
     },
 
     dasherize: function(str){
-      return _s.trim(str).replace(/([A-Z])/g, '-$1').replace(/[-_\s]+/g, '-').toLowerCase();
+		if (/^[A-Z0-9\_\- +$]/.test(str)) { str = str.toLowerCase(); }
+		return _s.trim(str).replace(/([A-Z])/g, '-$1').replace(/[-_\s]+/g, '-').toLowerCase();
     },
 
 	// modified from original behaviour
