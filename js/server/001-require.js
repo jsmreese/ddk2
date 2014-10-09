@@ -37,13 +37,18 @@ require.exec = function (moduleName, methodName) {
 	// any additional arguments are passed to the method
 	args = [].slice.call(arguments, 2);
 	
-	rMethod = new RegExp("^" + methodName, "i");
 	module = require(moduleName);
 	
 	if (module) {
-		method = _.findKey(module, function (value, key) {
-			return rMethod.test(key);
-		});
+		method = module[methodName];
+		
+		if (!method) {
+			rMethod = new RegExp("^" + methodName, "i");
+	
+			method = _.findKey(module, function (value, key) {
+				return rMethod.test(key);
+			});
+		}
 	}
 	
 	if (method) {
