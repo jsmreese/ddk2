@@ -59,7 +59,7 @@ DDK.COLUMN_METRIC_TRIGGERS = [
 // DDK.columns()
 // returns: array of column objects containing details about the columns in the current dataset
 DDK.columns = function(data) {
-	return _.reject(DDK.columns._addProps(_.map(JSON.parse(columnsToJSON()), function(amengineColumnObject) {
+	return _.each(_.reject(DDK.columns._addProps(_.map(JSON.parse(columnsToJSON()), function(amengineColumnObject) {
 		var ddkColumnObject = {};
 		
 		_.each(DDK.COLUMN_OBJECT_PROPERTIES, function(propObject) {
@@ -84,6 +84,9 @@ DDK.columns = function(data) {
 		// this assumes that the RDQ_TIMESTAMP column
 		// is always at the end of the dataset
 		return value.columnMetric === "RDQ_TIMESTAMP";
+	}), function (column, columnIndex) {
+		// remap column indexes because RDQ_TIMESTAMP isn't always the last column
+		column.columnIndex = columnIndex.toString();
 	});
 };
 

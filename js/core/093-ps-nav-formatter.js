@@ -308,7 +308,7 @@ PS.NavFormatter.fn.functions = {
 							valueIndex = navFormatter.getColumnIndex(dataset.columns, settings.valueField) || navFormatter.getColumnIndex(dataset.columns, "name", true);
 							labelIndex = navFormatter.getColumnIndex(dataset.columns, settings.labelField) || navFormatter.getColumnIndex(dataset.columns, "label", true);
 							selectedData = _.map(records, function(record, key){
-								return {"id": record[0], "text": record[1]};
+								return {"id": record[valueIndex], "text": record[labelIndex]};
 							});
 							if(settings.multiple){
 								callback(selectedData);
