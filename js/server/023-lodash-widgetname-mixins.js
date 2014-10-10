@@ -26,4 +26,10 @@
 			return rTemplateName.test(str);
 		}
 	});
+	
+	_.mixin({
+		isWidget: function (str) {
+			return _.isWidgetName(str) && getMetricIdByName(str) > 0;
+		}
+	});
 })(this);
