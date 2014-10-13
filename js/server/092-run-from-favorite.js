@@ -50,9 +50,18 @@ var runFromFavorite = function (favoriteId, keywords, favHeader, favFooter) {
 		return "AMEngine JScript runtime error - runFromFavorite: unable to parse favorite '" + favoriteId + "'.";
 	}
 
-	header = controlData.datasets[1];
-	footer = controlData.datasets[2];
-	control = controlData.datasets[3];
+	if (controlData.datasets) {
+		header = controlData.datasets[1];
+		footer = controlData.datasets[2];
+		control = controlData.datasets[3];
+	} else {
+		header = "";
+		footer = "";
+		control = {
+			html: '<div class="text-bold text-xdkred">Error loading favorite</div><div><code>' + favoriteId + '</code></div>',
+			stateKeywords: ""
+		};
+	}
 	
 	return "\n\n" + header + control.html + footer + "\n\n<script>K(\"" + control.stateKeywords + "\");</script>\n\n";
 };

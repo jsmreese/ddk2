@@ -16,16 +16,13 @@
 
 	
 	table.chart-datatable td:first-child {
-		border-top-color: transparent;
-		border-bottom-color: transparent;
-		border-left-color: transparent;
+		border-color: transparent;
 		text-align: right;
 	}
 
 	table.chart-datatable tr:first-child td {
 		border-top-color: transparent;
 		border-right-color: transparent;
-		border-left-color: transparent;
 		text-align: center;
 	}
 	
@@ -148,4 +145,15 @@
 	button.sort-add.ui-state-default:not(.ui-state-hover):not(.ui-state-active):not(.ui-state-focus){
 		background: transparent;
 		border: 1px solid transparent;
+	}
+	
+	.ps-toolbar .ui-buttonset > label {
+		height: 23px;
+	}
+
+	table.chart-datatable tr:nth-of-type(even) {
+		background: #FFF;
+	}
+	table.chart-datatable {
+		border: 0;
 	}

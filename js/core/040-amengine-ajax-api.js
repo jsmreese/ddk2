@@ -12,10 +12,13 @@ var daa_urlitem="";  //append to URL
 var daa_cursor="";
 var daa_showerror=true;
 var daa_returnfunction;
-var daa_showmask=true;
+var daa_showmask;
 var daa_detectlogin=true;
 var daa_serialize=true;
 
+if (daa_showmask == null) {
+	daa_showmask = true;
+}
 
 //////////////////////////////////////////////////////////////////////////
 // Utility functions
@@ -1345,9 +1348,13 @@ if (jQuery){
                 });
             },
             showmask: function (){
-               return this.each(function(i){
-                    methods._showmask($(this));
-                });
+				if (daa_showmask) {
+					return this.each(function(i){
+						methods._showmask($(this));
+					});
+				}
+				
+				return this;
            },
            _showmask:function($elem){
 

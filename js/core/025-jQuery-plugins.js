@@ -32,6 +32,25 @@
 		return $target;
 	};
 	
+	/* $.totalHeight jQuery plugin
+	 * Returns the sum of the height of all elements in the collection.
+	 * Will use $.fn.outerHeight(true).
+	 * Accepts inner, a boolean flag.
+	 * When inner is `true`, will use $.fn.height() to calculate the inner height of the elements not including margin, padding, and border.
+	 * by: jsmreese
+	 */
+	$.fn.totalHeight = function (inner) {
+		return _.reduce(this.map(function (index, elem) {
+			var $elem = $(elem);
+			
+			if (inner) { return $elem.height(); }
+			
+			return $elem.outerHeight(true);
+		}).get(), function (accumulator, value) {
+			return accumulator + value;
+		}, 0);
+	};
+	
 	/* $.topZ jQuery plugin
 	 * Based on http://abcoder.com/javascript/a-better-process-to-find-maximum-z-index-within-a-page
 	 * Returns one plus the maximum z-index of all elements that are children of the document body.

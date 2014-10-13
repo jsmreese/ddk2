@@ -65,3 +65,25 @@
 		height: 33px !important;
 	}
 	
+	
+
+.left-off-canvas-menu .select2-container {
+	border: 0;
+	margin-bottom: 0;
+}
+
+.left-off-canvas-menu .select2-container .select2-choice {
+	height: 40px;
+}
+
+.left-off-canvas-menu .select2-container .select2-choice span {
+	line-height: 40px;
+}
+
+.left-off-canvas-menu .select2-container .select2-choice div {
+	margin-right: 10px;
+}
+
+.left-off-canvas-menu .select2-container .select2-choice div b {
+	background: url(../imgs/select/select2.png) no-repeat 0 6px;
+}

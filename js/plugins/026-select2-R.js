@@ -1002,10 +1002,19 @@ the specific language governing permissions and limitations under the Apache Lic
             this.container.addClass("select2-dropdown-open").addClass("select2-container-active");
 
             this.updateResults(true);
+			
+            // check if inside left-off-canvas-menu
+            this.leftOffCanvasMenu = this.opts.element.closest(".left-off-canvas-menu");
 
-            if(this.dropdown[0] !== this.body().children().last()[0]) {
-                this.dropdown.detach().appendTo(this.body());
-            }
+			if (this.leftOffCanvasMenu.length) {
+				if(this.dropdown[0] !== this.leftOffCanvasMenu.children().last()[0]) {
+					this.dropdown.detach().appendTo(this.leftOffCanvasMenu);
+				}			
+			} else {
+				if(this.dropdown[0] !== this.body().children().last()[0]) {
+					this.dropdown.detach().appendTo(this.body());
+				}
+			}
 
             this.dropdown.show();
 

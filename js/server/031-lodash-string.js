@@ -83,6 +83,29 @@
 		return trimmedData.match(/^undefined$/i) ? undefined : data;
 	}
   }, "string");
+
+	var escapeData = _.delegator({
+		"html": function (data) {
+			return _.escape(data).replace(DDK.regex.openBracket, "&#91;").replace(DDK.regex.closeBracket, "&#93;");
+		},
+		"html-script": function (data) {
+			return data
+				.replace(/<script/g, "&lt;script")
+				.replace(/<iframe/g, "&lt;iframe")
+				.replace(/<!\-\-/g, "&lt;!--")
+				.replace(/<\/script>/g, "&lt;/script&gt;")
+				.replace(/<\/iframe>/g, "&lt;/iframe&gt;")
+				.replace(/\-\->/g, "--&gt;")
+				.replace(DDK.regex.openBracket, "&#91;")
+				.replace(DDK.regex.closeBracket, "&#93;");		
+		},
+		"keyword": function (data) {
+			return data.replace(DDK.regex.tilde, "%25%25").replace(DDK.regex.openBracket, "%5B").replace(DDK.regex.closeBracket, "%5D;");
+		},
+		"none": function (data) {
+			return data;
+		}
+	}, "none");
   
   var coerceTriggers = {
 	"0": "number",
@@ -268,11 +291,13 @@
     },
 
     underscored: function(str){
-      return _s.trim(str).replace(/([A-Z])/g, '_$1').replace(/[-_\s]+/g, '_').toLowerCase();
+		if (/^[A-Z0-9\_\- ]+$/.test(str)) { str = str.toLowerCase(); }
+		return _s.trim(str).replace(/([A-Z])/g, '_$1').replace(/[-_\s]+/g, '_').toLowerCase();
     },
 
     dasherize: function(str){
-      return _s.trim(str).replace(/([A-Z])/g, '-$1').replace(/[-_\s]+/g, '-').toLowerCase();
+		if (/^[A-Z0-9\_\- ]+$/.test(str)) { str = str.toLowerCase(); }
+		return _s.trim(str).replace(/([A-Z])/g, '-$1').replace(/[-_\s]+/g, '-').toLowerCase();
     },
 
 	// modified from original behaviour
@@ -694,30 +719,82 @@
 		return _.string.parseJSON(str, reviver, _.string.parseQueryString)
 	},
 	
-	// parseTaggedList(str)
+	// parseTaggedList(str, settings)
 	// attempts to parse a string as a tagged list
-	// tagged list format looks like this:
-	// <taggedpair><taggedkey>key</taggedkey><taggedvalue>value</taggedvalue></taggedpair>
-	// tagged list is a format into which AMEngine keyword values can be rendered without breaking the grammar
-	// will return an array of key/value array pairs
-	parseTaggedList: function (str) {
-		var pairs = [];
-		
-		_.each(str.match(/<taggedpair>.+?<\/taggedpair>/g), function (pairMatch) {
-			var key, value;
+	// tagged list is a format into which AMEngine keyword values can be rendered without breaking the format grammar
+	// format: <psp><psk>key</psk><psv>value</psv></psp>
+	// psp - pair, psk - key, psv - value
+	// when settings.databind is true, multiple pair elements may be wrapped in record elements (psr) and there may be multipe record elements
+	// will return an object of key/value pairs
+	// or, if settings.databind is true, will return an array of objects
+	// settings options include standard object operations: toCase, escape, prune, prefix, coerce, overlay
+	parseTaggedList: function (str, settings) {
+		function trimTags(taggedStr) {
+			return taggedStr.slice(5, -6);
+		}
+	
+		function parseRecord(accumulator, recordStr) {
+			var record = _.reduce(trimTags(recordStr).match(/<psp>.+?<\/psp>/g), parsePair, {})
+						
+			if (settings.overlay) {
+				record = _.overlay(record, settings.overlay);
+			}
 
-			pairMatch = pairMatch.slice(12, -13);
-			_.each(pairMatch.match(/^<taggedkey>.+?<\/taggedkey>/), function (keyMatch) {
-				key = keyMatch.slice(11, -12);
-			});
-			_.each(pairMatch.match(/<taggedvalue>.+?<\/taggedvalue>$/), function (valueMatch) {
-				value = valueMatch.slice(13, -14);
-			});
+			accumulator.push(record);
+						
+			return accumulator;
+		}
+	
+		function parsePair(accumulator, pairStr) {
+			var key, value, trimmedPairStr;
+
+			trimmedPairStr = trimTags(pairStr);
 			
-			pairs.push([key, value]);
-		});
+			_.each(trimmedPairStr.match(/^<psk>.+?<\/psk>/), function (keyStr) {
+				key = trimTags(keyStr);
+			});
+			_.each(trimmedPairStr.match(/<psv>.+?<\/psv>$/), function (valueStr) {
+				value = trimTags(valueStr);
+			});
+				
+			if (settings.prefix.length && _.string.startsWith(key, settings.prefix)) {
+				key = key.slice(settings.prefix.length);
+			}
+				
+			if (typeof value === "string") {
+				if (settings.coerce) {
+					value = _.string.coerce(value);
+				}
+				
+				if (settings.escape) {
+					value = _.string.escapeData(value, settings.escape);
+				}
+
+				if (settings.prune) {
+					value = value.replace(pruneRegexp, "");
+				}
+			}
+				
+			if (!settings.prune || value) {
+				accumulator[_.toCase(settings.toCase, key)] = value;
+			}
+			
+			return accumulator;
+		}	
 		
-		return pairs;
+		settings = _.extend({
+			databind: false
+		}, settings);
+		
+		if (settings.databind) {
+			if (!str) { return []; }
+			
+			return _.reduce(str.match(/<psr>.+?<\/psr>/g), parseRecord, [])
+		}
+
+		if (!str) { return {}; }
+		
+		return _.reduce(str.match(/<psp>.+?<\/psp>/g), parsePair, {});
 	},
 
 	// coerce(str)
@@ -757,6 +834,10 @@
 		}
 		
 		return coercedValue;
+	},
+	
+	escapeData: function (data, mode) {
+		return escapeData(mode, data);
 	}
 	
   };

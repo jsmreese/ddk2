@@ -1,12 +1,30 @@
+var dataWatchList = {};
+
 function dataWatchHandler(e) {
 	var keywords = e.keywords;
 	
-	if (keywords) {
-		_.each(keywords, function (value, key) {
-			$(document).find('[data-watch~="' + key + '"]').findControls().reloadControls();
-		});
-	}
+	dataWatchList = _.extend(dataWatchList, keywords);
+	
+	dataWatchReloader();
 }
+
+var dataWatchReloader = _.throttle(function () {
+	var keywords, $watch;
+	
+	keywords = dataWatchList;
+	
+	dataWatchList = {};
+	
+	if (!_.isEmpty(keywords)) {
+		$watch = $();
+	
+		_.each(keywords, function (value, key) {
+			$watch = $watch.add($(document).find('[data-watch~="' + key + '"]'));
+		});
+		
+		$watch.findControls().reloadControls();
+	}
+}, 100, { leading: false, trailing: true });
 
 if (!DDK.outputPDF) {
 	var $document = $(document);

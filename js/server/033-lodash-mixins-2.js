@@ -10,12 +10,4 @@
 			none: func(_.identity)
 		}, "lower")
 	});
-	
-	_.mixin({
-		isWidgetName: function (str) {
-			if (!str || (typeof str !== "string")) { return false; }
-			
-			return /\[A-Za-z0-9\_\]/.test(str) && (+getMetricIdByName(str)) > 0;
-		}
-	});
 })(_, _.createCaseConverter);

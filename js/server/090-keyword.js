@@ -474,5 +474,63 @@ _.extend(K, {
 	
 	isKeyword: function(key) {
 		return _.string.toBoolean(containsKeyword(key));
+	},
+	
+	evalGlobals: function (prefix, settings) {
+		var prefixes;
+		
+		prefixes = ["p_"];
+		
+		if (prefix) {
+			prefixes = _.unique(prefixes.concat(prefix));
+		}
+		
+		_.each(K.toObject(prefixes), function (value, key) {
+			// execute a keyword update on all global keywords
+			// that have DDK Keywords or Script Blocks in their values
+			// except for settings.except
+			if (DDK.regex.ddkKeywordTest.test(value) || DDK.regex.ddkScriptBlockTest.test(value)) {
+				if (settings && settings.except && key === settings.except) { return; }
+				K(key, DDK.eval(value));
+			}
+		});
+	},
+	
+	scope: function (func, keywords) {
+		var hasKeywords,
+			result,
+			cache = {};
+		
+		if (typeof keywords === "string" && _.string.isQueryString(keywords)) {
+			keywords = _.string.parseQueryString(keywords);
+		}
+		
+		if (_.isPlainObject(keywords)) {
+			hasKeywords = true;
+			
+			// for each keyword, cache the global state
+			// and update the keyword value
+			_.each(keywords, function (value, key) {
+				key = _.string.underscored(key);
+				cache[key] = (K.isKeyword(key) ? value : null);
+				K(key, evalKeywordValue(value));
+			});
+		}
+		
+		result = func();
+		
+		if (hasKeywords) {
+			// restore keyword state
+			_.each(cache, function (value, key) {
+				if (value === null) {
+					KeywordDelete(key);
+					return;
+				}
+				
+				K(key, value);
+			});
+		}
+		
+		return result;
 	}
 });

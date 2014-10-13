@@ -59,7 +59,7 @@ DDK.COLUMN_METRIC_TRIGGERS = [
 // DDK.columns()
 // returns: array of column objects containing details about the columns in the current dataset
 DDK.columns = function(data) {
-	return _.reject(DDK.columns._addProps(_.map(JSON.parse(columnsToJSON()), function(amengineColumnObject) {
+	return _.each(_.reject(DDK.columns._addProps(_.map(JSON.parse(columnsToJSON()), function(amengineColumnObject) {
 		var ddkColumnObject = {};
 		
 		_.each(DDK.COLUMN_OBJECT_PROPERTIES, function(propObject) {
@@ -84,6 +84,9 @@ DDK.columns = function(data) {
 		// this assumes that the RDQ_TIMESTAMP column
 		// is always at the end of the dataset
 		return value.columnMetric === "RDQ_TIMESTAMP";
+	}), function (column, columnIndex) {
+		// remap column indexes because RDQ_TIMESTAMP isn't always the last column
+		column.columnIndex = columnIndex.toString();
 	});
 };
 
@@ -341,7 +344,7 @@ DDK.data.escapeModes = {
 			.replace(DDK.regex.closeBracket, "&#93;");		
 	},
 	"keyword": function (data) {
-		return data.replace(DDK.regex.tilde, "%7E").replace(DDK.regex.openBracket, "%5B").replace(DDK.regex.closeBracket, "%5D;");
+		return data.replace(DDK.regex.tilde, "%25%25").replace(DDK.regex.openBracket, "%5B").replace(DDK.regex.closeBracket, "%5D;");
 	}
 };
 
@@ -879,6 +882,8 @@ DDK.regex = {
 	carriageReturn: /\x0D\x0A/g,	//represents \r\n
 	tab: /\x09/g,	
 	ddkKeyword: /%%[a-zA-Z0-9_\-\.]+?%%/g,	
+	ddkKeywordTest: /%%[a-zA-Z0-9_\-\.]+?%%/,	
+	ddkScriptBlockTest: /%@.+@%/,	
 	ddkKeywordOnly: /^%%[a-zA-Z0-9_\-\.]+?%%$/
 };
 
@@ -1048,7 +1053,7 @@ DDK.template.render = {
 				columnMetricParameters = DDK.template.render.columnMetricParameters({
 					columnMetricName: columnMetricName,
 					columnMetricDisplay: columnMetricDisplay,
-					columns: DDK_COLUMNS
+					columns: DDK.DDK_COLUMNS
 				});
 				if (columnelement) {
 					out += DDK.template.render.scorecardColumnelement(rowType, columnelement)
@@ -1075,17 +1080,21 @@ DDK.template.render = {
 	},
 	
 	ddkKeywordEval: function (value, keywords) {
-		var keywordEval = function (match) {
-				var key = match.slice(2, -2).toLowerCase();
+		var keywordEval;
+		
+		if (!DDK.regex.ddkKeywordTest.test(value)) {
+			return value;
+		}
 
-				// out += DDK.log(key, typeof keywords[key], DDK.renderJSON(keywords));
+		keywordEval = function (match) {
+			var key = match.slice(2, -2).toLowerCase();
 
-				if (typeof keywords[key] !== "undefined") {
-					return keywords[key];
-				}
+			if (typeof keywords[key] !== "undefined") {
+				return keywords[key];
+			}
 
-				return match;
-			};
+			return match;
+		};
 		
 		if (typeof value === "string") {
 			return value.replace(DDK.regex.ddkKeyword, keywordEval);
@@ -1097,13 +1106,11 @@ DDK.template.render = {
 	scorecard2Row: function(rowType, co, config, globals, record, recordIndex) {
 		"use strict";
 		var out = "",
-			rowClassName = rowType + " " + config[rowType + "RowClassName"],
-			//rowClassName = rowType + " " + config[rowType + "RowClassName"] + 
-			//(((rowType === "body") && co.groupingKey && !_.string.toBoolean(co.groupingExpanded)) ? " ps-hidden" : ""),
-			rowAttr = config[rowType + "RowAttr"] + 
+			rowClassName = rowType + " " + (config[rowType + "RowClassName"] || ""),
+			rowAttr = (config[rowType + "RowAttr"] || "") + 
 			(((rowType === "body" || rowType === "group") && co.groupingKey) ? " data-key=\"%%" + co.groupingKey + "%%\" " : "") + 
 			(((rowType === "body") && co.mouseover) ? " data-ddk-mouseover=\"" + co.mouseover + "\" " : "") + 
-			(rowType === "body"  ? " data-ddk-detail='" + DDK.renderJSON(record) + "' " : ""),
+			((rowType === "body" && config.bodyRowDetail !== "false")  ? " data-ddk-detail='" + DDK.renderJSON(record) + "' " : ""),
 			tagName = (rowType === "body" ? "td" : "th"),
 			sectionTypes = "header content footer".split(" "),
 			metricParameters,
@@ -1126,39 +1133,20 @@ DDK.template.render = {
 		out += "<tr class=\"" + rowClassName + "\" " + rowAttr + ">";
 		
 		_.each(config.columns, function (column, index) {
-			var cout = "",
-				elem = {},
-				columnAttr = "",
-				columnClassName = "";
+			var elem, cout;
 			
-			// create elem config object by reducing column config object to only those properties that apply to this rowType
+			elem = {};
+			cout = "";
+			
+			// create elem config object by evaluating input config in the context of the record and global keywords
 			_.each(column, function (value, key) {
-				if (_.string.startsWith(key, rowType)) {
-					elem[_.string.camelize(key.slice(rowType.length))] = DDK.template.render.ddkKeywordEval(value, keywords);
+				// body column config objects are pre-formatted so don't need all the checks
+				if (rowType === "body") {
+					elem[key] = DDK.template.render.ddkKeywordEval(value, keywords);
+				} else if (_.indexOf(["prefix", "className", "attr", "colspan", "title", "subtitle", "sortValue"], key) > -1 || _.string.startsWith(key, rowType)) {
+					elem[key] = value && DDK.template.render.ddkKeywordEval(value, keywords) || value;
 				}
 			});
-			
-			// pass column.attr and column.className through ddkKeywordEval as well
-			if (column.attr) {
-				columnAttr = DDK.template.render.ddkKeywordEval(column.attr, keywords);
-			}
-			if (column.className) {
-				columnClassName = DDK.template.render.ddkKeywordEval(column.className, keywords);
-			}
-			
-			// // when colspans are enabled, only render an element if it has defined config properties
-			// if (canColspan) {
-				// if (!_.any(elem, function (value, key) {
-					// if (typeof value === "string") {
-						// return value;
-					// }
-					
-					// return !_.isEmpty(value); 
-				// })) {
-					// // skip this section in the loop
-					// return;
-				// }
-			// }
 			
 			// when colspans are enabled, don't render elements that fall underneath colspan extensions of previous elements
 			if (canColspan && columnCount) {
@@ -1173,55 +1161,46 @@ DDK.template.render = {
 			
 			// if colspans are enabled, track columnCount
 			if (canColspan) {
-				columnCount = (+elem.colspan || 1);
+				columnCount = (+elem[rowType + "Colspan"] || 1);
 			}
 			
 			// open td/th element
 			cout += "<" + tagName;
 			// elem classNames are rendered after column classNames so they win
-			cout += " class=\"" + columnClassName + " " + elem.className + "\"";
+			cout += " class=\"" + (elem.className || "") + " " + (elem[rowType + "ClassName"] || "") + "\"";
 			cout += " data-index=\"" + index.toString() + "\"";
 			// if colspans are enabled, create colspan attr
 			if (canColspan) {
-				cout += (elem.colspan ? " colspan=" + elem.colspan : "");
+				cout += (elem[rowType + "Colspan"] ? " colspan=" + elem[rowType + "Colspan"] : "");
 			}
 			// elem attrs are rendered before column attrs so they win
-			cout += " " + elem.attr + " " + columnAttr + ">";
+			cout += " " + (elem[rowType + "Attr"] || "") + " " + (elem.attr || "") + ">";
 			
 			_.each(sectionTypes, function (sectionType) {
-				var section = {};
-				
-				// create section config object by reducing elem config object to only those properties that apply to this sectionType
-				_.each(elem, function (value, key) {
-					if (_.string.startsWith(key, sectionType)) {
-						section[_.string.camelize(key.slice(sectionType.length))] = value;
-					}
-				});
+				var sectionPrefix = rowType + _.string.titleize(sectionType);
 				
 				// only render a section if it has defined config properties
-				if (!_.any(section, function (value, key) {
-					if (typeof value === "string") {
+				if (!_.any(elem, function (value, key) {
+					if (_.string.startsWith(key, sectionPrefix) && typeof value === "string") {
 						return value;
 					}
-					
-					return !_.isEmpty(value); 
 				})) {
 					// skip this section in the loop
-					return;
+					return;					
 				}
 					
 				// open section
 				cout += "<div";
-				cout += " class=\"sc-" + sectionType + " " + section.className + "\"";
-				cout += " " + section.attr;
-				cout += (section.format ? " data-format=\"" + section.format + "\"" : "");
-				cout += (section.format ? " data-format-value=\"" + section.value + "\"" : "");
-				cout += (section.style ? " data-format-style=\"" + section.style + "\"" : "");
+				cout += " class=\"sc-" + sectionType + " " + (elem[sectionPrefix + "ClassName"] || "") + "\"";
+				cout += " " + (elem[sectionPrefix + "Attr"] || "");
+				cout += (elem[sectionPrefix + "Format"] ? " data-format=\"" + elem[sectionPrefix + "Format"] + "\"" : "");
+				cout += (elem[sectionPrefix + "Format"] ? " data-format-value=\"" + (elem[sectionPrefix + "Value"] || "") + "\"" : "");
+				cout += (elem[sectionPrefix + "Style"] ? " data-format-style=\"" + elem[sectionPrefix + "Style"] + "\"" : "");
 				cout += ">";
 				
 				// if there is no format, render value
-				if (!section.format) {
-					cout += section.value;
+				if (!elem[sectionPrefix + "Format"]) {
+					cout += (elem[sectionPrefix + "Value"] || "");
 				}
 				
 				// close section
@@ -1274,7 +1253,7 @@ DDK.template.render = {
 				aggregate,
 				metric = prefix.toUpperCase(),
 				isNamedMetric,
-				columns = _.filter(DDK_COLUMNS, { metric: metric }),
+				columns = _.filter(DDK.DDK_COLUMNS, { metric: metric }),
 				valueAttrSequence;
 			
 			match = match.slice(2, -2).toUpperCase().split(" ");
@@ -1340,10 +1319,10 @@ DDK.template.render = {
 	
 	dataDetail: function () {
 		var detail = {},
-			columns = DDK_COLUMNS;
+			columns = DDK.DDK_COLUMNS;
 		
 		_.each(columns, function (column) {
-			var columnName = column.columnName.toLowerCase();
+			var columnName = (column.columnName ? column.columnName.toLowerCase() : column.name.toLowerCase());
 			detail[columnName] = "%%-" + columnName + "%%";
 			//detail[columnName] = DDK.char.openBracket + "Replace(Replace(\"" + DDK.char.tilde + columnName + DDK.char.tilde + "\",CHR(34),\"&quot;\"),CHR(39),\"&#39;\")" + DDK.char.closeBracket;
 		});
@@ -1354,7 +1333,7 @@ DDK.template.render = {
 	//	dataDetail: function() {
 	//		var detail = [],
 	//			i,
-	//			columns = DDK_COLUMNS,
+	//			columns = DDK.DDK_COLUMNS,
 	//			columnCount = columns.length;
 	//		
 	//		for (i = 0; i < columnCount; i += 1) {
@@ -1778,7 +1757,7 @@ DDK.template.render = {
 				metricParameters = DDK.template.render.columnMetricParameters({
 					columnMetricName: metricName,
 					columnMetricDisplay: metricDisplay,
-					columns: DDK_COLUMNS
+					columns: DDK.DDK_COLUMNS
 				});
 				return out
 					.replace(/{{trend}}/gi, metricParameters.trend)
@@ -1972,6 +1951,13 @@ DDK.parseScriptBlockMatch = function (match) {
 	var out = "";
 	
 	match = DDK.unescape.brackets(match.slice(2, -2));
+
+	// hitting this with a hammer
+	// not sure why the Tools List Control doesn't render image paths properly
+	// in the Metrics Browser
+	if (match === ' K("ddk").path; ') {
+		return 'v' + DDK.VERSION.replace(/\./g, '');
+	}
 
 	try {
 		out = eval(match);

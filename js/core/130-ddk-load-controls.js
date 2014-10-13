@@ -54,6 +54,10 @@ DDK.reloadFromFavoriteRequest = function () {
 	
 	if (!DDK.reloadFromFavoriteQueue.length) {
 		DDK.log("DDK.reloadFromFavoriteQueue is empty.");
+		
+		// execute keyword has garbage cleanup
+		// to remove orphaned state keywords
+		K.GC();
 		return false;
 	}
 
@@ -65,7 +69,7 @@ DDK.reloadFromFavoriteRequest = function () {
 			queryWidget: "PSC_Favorites_Record_Query_" + (_.isNaN(+settings.favoriteId) ? "Name" : "Id"),
 			columnPrefix: "sci_fav_",
 			datasetMode: "array",
-			keywords: "&ddk_fav_id=" + settings.favoriteId + "&" + (settings.keywords || ""),
+			keywords: "&ddk_fav_id=" + settings.favoriteId,
 			shouldCamelizeKeys: true,
 			useCoercedTypes: false,
 			escapeMode: "keyword",
@@ -112,10 +116,16 @@ DDK.reloadFromFavoriteRequest = function () {
 				DDK.navFormat(settings.$target);
 				DDK.format(settings.$target);
 				
+				// initialize Prism.js syntax highlighting
+				Prism && Prism.highlightAll();
+				
 				if (type === "Component") {
 					K(control.stateKeywords);
 					reloadControlContainer(control.name, control.id, settings, settings.callback, settings.$target.children().eq(0));
 				}
+				
+				// trigger window resize to update responsive block height classes
+				$(window).trigger("resize");
 				
 				// execute runFavs on just-loaded content
 				runFavs(settings.$target);
@@ -125,7 +135,7 @@ DDK.reloadFromFavoriteRequest = function () {
 			DDK.reloadFromFavoriteLoading = false;
 			
 			return DDK.reloadFromFavoriteRequest();
-		}		
+		}
 	};
 		
 	// beforeReload
@@ -145,6 +155,15 @@ DDK.reloadFromFavoriteRequest = function () {
 		
 		accumulator[key] = value;
 	}));
+	
+	// send any request-specific keywords values
+	if (settings.keywords) {
+		if (typeof settings.keywords === "string") {
+			_.extend(ajaxSettings.data, _.string.parse(settings.keywords));
+		} else {
+			_.extend(ajaxSettings.data, settings.keywords);
+		}
+	}
 	
 	// set loading status
 	DDK.reloadFromFavoriteLoading = true;
@@ -213,8 +232,9 @@ DDK.reloadControl = function (controlName, controlId, callback, beforeInit, befo
 		K({
 			id: controlId,
 			init_widget: K("s_" + controlId + "_iw") || K(controlName + "__" + controlId + "_init_widget") || controlData.options,
-			container_height: options.height || containerHeight || 0,
-			container_width: options.width || containerWidth || 0
+			container_height: containerHeight || options.height || 0,
+			container_width: containerWidth || options.width || 0,
+			container_block: (options.isBlock ? "true" : "false")
 		}, controlName + "_");
 
 		if (controlName === "bamset" || controlName === "scorecard") {

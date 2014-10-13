@@ -289,7 +289,7 @@ PS.NavFormatter.fn.functions = {
 			}
 		}
 		else{
-			if(settings.queryWidget){
+			if(settings.queryWidget || settings.queryModule){
 				$.extend(true, dataToPass, K.toObject("p_"), {
 					"config.mn": "DDK_Data_Request",
 					"filterColumn": settings.filterColumn,
@@ -377,7 +377,7 @@ PS.NavFormatter.fn.functions = {
 			modelData = navFormatter.data || [], 
 			newData = [];
 		options.page = options.page || 1;
-		if(options.queryWidget){
+		if(options.queryWidget || options.queryModule){
 			$.extend(true, dataToPass, K.toObject("p_"), {
 				"config.mn": "DDK_Data_Request",
 				"data.config": JSON.stringify(options)
@@ -928,7 +928,7 @@ PS.NavFormatter.fn.select2 = function () {
 	var localThis = this, settings = this.getSettings(), $treeChooser, qtipOptions;
 	//add tree chooser button
 	if(!this.$el.is("select")){
-			if(settings.queryWidget && !settings.cached){
+			if((settings.queryWidget || settings.queryModule) && !settings.cached){
 //		if(settings.queryWidget){
 			$.extend(settings, {
 				ajax: this.functions.ajaxSetup(settings),

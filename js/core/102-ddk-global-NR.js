@@ -104,6 +104,7 @@ function PSC_Chart_Resize(id, forceResize) {
 	if ( forceResize || isOverResizeThreshold) {
 		DDK.chart.data[id].height = controlHeight;
 		DDK.chart.data[id].width = controlWidth;
+		DDK.chart.data[id].isBlock = contentBlock;
 
 		if (PS.app && PS.app.forceReload) {
 				PS.app.forceReload();

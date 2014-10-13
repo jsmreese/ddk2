@@ -1,3 +1,24 @@
+code {
+	color: #3D638F; /* hsl(212, 40%, 40%) */
+}
+
+h2 {
+	margin-top: 1.5em;
+}
+
+h3 {
+	margin-top: 1.5em;
+	border-bottom: 1px solid #CCC;
+}
+
+h4 {
+	margin-top: 1.5em;
+}
+
+.subheader {
+	margin-top: 1em;
+}
+
 /* anchor colors */
 a, a:visited {
 	color: #2462A8; /* hsl(212, 65%, 40%) */
@@ -57,20 +78,21 @@ button:hover, button:focus {
 }
 
 .block {
-	margin: 5px;
+	position: relative;
+	margin: 10px 5px 0;
 	border: 1px solid #CCC;
 	background-color: #FFF;
-}
-
-.block .nav-label {
-	color: #AAA;
+	overflow: auto;
+	border-radius: 8px;
+	box-shadow: 0px 1px 1px rgba(255, 255, 255, 0.8) inset, 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .block-header {
-	padding: 5px 10px;
-	color: #555;
+	padding: 6px 10px 5px;
+	color: #666;
+	line-height: 1.5;
 	background-color: #F4F4F4;
-	min-height: 36px;
+	height: 36px;
 	border-bottom: 1px solid #CCC;
 }
 
@@ -83,11 +105,6 @@ button:hover, button:focus {
 
 .block-content {
 	padding: 5px 10px 10px;
-}
-
-.block-title {
-	color: #666;
-	line-height: 1.5;
 }
 
 .block:before, .block:after {
@@ -107,37 +124,160 @@ button:hover, button:focus {
   display: table; }
 .block-content:after {
   clear: both; }
-  
-.page-title h1 {
+ 
+ 
+.nav-label {
+	font-size: .875rem;
+	display: block;
+	line-height: 1.5;
+	margin-bottom: 0;
+}
+
+.block-content .nav-label {
+	color: #AAA;
+}
+
+.page-title {
 	font-size: 2rem;
+	line-height: 1;
+	
+	/* use padding instead of margin so that height measurements return a correct value when this is hidden */
+	padding: 10px 5px 0;
 }
 
-.page-message .ddk-icon {
-	font-size: 6em;
-	color: #EEE;
+
+
+.main-section .jstree ul li a {
+	color: #444;
+	border: 0;
+	padding: 0.25rem;
 }
-.page-message p {
-	font-size: inherit;
-	margin-top: -1em;
-	line-height: 1.1;
+
+.main-section .jstree ul {
+	background-color: #FFF;
 }
-.page-message {
-	font-size: 32px;
+
+.main-section .jstree ul ul {
+	background-color: rgba(0, 0, 0, 0.04);
+}
+
+.main-section .jstree ul li a:hover {
+	background: rgba(0, 0, 0, 0.15);
+}
+
+.main-section .jstree ul li .jstree-ocl,
+.main-section .jstree ul li button.fav-select {
+	color: #666;
+}
+
+.main-section .jstree ul .jstree-node > .jstree-ocl:before {
+	top: 4px;
+}
+
+.main-section .off-canvas-list .jstree-themeicon {
+	margin-left: 1.4em;
+}
+
+.main-section ul li ol, .main-section ul li ul {
+	margin-left: 1em;
+}
+
+.left-off-canvas-menu .section-header:before {
+	text-transform: none;
+	top: 6px;
+	position: absolute;
+	right: 10px;
+	font-family: ddk_icon;
+	font-size: 24px;
+}
+
+.left-off-canvas-menu .section-header.open:before {
+	content: '\01FC';
+}
+
+.left-off-canvas-menu .section-header.closed:before {
+	content: '\01FB';
+}
+
+
+.off-canvas-list .has-dropdown > a:before {
+	top: 12px;
+	position: absolute;
+	left: 6px;
+	font-family: ddk_icon;
+}
+
+.off-canvas-list .has-dropdown.closed > a:before {
+	content: '\01F8';
+}
+
+.off-canvas-list .has-dropdown.open > a:before {
+	content: '\01F7';
+}
+
+.off-canvas-list .jstree-node > .jstree-ocl:before {
+	top: 12px;
+	position: absolute;
+	left: 6px;
+	font-family: ddk_icon;
+}
+
+.off-canvas-list .jstree-node.jstree-closed > .jstree-ocl:before {
+	content: '\01F8';
+}
+
+.off-canvas-list .jstree-node.jstree-open > .jstree-ocl:before {
+	content: '\01F7';
+}
+
+.left-off-canvas-menu .section-header {
+	border-top: 1px solid #AAA;
+	border-bottom: 1px solid #111;
+	padding: 0.8rem .66667rem;
 	color: #DDD;
-	margin: 32px auto 16px;
-	width: 280px;
-	text-align: center;
+	background: #666;
+	font-size: .75em;
+	display: block;
+	text-transform: uppercase;
+	position: relative;
+}
+
+
+.jstree ul.off-canvas-list li a {
+	white-space: nowrap;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+	padding-right: 1em;
+}
+
+.off-canvas-list ul {
+	background-color: rgba(255, 255, 255, 0.075);
+}
+
+.left-off-canvas-menu .list-label,
+.off-canvas-list .jstree-themeicon {
+	margin-left: 1em;
+}
+
+.left-off-canvas-menu .settings-list li .list-label {
+	margin-left: 0;
+}
+
+ul li ol, ul li ul {
+	margin-left: 0.5em;
+	margin-bottom: 0;
 }
 
 
 
-
-.jstree-default .jstree-clicked {
-	background: #BDDCFF;
-	border: 1px solid #9BC9FD;
+.off-canvas-list .jstree-node {
+	position: relative;
 }
 
-.jstree-default .jstree-hovered {
-	background: #E7EFF9;
-	border: 1px solid #D6E7FA;
+.off-canvas-list .jstree-ocl {
+	color: rgba(255, 255, 255, 0.7);
+}
+
+i.jstree-icon {
+	font-style: normal;
 }

@@ -1192,40 +1192,41 @@ if (Backbone.Epoxy) {
 			columns = config && config.columns || [],
 			dialogWidth = Math.min($("body").width() - 100, 1000),
 			dialogHeight = $("body").height() - 100;
-		
-		if (!$dialog) {
-			DDK.bamset2.data[data.id].$dialog = $dialog = $("<div/>").dialog({
-				autoOpen: false,
-				title: "Build BAM Set",
-				dialogClass: "config-dialog ddk-dialog bamset-dialog ddk-mq-small",
-				width: dialogWidth,
-				height: dialogHeight,
-				minWidth: 730,
-				maxWidth: 1000,
-				minHeight: 300,
-				open: dialogOpen,
-				close: dialogClose,
-				resize: dialogResize,
-				drag: dialogDrag,
-				dragStop: dialogDrag,
-				buttons: [
-					{ text: "Apply", click: dialogApply },
-					{ text: "Cancel", click: dialogCancel },
-					{ text: "OK", click: dialogOK }
-				]
-			});
-		}
 
-		// pass the control data object along to the dialog
-		$dialog.data("control", data);
-		
-		// show the dialog
-		if ($dialog.dialog("isOpen")) {
-			$dialog.dialog("moveToTop");
-		} else {
-			$dialog.dialog("open");
-			$dialog.data("ui-dialog")._trigger("resize");
-		}
-		
+		DDK.loadTools().done(function () {			
+			if (!$dialog) {
+				DDK.bamset2.data[data.id].$dialog = $dialog = $("<div/>").dialog({
+					autoOpen: false,
+					title: "Build BAM Set",
+					dialogClass: "config-dialog ddk-dialog bamset-dialog ddk-mq-small",
+					width: dialogWidth,
+					height: dialogHeight,
+					minWidth: 730,
+					maxWidth: 1000,
+					minHeight: 300,
+					open: dialogOpen,
+					close: dialogClose,
+					resize: dialogResize,
+					drag: dialogDrag,
+					dragStop: dialogDrag,
+					buttons: [
+						{ text: "Apply", click: dialogApply },
+						{ text: "Cancel", click: dialogCancel },
+						{ text: "OK", click: dialogOK }
+					]
+				});
+			}
+
+			// pass the control data object along to the dialog
+			$dialog.data("control", data);
+			
+			// show the dialog
+			if ($dialog.dialog("isOpen")) {
+				$dialog.dialog("moveToTop");
+			} else {
+				$dialog.dialog("open");
+				$dialog.data("ui-dialog")._trigger("resize");
+			}
+		});
 	};
 }
