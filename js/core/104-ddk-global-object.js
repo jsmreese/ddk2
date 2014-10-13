@@ -1516,8 +1516,9 @@
 					}, "s_" + id + "_", { silent: true });
 				}
 
-				$(spinner).insertAfter($this);
-
+	//			$(spinner).insertAfter($this);
+				//use mask to avoid duplicate save
+				showMask($this.parent().attr("id"));
 				// flush state keywords handling the active favorite
 				K.flush("s_" + id + "_fid");
 				K.flush("s_" + id + "_fuid");
@@ -1525,7 +1526,7 @@
 				K.flush("s_" + id + "_flab");
 
 				// console.log(K.toObject("fav_comp_"));
-				load("", "PSC_Favorites_Comp_Toolbar_Update", function(data){
+				load("", "PSC_Favorites_Comp_Toolbar_Update", K.toObject("s_" + id), function(data){
 					var response = data.split(",");
 					// console.log(response);
 					if (response[1] === "ok") {
