@@ -734,7 +734,7 @@
 		}
 	
 		function parseRecord(accumulator, recordStr) {
-			var record = _.reduce(trimTags(recordStr).match(/<psp>.+?<\/psp>/g), parsePair, {})
+			var record = _.reduce(trimTags(recordStr).match(/<psp>[\s\S]+?<\/psp>/g), parsePair, {});
 						
 			if (settings.overlay) {
 				record = _.overlay(record, settings.overlay);
@@ -750,14 +750,14 @@
 
 			trimmedPairStr = trimTags(pairStr);
 			
-			_.each(trimmedPairStr.match(/^<psk>.+?<\/psk>/), function (keyStr) {
+			_.each(trimmedPairStr.match(/^<psk>[\s\S]+?<\/psk>/), function (keyStr) {
 				key = trimTags(keyStr);
 			});
-			_.each(trimmedPairStr.match(/<psv>.+?<\/psv>$/), function (valueStr) {
+			_.each(trimmedPairStr.match(/<psv>[\s\S]+?<\/psv>$/), function (valueStr) {
 				value = trimTags(valueStr);
 			});
 				
-			if (settings.prefix.length && _.string.startsWith(key, settings.prefix)) {
+			if (settings.prefix && _.string.startsWith(key, settings.prefix)) {
 				key = key.slice(settings.prefix.length);
 			}
 				
@@ -789,12 +789,12 @@
 		if (settings.databind) {
 			if (!str) { return []; }
 			
-			return _.reduce(str.match(/<psr>.+?<\/psr>/g), parseRecord, [])
+			return _.reduce(str.match(/<psr>[\s\S]+?<\/psr>/g), parseRecord, [])
 		}
 
 		if (!str) { return {}; }
 		
-		return _.reduce(str.match(/<psp>.+?<\/psp>/g), parsePair, {});
+		return _.reduce(str.match(/<psp>[\s\S]+?<\/psp>/g), parsePair, {});
 	},
 /*	
 	// parseTaggedList(str)
