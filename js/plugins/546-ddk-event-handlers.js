@@ -8,6 +8,35 @@ function dataWatchHandler(e) {
 	}
 }
 
+function navGoHandler(e) {
+	var $target, $parents, data;
+	
+	$target = $(e.currentTarget);
+	$parents = $target.parents();
+	data = $parents.dataStack();
+	
+	// redirect to the original content container element
+	// if element has moved to sidebar via data-menu
+	if (data.$elem) {
+		$parents = data.$elem.parents();
+	}
+	
+	// find closest ancestor element that contains controls
+	// then call reloadControls on that element
+	$parents.each(function (index, elem) {
+		var $elem, $controls;
+		
+		$elem = $(elem);
+		$controls = $elem.findControls();
+		
+		if ($controls.length) {
+			$controls.reloadControls();
+			$(".exit-off-canvas").click();
+			return false;
+		}
+	});
+}
+
 if (!DDK.outputPDF) {
 	var $document = $(document);
 	
@@ -23,4 +52,5 @@ if (!DDK.outputPDF) {
 	$("[data-ddk-mouseover]").each(DDK.mouseover);
 	
 	$document.on("keywordupdate", dataWatchHandler);
+	$document.on("click", ".nav-go", navGoHandler);
 }

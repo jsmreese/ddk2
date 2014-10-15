@@ -4,5 +4,9 @@
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
 	box-shadow: none;
-}	
+}
+
+.select2-container .select2-choice abbr {
+	top: 9px;
+}
 	
