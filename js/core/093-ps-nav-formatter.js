@@ -175,16 +175,16 @@ PS.NavFormatter.fn.date.defaults = {
 		//		$dateEnd.datepicker("setDate", new Date(selectedDate)).trigger("change");
 			}
 			if(!inst.dpDiv.hasClass("hide-calendar")){
-				$dateEnd.datepicker("option", "minDate", new Date(selectedDate)).trigger("change");
+				$dateEnd.datepicker("option", "minDate", moment(selectedDate).toDate()).trigger("change");
 			}
 			
 		}
 		else if(inst.input.hasClass("nav-date-end")){
 			if(!($dateStart.is(":visible") && moment($dateStart.val(), settings.momentDateFormat).diff(selectedMomentObj) < 0)){//$dateStart.val() < selectedDate)){
-				$dateStart.datepicker("setDate", new Date(selectedDate)).trigger("change");
+				$dateStart.datepicker("setDate", moment(selectedDate).toDate()).trigger("change");
 			}
 			if(!inst.dpDiv.hasClass("hide-calendar")){
-				$dateStart.datepicker("option", "maxDate", new Date(selectedDate)).trigger("change");
+				$dateStart.datepicker("option", "maxDate", moment(selectedDate).toDate()).trigger("change");
 			}
 		}
 	}
