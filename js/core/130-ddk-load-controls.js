@@ -123,6 +123,9 @@ DDK.reloadFromFavoriteRequest = function () {
 					K(control.stateKeywords);
 					reloadControlContainer(control.name, control.id, settings, settings.callback, settings.$target.children().eq(0));
 				}
+
+				// trigger screenchange event to update menu framework content
+				$document.trigger("screenchange", [DDK.screenSize()]);
 				
 				// trigger window resize to update responsive block height classes
 				$(window).trigger("resize");
