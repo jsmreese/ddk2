@@ -175,16 +175,16 @@ PS.NavFormatter.fn.date.defaults = {
 		//		$dateEnd.datepicker("setDate", new Date(selectedDate)).trigger("change");
 			}
 			if(!inst.dpDiv.hasClass("hide-calendar")){
-				$dateEnd.datepicker("option", "minDate", new Date(selectedDate)).trigger("change");
+				$dateEnd.datepicker("option", "minDate", moment(selectedDate).toDate()).trigger("change");
 			}
 			
 		}
 		else if(inst.input.hasClass("nav-date-end")){
 			if(!($dateStart.is(":visible") && moment($dateStart.val(), settings.momentDateFormat).diff(selectedMomentObj) < 0)){//$dateStart.val() < selectedDate)){
-				$dateStart.datepicker("setDate", new Date(selectedDate)).trigger("change");
+				$dateStart.datepicker("setDate", moment(selectedDate).toDate()).trigger("change");
 			}
 			if(!inst.dpDiv.hasClass("hide-calendar")){
-				$dateStart.datepicker("option", "maxDate", new Date(selectedDate)).trigger("change");
+				$dateStart.datepicker("option", "maxDate", moment(selectedDate).toDate()).trigger("change");
 			}
 		}
 	}
@@ -531,17 +531,19 @@ PS.NavFormatter.fn.functions = {
 				_.each(optionData, function(option, index){
 					var value = option.value;
 					
-					value = value.replace(/ /g, "").toUpperCase();
-					optionHtml += "<option value=\"" + value + "\" ";
-					//add other data attributes
-					_.each(option, function(attrValue, attr){
-						if(attrValue){
-							optionHtml += "data-" + attr + "=\"" + attrValue + "\" ";
-						}
-					});
-					optionHtml += ">";
-					optionHtml += option.text || option.label;
-					optionHtml += "</option>";
+					if(value){
+						value = value.toUpperCase();
+						optionHtml += "<option value=\"" + value + "\" ";
+						//add other data attributes
+						_.each(option, function(attrValue, attr){
+							if(attrValue){
+								optionHtml += "data-" + attr + "=\"" + attrValue + "\" ";
+							}
+						});
+						optionHtml += ">";
+						optionHtml += option.text || option.label;
+						optionHtml += "</option>";
+					}
 				});
 				return optionHtml;
 			};
@@ -914,10 +916,22 @@ PS.NavFormatter.fn.functions = {
 				$dateDiv.find(".nav-date-end").trigger("change");
 			});
 			this.$el.on("change", ".nav-date-start", function(e){
-				K(_.string.trim(keywords[1] || keywords[0]), $(this).val());
+				//if type dropdown is hidden use first target keyword
+				if(_this.$el.find(".nav-date-type:visible").length){
+					K(_.string.trim(keywords[1] || keywords[0]), $(this).val());
+				}
+				else{
+					K(_.string.trim(keywords[0]), $(this).val());
+				}
 			});
 			this.$el.on("change", ".nav-date-end", function(e){
-				K(_.string.trim(keywords[2] || keywords[0]), $(this).val());
+				//if type dropdown is hidden use third target keyword
+				if(_this.$el.find(".nav-date-type:visible").length){
+					K(_.string.trim(keywords[2]), $(this).val());
+				}
+				else{
+					K(_.string.trim(keywords[1]), $(this).val());
+				}
 			});
 			//trigger date type change to set keywords default values
 			this.$el.find(".nav-date-type").trigger("change");
@@ -950,6 +964,8 @@ PS.NavFormatter.fn.select2 = function () {
 		this.$el.on("change", function(e){
 			K(settings.targetKeyword, $(this).val());
 		});
+		//just update keyword instead of changing because change event is for the actual changing of option
+		K(settings.targetKeyword, this.$el.val());
 	}
 };
 
