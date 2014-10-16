@@ -21,7 +21,11 @@ _.each(["Id", "Name"], function (config, index) {
 	function select(ref, fields) {
 		return _.map(fields, function (field) {
 			if (field === "value") {
-				return "REPLACE(REPLACE(REPLACE(CAST(" + ref + ".sci_fav_" + field + " AS VARCHAR(MAX)), CHAR(91), '%5B'), CHAR(93), '%5D'), CHAR(126), '%25%25') AS sci_fav_" + field;
+				return "CASE WHEN t.sci_type_label = 'Component' THEN REPLACE(REPLACE(REPLACE(CAST(" + ref + ".sci_fav_" + field + " AS VARCHAR(MAX)), CHAR(91), '%5B'), CHAR(93), '%5D'), CHAR(126), '%25%25') ELSE REPLACE(REPLACE(REPLACE(CAST(" + ref + ".sci_fav_" + field + " AS VARCHAR(MAX)), CHAR(91), CHAR(92) + CHAR(91)), CHAR(93), CHAR(92) + CHAR(93)), CHAR(126), CHAR(37) + CHAR(37)) END AS sci_fav_" + field;
+			}
+			
+			if (field === "notes" || field === "description") {
+				return "REPLACE(REPLACE(REPLACE(CAST(" + ref + ".sci_fav_" + field + " AS VARCHAR(MAX)), CHAR(91), CHAR(92) + CHAR(91)), CHAR(93), CHAR(92) + CHAR(93)), CHAR(126), CHAR(37) + CHAR(37)) AS sci_fav_" + field;
 			}
 			
 			return ref + ".sci_fav_" + field + " AS sci_fav_" + field;

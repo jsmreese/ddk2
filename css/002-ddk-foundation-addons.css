@@ -1,3 +1,9 @@
+.pre-wrap {
+	white-space: pre-wrap;
+	word-wrap: break-word; /* chrome */
+	word-break: break-all; /* firefox */
+}
+
 /* larger off-canvas */
 .move-right>.inner-wrap {
 	-ms-transform: translate(300px,0);

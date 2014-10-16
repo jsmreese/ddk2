@@ -472,6 +472,24 @@ _.extend(K, {
 		return _.string.parseJSON(DDK.unescape.brackets(K(key)));
 	},
 	
+	// index is optional
+	getDatasetField: function (key, index, field) {
+		var dataset;
+		
+		if (typeof index === "string") {
+			field = index;
+			index = 0;
+		}
+		
+		dataset = _.string.parseJSON(DDK.unescape.brackets(K(key)));
+		
+		if (dataset && dataset.length && dataset[index]) {
+			return dataset[index][field];
+		}
+		
+		return "";
+	},
+	
 	isKeyword: function(key) {
 		return _.string.toBoolean(containsKeyword(key));
 	},

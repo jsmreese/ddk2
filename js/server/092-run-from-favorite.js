@@ -67,3 +67,17 @@ var runFromFavorite = function (favoriteId, keywords, favHeader, favFooter) {
 };
 
 var runFav = runFromFavorite;
+
+function renderFavoriteValue() {
+	var value;
+	
+	value = _.string.parseJSON(K.getDatasetField('fav', 'value') || "");
+	
+	if (_.isObject(value)) {
+		value = JSON.stringify(value, null, 4);
+	}
+	
+	return "<pre class='pre-wrap'><code class='language-javascript'>" +
+		_.escape(value).replace(/%/g, '&#37;') +
+		"</code></pre>";
+}
