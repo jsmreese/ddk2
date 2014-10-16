@@ -17,8 +17,8 @@ function navGoHandler(e) {
 	
 	// redirect to the original content container element
 	// if element has moved to sidebar via data-menu
-	if (data.$elem) {
-		$parents = data.$elem.parents();
+	if (data.$menuParent) {
+		$parents = data.$menuParent.parents();
 	}
 	
 	// find closest ancestor element that contains controls
