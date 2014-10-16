@@ -34,6 +34,9 @@ function navGoHandler(e) {
 			$(".exit-off-canvas").click();
 			return false;
 		}
+		
+		// stop climbing parents if the main-section element is reached
+		if ($elem.hasClass("main-section")) { return false; }
 	});
 }
 
