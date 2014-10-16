@@ -492,26 +492,26 @@ PS.optionsAPI.navElemConfig = {
 			"queryWidget": {
 				"id": "query_widget",
 				"label": "Query Widget",
-				"description": "Element query widget.",
-				"notes": "Sets query widget"
+				"description": "Widget that contains the sql query to retrieve the data for the select2 options.",
+				"notes": "The sql query should be in the html.detail of the widget."
 			},
 			"keywords": {
 				"id": "keywords",
 				"label": "Query Keywords",
-				"description": "Keywords to pass to the query widget",
-				"notes": "Keywords to pass to the query widget"
+				"description": "Keywords to pass to the query widget.",
+				"notes": "Keyword format is the same with the DDK K function which can be a url or a json."
 			},
 			"targetKeyword": {
 				"id": "target_keyword",
 				"label": "Target Keyword",
-				"description": "Keyword to be updated on change of input",
-				"notes": "Can have multiple string separated by comma eg. tp_type, tp_start, tp_end"
+				"description": "Keyword to be updated on change of input.",
+				"notes": "For timeperiod which can have 3 input (date_type, date_start, date_end), multiple string can be used separated by comma eg. tp_type, tp_start, tp_end. The mapping for the keywords is the same as the order of the input displayed which is the date_type, date_start and date_end respectively."
 			},
 			"multiple": {
 				"id": "multiple",
 				"label": "Multiple",
 				"description": "Mode of select2",
-				"notes": "Mode of select2",
+				"notes": "Set to true if the select2 can have multiple values or false if it only accepts one value.",
 				"default": "false",
 				"values": [
 					{
@@ -528,55 +528,55 @@ PS.optionsAPI.navElemConfig = {
 				"id": "width",
 				"label": "Width",
 				"description": "width of select2",
-				"notes": "Percent or pixel width of select2"
+				"notes": "Percent or pixel width of select2."
 			},
 			"pageSize": {
 				"id": "page_size",
 				"label": "Page Size",
 				"description": "Number of data per data retrieval",
-				"notes": ""
+				"notes": "Number of records before triggering another ajax request to fetch more data."
 			},
 			"valueWrapString": {
 				"id": "value_wrap_string",
 				"label": "Value Wrap String",
 				"description": "String to be used as a wrapper for the value",
-				"notes": ""
+				"notes": "This is used to wrap values with a character even if the multiple mode is enabled, each value will be wrap with the given character"
 			},
 			"value": {
 				"id": "value",
 				"label": "Default Value",
 				"description": "Default value of the input",
-				"notes": ""
+				"notes": "For select2, if the value is supplied without the label, it will trigger an ajax request to retrieve the corresponding label to the value."
 			},
 			"label": {
 				"id": "label",
 				"label": "Default Label",
-				"description": "Default selected label for the select2",
-				"notes": "This is used to avoid triggering server request on set of default values"
+				"description": "Default selected label for the select2.",
+				"notes": "This is displayed in the select2 without any ajax requests. This is used to avoid triggering server request on set of default values. Should be used with the value."
 			},
 			"valueField": {
 				"id": "value_field",
 				"label": "Value Field",
 				"description": "Value Field mapping for select2, if this is empty navset will use the column with a 'name' suffix in the sql",
-				"notes": "This is the alias name of the column set in the sql statement Eg. SQL: SELECT sci_m_id AS dp_value; valueField: dp_value"
+				"notes": "This is the alias name of the column set in the sql statement Eg. SQL: [SELECT sci_m_id AS dp_value;] In the navset options, use valueField: dp_value"
 			},
 			"labelField": {
 				"id": "label_field",
 				"label": "Label Field",
 				"description": "Label Field mapping for select2, if this is empty navset will use the column with a 'label' suffix in the sql",
-				"notes": "This is the alias name of the column set in the sql statement Eg. SQL: SELECT sci_m_label AS dp_label; labelField: dp_label"
+				"notes": "This is the alias name of the column set in the sql statement Eg. SQL: [SELECT sci_m_label AS dp_label;] In the navset options, use labelField: dp_label"
 			},
 			"groupField": {
 				"id": "group_field",
 				"label": "Group Field",
 				"description": "Group Field mapping for select2",
-				"notes": "This is the alias name of the column set in the sql statement Eg. SQL: SELECT sci_m_type AS dp_group; labelField: dp_group"
+				"notes": "This is the alias name of the column set in the sql statement Eg. SQL: [SELECT sci_m_type AS dp_group;] In the navset options, use groupField: dp_group"
 			},
 			"iconField": {
 				"id": "icon_field",
 				"label": "Icon Field",
 				"description": "Icon Field mapping for select2",
-				"notes": "This is the alias name of the column set in the sql statement Eg. SQL: SELECT sci_m_img AS dp_icon; iconField: dp_icon"
+				"notes": "This is the alias name of the column set in the sql statement Eg. SQL: [SELECT sci_m_img AS dp_icon;] In the navset options, use iconField: dp_icon"
 			},
 			"typeDefault": {
 				"id": "type_default",
@@ -587,8 +587,8 @@ PS.optionsAPI.navElemConfig = {
 			"dateCustomType": {
 				"id": "date_custom_type",
 				"label": "Date Custom Type",
-				"description": "A string target fav (id in the fav value) or an array of json object to be used in the type dropdown",
-				"notes": ""
+				"description": "A string target fav (id in the fav value) or an array of json object to be used in the type dropdown.",
+				"notes": "The favorite used should be under the Pureshre Nav Formats category and the reference should be the id in the favorite value not the id or name of the favorite itself."
 			},
 			"hideDateType": {
 				"id": "hide_date_type",
@@ -610,7 +610,7 @@ PS.optionsAPI.navElemConfig = {
 				"id": "cached",
 				"label": "Cached",
 				"description": "A feature to cache dropdown options on select2 to improve performance",
-				"notes": "",
+				"notes": "The cache is empty until the user opens the option pane the first time. When the user reopens the option pane the succeeding time, this feature will then use the cached data to avoid unnecessary server requests.",
 				"values": [
 					{
 						"value": "true",

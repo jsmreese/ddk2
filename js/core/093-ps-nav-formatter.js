@@ -531,17 +531,19 @@ PS.NavFormatter.fn.functions = {
 				_.each(optionData, function(option, index){
 					var value = option.value;
 					
-					value = value.replace(/ /g, "").toUpperCase();
-					optionHtml += "<option value=\"" + value + "\" ";
-					//add other data attributes
-					_.each(option, function(attrValue, attr){
-						if(attrValue){
-							optionHtml += "data-" + attr + "=\"" + attrValue + "\" ";
-						}
-					});
-					optionHtml += ">";
-					optionHtml += option.text || option.label;
-					optionHtml += "</option>";
+					if(value){
+						value = value.toUpperCase();
+						optionHtml += "<option value=\"" + value + "\" ";
+						//add other data attributes
+						_.each(option, function(attrValue, attr){
+							if(attrValue){
+								optionHtml += "data-" + attr + "=\"" + attrValue + "\" ";
+							}
+						});
+						optionHtml += ">";
+						optionHtml += option.text || option.label;
+						optionHtml += "</option>";
+					}
 				});
 				return optionHtml;
 			};
@@ -914,10 +916,22 @@ PS.NavFormatter.fn.functions = {
 				$dateDiv.find(".nav-date-end").trigger("change");
 			});
 			this.$el.on("change", ".nav-date-start", function(e){
-				K(_.string.trim(keywords[1] || keywords[0]), $(this).val());
+				//if type dropdown is hidden use first target keyword
+				if(_this.$el.find(".nav-date-type:visible").length){
+					K(_.string.trim(keywords[1] || keywords[0]), $(this).val());
+				}
+				else{
+					K(_.string.trim(keywords[0]), $(this).val());
+				}
 			});
 			this.$el.on("change", ".nav-date-end", function(e){
-				K(_.string.trim(keywords[2] || keywords[0]), $(this).val());
+				//if type dropdown is hidden use third target keyword
+				if(_this.$el.find(".nav-date-type:visible").length){
+					K(_.string.trim(keywords[2]), $(this).val());
+				}
+				else{
+					K(_.string.trim(keywords[1]), $(this).val());
+				}
 			});
 			//trigger date type change to set keywords default values
 			this.$el.find(".nav-date-type").trigger("change");
