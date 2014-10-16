@@ -23,7 +23,7 @@
 
 	.select2-container .select2-choice span {
 		line-height: 33px;
-		color: #444;
+		/*color: #444;*/ /*removed this because it is causing the select2 placeholder to turn black*/
 	}
 	
 	
