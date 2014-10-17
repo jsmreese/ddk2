@@ -1,7 +1,7 @@
 DDK.reloadFromFavoriteQueue = [];
 DDK.reloadFromFavoriteLoading = false;
 
-DDK.reloadFromFavorite = function (target, favoriteId, callback, beforeInit, beforeReload, unshift, favHeader, favFooter, keywords) {
+DDK.reloadFromFavorite = function (target, favoriteId, callback, beforeInit, beforeReload, unshift, favHeader, favFooter, keywords, newState) {
 
 	// target could be a DOM node, a jQuery selector, or a jQuery collection, or an id string
 	var $target = $(target);
@@ -37,7 +37,8 @@ DDK.reloadFromFavorite = function (target, favoriteId, callback, beforeInit, bef
 		beforeReload: beforeReload,
 		favHeader: favHeader,
 		favFooter: favFooter,
-		keywords: keywords
+		keywords: keywords,
+		newState: newState
 	});
 	
 	_.defer(function () {
@@ -165,6 +166,15 @@ DDK.reloadFromFavoriteRequest = function () {
 			_.extend(ajaxSettings.data, _.string.parse(settings.keywords));
 		} else {
 			_.extend(ajaxSettings.data, settings.keywords);
+		}
+	}
+
+	// send any new state values
+	if (settings.newState) {
+		if (typeof settings.newState === "string") {
+			_.extend(ajaxSettings.data, settings.newState);
+		} else {
+			_.extend(ajaxSettings.data, DDK.renderJSON(settings.newState, false));
 		}
 	}
 	
@@ -322,14 +332,15 @@ function reloadControlContainer(controlName, controlId, options, callback, $cont
 	}
 }
 
-var runFromFavorite = function (target, favId, keywords, favHeader, favFooter) {
+var runFromFavorite = function (target, favId, keywords, favHeader, favFooter, newState) {
 	if (typeof keywords === "boolean") {
+		newState = favFooter;
 		favFooter = favHeader;
 		favHeader = keywords;
 		keywords = "";
 	}
 	
-	DDK.reloadFromFavorite(target, favId, null, null, null, null, favHeader, favFooter, keywords);
+	DDK.reloadFromFavorite(target, favId, null, null, null, null, favHeader, favFooter, keywords, newState);
 };
 
 var runFav = runFromFavorite;
