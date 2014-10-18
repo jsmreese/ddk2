@@ -1,11 +1,40 @@
 DDK.reloadFromFavoriteQueue = [];
 DDK.reloadFromFavoriteLoading = false;
 
+// new function signatures:
+// DDK.reloadFromFavorite(target, id [, settings] [, callback])
+// DDK.reloadFromFavorite(settings [, callback])
 DDK.reloadFromFavorite = function (target, favoriteId, callback, beforeInit, beforeReload, unshift, favHeader, favFooter, keywords, newState) {
+	var $target, args, settings;
+	
+	// parse arguments
+	args = [].slice.call(arguments);
+	if (args.length < 5) {
+		// might be using the new settings object
+		// can use id or name properties in settings to set favoriteId
+		if (_.isPlainObject(target)) {
+			settings = target;
+			callback = favoriteId;
+			target = settings.target;
+			favoriteId = settings.id || settings.name;
+		} else if (_.isPlainObject(callback)) {
+			settings = callback;
+			callback = beforeInit;
+		}
+		
+		if (settings) {
+			beforeInit = settings.beforeInit;
+			beforeReload = settings.beforeReload;
+			unshift = settings.unshift;
+			favHeader = settings.favHeader;
+			favFooter = settings.favFooter;
+			keywords = settings.keywords;
+			newState = settings.state;
+		}
+	}
 
 	// target could be a DOM node, a jQuery selector, or a jQuery collection, or an id string
-	var $target = $(target);
-	if (!$target.size()) { $target = $("#" + target); }
+	$target = $.target(target);
 
 	// exit with a warning if the target cannot be found
 	if (!$target.size()) {
