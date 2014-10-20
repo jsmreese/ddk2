@@ -2534,6 +2534,7 @@ $.extend(true, DDK, {
 		defaultSelect2Options: {
 			queryWidget: "",
 			targetKeyword: "",
+			emptyKeywordValue: "",
 			label: "",
 			multiple: false,
 			placeholder: "",
@@ -2553,7 +2554,7 @@ $.extend(true, DDK, {
 			uncheckedValue: "false",
 			dateFormat: "yy-mm-dd",
 			treeCheckbox: true,
-			closeOnSelect: true,
+			closeOnSelect: false,
 			allowClear: true
 		},
 		init: function(id) {
