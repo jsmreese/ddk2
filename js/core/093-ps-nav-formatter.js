@@ -939,11 +939,13 @@ PS.NavFormatter.fn.functions = {
 	}
 };
 PS.NavFormatter.fn.select2 = function () {
-	var localThis = this, settings = this.getSettings(), $treeChooser, qtipOptions;
+	var localThis = this, 
+		settings = $.extend(true, {}, DDK.navset2.defaultSelect2Options, this.getSettings()), 
+		$treeChooser, 
+		qtipOptions;
 	//add tree chooser button
 	if(!this.$el.is("select")){
-			if((settings.queryWidget || settings.queryModule) && !settings.cached){
-//		if(settings.queryWidget){
+		if((settings.queryWidget || settings.queryModule) && !settings.cached){
 			$.extend(settings, {
 				ajax: this.functions.ajaxSetup(settings),
 				initSelection : function(element, callback){
@@ -962,10 +964,19 @@ PS.NavFormatter.fn.select2 = function () {
 	this.$el.select2(settings);
 	if(settings.targetKeyword){
 		this.$el.on("change", function(e){
-			K(settings.targetKeyword, $(this).val());
+			var keywordValue = $(this).val();
+			if(settings.emptyKeywordValue && keywordValue === ""){
+				keywordValue = settings.emptyKeywordValue;
+			}
+			K(settings.targetKeyword, keywordValue);
 		});
 		//just update keyword instead of changing because change event is for the actual changing of option
-		K(settings.targetKeyword, this.$el.val());
+		if(settings.emptyKeywordValue && this.$el.val() === ""){
+			K(settings.targetKeyword, settings.emptyKeywordValue);
+		}
+		else{
+			K(settings.targetKeyword, this.$el.val());
+		}
 	}
 };
 
