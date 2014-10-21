@@ -621,6 +621,12 @@ PS.optionsAPI.navElemConfig = {
 						"label": "False"
 					}
 				]
+			},
+			"emptyKeywordValue": {
+				"id": "empty_keyword_value",
+				"label": "Empty Keyword Value",
+				"description": "Value of the keyword if the select2 is cleared or whenever the select2 has no selection.",
+				"notes": "This option is only applicable if targetKeyword is supplied.",
 			}
 		}
 	}		
