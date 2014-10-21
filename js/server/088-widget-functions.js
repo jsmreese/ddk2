@@ -62,17 +62,17 @@ _.each(["Id", "Name"], function (config, index) {
 			"\n\t t.sci_type_label AS sci_fav_type_label," + 
 			"\n\t " + select("cfav", fields) + 
 			"\n FROM sci_areas a WITH(NOLOCK)" + 
-			"\n INNER JOIN sci_types t WITH(NOLOCK)" + 
-			"\n\t ON a.sci_area_table = 'sci_favorites'" + 
-			"\n\t AND a.sci_area_id = t.sci_type_area_id" + 
-			"\n\t AND t.sci_type_label IN ('Component', 'Content', 'Content List')" + 
 			"\n INNER JOIN sci_favorites pfav WITH(NOLOCK)" + 
-			"\n\t ON t.sci_type = pfav.sci_fav_type" + 
-			"\n\t AND pfav." + (index ? "sci_fav_name = '" : "sci_fav_id = ") + favId + (index ? "'" : "") +
+			"\n\t ON pfav." + (index ? "sci_fav_name = '" : "sci_fav_id = ") + favId + (index ? "'" : "") +
 			"\n INNER JOIN sci_favorite_rel fr WITH(NOLOCK)" + 
 			"\n\t ON pfav.sci_fav_id = fr.sci_fr_fav1_id" + 
 			"\n INNER JOIN sci_favorites cfav WITH(NOLOCK)" + 
 			"\n\t ON fr.sci_fr_fav2_id = cfav.sci_fav_id" +
+			"\n INNER JOIN sci_types t WITH(NOLOCK)" + 
+			"\n\t ON t.sci_type = cfav.sci_fav_type" + 
+			"\n\t AND a.sci_area_id = t.sci_type_area_id" + 
+			"\n\t AND t.sci_type_label IN ('Component', 'Content', 'Content List')" + 
+			"\n WHERE a.sci_area_table = 'sci_favorites'" + 
 			"\n ) LIST_DETAIL" +
 			"\n ORDER BY sci_fav_list_order";	
 	};		
