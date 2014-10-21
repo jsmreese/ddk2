@@ -447,15 +447,22 @@ _.extend(K, {
 		return evalKeywordValue(K(key), [key]);
 	},
 	
+	// returns a url-encoded string of all default keys and values set
 	setDefault: function(key, value) {
-		function setDefaultKeywordValue(_value, _key) {
+		function setDefaultKeywordValue(result, _value, _key) {
 			var initialValue = keywordOrDefault(_key, "");
-			keywordUpdate(_key, initialValue || _value);
+			
+			if (initialValue) { return result + ""; }
+			
+			keywordUpdate(_key, _value);
+			
+			return result + "&" + _key + "=" + encodeURIComponent(_value);
 		}
+		
 		if (_.isObject(key)) {
-			_.each(key, setDefaultKeywordValue);
+			return _.reduce(key, setDefaultKeywordValue, "");
 		} else {
-			setDefaultKeywordValue(value, key);
+			return setDefaultKeywordValue("", value, key);
 		}
 	},
 	
