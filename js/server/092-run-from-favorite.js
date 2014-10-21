@@ -1,16 +1,56 @@
-var runFromFavorite = function (favoriteId, keywords, favHeader, favFooter) {
-	var controlData,
-		control,
-		header,
-		footer,
-		dataConfig;
+/*
+settings is an object that can contain these properties:
+id - favorite record id.
+name - favorite record name. `name` or `id` can be used interchangeably in the settings object.
+favHeader - sets favorite record header display options
+favFooter - sets favorite record footer display options
+keywords - keywords sent with this request only. Will not be set in the global keyword hash.
+state - url or JSON encoded key/value pairs of state keywords applied to rendered control. Keys should use only the state key abbreviation. e.g. to apply a new chart title and turn off automatic chart axis labels: "&ti=New%20Title&lae=false" or { ti: "New Title", lae: "false" }.
+error - function executed in the event of a DRF error. Return value from function is used as the runFav output. Error function is passed one argument, the favorite record name or id.
+*/
 
-	if (typeof keywords === "boolean") {
+// new function signatures
+// runFav(id, settings)
+// runFav(settings)
+var runFromFavorite = function (favoriteId, keywords, favHeader, favFooter) {
+	function defaultError(id) {
+		if (K("sec.userType") === "SysAdmin") {
+			return DDK.errorLog("Error Loading Favorite", ["name / id", id]);
+		}
+		
+		return "";
+	}
+
+	var controlData, control, header, footer, dataConfig,
+		settings, state, error;
+
+	if (_.isPlainObject(favoriteId)) {
+		settings = favoriteId;
+	} else if (_.isPlainObject(keywords)) {
+		// could be keywords to be sent or could be a settings object
+		// check for settings properties:
+		// favHeader, favFooter, keywords, state, error
+		if (_.intersection(_.keys(keywords), "favHeader favFooter keywords state error".split(" ")).length) {
+			settings = keywords;
+		}		
+	} else if (typeof keywords === "boolean") {
 		favFooter = favHeader;
 		favHeader = keywords;
 		keywords = "";
 	}
+	
+	if (settings) {
+		favoriteId = favoriteId || settings.id || settings.name;
+		keywords = settings.keywords;
+		favHeader = settings.favHeader;
+		favFooter = settings.favFooter;
+	} else {
+		settings = {};
+	}
 
+	state = settings.state || "";
+	error = settings.error || defaultError;
+		
 	dataConfig = [
 		{
 			queryWidget: "PSC_Favorites_Record_Query_" + (_.isNaN(+favoriteId) ? "Name" : "Id"),
@@ -37,33 +77,24 @@ var runFromFavorite = function (favoriteId, keywords, favHeader, favFooter) {
 		
 	// Throw exception if favoriteId does not evaluate to a positive number
 	// or is not a name
-	if (!(+favoriteId > 0)) {
-		if (typeof favoriteId !== "string" || favoriteId === "") {
-			return "AMEngine JScript runtime error - runFromFavorite: invalid favoriteId. '" + favoriteId.toString() + "' must be a positve number or a string.";
-		}
+	if (!(+favoriteId > 0) && (typeof favoriteId !== "string" || favoriteId === "")) {
+		return error(favoriteId);
 	}
 	
 	// get control
-	controlData = _.string.parseJSON(DDK.unescape.brackets(run("DDK_Data_Request", _.extend({}, keywords, { "data.config": DDK.escape.brackets(JSON.stringify(dataConfig)) }))));
-	
-	if (!_.isPlainObject(controlData)) {
-		return "AMEngine JScript runtime error - runFromFavorite: unable to parse favorite '" + favoriteId + "'.";
-	}
+	controlData = _.string.parseJSON(DDK.unescape.brackets(run("DDK_Data_Request", _.extend({}, keywords, { "data.config": DDK.escape.brackets(JSON.stringify(dataConfig)), component_state: (typeof state === "string" ? state : _.reduce(state, function (result, value, key) {
+		return result + "&" + key + "=" + encodeURIComponent(value);
+	}, ""))	}))));
 
-	if (controlData.datasets) {
+	if (controlData && _.isPlainObject(controlData) && controlData.datasets) {
 		header = controlData.datasets[1];
 		footer = controlData.datasets[2];
 		control = controlData.datasets[3];
 	} else {
-		header = "";
-		footer = "";
-		control = {
-			html: '<div class="text-bold text-xdkred">Error loading favorite</div><div><code>' + favoriteId + '</code></div>',
-			stateKeywords: ""
-		};
+		return error(favoriteId);
 	}
 	
-	return "\n\n" + header + control.html + footer + "\n\n<script>K(\"" + control.stateKeywords + "\");</script>\n\n";
+	return "\n\n" + header + control.html + footer + (control.stateKeywords ? "\n\n<script>K(\"" + control.stateKeywords + "\");</script>" : "") + "\n\n";
 };
 
 var runFav = runFromFavorite;

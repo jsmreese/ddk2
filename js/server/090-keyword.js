@@ -242,7 +242,7 @@ var K = function(key, value, prefix) {
 		
 		for (i = 0; i < pairs.length; i += 1) {
 			var pair = pairs[i].split('=');
-			if (pair[0]) {
+			if (pair[0] && pair[1]) {
 				keywordUpdate(pair[0], decodeURIComponent(pair[1].replace(/\+/g,' ')));
 			}
 		}	
@@ -262,7 +262,7 @@ var K = function(key, value, prefix) {
 		
 		for (i = 0; i < pairs.length; i += 1) {
 			var pair = pairs[i].split('=');
-			if (pair[0]) {
+			if (pair[0] && pair[1]) {
 				keywordUpdate(prefix + pair[0], decodeURIComponent(pair[1].replace(/\+/g,' ')));
 			}
 		}	
