@@ -194,8 +194,11 @@ DDK.reloadFromFavoriteRequest = function () {
 				// initialize Prism.js syntax highlighting
 				Prism && Prism.highlightAll();
 				
-				if (type === "Component") {
+				if (control.stateKeywords) {
 					K(control.stateKeywords);
+				}
+				
+				if (type === "Component") {
 					reloadControlContainer(control.name, control.id, settings, settings.success, settings.$target.children().eq(0));
 				}
 
