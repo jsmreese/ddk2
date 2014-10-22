@@ -70,10 +70,86 @@ return evalKeywordValue(value, evaledKeys);
 }
 */
 
+function evalCurrentDateKeywordValue(key) {
+	function padTwo(num) {
+		num = num.toString();
+		
+		if (num.length === 1) {
+			return "0" + num;
+		}
+		
+		return num;
+	}
+	
+	var date, diff, diffMatch, rDiff, ret;
+
+	date = moment();
+	
+	rDiff = /[\+\-][0-9]+$/;
+	diffMatch = key.match(rDiff);
+	diff = 0;
+	
+	if (diffMatch && diffMatch.length) {
+		// convert the diff into a number (diff operator will affect the number's sign)
+		diff = +diffMatch[0];
+		
+		// slice off the diff and the underscore
+		key = key.slice(0, -(diffMatch[0].length + 1));
+	}
+	
+	switch (key) {
+		case "CURRENT_YEAR":
+			date = date.add(diff, "years");
+			return date.format("YYYY");
+		case "CURRENT_MONTH":
+			date = date.add(diff, "months");
+			return date.format("YYYY-MM");
+		case "CURRENT_QUARTER":
+			date = date.add(diff * 3, "months");
+			return date.format("YYYY") + "-Q" + date.quarter();
+		case "CURRENT_WEEK":			
+			date = date.add(diff * 7, "days");
+			return date.isoWeekYear() + "-W" + padTwo(date.isoWeek());
+
+		// days
+		case "CURRENT_YEAR_START":
+			date = date.dayOfYear(1).add(diff, "days");
+			return date.format("YYYY-MM-DD");
+		case "CURRENT_YEAR_END":
+			date = date.month(11).date(31).add(diff, "days");
+			return date.format("YYYY-MM-DD");
+		case "CURRENT_MONTH_START":
+			date = date.date(1).add(diff, "days");
+			return date.format("YYYY-MM-DD");
+		case "CURRENT_MONTH_END":
+			date = date.add(1, "months").date(1).add(diff - 1, "days");
+			return date.format("YYYY-MM-DD");
+		case "CURRENT_QUARTER_START":
+			date = moment({ years: date.year(), months: 0, days: 1 }).quarter(date.quarter()).add(diff, "days");
+			return date.format("YYYY-MM-DD");			
+		case "CURRENT_QUARTER_END":
+			date = moment({ years: date.year(), months: 0, days: 1 }).quarter(date.quarter() + 1).add(diff - 1, "days");
+			return date.format("YYYY-MM-DD");					
+		case "CURRENT_WEEK_START":
+			date = date.isoWeekday(1).add(diff, "days");
+			return date.format("YYYY-MM-DD");
+		case "CURRENT_WEEK_END":			
+			date = date.isoWeekday(7).add(diff, "days");
+			return date.format("YYYY-MM-DD");
+		case "CURRENT_DAY":
+			date = date.add(diff, "days");
+			return date.format("YYYY-MM-DD");
+	}
+	
+	return "";
+}
+
 function evalKeywordValue(value, evaledKeys) {
 	var potentialKeys, 
-		matchedKey, 
-		regexValidKey = /^[a-z_][a-z0-9_]*$/;
+		matchedKey,
+		matchedKeyValue,
+		regexValidKey = /^[a-zA-Z0-9_\-\+\.]+$/,
+		rCurrentDateKey = /^CURRENT_((YEAR|QUARTER|MONTH|WEEK)(_(START|END))*|DAY)(_(\+|\-)[0-9]+)*$/;
 	
 	// if value is not a string, throw exception
 	value = value.toString();
@@ -107,7 +183,21 @@ function evalKeywordValue(value, evaledKeys) {
 	
 	// find the first potentialKey that has a value in the keyword hash
 	matchedKey = _.find(potentialKeys, function (potentialKey) {
-		return K(potentialKey) != null; // test for not null or undefined
+		var potentialKeyValue;
+		
+		// potential key can be a CURRENT_DATE keyword
+		if (rCurrentDateKey.test(potentialKey)) {
+			matchedKeyValue = evalCurrentDateKeywordValue(potentialKey);
+			return true;
+		}
+		
+		// or must have a value that is not null or undefined
+		potentialKeyValue = K(potentialKey);
+		
+		if (potentialKeyValue != null) {
+			matchedKeyValue = potentialKeyValue;
+			return true;
+		}
 	});
 	
 	// if there is no matched key, stop
@@ -119,11 +209,11 @@ function evalKeywordValue(value, evaledKeys) {
 	if (_.filter(evaledKeys, function (key) { return key === matchedKey; }).length > 3) {
 		// execute a global replace for the matchedKey (with tildes) on the value string
 		// replace with a recursive keyword message
-		value = value.replace(new RegExp(DDK.char.tilde + matchedKey + DDK.char.tilde, "g"), "(K.eval error: recursive keyword `" + matchedKey + "`)");
+		value = value.replace(new RegExp(DDK.char.tilde + matchedKey.replace(/\+/g, "\\+").replace(/\-/g, "\\-") + DDK.char.tilde, "g"), "(K.eval error: recursive keyword `" + matchedKey + "`)");
 	} else {
 		// execute a global replace for the matchedKey (with tildes) on the value string
 		// replace with the evaluated keyword value
-		value = value.replace(new RegExp(DDK.char.tilde + matchedKey + DDK.char.tilde, "g"), K(matchedKey));
+		value = value.replace(new RegExp(DDK.char.tilde + matchedKey.replace(/\+/g, "\\+").replace(/\-/g, "\\-") + DDK.char.tilde, "g"), matchedKeyValue);
 	}
 	
 	//_.each(potentialKeys, function (potentialKey) {

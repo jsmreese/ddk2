@@ -881,10 +881,10 @@ DDK.regex = {
 	tilde: /\x7E/g,
 	carriageReturn: /\x0D\x0A/g,	//represents \r\n
 	tab: /\x09/g,	
-	ddkKeyword: /%%[a-zA-Z0-9_\-\.]+?%%/g,	
-	ddkKeywordTest: /%%[a-zA-Z0-9_\-\.]+?%%/,	
+	ddkKeyword: /%%[a-zA-Z0-9_\-\+\.]+?%%/g,	
+	ddkKeywordTest: /%%[a-zA-Z0-9_\-\+\.]+?%%/,	
 	ddkScriptBlockTest: /%@.+@%/,	
-	ddkKeywordOnly: /^%%[a-zA-Z0-9_\-\.]+?%%$/
+	ddkKeywordOnly: /^%%[a-zA-Z0-9_\-\+\.]+?%%$/
 };
 
 DDK.char = {

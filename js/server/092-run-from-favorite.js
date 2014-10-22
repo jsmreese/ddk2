@@ -112,3 +112,7 @@ function renderFavoriteValue() {
 		_.escape(value).replace(/%/g, '&#37;') +
 		"</code></pre>";
 }
+
+function docKey(key) {
+	return "<code><span class='text-ltgray text-normal'>&#37;&#37;</span><span style='color: #C4620E;'>" + key + "</span><span class='text-ltgray text-normal'>&#37;&#37;</span></code>";
+}
