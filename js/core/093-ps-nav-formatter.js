@@ -982,23 +982,25 @@ PS.NavFormatter.fn.select2 = function () {
 			formatResult: this.functions.format
 		});
 	}
-	this.$el.select2(settings);
 	if(settings.targetKeyword){
 		this.$el.on("change", function(e){
-			var keywordValue = $(this).val();
-			if(settings.emptyKeywordValue && keywordValue === ""){
-				keywordValue = settings.emptyKeywordValue;
-			}
-			K(settings.targetKeyword, keywordValue);
+			K(settings.targetKeyword, $(this).val());
 		});
 		//just update keyword instead of changing because change event is for the actual changing of option
-		if(settings.emptyKeywordValue && this.$el.val() === ""){
-			K(settings.targetKeyword, settings.emptyKeywordValue);
-		}
-		else{
+		if(this.$el.val()){
 			K(settings.targetKeyword, this.$el.val());
 		}
+		else {
+			//set keyword value if it has a value and if there is no value in the input
+			if(K(settings.targetKeyword)){
+				this.$el.val(K(settings.targetKeyword));
+			}
+			else if(settings.emptyKeywordValue){	
+				K(settings.targetKeyword, settings.emptyKeywordValue);
+			}
+		}
 	}
+	this.$el.select2(settings);
 };
 
 
