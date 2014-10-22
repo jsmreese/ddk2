@@ -992,7 +992,7 @@ PS.NavFormatter.fn.select2 = function () {
 		}
 		else {
 			//set keyword value if it has a value and if there is no value in the input
-			if(K(settings.targetKeyword)){
+			if(K(settings.targetKeyword) &&  K(settings.targetKeyword) != settings.emptyKeywordValue){
 				this.$el.val(K(settings.targetKeyword));
 			}
 			else if(settings.emptyKeywordValue){	
