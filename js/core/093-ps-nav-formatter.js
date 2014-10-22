@@ -756,7 +756,7 @@ PS.NavFormatter.fn.functions = {
 	},
 	"createNavDate": function(type){
 		var _this = this,
-			momentDateFormat,
+			momentDateFormat, keywords, keywordValues,
 			settings = this.getSettings(), $dateType, 
 			$hiddenType = $("<input type=\"hidden\" class=\"nav-hidden-date-type\"/>"),
 			$hiddenDateStart = $("<input type=\"hidden\" class=\"nav-hidden-date-start\"/>"),
@@ -933,8 +933,29 @@ PS.NavFormatter.fn.functions = {
 					K(_.string.trim(keywords[1]), $(this).val());
 				}
 			});
+			//store keyword values to be set after the type change
+			keywordValues = {};
+			_.each(keywords, function(item, index){
+				keywordValues[item] = K(item);
+			});
 			//trigger date type change to set keywords default values
 			this.$el.find(".nav-date-type").trigger("change");
+			if(keywords[2] && keywordValues[keywords[2]]){
+				this.$el.find(".nav-date-end").val(keywordValues[keywords[2]]).trigger("change");
+			}
+			if(keywords[1] && keywordValues[keywords[1]]){
+				if(this.$el.find(".nav-date-type:visible").length){
+					this.$el.find(".nav-date-start").val(keywordValues[keywords[1]]).trigger("change");
+				}
+				else{
+					this.$el.find(".nav-date-end").val(keywordValues[keywords[1]]).trigger("change");
+				}
+			}
+			if(keywords[0] && keywordValues[keywords[0]]){
+				if(this.$el.find(".nav-date-type:not(:visible)").length){
+					this.$el.find(".nav-date-start").val(keywordValues[keywords[0]]).trigger("change");
+				}
+			}
 		}
 	}
 };
