@@ -11,7 +11,7 @@
 
 .text-bold { font-weight: bold !important; }
 .text-italic { font-style: italic !important; }
-.text-normal { font-style: normal !important; }
+.text-normal { font-style: normal !important; font-weight: normal !important; }
 
 .text-xlarge { font-size: 2em !important; line-height: normal;}
 .text-large { font-size: 1.5em !important; line-height: normal;}

@@ -1,11 +1,47 @@
 DDK.reloadFromFavoriteQueue = [];
 DDK.reloadFromFavoriteLoading = false;
 
-DDK.reloadFromFavorite = function (target, favoriteId, callback, beforeInit, beforeReload, unshift, favHeader, favFooter, keywords) {
+// new function signatures:
+// DDK.reloadFromFavorite(target, id , settings)
+// DDK.reloadFromFavorite(settings)
+// old function signature still works:
+// DDK.reloadFromFavorite(target, favoriteId, callback, beforeInit, beforeReload, unshift, favHeader, favFooter, keywords)
+DDK.reloadFromFavorite = function (target, favoriteId, callback, beforeInit, beforeReload, unshift, favHeader, favFooter, keywords, newState, showMask, error) {
+	var $target, args, settings;
+	
+	// parse arguments
+	args = [].slice.call(arguments);
+	if (args.length < 4) {
+		// might be using the new settings object
+		if (_.isPlainObject(target)) {
+			settings = target;
+			target = settings.target;
+		} else if (_.isPlainObject(callback)) {
+			settings = callback;
+		}
+		
+		if (settings) {
+			callback = settings.success;
+			beforeInit = settings.beforeInit;
+			beforeReload = settings.beforeReload;
+			unshift = settings.unshift;
+			favHeader = settings.favHeader;
+			favFooter = settings.favFooter;
+			keywords = settings.keywords;
+			newState = settings.state;
+			// can use id or name properties in settings to set favoriteId
+			favoriteId = favoriteId || settings.id || settings.name;
+			showMask = (settings.showMask == null ? true : settings.showMask);
+			error = settings.error;
+		}
+	}
+	
+	if (!settings) {
+		showMask = (showMask == null ? true : showMask);
+	}
 
 	// target could be a DOM node, a jQuery selector, or a jQuery collection, or an id string
-	var $target = $(target);
-	if (!$target.size()) { $target = $("#" + target); }
+	$target = $.target(target);
 
 	// exit with a warning if the target cannot be found
 	if (!$target.size()) {
@@ -27,17 +63,22 @@ DDK.reloadFromFavorite = function (target, favoriteId, callback, beforeInit, bef
 		}
 	}
 
-	$target.am("showmask");
+	if (showMask) {
+		$target.am("showmask");
+	}
 
 	DDK.reloadFromFavoriteQueue[unshift ? "unshift" : "push"]({
 		$target: $target,
-		favoriteId: favoriteId,
-		callback: callback,
+		id: favoriteId,
+		success: callback,
 		beforeInit: beforeInit,
 		beforeReload: beforeReload,
 		favHeader: favHeader,
 		favFooter: favFooter,
-		keywords: keywords
+		keywords: keywords,
+		state: newState,
+		showMask: showMask,
+		error: error
 	});
 	
 	_.defer(function () {
@@ -66,10 +107,10 @@ DDK.reloadFromFavoriteRequest = function () {
 	
 	dataConfig = [
 		{
-			queryWidget: "PSC_Favorites_Record_Query_" + (_.isNaN(+settings.favoriteId) ? "Name" : "Id"),
+			queryWidget: "PSC_Favorites_Record_Query_" + (_.isNaN(+settings.id) ? "Name" : "Id"),
 			columnPrefix: "sci_fav_",
 			datasetMode: "array",
-			keywords: "&ddk_fav_id=" + settings.favoriteId,
+			keywords: "&ddk_fav_id=" + settings.id,
 			shouldCamelizeKeys: true,
 			useCoercedTypes: false,
 			escapeMode: "keyword",
@@ -96,14 +137,48 @@ DDK.reloadFromFavoriteRequest = function () {
 			"config.mn": "DDK_Data_Request",
 			"chart_container_width": settings.$target.width()
 		},
-		success: function (data) {
+		error: function (xhr, status, message) {
+			// clear loading status
+			DDK.reloadFromFavoriteLoading = false;
+			DDK.error("Error loading favorite (Request Error).", status, message);
+
+			$.jGrowl("Error Loading Favorite", { themeState: "error" });
+			
+			if (typeof settings.error === "function") {
+				settings.error(xhr, status, message, settings);
+			}
+
+			if (DDK_DEBUG) {
+				settings.$target.empty().html(DDK.errorLog("Error Loading Favorite", ["name / id", settings.id], ["status", status], ["message", message])
+				);
+			}
+				
+			return DDK.reloadFromFavoriteRequest();			
+		},
+		success: function (data, status, xhr) {
 			var control, favHeader, favFooter, controlFavorite, type,
 				$controlLabel, $controlNotes, $controlDescription;
-				
-			settings.$target.am("hidemask").empty();
-		
+			
+			if (settings.showMask) {
+				settings.$target.am("hidemask");
+			}
+
+			// clear loading status
+			// do this up here so if there is a JavaScript error in control init, it won't prevent future fav loading
+			DDK.reloadFromFavoriteLoading = false;
+						
 			if (data.apiResult === "ERROR") {
-				settings.$target.html("<div class='text-bold text-xdkred'>Error loading favorite</div><div><code>" + settings.favoriteId + "</code></div>");
+				DDK.error("Error loading favorite (DRF Error).");
+				
+				$.jGrowl("Error Loading Favorite", { themeState: "error" });
+				
+				if (typeof settings.error === "function") {
+					settings.error(xhr, "drferror", data.errorMessage, settings);
+				}
+				
+				if (DDK_DEBUG) {
+					settings.$target.empty().html(DDK.errorLog("Error Loading Favorite", ["name / id", settings.id], ["status", "drferror"], ["message", data.errorMessage]));
+				}
 			} else {
 				control = data.datasets[3];
 				favHeader = data.datasets[1];
@@ -111,7 +186,7 @@ DDK.reloadFromFavoriteRequest = function () {
 				controlFavorite = data.datasets[0][0];
 				type = controlFavorite.typeLabel;
 				
-				settings.$target.removeAttr("data-fav").html(DDK.unescape.brackets((favHeader + control.html + favFooter)));
+				settings.$target.removeAttr("data-fav").empty().html(DDK.unescape.brackets((favHeader + control.html + favFooter)));
 				
 				DDK.navFormat(settings.$target);
 				DDK.format(settings.$target);
@@ -119,10 +194,16 @@ DDK.reloadFromFavoriteRequest = function () {
 				// initialize Prism.js syntax highlighting
 				Prism && Prism.highlightAll();
 				
-				if (type === "Component") {
+				if (control.stateKeywords) {
 					K(control.stateKeywords);
-					reloadControlContainer(control.name, control.id, settings, settings.callback, settings.$target.children().eq(0));
 				}
+				
+				if (type === "Component") {
+					reloadControlContainer(control.name, control.id, settings, settings.success, settings.$target.children().eq(0));
+				}
+
+				// trigger screenchange event to update menu framework content
+				$document.trigger("screenchange", [DDK.screenSize()]);
 				
 				// trigger window resize to update responsive block height classes
 				$(window).trigger("resize");
@@ -130,9 +211,6 @@ DDK.reloadFromFavoriteRequest = function () {
 				// execute runFavs on just-loaded content
 				runFavs(settings.$target);
 			}
-			
-			// clear loading status
-			DDK.reloadFromFavoriteLoading = false;
 			
 			return DDK.reloadFromFavoriteRequest();
 		}
@@ -162,6 +240,15 @@ DDK.reloadFromFavoriteRequest = function () {
 			_.extend(ajaxSettings.data, _.string.parse(settings.keywords));
 		} else {
 			_.extend(ajaxSettings.data, settings.keywords);
+		}
+	}
+
+	// send any new state values
+	if (settings.state) {
+		if (typeof settings.state === "string") {
+			_.extend(ajaxSettings.data, { component_state: settings.state });
+		} else {
+			_.extend(ajaxSettings.data, { component_state: $.param(settings.state) });
 		}
 	}
 	
@@ -319,14 +406,30 @@ function reloadControlContainer(controlName, controlId, options, callback, $cont
 	}
 }
 
-var runFromFavorite = function (target, favId, keywords, favHeader, favFooter) {
+var runFromFavorite = function (target, favId, keywords, favHeader, favFooter, newState, showMask, error) {
+	if (_.isPlainObject(target)) {
+		DDK.reloadFromFavorite(target);
+		return;
+	}
+	
+	if (_.isPlainObject(keywords)) {
+		// could be keywords to be sent or could be a settings object
+		// check for settings properties:
+		// success, beforeInit, beforeReload, unshift, favHeader, favFooter, keywords, state, showMask, error
+		if (_.intersection(_.keys(keywords), "success beforeInit beforeReload unshift favHeader favFooter keywords state showMask error".split(" ")).length) {
+			DDK.reloadFromFavorite(target, favId, keywords);
+			return;
+		}
+	}
+
 	if (typeof keywords === "boolean") {
+		newState = favFooter;
 		favFooter = favHeader;
 		favHeader = keywords;
 		keywords = "";
 	}
 	
-	DDK.reloadFromFavorite(target, favId, null, null, null, null, favHeader, favFooter, keywords);
+	DDK.reloadFromFavorite(target, favId, null, null, null, null, favHeader, favFooter, keywords, newState, showMask, error);
 };
 
 var runFav = runFromFavorite;

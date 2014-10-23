@@ -8,7 +8,6 @@ h2 {
 
 h3 {
 	margin-top: 1.5em;
-	border-bottom: 1px solid #CCC;
 }
 
 h4 {
@@ -143,6 +142,7 @@ button:hover, button:focus {
 	
 	/* use padding instead of margin so that height measurements return a correct value when this is hidden */
 	padding: 10px 5px 0;
+	margin: 0;
 }
 
 

@@ -722,19 +722,21 @@
 	// parseTaggedList(str, settings)
 	// attempts to parse a string as a tagged list
 	// tagged list is a format into which AMEngine keyword values can be rendered without breaking the format grammar
-	// format: <psp><psk>key</psk><psv>value</psv></psp>
-	// psp - pair, psk - key, psv - value
-	// when settings.databind is true, multiple pair elements may be wrapped in record elements (psr) and there may be multipe record elements
+	// format: <pv>value</pv>
+	// pv - value
+	// when settings.databind is true, multiple pair elements may be wrapped in record elements (pr) and there may be multipe record elements
 	// will return an object of key/value pairs
 	// or, if settings.databind is true, will return an array of objects
 	// settings options include standard object operations: toCase, escape, prune, prefix, coerce, overlay
 	parseTaggedList: function (str, settings) {
+		var rValue, rRecord;
+	
 		function trimTags(taggedStr) {
-			return taggedStr.slice(5, -6);
+			return taggedStr.slice(4, -5);
 		}
 	
 		function parseRecord(accumulator, recordStr) {
-			var record = _.reduce(trimTags(recordStr).match(/<psp>.+?<\/psp>/g), parsePair, {})
+			var record = _.reduce(trimTags(recordStr).match(rValue), parseValue, {});
 						
 			if (settings.overlay) {
 				record = _.overlay(record, settings.overlay);
@@ -745,19 +747,13 @@
 			return accumulator;
 		}
 	
-		function parsePair(accumulator, pairStr) {
-			var key, value, trimmedPairStr;
+		function parseValue(accumulator, valueStr, valueIndex) {
+			var key, value;
 
-			trimmedPairStr = trimTags(pairStr);
-			
-			_.each(trimmedPairStr.match(/^<psk>.+?<\/psk>/), function (keyStr) {
-				key = trimTags(keyStr);
-			});
-			_.each(trimmedPairStr.match(/<psv>.+?<\/psv>$/), function (valueStr) {
-				value = trimTags(valueStr);
-			});
+			key = settings.keys[valueIndex];
+			value = trimTags(valueStr);
 				
-			if (settings.prefix.length && _.string.startsWith(key, settings.prefix)) {
+			if (settings.prefix && _.string.startsWith(key, settings.prefix)) {
 				key = key.slice(settings.prefix.length);
 			}
 				
@@ -786,15 +782,20 @@
 			databind: false
 		}, settings);
 		
+		rValue = /<pv>[\s\S]*?<\/pv>/g;
+		rRecord = /<pr>[\s\S]*?<\/pr>/g;
+				
 		if (settings.databind) {
 			if (!str) { return []; }
+			if (!(settings.keys && settings.keys.length)) { return []; }
 			
-			return _.reduce(str.match(/<psr>.+?<\/psr>/g), parseRecord, [])
+			return _.reduce(str.match(rRecord), parseRecord, []);
 		}
 
 		if (!str) { return {}; }
+		if (!(settings.keys && settings.keys.length)) { return {}; }
 		
-		return _.reduce(str.match(/<psp>.+?<\/psp>/g), parsePair, {});
+		return _.reduce(str.match(rValue), parseValue, {});
 	},
 
 	// coerce(str)

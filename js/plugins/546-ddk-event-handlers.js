@@ -1,33 +1,72 @@
-var dataWatchList = {};
+var $document = $(document);
 
-function dataWatchHandler(e) {
+function keywordupdateHandler(e) {
 	var keywords = e.keywords;
-	
-	dataWatchList = _.extend(dataWatchList, keywords);
-	
-	dataWatchReloader();
+
+	if (keywords) {
+		_.each(keywords, function (value, key) {
+			// data-watch
+			$document.find('[data-watch~="' + key + '"]').findControls().reloadControls();
+			
+			// data-nav-target-keyword
+			$document.find('[data-nav-target-keyword~="' + key + '"]').each(function (index, elem) {
+				var $elem;
+				
+				$elem = $(elem);
+				
+				if ($elem.is("input")) {
+					// set value of select2 picker
+					if ($elem.data("nav") === "select2") {
+						$elem.select2("val", value);
+						return;
+					}
+					
+					// set value of checkbox or radio input
+					$elem.value = value;
+					return;
+				}
+				
+				// set value of date picker inputs
+				
+				
+			});
+		});
+	}
 }
 
-var dataWatchReloader = _.throttle(function () {
-	var keywords, $watch;
+function navGoHandler(e) {
+	var $target, $parents, data;
 	
-	keywords = dataWatchList;
+	$target = $(e.currentTarget);
+	$parents = $target.parents();
+	data = $parents.dataStack();
 	
-	dataWatchList = {};
-	
-	if (!_.isEmpty(keywords)) {
-		$watch = $();
-	
-		_.each(keywords, function (value, key) {
-			$watch = $watch.add($(document).find('[data-watch~="' + key + '"]'));
-		});
-		
-		$watch.findControls().reloadControls();
+	// redirect to the original content container element
+	// if element has moved to sidebar via data-menu
+	if (data.$menuParent) {
+		$parents = data.$menuParent.parents();
 	}
-}, 100, { leading: false, trailing: true });
+	
+	// find closest ancestor element that contains controls
+	// then call reloadControls on that element
+	$parents.each(function (index, elem) {
+		var $elem, $controls;
+		
+		$elem = $(elem);
+		$controls = $elem.findControls();
+		
+		if ($controls.length) {
+			$controls.reloadControls();
+			$(".exit-off-canvas").click();
+			return false;
+		}
+		
+		// stop climbing parents if the main-section element is reached
+		if ($elem.hasClass("main-section")) { return false; }
+	});
+}
 
 if (!DDK.outputPDF) {
-	var $document = $(document);
 	
 	$document.on("click", "button.ddk-chart-series-config", DDK.chart.seriesConfig);
 	$document.on("click", "input.ddk-color:not(.loaded)", DDK.initColorPicker);
@@ -40,5 +79,6 @@ if (!DDK.outputPDF) {
 	// initialize DDK Mouseovers on initial document content
 	$("[data-ddk-mouseover]").each(DDK.mouseover);
 	
-	$document.on("keywordupdate", dataWatchHandler);
+	$document.on("keywordupdate", keywordupdateHandler);
+	$document.on("click", ".nav-go", navGoHandler);
 }

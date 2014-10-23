@@ -722,6 +722,86 @@
 	// parseTaggedList(str, settings)
 	// attempts to parse a string as a tagged list
 	// tagged list is a format into which AMEngine keyword values can be rendered without breaking the format grammar
+	// format: <pv>value</pv>
+	// pv - value
+	// when settings.databind is true, multiple pair elements may be wrapped in record elements (pr) and there may be multipe record elements
+	// will return an object of key/value pairs
+	// or, if settings.databind is true, will return an array of objects
+	// settings options include standard object operations: toCase, escape, prune, prefix, coerce, overlay
+	parseTaggedList: function (str, settings) {
+		var rValue, rRecord;
+	
+		function trimTags(taggedStr) {
+			return taggedStr.slice(4, -5);
+		}
+	
+		function parseRecord(accumulator, recordStr) {
+			var record = _.reduce(trimTags(recordStr).match(rValue), parseValue, {});
+						
+			if (settings.overlay) {
+				record = _.overlay(record, settings.overlay);
+			}
+
+			accumulator.push(record);
+						
+			return accumulator;
+		}
+	
+		function parseValue(accumulator, valueStr, valueIndex) {
+			var key, value;
+
+			key = settings.keys[valueIndex];
+			value = trimTags(valueStr);
+				
+			if (settings.prefix && _.string.startsWith(key, settings.prefix)) {
+				key = key.slice(settings.prefix.length);
+			}
+				
+			if (typeof value === "string") {
+				if (settings.coerce) {
+					value = _.string.coerce(value);
+				}
+				
+				if (settings.escape) {
+					value = _.string.escapeData(value, settings.escape);
+				}
+
+				if (settings.prune) {
+					value = value.replace(pruneRegexp, "");
+				}
+			}
+				
+			if (!settings.prune || value) {
+				accumulator[_.toCase(settings.toCase, key)] = value;
+			}
+			
+			return accumulator;
+		}	
+		
+		settings = _.extend({
+			databind: false
+		}, settings);
+		
+		rValue = /<pv>[\s\S]*?<\/pv>/g;
+		rRecord = /<pr>[\s\S]*?<\/pr>/g;
+				
+		if (settings.databind) {
+			if (!str) { return []; }
+			if (!(settings.keys && settings.keys.length)) { return []; }
+			
+			return _.reduce(str.match(rRecord), parseRecord, []);
+		}
+
+		if (!str) { return {}; }
+		if (!(settings.keys && settings.keys.length)) { return {}; }
+		
+		return _.reduce(str.match(rValue), parseValue, {});
+	},
+	
+/*	
+	// parseTaggedList(str, settings)
+	// attempts to parse a string as a tagged list
+	// tagged list is a format into which AMEngine keyword values can be rendered without breaking the format grammar
 	// format: <psp><psk>key</psk><psv>value</psv></psp>
 	// psp - pair, psk - key, psv - value
 	// when settings.databind is true, multiple pair elements may be wrapped in record elements (psr) and there may be multipe record elements
@@ -734,7 +814,7 @@
 		}
 	
 		function parseRecord(accumulator, recordStr) {
-			var record = _.reduce(trimTags(recordStr).match(/<psp>.+?<\/psp>/g), parsePair, {})
+			var record = _.reduce(trimTags(recordStr).match(/<psp>[\s\S]+?<\/psp>/g), parsePair, {});
 						
 			if (settings.overlay) {
 				record = _.overlay(record, settings.overlay);
@@ -750,14 +830,14 @@
 
 			trimmedPairStr = trimTags(pairStr);
 			
-			_.each(trimmedPairStr.match(/^<psk>.+?<\/psk>/), function (keyStr) {
+			_.each(trimmedPairStr.match(/^<psk>[\s\S]+?<\/psk>/), function (keyStr) {
 				key = trimTags(keyStr);
 			});
-			_.each(trimmedPairStr.match(/<psv>.+?<\/psv>$/), function (valueStr) {
+			_.each(trimmedPairStr.match(/<psv>[\s\S]+?<\/psv>$/), function (valueStr) {
 				value = trimTags(valueStr);
 			});
 				
-			if (settings.prefix.length && _.string.startsWith(key, settings.prefix)) {
+			if (settings.prefix && _.string.startsWith(key, settings.prefix)) {
 				key = key.slice(settings.prefix.length);
 			}
 				
@@ -789,13 +869,15 @@
 		if (settings.databind) {
 			if (!str) { return []; }
 			
-			return _.reduce(str.match(/<psr>.+?<\/psr>/g), parseRecord, [])
+			return _.reduce(str.match(/<psr>[\s\S]+?<\/psr>/g), parseRecord, [])
 		}
 
 		if (!str) { return {}; }
 		
-		return _.reduce(str.match(/<psp>.+?<\/psp>/g), parsePair, {});
+		return _.reduce(str.match(/<psp>[\s\S]+?<\/psp>/g), parsePair, {});
 	},
+	
+*/
 /*	
 	// parseTaggedList(str)
 	// attempts to parse a string as a tagged list

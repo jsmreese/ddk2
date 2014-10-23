@@ -39,9 +39,9 @@ DDK.AMEval = function (keys, query, settings) {
 	if (!_.isArray(settings.keys) || !settings.keys.length) { return {}; }
 	
 	// ps - PureShare
-	// p - pair, k - key, v - value, r - record
+	// $v - value, $r - record
 	settings.list = _.map(settings.keys, function (key) {
-		return "<psp><psk>" + key + "</psk><psv>" + DDK.char.tilde + key + DDK.char.tilde + "</psv></psp>";
+		return "<pv>" + DDK.char.tilde + key + DDK.char.tilde + "</pv>";
 	}).join("");
 	
 	// checkKeys only takes effect when there is no query
@@ -62,7 +62,7 @@ DDK.AMEval = function (keys, query, settings) {
 	}
 		
 	if (settings.databind) {
-		settings.list = "<psr>" + settings.list + "</psr>";
+		settings.list = "<pr>" + settings.list + "</pr>";
 		keywordUpdateDatabind("html.detail", settings.list);
 	} else {
 		K("html.detail", settings.list);
