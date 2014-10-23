@@ -1,9 +1,35 @@
-function dataWatchHandler(e) {
+var $document = $(document);
+
+function keywordupdateHandler(e) {
 	var keywords = e.keywords;
 
 	if (keywords) {
 		_.each(keywords, function (value, key) {
-			$(document).find('[data-watch~="' + key + '"]').findControls().reloadControls();
+			// data-watch
+			$document.find('[data-watch~="' + key + '"]').findControls().reloadControls();
+			
+			// data-nav-target-keyword
+			$document.find('[data-nav-target-keyword~="' + key + '"]').each(function (index, elem) {
+				var $elem;
+				
+				$elem = $(elem);
+				
+				if ($elem.is("input")) {
+					// set value of select2 picker
+					if ($elem.data("nav") === "select2") {
+						$elem.select2("val", value);
+						return;
+					}
+					
+					// set value of checkbox or radio input
+					$elem.value = value;
+					return;
+				}
+				
+				// set value of date picker inputs
+				
+				
+			});
 		});
 	}
 }
@@ -41,7 +67,6 @@ function navGoHandler(e) {
 }
 
 if (!DDK.outputPDF) {
-	var $document = $(document);
 	
 	$document.on("click", "button.ddk-chart-series-config", DDK.chart.seriesConfig);
 	$document.on("click", "input.ddk-color:not(.loaded)", DDK.initColorPicker);
@@ -54,6 +79,6 @@ if (!DDK.outputPDF) {
 	// initialize DDK Mouseovers on initial document content
 	$("[data-ddk-mouseover]").each(DDK.mouseover);
 	
-	$document.on("keywordupdate", dataWatchHandler);
+	$document.on("keywordupdate", keywordupdateHandler);
 	$document.on("click", ".nav-go", navGoHandler);
 }
