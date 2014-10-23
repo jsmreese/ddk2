@@ -175,7 +175,7 @@ PS.NavFormatter.fn.date.defaults = {
 		//		$dateEnd.datepicker("setDate", new Date(selectedDate)).trigger("change");
 			}
 			if(!inst.dpDiv.hasClass("hide-calendar")){
-				$dateEnd.datepicker("option", "minDate", moment(selectedDate).toDate()).trigger("change");
+	//temp disable			$dateEnd.datepicker("option", "minDate", moment(selectedDate).toDate()).trigger("change");
 			}
 			
 		}
@@ -184,7 +184,7 @@ PS.NavFormatter.fn.date.defaults = {
 				$dateStart.datepicker("setDate", moment(selectedDate).toDate()).trigger("change");
 			}
 			if(!inst.dpDiv.hasClass("hide-calendar")){
-				$dateStart.datepicker("option", "maxDate", moment(selectedDate).toDate()).trigger("change");
+	//temp disable			$dateStart.datepicker("option", "maxDate", moment(selectedDate).toDate()).trigger("change");
 			}
 		}
 	}
@@ -856,7 +856,7 @@ PS.NavFormatter.fn.functions = {
 					$dateLabel.add($dateEnd).hide();
 				}
 				else if(typeVal === "DAY" || typeVal === "WEEK"){	//if selection is a DAY and not a range set min and max dates
-					$dateEnd.datepicker("option", "minDate", moment($dateStart.val(), settings.momentDateFormat).toDate()).trigger("change");
+	//temp disable				$dateEnd.datepicker("option", "minDate", moment($dateStart.val(), settings.momentDateFormat).toDate()).trigger("change");
 				}
 				$hiddenType.val(value);
 			}
@@ -907,30 +907,40 @@ PS.NavFormatter.fn.functions = {
 			}, this), 200);
 		});
 		if(settings.targetKeyword){
-			var keywords = settings.targetKeyword.split(",");
+			var keywords = settings.targetKeyword.split(/,| /);
 			
 			this.$el.on("change", ".nav-date-type", function(e){
-				var $dateDiv = $(this).parent();
-				K(keywords[0], $(this).val());
+				var $this = $(this),
+					$dateDiv = $this.parent();
+				//arguments[1] is a flag if true do not update keyword which means triggered manually in the ddk keywordupdate handler
+				if($this.is(":visible") && !arguments[1]){	
+					K(keywords[0], $this.val());
+				}
 				$dateDiv.find(".nav-date-start").trigger("change");
 				$dateDiv.find(".nav-date-end").trigger("change");
 			});
 			this.$el.on("change", ".nav-date-start", function(e){
 				//if type dropdown is hidden use first target keyword
-				if(_this.$el.find(".nav-date-type:visible").length){
-					K(_.string.trim(keywords[1] || keywords[0]), $(this).val());
-				}
-				else{
-					K(_.string.trim(keywords[0]), $(this).val());
+				//arguments[1] is a flag if true do not update keyword which means triggered manually in the ddk keywordupdate handler
+				if(!arguments[1]){
+					if(_this.$el.find(".nav-date-type:visible").length){
+						K(_.string.trim(keywords[1] || keywords[0]), $(this).val());
+					}
+					else{
+						K(_.string.trim(keywords[0]), $(this).val());
+					}
 				}
 			});
 			this.$el.on("change", ".nav-date-end", function(e){
 				//if type dropdown is hidden use third target keyword
-				if(_this.$el.find(".nav-date-type:visible").length){
-					K(_.string.trim(keywords[2]), $(this).val());
-				}
-				else{
-					K(_.string.trim(keywords[1]), $(this).val());
+				//arguments[1] is a flag if true do not update keyword which means triggered manually in the ddk keywordupdate handler
+				if(!arguments[1]){
+					if(_this.$el.find(".nav-date-type:visible").length){
+						K(_.string.trim(keywords[2]), $(this).val());
+					}
+					else{
+						K(_.string.trim(keywords[1]), $(this).val());
+					}
 				}
 			});
 			//store keyword values to be set after the type change
