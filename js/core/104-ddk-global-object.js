@@ -802,6 +802,7 @@
 				count = $data.data('count'),
 				height = $data.data('height'),
 				fod = $data.data('fod'),
+				qfe = $data.data('qfe') || "",
 				fgi = $data.data('fgi'),
 				ptype = $data.data('ptype'),
 				ptc = $data.data('ptc'),
@@ -847,6 +848,9 @@
 					_.each(K.toObject(["v_", "p_"]), function (value, key) {
 						data.push({ name: key, value: value });
 					});
+					if (qfe) {
+						data.push({name: "table_query_fieldname_escapechar", value: qfe});
+					}
 					data.push({name: "table_metrics_static", value: ms});
 					data.push({name: "table_metrics_dynamic", value: md});
 					data.push({name: "table_keywords", value: $.param(keywords) });

@@ -97,46 +97,84 @@ function evalCurrentDateKeywordValue(key) {
 		key = key.slice(0, -(diffMatch[0].length + 1));
 	}
 	
+	// handle YEST for base date of yesterday
+	if (key.slice(0, 4) === "YEST") {
+		date = date.add(-1, "days");
+	}
+	
+	key = key.slice(5);
+	
 	switch (key) {
-		case "CURRENT_YEAR":
+		case "YEAR":
 			date = date.add(diff, "years");
 			return date.format("YYYY");
-		case "CURRENT_MONTH":
-			date = date.add(diff, "months");
-			return date.format("YYYY-MM");
-		case "CURRENT_QUARTER":
+			
+		// quarters
+		case "YEAR_QSTART":
+			date = date.dayOfYear(1).add(diff * 3, "months");
+			return date.format("YYYY") + "-Q" + date.quarter();
+		case "YEAR_QEND":
+			date = date.month(9).date(1).add(diff * 3, "months");
+			return date.format("YYYY") + "-Q" + date.quarter();
+		case "QUARTER":
 			date = date.add(diff * 3, "months");
 			return date.format("YYYY") + "-Q" + date.quarter();
-		case "CURRENT_WEEK":			
+
+		// months
+		case "YEAR_MSTART":
+			date = date.dayOfYear(1).add(diff, "months");
+			return date.format("YYYY-MM");
+		case "YEAR_MEND":
+			date = date.month(11).date(31).add(diff, "months");
+			return date.format("YYYY-MM");
+		case "QUARTER_MSTART":
+			date = moment({ years: date.year(), months: 0, days: 1 }).quarter(date.quarter()).add(diff, "months");
+			return date.format("YYYY-MM");			
+		case "QUARTER_MEND":
+			date = moment({ years: date.year(), months: 0, days: 1 }).quarter(date.quarter() + 1).add(-1, "days").add(diff, "months");
+			return date.format("YYYY-MM");					
+		case "MONTH":
+			date = date.add(diff, "months");
+			return date.format("YYYY-MM");
+
+
+		// weeks
+		case "YEAR_WSTART":
+			date = date.isoWeek(1).add(diff * 7, "days");
+			return date.isoWeekYear() + "-W" + padTwo(date.isoWeek());
+		case "YEAR_WEND":
+			date = date.isoWeek(date.isoWeeksInYear()).add(diff * 7, "days");
+			return date.isoWeekYear() + "-W" + padTwo(date.isoWeek());			
+		case "WEEK":			
 			date = date.add(diff * 7, "days");
 			return date.isoWeekYear() + "-W" + padTwo(date.isoWeek());
 
 		// days
-		case "CURRENT_YEAR_START":
+		case "YEAR_START":
 			date = date.dayOfYear(1).add(diff, "days");
 			return date.format("YYYY-MM-DD");
-		case "CURRENT_YEAR_END":
+		case "YEAR_END":
 			date = date.month(11).date(31).add(diff, "days");
 			return date.format("YYYY-MM-DD");
-		case "CURRENT_MONTH_START":
-			date = date.date(1).add(diff, "days");
-			return date.format("YYYY-MM-DD");
-		case "CURRENT_MONTH_END":
-			date = date.add(1, "months").date(1).add(diff - 1, "days");
-			return date.format("YYYY-MM-DD");
-		case "CURRENT_QUARTER_START":
+		case "QUARTER_START":
 			date = moment({ years: date.year(), months: 0, days: 1 }).quarter(date.quarter()).add(diff, "days");
 			return date.format("YYYY-MM-DD");			
-		case "CURRENT_QUARTER_END":
+		case "QUARTER_END":
 			date = moment({ years: date.year(), months: 0, days: 1 }).quarter(date.quarter() + 1).add(diff - 1, "days");
 			return date.format("YYYY-MM-DD");					
-		case "CURRENT_WEEK_START":
+		case "MONTH_START":
+			date = date.date(1).add(diff, "days");
+			return date.format("YYYY-MM-DD");
+		case "MONTH_END":
+			date = date.add(1, "months").date(1).add(diff - 1, "days");
+			return date.format("YYYY-MM-DD");
+		case "WEEK_START":
 			date = date.isoWeekday(1).add(diff, "days");
 			return date.format("YYYY-MM-DD");
-		case "CURRENT_WEEK_END":			
+		case "WEEK_END":			
 			date = date.isoWeekday(7).add(diff, "days");
 			return date.format("YYYY-MM-DD");
-		case "CURRENT_DAY":
+		case "DAY":
 			date = date.add(diff, "days");
 			return date.format("YYYY-MM-DD");
 	}
@@ -149,7 +187,7 @@ function evalKeywordValue(value, evaledKeys) {
 		matchedKey,
 		matchedKeyValue,
 		regexValidKey = /^[a-zA-Z0-9_\-\+\.]+$/,
-		rCurrentDateKey = /^CURRENT_((YEAR|QUARTER|MONTH|WEEK)(_(START|END))*|DAY)(_(\+|\-)[0-9]+)*$/;
+		rCurrentDateKey = /^(CURR|YEST)_((YEAR|QUARTER|MONTH|WEEK)(_(START|END|WSTART|WEND|MSTART|MEND|QSTART|QEND))*|DAY)(_(\+|\-)[0-9]+)*$/;
 	
 	// if value is not a string, throw exception
 	value = value.toString();

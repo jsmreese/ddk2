@@ -114,5 +114,5 @@ function renderFavoriteValue() {
 }
 
 function docKey(key) {
-	return "<code><span class='text-ltgray text-normal'>&#37;&#37;</span><span style='color: #C4620E;'>" + key + "</span><span class='text-ltgray text-normal'>&#37;&#37;</span></code>";
+	return "<code style='color: #C4620E;'><span class='text-normal tertiary'>&#37;&#37;</span><span>" + key + "</span><span class='text-normal tertiary'>&#37;&#37;</span></code>";
 }
