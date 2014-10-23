@@ -175,7 +175,7 @@ PS.NavFormatter.fn.date.defaults = {
 		//		$dateEnd.datepicker("setDate", new Date(selectedDate)).trigger("change");
 			}
 			if(!inst.dpDiv.hasClass("hide-calendar")){
-				$dateEnd.datepicker("option", "minDate", moment(selectedDate).toDate()).trigger("change");
+	//temp disable			$dateEnd.datepicker("option", "minDate", moment(selectedDate).toDate()).trigger("change");
 			}
 			
 		}
@@ -184,7 +184,7 @@ PS.NavFormatter.fn.date.defaults = {
 				$dateStart.datepicker("setDate", moment(selectedDate).toDate()).trigger("change");
 			}
 			if(!inst.dpDiv.hasClass("hide-calendar")){
-				$dateStart.datepicker("option", "maxDate", moment(selectedDate).toDate()).trigger("change");
+	//temp disable			$dateStart.datepicker("option", "maxDate", moment(selectedDate).toDate()).trigger("change");
 			}
 		}
 	}
@@ -756,7 +756,7 @@ PS.NavFormatter.fn.functions = {
 	},
 	"createNavDate": function(type){
 		var _this = this,
-			momentDateFormat,
+			momentDateFormat, keywords, keywordValues,
 			settings = this.getSettings(), $dateType, 
 			$hiddenType = $("<input type=\"hidden\" class=\"nav-hidden-date-type\"/>"),
 			$hiddenDateStart = $("<input type=\"hidden\" class=\"nav-hidden-date-start\"/>"),
@@ -856,7 +856,7 @@ PS.NavFormatter.fn.functions = {
 					$dateLabel.add($dateEnd).hide();
 				}
 				else if(typeVal === "DAY" || typeVal === "WEEK"){	//if selection is a DAY and not a range set min and max dates
-					$dateEnd.datepicker("option", "minDate", moment($dateStart.val(), settings.momentDateFormat).toDate()).trigger("change");
+	//temp disable				$dateEnd.datepicker("option", "minDate", moment($dateStart.val(), settings.momentDateFormat).toDate()).trigger("change");
 				}
 				$hiddenType.val(value);
 			}
@@ -907,34 +907,65 @@ PS.NavFormatter.fn.functions = {
 			}, this), 200);
 		});
 		if(settings.targetKeyword){
-			var keywords = settings.targetKeyword.split(",");
+			var keywords = settings.targetKeyword.split(/,| /);
 			
 			this.$el.on("change", ".nav-date-type", function(e){
-				var $dateDiv = $(this).parent();
-				K(keywords[0], $(this).val());
+				var $this = $(this),
+					$dateDiv = $this.parent();
+				//arguments[1] is a flag if true do not update keyword which means triggered manually in the ddk keywordupdate handler
+				if($this.is(":visible") && !arguments[1]){	
+					K(keywords[0], $this.val());
+				}
 				$dateDiv.find(".nav-date-start").trigger("change");
 				$dateDiv.find(".nav-date-end").trigger("change");
 			});
 			this.$el.on("change", ".nav-date-start", function(e){
 				//if type dropdown is hidden use first target keyword
-				if(_this.$el.find(".nav-date-type:visible").length){
-					K(_.string.trim(keywords[1] || keywords[0]), $(this).val());
-				}
-				else{
-					K(_.string.trim(keywords[0]), $(this).val());
+				//arguments[1] is a flag if true do not update keyword which means triggered manually in the ddk keywordupdate handler
+				if(!arguments[1]){
+					if(_this.$el.find(".nav-date-type:visible").length){
+						K(_.string.trim(keywords[1] || keywords[0]), $(this).val());
+					}
+					else{
+						K(_.string.trim(keywords[0]), $(this).val());
+					}
 				}
 			});
 			this.$el.on("change", ".nav-date-end", function(e){
 				//if type dropdown is hidden use third target keyword
-				if(_this.$el.find(".nav-date-type:visible").length){
-					K(_.string.trim(keywords[2]), $(this).val());
+				//arguments[1] is a flag if true do not update keyword which means triggered manually in the ddk keywordupdate handler
+				if(!arguments[1]){
+					if(_this.$el.find(".nav-date-type:visible").length){
+						K(_.string.trim(keywords[2]), $(this).val());
+					}
+					else{
+						K(_.string.trim(keywords[1]), $(this).val());
+					}
 				}
-				else{
-					K(_.string.trim(keywords[1]), $(this).val());
-				}
+			});
+			//store keyword values to be set after the type change
+			keywordValues = {};
+			_.each(keywords, function(item, index){
+				keywordValues[item] = K(item);
 			});
 			//trigger date type change to set keywords default values
 			this.$el.find(".nav-date-type").trigger("change");
+			if(keywords[2] && keywordValues[keywords[2]]){
+				this.$el.find(".nav-date-end").val(keywordValues[keywords[2]]).trigger("change");
+			}
+			if(keywords[1] && keywordValues[keywords[1]]){
+				if(this.$el.find(".nav-date-type:visible").length){
+					this.$el.find(".nav-date-start").val(keywordValues[keywords[1]]).trigger("change");
+				}
+				else{
+					this.$el.find(".nav-date-end").val(keywordValues[keywords[1]]).trigger("change");
+				}
+			}
+			if(keywords[0] && keywordValues[keywords[0]]){
+				if(this.$el.find(".nav-date-type:not(:visible)").length){
+					this.$el.find(".nav-date-start").val(keywordValues[keywords[0]]).trigger("change");
+				}
+			}
 		}
 	}
 };
@@ -961,23 +992,25 @@ PS.NavFormatter.fn.select2 = function () {
 			formatResult: this.functions.format
 		});
 	}
-	this.$el.select2(settings);
 	if(settings.targetKeyword){
 		this.$el.on("change", function(e){
-			var keywordValue = $(this).val();
-			if(settings.emptyKeywordValue && keywordValue === ""){
-				keywordValue = settings.emptyKeywordValue;
-			}
-			K(settings.targetKeyword, keywordValue);
+			K(settings.targetKeyword, $(this).val());
 		});
 		//just update keyword instead of changing because change event is for the actual changing of option
-		if(settings.emptyKeywordValue && this.$el.val() === ""){
-			K(settings.targetKeyword, settings.emptyKeywordValue);
-		}
-		else{
+		if(this.$el.val()){
 			K(settings.targetKeyword, this.$el.val());
 		}
+		else {
+			//set keyword value if it has a value and if there is no value in the input
+			if(K(settings.targetKeyword) &&  K(settings.targetKeyword) != settings.emptyKeywordValue){
+				this.$el.val(K(settings.targetKeyword));
+			}
+			else if(settings.emptyKeywordValue){	
+				K(settings.targetKeyword, settings.emptyKeywordValue);
+			}
+		}
 	}
+	this.$el.select2(settings);
 };
 
 

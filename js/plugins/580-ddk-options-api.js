@@ -505,7 +505,7 @@ PS.optionsAPI.navElemConfig = {
 				"id": "target_keyword",
 				"label": "Target Keyword",
 				"description": "Keyword to be updated on change of input.",
-				"notes": "For timeperiod which can have 3 input (date_type, date_start, date_end), multiple string can be used separated by comma eg. tp_type, tp_start, tp_end. The mapping for the keywords is the same as the order of the input displayed which is the date_type, date_start and date_end respectively."
+				"notes": "For timeperiod which can have 3 input (date_type, date_start, date_end), multiple string can be used separated by spaces eg. tp_type tp_start tp_end. The mapping for the keywords is the same as the order of the input displayed which is the date_type, date_start and date_end respectively."
 			},
 			"multiple": {
 				"id": "multiple",

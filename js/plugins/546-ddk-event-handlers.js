@@ -25,10 +25,42 @@ function keywordupdateHandler(e) {
 					$elem.value = value;
 					return;
 				}
-				
-				// set value of date picker inputs
-				
-				
+				else if ($elem.is("div")) {
+					// set value of date picker inputs
+					targetKeywords = $elem.data("nav-target-keyword").split(" ");
+					$dateType = $elem.find(".nav-date-type:visible");
+					$dateStart = $elem.find(".nav-date-start");
+					$dateEnd = $elem.find(".nav-date-end");
+					$dateAltStart = $($dateStart.data("altField"));
+					$dateAltEnd = $($dateEnd.data("altField"));
+					if(targetKeywords.indexOf(key) === 2){
+						$dateEnd.val(value).trigger("change", true);	//settings second param to true will prevent keyword update on change
+					//	$dateAltEnd.val(value);
+					//	$dateStart.datepicker("option", "maxDate", value);
+					}
+					else if(targetKeywords.indexOf(key) === 1){
+						if($dateType.length){
+							$dateStart.val(value).trigger("change", true);
+					//		$dateAltStart.val(value);
+					//		$dateEnd.datepicker("option", "minDate", value);
+						}
+						else{
+							$dateEnd.val(value).trigger("change", true);
+					//		$dateAltEnd.val(value);
+					//		$dateStart.datepicker("option", "maxDate", value);
+						}
+					}
+					else if(targetKeywords.indexOf(key) === 0){
+						if($dateType.length){
+							$dateType.val(value).trigger("change", true);
+						}
+						else{
+							$dateStart.val(value).trigger("change", true);
+					//		$dateAltStart.val(value);
+					//		$dateEnd.datepicker("option", "minDate", value);
+						}
+					}
+				}
 			});
 		});
 	}
