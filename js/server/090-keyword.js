@@ -584,7 +584,7 @@ _.extend(K, {
 			
 			keywordUpdate(_key, _value);
 			
-			return result + "&" + _key + "=" + encodeURIComponent(_value);
+			return result + "&" + _key + "=" + encodeURIComponent(DDK.eval(_value));
 		}
 		
 		if (_.isObject(key)) {
