@@ -271,11 +271,14 @@ PS.NavFormatter.fn.functions = {
 		};
 	},
 	initSelection: function (settings, element, callback) {
-		var dataToPass = {}, ids, selectedData = [], labelArr, valArr, navFormatter = this;
+		var dataToPass = {}, ids, selectedData = [], labelArr, valArr, navFormatter = this, text;
 		//if label is specified, display label and skip server retrieval
 		if(settings.label){
-			if(settings.multiple && settings.label.indexOf(",") > -1){
-				labelArr = settings.label.split(",");
+			//remove settings.label to allow succeeding set of value to go to the database
+			text = settings.label;
+			settings.label = undefined;
+			if(settings.multiple && text.indexOf(",") > -1){
+				labelArr = text.split(",");
 				valArr = settings.value.split(",");
 				_.each(labelArr, function(item, index){
 					if(valArr[index]){
@@ -285,7 +288,7 @@ PS.NavFormatter.fn.functions = {
 				callback(selectedData);
 			}
 			else{
-				callback({id: _.string.trim(settings.value), text: _.string.trim(settings.label)});
+				callback({id: _.string.trim(settings.value), text: _.string.trim(text)});
 			}
 		}
 		else{
@@ -310,12 +313,20 @@ PS.NavFormatter.fn.functions = {
 							selectedData = _.map(records, function(record, key){
 								return {"id": record[valueIndex], "text": record[labelIndex]};
 							});
-							if(settings.multiple){
-								callback(selectedData);
+						}
+						if(settings.multiple){
+							if(selectedData && selectedData.length === 0){
+								//if there's no corresponding label display the value instead.
+								selectedData.push({id: data.config.id, text: data.config.id});
 							}
-							else{
-								callback(selectedData[0]);
+							callback(selectedData);
+						}
+						else{
+							if(!selectedData[0]){
+								//if there's no corresponding label display the value instead.
+								selectedData.push({id: data.config.id, text: data.config.id});
 							}
+							callback(selectedData[0]);
 						}
 						return;
 					}, "json");
@@ -415,14 +426,20 @@ PS.NavFormatter.fn.functions = {
 						}
 						else{	//for initselection
 							if(options.multiple){
-								if(newData){
-									callback(newData);
+								if(newData && newData.length === 0){
+								//	callback(newData);
+									//if there's no corresponding label display the value instead.
+									newData.push({id: data.config.id, text: data.config.id});
 								}
+								callback(newData);
 							}
 							else{
-								if(newData[0]){
-									callback(newData[0]);
+								if(!newData[0]){
+								//	callback(newData[0]);
+									//if there's no corresponding label display the value instead.
+									newData.push({id: data.config.id, text: data.config.id});
 								}
+								callback(newData[0]);
 							}
 						}
 					}
