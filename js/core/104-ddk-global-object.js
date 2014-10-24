@@ -368,7 +368,8 @@
 			, "bLengthChange": true
 			, "sPaginationType": "full_numbers"
 			, "oLanguage": {
-				  "sInfo": "_START_ to _END_ of _TOTAL_ entries"
+				  "sInfo": "_START_ to _END_ of _TOTAL_ entries",
+				  "sInfoFiltered": ""
 			}
 		};
 
@@ -378,7 +379,8 @@
 			, "bLengthChange": true
 			, "sPaginationType": "full_numbers"
 			, "oLanguage": {
-				  "sInfo": "_START_ to _END_ of _TOTAL_ entries"
+				  "sInfo": "_START_ to _END_ of _TOTAL_ entries",
+				  "sInfoFiltered": ""
 			}
 			, "bDeferRender": true
 			, "sDom": "lftrip"
