@@ -50,7 +50,7 @@
 	}
 	
 	.select2-container-multi .select2-choices {
-		background: white;
+		background: transparent;
 		border: 0;
 	}
 	
@@ -69,8 +69,17 @@
 	.select2-container-multi .select2-choices .select2-search-field input {
 		height: 33px !important;
 	}
+
+	.select2-drop {
+		border: 1px solid #CCC;
+	}
 	
-	
+	/* for some reason, the border added by the default styling screws up column layout */
+	/* using outline instead */
+	.select2-container-multi.select2-container-active .select2-choices {
+		border: 0;
+		outline: 1px solid #5897FB;
+	}
 
 .left-off-canvas-menu .select2-container {
 	border: 0;
