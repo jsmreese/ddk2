@@ -17,6 +17,12 @@ function keywordupdateHandler(e) {
 				if ($elem.is("input")) {
 					// set value of select2 picker
 					if ($elem.data("nav") === "select2") {
+						// select2 in multiselect mode expects an array of values
+						if ($elem.data("navMultiple")) {
+							$elem.select2("val", (value || "").split(","));
+							return;
+						}
+						
 						$elem.select2("val", value);
 						return;
 					}
