@@ -2,16 +2,8 @@ code {
 	color: #3D638F; /* hsl(212, 40%, 40%) */
 }
 
-h2 {
-	margin-top: 1.5em;
-}
-
-h3 {
-	margin-top: 1.5em;
-}
-
-h4 {
-	margin-top: 1.5em;
+h2, h3, h4, h5, h6 {
+	margin-top: 2em;
 }
 
 .subheader {
