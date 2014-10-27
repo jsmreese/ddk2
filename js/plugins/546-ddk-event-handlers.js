@@ -16,7 +16,7 @@ function keywordupdateHandler(e) {
 				
 				if ($elem.is("input")) {
 					// set value of select2 picker
-					if ($elem.data("nav") === "select2") {
+					if ($elem.data("nav") === "select2" && (!$elem.data("navEmptyKeywordValue") || $elem.data("navEmptyKeywordValue") !== value)) {
 						// select2 in multiselect mode expects an array of values
 						if ($elem.data("navMultiple")) {
 							$elem.select2("val", (value || "").split(","));
@@ -26,10 +26,11 @@ function keywordupdateHandler(e) {
 						$elem.select2("val", value);
 						return;
 					}
-					
-					// set value of checkbox or radio input
-					$elem.value = value;
-					return;
+					else{
+						// set value of checkbox or radio input
+						$elem.value = value;
+						return;
+					}
 				}
 				else if ($elem.is("div")) {
 					// set value of date picker inputs
