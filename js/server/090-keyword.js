@@ -257,6 +257,10 @@ function evalKeywordValue(value, evaledKeys) {
 	// reject the first and last potentialKeys, which cannot start/end with tildes
 	potentialKeys = potentialKeys.slice(1, -1);
 	
+	// sort the potentialKeys array based on alphabetical order
+	// remove null values and duplicates
+	potentialKeys = _.unique(_.compact(potentialKeys)).sort();
+	
 	// filter the potentialKeys array for valid keys
 	potentialKeys = _.filter(potentialKeys, function (potentialKey) {
 		return regexValidKey.test(potentialKey);
@@ -264,9 +268,6 @@ function evalKeywordValue(value, evaledKeys) {
 	
 	// if the potentialKeys array length is 0, stop
 	if (!potentialKeys.length) { return value; }
-	
-	// sort the potentialKeys array based on alphabetical order
-	potentialKeys.sort();
 	
 	// find the first potentialKey that has a value in the keyword hash
 	matchedKey = _.find(potentialKeys, function (potentialKey) {
@@ -281,7 +282,7 @@ function evalKeywordValue(value, evaledKeys) {
 		// or must have a value that is not null or undefined
 		potentialKeyValue = K(potentialKey);
 		
-		if (potentialKeyValue != null) {
+		if (potentialKeyValue) {
 			matchedKeyValue = potentialKeyValue;
 			return true;
 		}
@@ -691,9 +692,26 @@ _.extend(K, {
 			// execute a keyword update on all global keywords
 			// that have DDK Keywords or Script Blocks in their values
 			// except for settings.except
+			var evalValue;
+
+			if (settings && settings.except && key === settings.except) { return; }
+			
+			evalValue = value;
+			
 			if (DDK.regex.ddkKeywordTest.test(value) || DDK.regex.ddkScriptBlockTest.test(value)) {
-				if (settings && settings.except && key === settings.except) { return; }
-				K(key, DDK.eval(value));
+				evalValue = DDK.eval(value);
+			}
+			
+			// data_term and data_id are special as of DDK 2.2.0b14
+			// they are not zapped inside the DIMQ
+			// so they will kill the DIMQ if left as raw unevaluated keywords
+			if (value === "~data_term~" || value === "~data_id~") {
+				evalValue = "";
+			}
+		
+			// if evalValue changed, keyword update the new value
+			if (evalValue !== value) {
+				K(key, evalValue);
 			}
 		});
 	},

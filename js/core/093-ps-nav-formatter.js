@@ -1011,6 +1011,15 @@ PS.NavFormatter.fn.select2 = function () {
 	}
 	if(settings.targetKeyword){
 		this.$el.on("change", function(e){
+			var val;
+			
+			val = $(this).val();
+			
+			if (settings.emptyKeywordValue && !val) {
+				K(settings.targetKeyword, settings.emptyKeywordValue);
+				return;
+			}
+			
 			K(settings.targetKeyword, $(this).val());
 		});
 		//just update keyword instead of changing because change event is for the actual changing of option
