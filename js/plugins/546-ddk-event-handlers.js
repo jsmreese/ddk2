@@ -15,6 +15,10 @@ function keywordupdateHandler(e) {
 				$elem = $(elem);
 				
 				if ($elem.is("input")) {
+					// if the input value matches the new keyword value already
+					// then do nothing
+					if ($elem.val() === value) { return; }
+				
 					// set value of select2 picker
 					if ($elem.data("nav") === "select2" && (!$elem.data("navEmptyKeywordValue") || $elem.data("navEmptyKeywordValue") !== value)) {
 						// select2 in multiselect mode expects an array of values
@@ -41,17 +45,29 @@ function keywordupdateHandler(e) {
 					$dateAltStart = $($dateStart.data("altField"));
 					$dateAltEnd = $($dateEnd.data("altField"));
 					if(targetKeywords.indexOf(key) === 2){
+						// if the input value matches the new keyword value already
+						// then do nothing
+						if ($dateEnd.val() === value) { return; }
+						
 						$dateEnd.val(value).trigger("change", true);	//settings second param to true will prevent keyword update on change
 					//	$dateAltEnd.val(value);
 					//	$dateStart.datepicker("option", "maxDate", value);
 					}
 					else if(targetKeywords.indexOf(key) === 1){
 						if($dateType.length){
+							// if the input value matches the new keyword value already
+							// then do nothing
+							if ($dateStart.val() === value) { return; }
+						
 							$dateStart.val(value).trigger("change", true);
 					//		$dateAltStart.val(value);
 					//		$dateEnd.datepicker("option", "minDate", value);
 						}
 						else{
+							// if the input value matches the new keyword value already
+							// then do nothing
+							if ($dateEnd.val() === value) { return; }
+							
 							$dateEnd.val(value).trigger("change", true);
 					//		$dateAltEnd.val(value);
 					//		$dateStart.datepicker("option", "maxDate", value);
@@ -59,9 +75,17 @@ function keywordupdateHandler(e) {
 					}
 					else if(targetKeywords.indexOf(key) === 0){
 						if($dateType.length){
+							// if the input value matches the new keyword value already
+							// then do nothing
+							if ($dateType.val() === value) { return; }
+
 							$dateType.val(value).trigger("change", true);
 						}
 						else{
+							// if the input value matches the new keyword value already
+							// then do nothing
+							if ($dateStart.val() === value) { return; }
+						
 							$dateStart.val(value).trigger("change", true);
 					//		$dateAltStart.val(value);
 					//		$dateEnd.datepicker("option", "minDate", value);
