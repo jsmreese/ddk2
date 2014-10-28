@@ -73,6 +73,7 @@
 
 	.select2-drop {
 		border: 1px solid #CCC;
+		border-top: 0;
 	}
 	
 	/* for some reason, the border added by the default styling screws up column layout */
