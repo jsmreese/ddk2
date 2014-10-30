@@ -1057,7 +1057,7 @@ PS.NavFormatter.fn.mcat = function () {
 		}
 	}
 	else{
-		settings.navKeywords = "&p_dimq_hierarchy_level=99";
+		settings.navKeywords = "&p_dimq_hierarchy_level=99" + settings.navKeywords;
 	}
 	this.$el.data(settings);
 	if(settings.navTargetKeyword){	//need to set target keyword attribute since it is needed on keywordupdate handler to set the value
