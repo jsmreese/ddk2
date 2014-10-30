@@ -627,6 +627,30 @@ PS.optionsAPI.navElemConfig = {
 				"label": "Empty Keyword Value",
 				"description": "Value of the keyword if the select2 is cleared or whenever the select2 has no selection.",
 				"notes": "This option is only applicable if targetKeyword is supplied.",
+			},
+			"filterKeyword": {
+				"id": "filter_keyword",
+				"label": "Filter Keyword",
+				"description": "Keyword used to filter the data.",
+				"notes": "If data-nav is set to a dimension, the default filterKeyword depends on the dimension. Like metrics will be filtered by p_mcat, while locations and contacts will be filtered by p_org",
+			},
+			"searchKeyword": {
+				"id": "search_keyword",
+				"label": "Search Keyword",
+				"description": "Mapped from data_term. Same as the filterKeyword but this is triggered when a user types in the search for the navigation control.",
+				"notes": "If data-nav is set to a dimension, the default searchKeyword will be p_dimq_search.",
+			},
+			"initKeyword": {
+				"id": "init_keyword",
+				"label": "Init Keyword",
+				"description": "Mapped from data_id. Keyword used to get the value in the query.",
+				"notes": "If data-nav is set to a dimension, the default searchKeyword will be p_dimq_list.",
+			},
+			"extdim": {
+				"id": "extdim",
+				"label": "Extended Dimension",
+				"description": "The extended dimension name to list",
+				"notes": "",
 			}
 		}
 	}		

@@ -102,9 +102,13 @@ PS.NavFormatter.fn.data = [];
 
 PS.NavFormatter.fn.getSettings = function () {
 	//if prefix is a date, add date default
-	var dateSettings;
+	var customSettings, dimensions;
+	dimensions = "mcat metric org loc contact fcat fav event_cat event offering_cat offering extdim".split(" ");
 	if(this.nav && this.nav.substr(0, 4) === "date"){
-		dateSettings = this.date.defaults;
+		customSettings = this.date.defaults;
+	}
+	else if(dimensions.indexOf(this.nav) > -1){
+		customSettings = this.dimquery.defaults;
 	}
 	return _.extend(
 		// start with an empty object
@@ -119,7 +123,7 @@ PS.NavFormatter.fn.getSettings = function () {
 		// add the default format settings from this format style
 		this[this.nav][this.navStyle],
 		
-		dateSettings,
+		customSettings,
 		
 		// override with any data-format attributes from the data stack
 		// remove the 'format' prefix and camelize the remaining name
@@ -134,6 +138,17 @@ PS.NavFormatter.fn.getSettings = function () {
 PS.NavFormatter.fn.defaults = {
 	// add default NavFormatter options here
 	"pageSize": 50
+};
+PS.NavFormatter.fn.dimquery = {};
+PS.NavFormatter.fn.dimquery.defaults = {
+	queryWidget: "SCIDIM_Query",
+	allowClear: "true",
+	placeholder: "All",
+	valueField: "name",
+	labelField: "label",
+	emptyKeywordValue: "ANY",
+	searchKeyword: "p_dimq_search",
+	initKeyword: "p_dimq_list"
 };
 PS.NavFormatter.fn.date = {};
 PS.NavFormatter.fn.date.defaults = {
@@ -210,10 +225,15 @@ PS.NavFormatter.fn.functions = {
 			url: "amengine.aspx?config.mn=DDK_Data_Request",
 			type: "POST",
 			dataType: 'json',
-			data: function (term, page, context) {					
+			data: function (term, page, context) {
+				var dataToPass = {};
+				//map term to search keyword
+				if(term && settings.searchKeyword){
+					dataToPass[settings.searchKeyword] = term;
+				}
 				return $.extend({
 						"data.config": JSON.stringify($.extend(settings, {"page": page, "term": term}))
-					}, K.toObject("p_")
+					}, dataToPass, K.toObject("p_")
 				);
 			}.bind(this),
 			results: function (data, page) {
@@ -252,9 +272,6 @@ PS.NavFormatter.fn.functions = {
 							optionGroup = record[groupIndex];
 						}
 						result = {
-							// convention:
-							// 'id' is always the first field
-							// 'text' is always the second field
 							id: valueWrapString + record[valueIndex > -1 && valueIndex || 0] + valueWrapString,
 							text: record[labelIndex > -1 && labelIndex || 1]
 						};
@@ -293,6 +310,10 @@ PS.NavFormatter.fn.functions = {
 		}
 		else{
 			if(settings.queryWidget || settings.queryModule){
+				//map initKeyword to the value
+				if(element.val() && settings.initKeyword){
+					dataToPass[settings.initKeyword] = element.val();
+				}
 				$.extend(true, dataToPass, K.toObject("p_"), {
 					"config.mn": "DDK_Data_Request",
 					"filterColumn": settings.filterColumn,
@@ -386,9 +407,17 @@ PS.NavFormatter.fn.functions = {
 			callbackData = options.callbackData,
 			dataToPass = {}, 
 			modelData = navFormatter.data || [], 
-			newData = [];
+			newData = [],
+			valueField = options.valueField,
+			labelField = options.labelField,
+			groupField = options.groupField,
+			iconField = options.iconField;
 		options.page = options.page || 1;
 		if(options.queryWidget || options.queryModule){
+			//map initKeyword to the value
+			if(id && options.initKeyword){
+				dataToPass[options.initKeyword] = id;
+			}
 			$.extend(true, dataToPass, K.toObject("p_"), {
 				"config.mn": "DDK_Data_Request",
 				"data.config": JSON.stringify(options)
@@ -406,13 +435,23 @@ PS.NavFormatter.fn.functions = {
 						result,
 						valueWrapString = options.valueWrapString || "";
 					if(records && records.length){
-						_.each(records, function(item, index){
-							if (!id && !term && typeof item.optgroup !== "undefined" && optionGroup !== item.optgroup) {
-								newData.push({ text: item.optgroup });
-								optionGroup = item.optgroup;
+						//if value and label field is specified, use it
+						valueIndex = _this.getColumnIndex(dataset.columns, valueField) || _this.getColumnIndex(dataset.columns, "name", true);
+						labelIndex = _this.getColumnIndex(dataset.columns, labelField) || _this.getColumnIndex(dataset.columns, "label", true);
+						groupIndex = _this.getColumnIndex(dataset.columns, groupField);
+						iconIndex = _this.getColumnIndex(dataset.columns, iconField);
+						_.each(records, function(record, index){
+							if (!id && !term && groupIndex > -1 && optionGroup !== record[groupIndex]) {
+								newData.push({ text: record[groupIndex] });
+								optionGroup = record[groupIndex];
 							}
-							result = { text: item[1], id: valueWrapString + item[0] + valueWrapString };
-							if (item.opticon) { result.icon = item.opticon };
+							result = { 
+								id: valueWrapString + record[valueIndex > -1 && valueIndex || 0] + valueWrapString,
+								text: record[labelIndex > -1 && labelIndex || 1]
+							};
+							if (iconIndex && record[iconIndex]) { 
+								result.icon = record[iconIndex]; 
+							}
 							newData.push(result);
 						});
 						newData = _this.setData(newData, (term || id), navFormatter);
@@ -514,7 +553,7 @@ PS.NavFormatter.fn.functions = {
 					//check if cached mode and needs to add data
 					if(settings.cached){
 						if(currentPage === 1 && !options.length){
-							options = _this.updateCache($.extend({}, settings, {callback: query.callback, callbackData: data}), _this);
+							options = _this.updateCache($.extend({}, settings, {callback: query.callback, callbackData: data}), navFormatter);
 						}
 						else{
 							//for next page if data has not been loaded
@@ -966,26 +1005,79 @@ PS.NavFormatter.fn.functions = {
 				keywordValues[item] = K(item);
 			});
 			//trigger date type change to set keywords default values
-			this.$el.find(".nav-date-type").trigger("change");
+			if($dateType.is(":visible") && keywords[0]  && keywordValues[keywords[0]]){
+				$dateType.val(keywordValues[keywords[0]]);
+			}
+			$dateType.trigger("change");
 			if(keywords[2] && keywordValues[keywords[2]]){
-				this.$el.find(".nav-date-end").val(keywordValues[keywords[2]]).trigger("change");
+				$dateEnd.val(keywordValues[keywords[2]]).trigger("change");
 			}
 			if(keywords[1] && keywordValues[keywords[1]]){
-				if(this.$el.find(".nav-date-type:visible").length){
-					this.$el.find(".nav-date-start").val(keywordValues[keywords[1]]).trigger("change");
+				if($dateType.is(":visible")){
+					$dateStart.val(keywordValues[keywords[1]]).trigger("change");
 				}
 				else{
-					this.$el.find(".nav-date-end").val(keywordValues[keywords[1]]).trigger("change");
+					$dateEnd.val(keywordValues[keywords[1]]).trigger("change");
 				}
 			}
 			if(keywords[0] && keywordValues[keywords[0]]){
-				if(this.$el.find(".nav-date-type:not(:visible)").length){
-					this.$el.find(".nav-date-start").val(keywordValues[keywords[0]]).trigger("change");
+				if($dateType.is(":hidden")){
+					$dateStart.val(keywordValues[keywords[0]]).trigger("change");
 				}
 			}
 		}
 	}
 };
+PS.NavFormatter.fn.mcat = function () {
+	var keywords, filterKeywordMap, settings;
+	filterKeywordMap = {
+		"metric": "p_mcat",
+		"contact": "p_org",
+		"loc": "p_org",
+		"fav": "p_fcat",
+		"event": "p_event_cat",
+		"offering": "p_offering_cat"
+	};
+	keywords = this.$el.data("navKeywords");
+	//the default dimensions settings is retrieved in this.getSettings()
+	settings = _.reduce(_.extend({}, DDK.navset2.defaultSelect2Options, this.getSettings(), {
+		"filterKeyword": filterKeywordMap[this.nav] || "",
+		"type": this.nav,
+		"targetKeyword": "p_" + this.nav,
+		"valueField": this.nav + (this.nav === "extdim" ? "_value" : "_name"),
+		"labelField": this.nav + (this.nav === "extdim" ? "_value" : "_label"),
+		"keywords": "&p_dimq_type=" + (this.nav === "metric" ? "m" : this.nav) + (keywords || "")
+	}), function(memo, value, key){memo[_.string.camelize("nav_"+key)] = value; return memo;}, {});
+	if(this.nav === "extdim"){
+		if(settings.navExtdim){
+			if(isNaN(settings.navExtdim) && settings.navExtdim.indexOf("'") < 0){
+				settings.navExtdim = "'" + settings.navExtdim + "'";
+			}
+			settings.navKeywords = "&p_extdim_list=" + settings.navExtdim + settings.navKeywords;
+		}
+	}
+	else{
+		settings.navKeywords = "&p_dimq_hierarchy_level=99";
+	}
+	this.$el.data(settings);
+	if(settings.navTargetKeyword){	//need to set target keyword attribute since it is needed on keywordupdate handler to set the value
+		this.$el.attr("data-nav-target-keyword", settings.navTargetKeyword);
+	}
+	this.$el.attr("data-nav", "select2").data("nav", "select2");
+	this.nav = "select2";
+	DDK.navFormat(this.$el);
+};
+PS.NavFormatter.fn.metric = PS.NavFormatter.fn.mcat;
+PS.NavFormatter.fn.org = PS.NavFormatter.fn.mcat;
+PS.NavFormatter.fn.contact = PS.NavFormatter.fn.mcat;
+PS.NavFormatter.fn.loc = PS.NavFormatter.fn.mcat;
+PS.NavFormatter.fn.fcat = PS.NavFormatter.fn.mcat;
+PS.NavFormatter.fn.fav = PS.NavFormatter.fn.mcat;
+PS.NavFormatter.fn.event_cat = PS.NavFormatter.fn.mcat;
+PS.NavFormatter.fn.event = PS.NavFormatter.fn.mcat;
+PS.NavFormatter.fn.offering_cat = PS.NavFormatter.fn.mcat;
+PS.NavFormatter.fn.offering = PS.NavFormatter.fn.mcat;
+PS.NavFormatter.fn.extdim = PS.NavFormatter.fn.mcat;
 PS.NavFormatter.fn.select2 = function () {
 	var localThis = this, 
 		settings = $.extend(true, {}, DDK.navset2.defaultSelect2Options, this.getSettings()), 
@@ -1108,3 +1200,77 @@ PS.NavFormatter.register({
 	sortOrder: 500,
 	name: "Radio"
 });
+/*
+$(document).ready(function(){
+	//collect initial values for select2 to make a single batch request
+	PS.NavFormatter.select2InitValues = [];
+	$("input[data-nav=select2]").each(function(){
+		var $this, settings, targetKeyword, defaultValue;
+		$this = $(this);
+		settings = _.reduce(_.pick($this.data(), function (value, key) {
+			return key !== "nav" && _.string.startsWith(key, "nav");
+		}), function (accumulator, value, key) {
+			accumulator[_.string.camelize(key.slice(3))] = value;
+			return accumulator;
+		}, {});
+		defaultValue = $this.val() || K(settings.targetKeyword);
+		if(!defaultValue){
+			return;
+		}
+		PS.NavFormatter.select2InitValues.push(_.extend({}, settings, {"id": defaultValue}));
+		$this.attr("hasDefaultValue", "").val("");	//temporarily set an attr flag to be used later when setting the value
+		//temporarily empty targetKeyword
+		K(settings.targetKeyword, "");
+	});
+	if(PS.NavFormatter.select2InitValues && PS.NavFormatter.select2InitValues.length){
+		$.post("amengine.aspx", $.extend(true, {}, K.toObject("p_"), {
+				"config.mn": "DDK_Data_Request",
+				"data.config": JSON.stringify(PS.NavFormatter.select2InitValues).replace(/\[/g, "\\[").replace(/\]/g, "\\]")
+			}), 
+			function(data) {
+				var dataset, records, results, valueWrapString, valueIndex, labelIndex;
+				//loop through the nav controls with default value. the hasDefaultValue flag was set by code above
+				$("input[hasDefaultValue]").each(function(index, item){
+					var $this, settings, selectedData;
+					$this = $(this);
+					settings = _.reduce(_.pick($this.data(), function (value, key) {
+						return key !== "nav" && _.string.startsWith(key, "nav");
+					}), function (accumulator, value, key) {
+						accumulator[_.string.camelize(key.slice(3))] = value;
+						return accumulator;
+					}, {});
+					dataset = data && data.datasets && data.datasets[index];
+					records = dataset && dataset.rows;
+					valueWrapString = settings.navValueWrapString || "";
+					$this.removeAttr("hasDefaultValue");
+					if(records && records.length){
+						//if value and label field is specified, use it
+						valueIndex = PS.NavFormatter.fn.functions.getColumnIndex(dataset.columns, settings.valueField) || PS.NavFormatter.fn.functions.getColumnIndex(dataset.columns, "name", true);
+						labelIndex = PS.NavFormatter.fn.functions.getColumnIndex(dataset.columns, settings.labelField) || PS.NavFormatter.fn.functions.getColumnIndex(dataset.columns, "label", true);
+						selectedData = _.map(records, function(record, key){
+							return {"id": record[valueIndex], "text": record[labelIndex]};
+						});
+						if(settings.multiple){
+							if(selectedData && selectedData.length === 0){
+								//if there's no corresponding label display the value instead.
+								selectedData.push({id: data.config.id, text: data.config.id});
+							}
+							$this.select2("data", selectedData);
+						}
+						else{
+							if(!selectedData[0]){
+								//if there's no corresponding label display the value instead.
+								selectedData.push({id: data.config.id, text: data.config.id});
+							}
+							$this.select2("data", selectedData[0]);
+							//set keyword value
+							if(settings.targetKeyword){
+								K(settings.targetKeyword, selectedData[0].id)
+							}
+						}
+					}
+				});
+				return;
+			}, "json");
+	}
+});*/
