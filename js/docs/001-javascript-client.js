@@ -2,7 +2,7 @@ PS.optionsAPI.clientJavaScript = {
 	"id": "client_javascript",
 	"label": "Client JavaScript",
 	"description": "Functions included in the DDK Client JavaScript libraries.",
-
+/*
 	"section": {
 		"id": "section",
 		"label": "Dummy Section",
@@ -18,9 +18,51 @@ PS.optionsAPI.clientJavaScript = {
 			}
 
 		}
-	}                
+	},
+*/
+	"options": {
+		"findControls": {
+			"id": "find_controls",
+			"label": "$.fn.findControls",
+			"description": "<p>jQuery plugin to find all DDK Controls inside a container element.</p><ul><li><code>$().findControls()</code></li></ul>",
+			"notes": "<p>Often used together with <code>reloadControls</code>.</p><h5>Example</h5><pre class='language-javascript'><code>$(\".main-section\").findControls().reloadControls();</code></pre>",
+			"version": "",
+			"deprecated": false
+		},
+
+		"reloadControls": {
+			"id": "reload_controls",
+			"label": "$.fn.reloadControls",
+			"description": "<p>jQuery plugin to reload of all DDK Control elements in a jQuery collection.</p><ul><li><code>$().reloadControls()</code></li></ul>",
+			"notes": "<p>Will load controls in DOM order. Uses a queue to load controls in series so only one AMEngine request is made at a time.</p><p>Use <code>findControls</code> to identify controls inside a container element, then <code>reloadControls</code> to reload them.</p><h5>Example</h5><pre class='language-javascript'><code>$(\".main-section\").findControls().reloadControls();</code></pre>",
+			"version": "",
+			"deprecated": false
+		},
+
+		"target": {
+			"id": "target",
+			"label": "$.target",
+			"description": "<p>jQuery extension to resolve a target element identifier.</p><ul><li><code>$.target(identifier)</code></li></ul>",
+			"notes": "<h5>Arguments</h5><dl><dt><code>identifier</code></dt><dd>Can be an element id string, a DOM element, a jQuery selector string, or a jQuery collection.</dd></dl><h5>Returns</h5><p>A jQuery collection containing the identified element(s).</p>",
+			"version": "",
+			"deprecated": false
+		},
+
+		"runFav": {
+			"id": "run_fav",
+			"label": "runFav",
+			"description": "<p>Function to retrive and render a favorite from the Metrics Catalog Database. Can render Content, Content List, and Control Favorites.</p><ul><li><code>runFav(target, id, settings)</code></li><li><code>runFav(settings)</code></li></ul>",
+			"notes": "<h5>Arguments</h5><dl><dt><code>target</code></dt><dd>can be an element id string, a DOM element, a jQuery selector string, or a jQuery collection.</dd><dt><code>id</code></dt><dd>The name or id (<code>sci_fav_name</code> or <code>sci_fav_id</code>) of the favorite record to be rendered.</dd><dt><code>settings</code></dt><dd>An object that can have the following properties:<dl><dt><code>target</code></dt><dd>As above.</dd><dt><code>id</code></dt><dd>As above.</dd><dt><code>name</code></dt><dd>As <code>id</code> above. <code>name</code> or <code>id</code> can be used interchangeably in the settings object.</dd><dt><code>success</code></dt><dd>Function executed after control reload is complete. Do not use for control initialization &ndash; use <code>customInit</code> in control JavaScript for that. Success function acts as a callback. For Control Favorites, it is passed two arguments: <code>controlName</code>, <code>controlId</code>.</dd><dt><code>error</code></dt><dd>Function executed in the event of an HTTP request or Data Request Framework processing error. Error function is passed four arguments: <code>xhr</code>, <code>status</code>, <code>message</code>, <code>settings</code>. Target element and favorite id can be retrieved from the settings object.</dd><dt><code>beforeInit</code></dt><dd>Function executed before control initialization.</dd><dt><code>beforeReload</code></dt><dd>Function executed before favorite retrieval HTTP request is sent.</dd><dt><code>keywords</code></dt><dd>Keywords sent with this request only. Will not be set in the global keyword hash.</dd><dt><code>state</code></dt><dd>Url- or JSON-encoded key/value pairs of state keywords applied to rendered control. Keys should use only the state key abbreviation. e.g. to apply a new chart title and turn off automatic chart axis labels: <code>\"&ti=New%20Title&lae=false\"</code> or <code>{ ti: \"New Title\", lae: \"false\" }</code>.</dd><dt><code>showMask</code></dt><dd>If <code>false</code>, will not mask the target element for this request.</dd><dt><code>favHeader</code></dt><dd>Sets favorite record header display options.</dd><dt><code>favFooter</code></dt><dd>Sets favorite record footer display options.</dd><dt><code>unshift</code></dt><dd>Adds request to the front of the reload queue rather than to the back.</dd></dl></dd></dl><h5>Example</h5><pre class='language-javascript'><code>runFav(\"sample_elem_id\", \"SAMPLE_FAV_NAME\", {\n\tshowMask: false,\n\tsuccess: function (name, id) { DDK.info(name, id); },\n\terror: function (xhr, status, message, settings) { DDK.error(xhr, status, message, settings); }\n});</code></pre>",
+			"version": "",
+			"deprecated": false
+		}
+		
+	}	
 };
 
+
+/*
+(items that start with a dash (-) are listed in the above options API)
 
 Modernizr v2.7.2
 jQuery JavaScript Library v2.1.1
@@ -36,18 +78,18 @@ jQuery Function Wrappers
 	$.fn.empty
 
 jQuery Plugins:
-	$.target
+-	$.target
 	$.topZ
 	$.loadScript
 	$.createStylesheet
 
 	$.fn.isControl
-	$.fn.reloadControls
+-	$.fn.reloadControls
 	$.fn.reload // deprecated
-	$.fn.reloadControlsQueue
+	$.fn.reloadControlsQueue // deprecated
 	$.fn.resizeControls
 	$.fn.initControls
-	$.fn.findControls
+-	$.fn.findControls
 	$.fn.parentControl
 	$.fn.controlData
 
@@ -148,6 +190,7 @@ Lo-Dash String (_.str or _.string)
 	_.str.quote
 	_.str.repeat
 	_.str.levenshtein
+	// custom additions
 	_.str.nameify
 	_.str.toBoolean
 	_.str.isQueryString
@@ -572,7 +615,7 @@ DDK
 	
 reloadControlContainer
 runFromFavorite
-runFav
+- runFav
 runFavs
 
 
@@ -672,3 +715,4 @@ Bamset2 Config Dialog
 
 DDK.pluginsLoad.resolve();
 DDK.addonsLoad.resolve();
+*/

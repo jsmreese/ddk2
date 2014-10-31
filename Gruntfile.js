@@ -103,6 +103,11 @@ module.exports = function(grunt) {
 				},
 				banner: banner
 			},
+			docs_responsive: {
+				files: [
+					standard_responsive_files("docs")
+				]
+			},
 			core: {
 				files: [
 					standard_files("core")
@@ -234,13 +239,16 @@ module.exports = function(grunt) {
 	// server task
 	grunt.registerTask("server", ["clean:server", "concat:server", "uglify:server"]);
 
-	// resp task
+	// rcore task
+	grunt.registerTask("rdocs", ["clean:client", "concat:docs_responsive", "uglify:client"]);
+
+	// rcore task
 	grunt.registerTask("rcore", ["clean:client", "concat:core_responsive", "uglify:client"]);
 
-	// respp task
+	// rplugins task
 	grunt.registerTask("rplugins", ["clean:client", "concat:plugins_responsive", "uglify:client"]);
 	
-	// client tasks
+	// client taskss
 	_.each("core plugins".split(" "), function (value) {
 		grunt.registerTask(value, ["clean:client", "concat:" + value, "uglify:client"]);
 	});
