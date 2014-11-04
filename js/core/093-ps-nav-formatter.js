@@ -1083,8 +1083,9 @@ PS.NavFormatter.fn.functions = {
 		}
 	}
 };
-PS.NavFormatter.fn.mcat = function () {
+PS.NavFormatter.fn.mcat = function (isMulti) {
 	var keywords, filterKeywordMap, settings;
+	this.nav = this.nav.substr(0, this.nav.indexOf("_multi"));	//remove multi to be used for keywords
 	filterKeywordMap = {
 		"metric": "p_mcat",
 		"contact": "p_org",
@@ -1098,7 +1099,8 @@ PS.NavFormatter.fn.mcat = function () {
 	settings = _.reduce(_.extend({}, DDK.navset2.defaultSelect2Options, this.getSettings(), {
 		"filterKeyword": filterKeywordMap[this.nav] || "",
 		"type": this.nav,
-		"targetKeyword": "p_" + this.nav,
+		"multiple": isMulti,
+		"targetKeyword": "p_" + this.nav + (isMulti ? "_multi" : ""),
 		"valueField": this.nav + (this.nav === "extdim" ? "_value" : "_name"),
 		"labelField": this.nav + (this.nav === "extdim" ? "_value" : "_label"),
 		"keywords": "&p_dimq_type=" + (this.nav === "metric" ? "m" : this.nav) + (keywords || "")
@@ -1122,17 +1124,14 @@ PS.NavFormatter.fn.mcat = function () {
 	this.nav = "select2";
 	DDK.navFormat(this.$el);
 };
-PS.NavFormatter.fn.metric = PS.NavFormatter.fn.mcat;
-PS.NavFormatter.fn.org = PS.NavFormatter.fn.mcat;
-PS.NavFormatter.fn.contact = PS.NavFormatter.fn.mcat;
-PS.NavFormatter.fn.loc = PS.NavFormatter.fn.mcat;
-PS.NavFormatter.fn.fcat = PS.NavFormatter.fn.mcat;
-PS.NavFormatter.fn.fav = PS.NavFormatter.fn.mcat;
-PS.NavFormatter.fn.event_cat = PS.NavFormatter.fn.mcat;
-PS.NavFormatter.fn.event = PS.NavFormatter.fn.mcat;
-PS.NavFormatter.fn.offering_cat = PS.NavFormatter.fn.mcat;
-PS.NavFormatter.fn.offering = PS.NavFormatter.fn.mcat;
-PS.NavFormatter.fn.extdim = PS.NavFormatter.fn.mcat;
+PS.NavFormatter.fn.mcat_multi = function(){
+	PS.NavFormatter.fn.mcat.call(this, true);
+};
+_.each("metric org contact loc fcat fav event_cat event offering_cat offering extdim".split(" "), function(dim){
+	PS.NavFormatter.fn[dim] = PS.NavFormatter.fn.mcat;
+	PS.NavFormatter.fn[dim + "_multi"] = PS.NavFormatter.fn.mcat_multi;
+});
+
 PS.NavFormatter.fn.select2 = function () {
 	var localThis = this, 
 		settings = $.extend(true, {}, DDK.navset2.defaultSelect2Options, this.getSettings()), 
