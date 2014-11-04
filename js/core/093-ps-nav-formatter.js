@@ -288,15 +288,15 @@ PS.NavFormatter.fn.functions = {
 		};
 	},
 	initSelection: function (settings, element, callback) {
-		var dataToPass = {}, ids, selectedData = [], labelArr, valArr, navFormatter = this, text;
+		var dataToPass = {}, ids, selectedData = [], labelArr, valArr, navFormatter = this, text, wrappedValue;
+		text = settings.label || K(settings.targetKeyword + "_label");
 		//if label is specified, display label and skip server retrieval
-		if(settings.label){
+		if(text){
 			//remove settings.label to allow succeeding set of value to go to the database
-			text = settings.label;
 			settings.label = undefined;
 			if(settings.multiple && text.indexOf(",") > -1){
 				labelArr = text.split(",");
-				valArr = settings.value.split(",");
+				valArr = (settings.value || K(settings.targetKeyword)).split(",");
 				_.each(labelArr, function(item, index){
 					if(valArr[index]){
 						selectedData.push({id: _.string.trim(valArr[index]), text: _.string.trim(item)});
@@ -305,7 +305,7 @@ PS.NavFormatter.fn.functions = {
 				callback(selectedData);
 			}
 			else{
-				callback({id: _.string.trim(settings.value), text: _.string.trim(text)});
+				callback({id: _.string.trim(settings.value || K(settings.targetKeyword)), text: _.string.trim(text)});
 			}
 		}
 		else{
@@ -314,11 +314,15 @@ PS.NavFormatter.fn.functions = {
 				if(element.val() && settings.initKeyword){
 					dataToPass[settings.initKeyword] = element.val();
 				}
+				//add single quote wrap if options id does not have one since in SCIDIM_Query it requires all NaN to be wrapped in single quote
+				if(element.val() && isNaN(element.val()) && element.val().indexOf("'") < 0 && settings.queryWidget === "SCIDIM_Query"){
+					wrappedValue = "'" + element.val() + "'";
+				}
 				$.extend(true, dataToPass, K.toObject("p_"), {
 					"config.mn": "DDK_Data_Request",
 					"filterColumn": settings.filterColumn,
 					"columnPrefix": settings.columnPrefix,
-					"data.config": JSON.stringify($.extend(true, {}, settings, {"id": element.val()}))
+					"data.config": JSON.stringify($.extend(true, {}, settings, {"id": wrappedValue || element.val()}))
 				});
 				$.post("amengine.aspx", dataToPass, 
 					function(data) {
@@ -400,7 +404,7 @@ PS.NavFormatter.fn.functions = {
 	},
 	updateCache: function(options, navFormatter){
 		options = options || {};
-		var _this = this,
+		var _this = this, wrappedValue,
 			term = options.term,
 			id = options.id,
 			callback = options.callback,
@@ -411,16 +415,61 @@ PS.NavFormatter.fn.functions = {
 			valueField = options.valueField,
 			labelField = options.labelField,
 			groupField = options.groupField,
-			iconField = options.iconField;
+			iconField = options.iconField,
+			arrayValue;
 		options.page = options.page || 1;
 		if(options.queryWidget || options.queryModule){
 			//map initKeyword to the value
 			if(id && options.initKeyword){
 				dataToPass[options.initKeyword] = id;
 			}
+			//add single quote wrap if options id does not have one since in SCIDIM_Query it requires all NaN to be wrapped in single quote
+			if(options.id && isNaN(options.id) && options.id.indexOf("'") < 0 && options.queryWidget === "SCIDIM_Query"){
+				wrappedValue = "'" + options.id + "'";
+			}
+			//check if the value is in the cached data
+			if(options.id && navFormatter.data && navFormatter.data.length){
+				arrayValue = [];
+				if(options.id.indexOf(",") > -1){
+					_.each(options.id.split(","), function(value, index){
+						arrayValue.push(_.string.trim(value));
+					});
+				}
+				else{
+					arrayValue.push(wrappedValue || options.id);
+				}
+				newData = _.filter(navFormatter.data, function(data, index){
+					return arrayValue.indexOf(data.id) > -1;
+				});
+				if(newData && newData.length){
+					if(newData.length > 1){
+						callback(newData);
+					}
+					else{
+						callback(newData[0]);
+					}
+					return newData;
+				}
+			}
+			//check if the value has a corresponding label passed by the user
+			if(options.targetKeyword && K(options.targetKeyword) && K(options.targetKeyword + "_label")){
+				newData.push({
+					id: options.valueWrapString + K(options.targetKeyword) + options.valueWrapString,
+					text: K(options.targetKeyword + "_label")
+				});
+				if(newData && newData.length){
+					if(newData.length > 1){
+						callback(newData);
+					}
+					else{
+						callback(newData[0]);
+					}
+					return newData;
+				}
+			}
 			$.extend(true, dataToPass, K.toObject("p_"), {
 				"config.mn": "DDK_Data_Request",
-				"data.config": JSON.stringify(options)
+				"data.config": JSON.stringify($.extend(true, {}, options, {"id": wrappedValue || options.id}))
 			});
 			$.ajax({
 				type: "POST",
@@ -434,6 +483,7 @@ PS.NavFormatter.fn.functions = {
 						optionGroup = "",
 						result,
 						valueWrapString = options.valueWrapString || "";
+					newData = [];
 					if(records && records.length){
 						//if value and label field is specified, use it
 						valueIndex = _this.getColumnIndex(dataset.columns, valueField) || _this.getColumnIndex(dataset.columns, "name", true);
@@ -861,7 +911,12 @@ PS.NavFormatter.fn.functions = {
 				//destroy datepicker and reset onchange event 
 				$dateStart.add($dateEnd).datepicker("destroy").off("change");
 				//set default format if not specified
-				if(hiddenTypeVal && typeVal !== hiddenTypeVal){
+				if(optionData.dateFormat){
+					settings.momentDateFormat = optionData.dateFormat
+					settings.dateFormat = _this.functions.mapDateFormat(optionData.dateFormat);
+					settings.altFormat = optionData.altFormat || settings.dateFormat;
+				}
+				else if(hiddenTypeVal && typeVal !== hiddenTypeVal){
 					settings.momentDateFormat = momentDefaultFormat["DATE" + typeVal];
 					settings.dateFormat = _this.functions.mapDateFormat(settings.momentDateFormat);
 					settings.altFormat = settings.dateFormat
@@ -980,7 +1035,7 @@ PS.NavFormatter.fn.functions = {
 				//arguments[1] is a flag if true do not update keyword which means triggered manually in the ddk keywordupdate handler
 				if(!arguments[1]){
 					if(_this.$el.find(".nav-date-type:visible").length){
-						K(_.string.trim(keywords[1] || keywords[0]), $(this).val());
+						K(_.string.trim(keywords[1]), $(this).val());
 					}
 					else{
 						K(_.string.trim(keywords[0]), $(this).val());
@@ -1103,7 +1158,33 @@ PS.NavFormatter.fn.select2 = function () {
 	}
 	if(settings.targetKeyword){
 		this.$el.on("change", function(e){
-			K(settings.targetKeyword, $(this).val());
+			var $this, val, selected, keywordLabel;
+			$this = $(this);
+			val = $this.val();
+			
+			if (settings.emptyKeywordValue && !val) {
+				K(settings.targetKeyword, settings.emptyKeywordValue);
+				return;
+			}
+			K(settings.targetKeyword, $this.val());
+			//update shadow keyword label
+			selected = $this.parent().find(".select2-choice span");
+			if(selected && selected.length){	//for single
+				keywordLabel = selected.text();
+			}
+			else{	//for multiple
+				keywordLabel = "";
+				$this.parent().find(".select2-search-choice").each(function(){
+					keywordLabel += $(this).find("div").text() + ",";
+				});
+				if(keywordLabel){
+					//remove last comma
+					keywordLabel = keywordLabel.substr(0, keywordLabel.length-1);
+				}
+			}
+			if(keywordLabel){
+				K(settings.targetKeyword + "_label", keywordLabel);
+			}
 		});
 		//just update keyword instead of changing because change event is for the actual changing of option
 		if(this.$el.val()){
