@@ -32,7 +32,7 @@ var require = (function () {
 })();
 
 require.exec = function (moduleName, methodName) {
-	var module, method, rMethod, args;
+	var module, method, rMethod, args, result;
 	
 	// any additional arguments are passed to the method
 	args = [].slice.call(arguments, 2);
@@ -52,6 +52,10 @@ require.exec = function (moduleName, methodName) {
 	}
 	
 	if (method) {
-		return module[method].apply(null, args);
+		result = module[method].apply(null, args);
+		
+		if (result) { return result; }
 	}
+	
+	return "";
 };

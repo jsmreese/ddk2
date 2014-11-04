@@ -1,228 +1,596 @@
 PS.optionsAPI.clientJavaScript = {
 	"id": "client_javascript",
 	"label": "Client JavaScript",
-	"description": "Functions included in the DDK Client JavaScript libraries.",
-/*
-	"section": {
-		"id": "section",
-		"label": "Dummy Section",
-		"description": "Description for dummy section.",
-		"options": {
-			"attr": {
-				"id": "elem_attr",
-				"label": "Attributes",
-				"description": "Element attributes.",
-				"notes": "Sets attributes on the element div.",
-				"version": "",
-				"deprecated": false
-			}
+	"description": "Libraries and Functions included in the DDK Client JavaScript package.",
 
+	"stable": {
+		"id": "stable",
+		"label": "Stable",
+		"description": "Stable JavaScript libraries and functions.",
+		"options": {
+			"findControls": {
+				"id": "find_controls",
+				"label": "$.fn.findControls",
+				"description": "<p>jQuery plugin to find all DDK Controls inside a container element.</p>",
+				"signatures": ["$().findControls()"],
+				"notes": "<p>Often used together with <code>reloadControls</code>.</p>",
+				"usage": "<pre class='language-javascript'><code>$(\".main-section\").findControls().reloadControls();</code></pre>"
+			},
+
+			"reloadControls": {
+				"id": "reload_controls",
+				"label": "$.fn.reloadControls",
+				"description": "<p>jQuery plugin to reload of all DDK Control elements in a jQuery collection.</p>",
+				"signatures": ["$().reloadControls()"],
+				"notes": "<p>Will load controls in DOM order. Uses a queue to load controls in series so only one AMEngine request is made at a time.</p><p>Use <code>findControls</code> to identify controls inside a container element, then <code>reloadControls</code> to reload them.</p>",
+				"usage": "<pre class='language-javascript'><code>$(\".main-section\").findControls().reloadControls();</code></pre>"
+			},
+
+			"target": {
+				"id": "target",
+				"label": "$.target",
+				"description": "<p>jQuery extension to resolve a target element identifier.</p>",
+				"signatures": ["$.target(identifier)"],
+				"arguments": [
+					["identifier", "Can be an element id string, a DOM element, a jQuery selector string, or a jQuery collection."]
+				],
+				"returns": "<p>A jQuery collection containing the identified element(s).</p>"
+			},
+
+			"runFav": {
+				"id": "run_fav",
+				"label": "runFav",
+				"description": "<p>Function to retrive and render a favorite from the Metrics Catalog Database. Can render Content, Content List, and Control Favorites.</p>",
+				"signatures": ["runFav(target, id, settings)", "runFav(settings)"],
+				"arguments": [
+					["target", "An element id string, a DOM element, a jQuery selector string, or a jQuery collection."],
+					["id", "The name or id (<code>sci_fav_name</code> or <code>sci_fav_id</code>) of the favorite record to be rendered."],
+					["settings", [
+						["target", "As above."],
+						["id", "As above."],
+						["name", "As <code>id</code> above. <code>name</code> or <code>id</code> can be used interchangeably in the settings object."],
+						["success", "Function executed after control reload is complete. Do not use for control initialization &ndash; use <code>customInit</code> in control JavaScript for that. Success function acts as a callback. For Control Favorites, it is passed two arguments: <code>controlName</code>, <code>controlId</code>."],
+						["error", "Function executed in the event of an HTTP request or Data Request Framework processing error. Error function is passed four arguments: <code>xhr</code>, <code>status</code>, <code>message</code>, <code>settings</code>. Target element and favorite id can be retrieved from the settings object."],
+						["beforeInit", "Function executed before control initialization."],
+						["beforeReload", "Function executed before favorite retrieval HTTP request is sent."],
+						["keywords", "Keywords sent with this request only. Will not be set in the global keyword hash."],
+						["state", "Url- or JSON-encoded key/value pairs of state keywords applied to rendered control. Keys should use only the state key abbreviation. e.g. to apply a new chart title and turn off automatic chart axis labels: <code>\"&ti=New%20Title&lae=false\"</code> or <code>{ ti: \"New Title\", lae: \"false\" }</code>."],
+						["showMask", "If <code>false</code>, will not mask the target element for this request."],
+						["favHeader", "Sets favorite record header display options."],
+						["favFooter", "Sets favorite record footer display options."],
+						["unshift", "Adds request to the front of the reload queue rather than to the back."]
+					]]
+				],
+				"usage": "<pre class='language-javascript'><code>runFav(\"sample_elem_id\", \"SAMPLE_FAV_NAME\", {\n\tshowMask: false,\n\tsuccess: function (name, id) {\n\t\tDDK.info(name, id);\n\t},\n\terror: function (xhr, status, message, settings) {\n\t\tDDK.error(xhr, status, message, settings);\n\t}\n});</code></pre>"
+			}
 		}
 	},
-*/
-	"options": {
-		"findControls": {
-			"id": "find_controls",
-			"label": "$.fn.findControls",
-			"description": "<p>jQuery plugin to find all DDK Controls inside a container element.</p><ul><li><code>$().findControls()</code></li></ul>",
-			"notes": "<p>Often used together with <code>reloadControls</code>.</p><h5>Example</h5><pre class='language-javascript'><code>$(\".main-section\").findControls().reloadControls();</code></pre>",
-			"version": "",
-			"deprecated": false
-		},
+	
+	"undocumented": {
+		"id": "undocumented",
+		"label": "Undocumented",
+		"description": "Undocumented JavaScript libraries and functions.",
+		"options": {
+			"modernizr": {
+				"id": "modernizr",
+				"label": "Modernizr",
+				"description": "",
+				"notes": "",
+				"version": "2.7.2"
+			},
+			"jQuery": {
+				"id": "jquery",
+				"label": "jQuery",
+				"description": "",
+				"notes": "",
+				"version": "2.1.1"
+			},
+			"jQueryMigrate": {
+				"id": "jquery_migrate",
+				"label": "jQuery Migrate",
+				"description": "",
+				"notes": "",
+				"version": "1.2.1"
+			},
+			"jQueryUI": {
+				"id": "jquery_ui",
+				"label": "jQuery UI",
+				"description": "",
+				"notes": "",
+				"version": "1.10.3"
+			},
+			
+			
+			"loDash": {
+				"id": "lo_dash",
+				"label": "Lo-Dash",
+				"description": "",
+				"notes": "",
+				"version": "2.4.1"
+			},
 
-		"reloadControls": {
-			"id": "reload_controls",
-			"label": "$.fn.reloadControls",
-			"description": "<p>jQuery plugin to reload of all DDK Control elements in a jQuery collection.</p><ul><li><code>$().reloadControls()</code></li></ul>",
-			"notes": "<p>Will load controls in DOM order. Uses a queue to load controls in series so only one AMEngine request is made at a time.</p><p>Use <code>findControls</code> to identify controls inside a container element, then <code>reloadControls</code> to reload them.</p><h5>Example</h5><pre class='language-javascript'><code>$(\".main-section\").findControls().reloadControls();</code></pre>",
-			"version": "",
-			"deprecated": false
-		},
+			
+			"loDashString": {
+				"id": "lo_dash_string",
+				"label": "Lo-Dash String",
+				"description": "",
+				"notes": ""
+			},
+			
+			"backbone": {
+				"id": "backbone",
+				"label": "Backbone",
+				"description": "",
+				"notes": "",
+				"version": "1.1.0"
+			},
+			
+			"backboneEpoxy": {
+				"id": "backbone_epoxy",
+				"label": "Backbone Epoxy",
+				"description": "",
+				"notes": ""
+			},
+			
+			"moment": {
+				"id": "moment",
+				"label": "Moment",
+				"description": "",
+				"notes": "",
+				"version": "2.3.1"
+			},
+			
+			"momentDurationFormat": {
+				"id": "moment_duration_format",
+				"label": "Moment Duration Format",
+				"description": "",
+				"notes": "",
+				"version": "1.2.1"
+			},
+			
+			"numeral": {
+				"id": "numeral",
+				"label": "Numeral",
+				"description": "",
+				"notes": "",
+				"version": "1.5.1"
+			},
+			
+			"ratio": {
+				"id": "ratio",
+				"label": "Ratio",
+				"description": "",
+				"notes": "",
+				"version": "0.4.0"
+			},
+			
+			
+			"K": {
+				"id": "k",
+				"label": "K",
+				"description": "",
+				"notes": ""
+			},
 
-		"target": {
-			"id": "target",
-			"label": "$.target",
-			"description": "<p>jQuery extension to resolve a target element identifier.</p><ul><li><code>$.target(identifier)</code></li></ul>",
-			"notes": "<h5>Arguments</h5><dl><dt><code>identifier</code></dt><dd>Can be an element id string, a DOM element, a jQuery selector string, or a jQuery collection.</dd></dl><h5>Returns</h5><p>A jQuery collection containing the identified element(s).</p>",
-			"version": "",
-			"deprecated": false
-		},
+			"run": {
+				"id": "run",
+				"label": "run",
+				"description": "",
+				"notes": ""
+			},
 
-		"runFav": {
-			"id": "run_fav",
-			"label": "runFav",
-			"description": "<p>Function to retrive and render a favorite from the Metrics Catalog Database. Can render Content, Content List, and Control Favorites.</p><ul><li><code>runFav(target, id, settings)</code></li><li><code>runFav(settings)</code></li></ul>",
-			"notes": "<h5>Arguments</h5><dl><dt><code>target</code></dt><dd>can be an element id string, a DOM element, a jQuery selector string, or a jQuery collection.</dd><dt><code>id</code></dt><dd>The name or id (<code>sci_fav_name</code> or <code>sci_fav_id</code>) of the favorite record to be rendered.</dd><dt><code>settings</code></dt><dd>An object that can have the following properties:<dl><dt><code>target</code></dt><dd>As above.</dd><dt><code>id</code></dt><dd>As above.</dd><dt><code>name</code></dt><dd>As <code>id</code> above. <code>name</code> or <code>id</code> can be used interchangeably in the settings object.</dd><dt><code>success</code></dt><dd>Function executed after control reload is complete. Do not use for control initialization &ndash; use <code>customInit</code> in control JavaScript for that. Success function acts as a callback. For Control Favorites, it is passed two arguments: <code>controlName</code>, <code>controlId</code>.</dd><dt><code>error</code></dt><dd>Function executed in the event of an HTTP request or Data Request Framework processing error. Error function is passed four arguments: <code>xhr</code>, <code>status</code>, <code>message</code>, <code>settings</code>. Target element and favorite id can be retrieved from the settings object.</dd><dt><code>beforeInit</code></dt><dd>Function executed before control initialization.</dd><dt><code>beforeReload</code></dt><dd>Function executed before favorite retrieval HTTP request is sent.</dd><dt><code>keywords</code></dt><dd>Keywords sent with this request only. Will not be set in the global keyword hash.</dd><dt><code>state</code></dt><dd>Url- or JSON-encoded key/value pairs of state keywords applied to rendered control. Keys should use only the state key abbreviation. e.g. to apply a new chart title and turn off automatic chart axis labels: <code>\"&ti=New%20Title&lae=false\"</code> or <code>{ ti: \"New Title\", lae: \"false\" }</code>.</dd><dt><code>showMask</code></dt><dd>If <code>false</code>, will not mask the target element for this request.</dd><dt><code>favHeader</code></dt><dd>Sets favorite record header display options.</dd><dt><code>favFooter</code></dt><dd>Sets favorite record footer display options.</dd><dt><code>unshift</code></dt><dd>Adds request to the front of the reload queue rather than to the back.</dd></dl></dd></dl><h5>Example</h5><pre class='language-javascript'><code>runFav(\"sample_elem_id\", \"SAMPLE_FAV_NAME\", {\n\tshowMask: false,\n\tsuccess: function (name, id) { DDK.info(name, id); },\n\terror: function (xhr, status, message, settings) { DDK.error(xhr, status, message, settings); }\n});</code></pre>",
-			"version": "",
-			"deprecated": false
-		}
+			"load": {
+				"id": "load",
+				"label": "load",
+				"description": "",
+				"notes": ""
+			}
+			
+		},
 		
-	}	
+		"ujQueryExtensions": {
+			"id": "undocumented_jquery_extensions",
+			"label": "jQuery Extensions",
+			"description": "Undocumented jQuery extensions.",
+			"options": {
+				"topZ": {
+					"id": "top_z",
+					"label": "$.topZ",
+					"description": "",
+					"notes": ""
+				},
+				"loadScript": {
+					"id": "load_script",
+					"label": "$.loadScript",
+					"description": "",
+					"notes": ""
+				},
+				"createStylesheet": {
+					"id": "create_stylesheet",
+					"label": "$.createStylesheet",
+					"description": "",
+					"notes": ""
+				},
+			}
+		},
+		
+		"ujQueryPlugins": {
+			"id": "undocumented_jquery_plugins",
+			"label": "jQuery Plugins",
+			"description": "Undocumented jQuery plugins.",
+			"options": {
+				"isControl": {
+					"id": "is_control",
+					"label": "$.fn.isControl",
+					"description": "",
+					"notes": ""
+				},
+				"resizeControls": {
+					"id": "resize_controls",
+					"label": "$.fn.resizeControls",
+					"description": "",
+					"notes": ""
+				},
+				"initControls": {
+					"id": "init_controls",
+					"label": "$.fn.initControls",
+					"description": "",
+					"notes": ""
+				},
+				"parentControl": {
+					"id": "parent_control",
+					"label": "$.fn.parentControl",
+					"description": "",
+					"notes": ""
+				},
+				"controlData": {
+					"id": "control_data",
+					"label": "$.fn.controlData",
+					"description": "",
+					"notes": ""
+				},
+				"dataStack": {
+					"id": "data_stack",
+					"label": "$.fn.dataStack",
+					"description": "",
+					"notes": ""
+				},
+				"editor": {
+					"id": "editor",
+					"label": "$.fn.editor",
+					"description": "",
+					"notes": ""
+				},
+				"rowspan": {
+					"id": "rowspan",
+					"label": "$.fn.rowspan",
+					"description": "",
+					"notes": ""
+				},
+				"reverse": {
+					"id": "reverse",
+					"label": "$.fn.reverse",
+					"description": "",
+					"notes": ""
+				},
+				"totalHeight": {
+					"id": "total_height",
+					"label": "$.fn.totalHeight",
+					"description": "",
+					"notes": ""
+				},
+				"scaleAreas": {
+					"id": "scale_areas",
+					"label": "$.fn.scaleAreas",
+					"description": "",
+					"notes": ""
+				},
+				"maxWidth": {
+					"id": "max_width",
+					"label": "$.fn.maxWidth",
+					"description": "",
+					"notes": ""
+				},
+				"maxHeight": {
+					"id": "max_height",
+					"label": "$.fn.maxHeight",
+					"description": "",
+					"notes": ""
+				},
+				"breakTableByWidthStack": {
+					"id": "break_table_by_width",
+					"label": "$.fn.breakTableByWidth",
+					"description": "",
+					"notes": ""
+				},
+				"breakTableByHeight": {
+					"id": "break_table_by_height",
+					"label": "$.fn.breakTableByHeight",
+					"description": "",
+					"notes": ""
+				}
+			}
+		},
+		
+		"uKExtensions": {
+			"id": "undocumented_k_extensions",
+			"label": "K Extensions",
+			"description": "Undocumented K extensions.",
+			"options": {
+				"remove": {
+					"id": "remove",
+					"label": "K.remove",
+					"description": "",
+					"notes": ""
+				},
+				"flush": {
+					"id": "flush",
+					"label": "K.flush",
+					"description": "",
+					"notes": ""
+				},
+				"toURL": {
+					"id": "to_url",
+					"label": "K.toURL",
+					"description": "",
+					"notes": ""
+				},
+				"toObject": {
+					"id": "to_object",
+					"label": "K.toObject",
+					"description": "",
+					"notes": ""
+				},
+				"toRequestData": {
+					"id": "to_request_data",
+					"label": "K.toRequestData",
+					"description": "",
+					"notes": ""
+				},
+				"toRequestURL": {
+					"id": "to_request_url",
+					"label": "K.toRequestURL",
+					"description": "",
+					"notes": ""
+				},
+				"setDefault": {
+					"id": "set_default",
+					"label": "K.setDefault",
+					"description": "",
+					"notes": ""
+				},
+				"fromQueryString": {
+					"id": "from_query_string",
+					"label": "K.fromQueryString",
+					"description": "",
+					"notes": ""
+				},
+				"eval": {
+					"id": "eval",
+					"label": "K.eval",
+					"description": "",
+					"notes": ""
+				},
+				"GC": {
+					"id": "gc",
+					"label": "K.GC",
+					"description": "",
+					"notes": ""
+				}
+			}
+		},
+			
+		"uLoDashExtensions": {
+			"id": "undocumented_lodash_extensions",
+			"label": "Lo-Dash Extensions",
+			"description": "Undocumented Lo-Dash extensions.",
+			"options": {
+				"delegator": {
+					"id": "delegator",
+					"label": "_.delegator",
+					"description": "",
+					"notes": ""
+				},
+				"collate": {
+					"id": "collate",
+					"label": "_.collate",
+					"description": "",
+					"notes": ""
+				},
+				"collateTree": {
+					"id": "collate_tree",
+					"label": "_.collateTree",
+					"description": "",
+					"notes": ""
+				}
+				
+				,
+				"guid": {
+					"id": "guid",
+					"label": "_.guid",
+					"description": "",
+					"notes": ""
+				},
+				"prune": {
+					"id": "prune",
+					"label": "_.prune",
+					"description": "",
+					"notes": ""
+				},
+				"isRealNumber": {
+					"id": "is_real_number",
+					"label": "_.isRealNumber",
+					"description": "",
+					"notes": ""
+				},
+				"isPositiveInteger": {
+					"id": "is_positive_integer",
+					"label": "_.isPositiveInteger",
+					"description": "",
+					"notes": ""
+				},
+				"zipNestedObject": {
+					"id": "zip_nested_object",
+					"label": "_.zipNestedObject",
+					"description": "",
+					"notes": ""
+				},
+				"isPairsArray": {
+					"id": "is_pairs_array",
+					"label": "_.isPairsArray",
+					"description": "",
+					"notes": ""
+				},
+				"hasData": {
+					"id": "has_data",
+					"label": "_.hasData",
+					"description": "",
+					"notes": ""
+				},
+				"hasNumericData": {
+					"id": "has_numeric_data",
+					"label": "_.hasNumericData",
+					"description": "",
+					"notes": ""
+				},
+				"toRecordObjects": {
+					"id": "to_record_objects",
+					"label": "_.toRecordObjects",
+					"description": "",
+					"notes": ""
+				},
+				"toRecordArrays": {
+					"id": "to_record_arrays",
+					"label": "_.toRecordArrays",
+					"description": "",
+					"notes": ""
+				},
+				"create_case_converter": {
+					"id": "createCaseConverter",
+					"label": "_.createCaseConverter",
+					"description": "",
+					"notes": ""
+				},
+				"toUpperCase": {
+					"id": "to_upper_case",
+					"label": "_.toUpperCase",
+					"description": "",
+					"notes": ""
+				}
+				
+				,
+				"toLowerCase": {
+					"id": "to_lower_case",
+					"label": "_.toLowerCase",
+					"description": "",
+					"notes": ""
+				},
+				"isWidgetName": {
+					"id": "is_widget_name",
+					"label": "_.isWidgetName",
+					"description": "",
+					"notes": ""
+				},
+				"isModuleName": {
+					"id": "is_module_name",
+					"label": "_.isModuleName",
+					"description": "",
+					"notes": ""
+				},
+				"isTemplateName": {
+					"id": "is_template_name",
+					"label": "_.isTemplateName",
+					"description": "",
+					"notes": ""
+				},
+				"toCase": {
+					"id": "to_case",
+					"label": "_.toCase",
+					"description": "",
+					"notes": ""
+				},
+				"overlay": {
+					"id": "overlay",
+					"label": "_.overlay",
+					"description": "",
+					"notes": ""
+				},
+				"overlayValue": {
+					"id": "overlay_value",
+					"label": "_.overlayValue",
+					"description": "",
+					"notes": ""
+				},
+				"favTreeToOptionGroup": {
+					"id": "fav_tree_to_option_group",
+					"label": "_.favTreeToOptionGroup",
+					"description": "",
+					"notes": ""
+				}
+			}
+		},
+		
+		"uLoDashStringExtensions": {
+			"id": "undocumented_lodash_string_extensions",
+			"label": "Lo-Dash String Extensions",
+			"description": "Undocumented Lo-Dash String extensions.",
+			"options": {
+				"nameify": {
+					"id": "nameify",
+					"label": "_.str.nameify",
+					"description": "",
+					"notes": ""
+				},
+				"toBoolean": {
+					"id": "to_boolean",
+					"label": "_.str.toBoolean",
+					"description": "",
+					"notes": ""
+				},
+				"isQueryString": {
+					"id": "is_query_string",
+					"label": "_.str.isQueryString",
+					"description": "",
+					"notes": ""
+				},
+				"parseJSON": {
+					"id": "parse_json",
+					"label": "_.str.parseJSON",
+					"description": "",
+					"notes": ""
+				},
+				"parseQueryString": {
+					"id": "parse_query_string",
+					"label": "_.str.parseQueryString",
+					"description": "",
+					"notes": ""
+				},
+				"parse": {
+					"id": "parse",
+					"label": "_.str.parse",
+					"description": "",
+					"notes": ""
+				},
+				"parseTaggedList": {
+					"id": "parse_tagged_list",
+					"label": "_.str.parseTaggedList",
+					"description": "",
+					"notes": ""
+				},
+				"coerce": {
+					"id": "coerce",
+					"label": "_.str.coerce",
+					"description": "",
+					"notes": ""
+				}
+			}
+		}
+	}
+
 };
 
 
 /*
-(items that start with a dash (-) are listed in the above options API)
-
-Modernizr v2.7.2
-jQuery JavaScript Library v2.1.1
-jQuery Migrate v1.2.1
-jQuery UI - v1.10.3
-
-jQuery UI fixes:
-	$.ui.dialog.prototype._allowInteraction
-	$.ui.tabs.prototype._setupHeightStyle
-	$.ui.tabs.prototype._getList
-
-jQuery Function Wrappers
-	$.fn.empty
-
-jQuery Plugins:
--	$.target
-	$.topZ
-	$.loadScript
-	$.createStylesheet
-
-	$.fn.isControl
--	$.fn.reloadControls
-	$.fn.reload // deprecated
-	$.fn.reloadControlsQueue // deprecated
-	$.fn.resizeControls
-	$.fn.initControls
--	$.fn.findControls
-	$.fn.parentControl
-	$.fn.controlData
-
-	$.fn.dataStack
-	$.fn.editor
-	$.fn.editor.defaults
-	$.fn.rowspan
-	$.fn.reverse
-	$.fn.totalHeight
-	$.fn.scaleAreas
-	$.fn.maxWidth
-	$.fn.maxHeight
-	$.fn.convertToHtmlTable
-	$.fn.appendEachCol
-	$.fn.breakTableByWidth
-	$.fn.breakTableByWidth.defaults
-	$.fn.breakTableByHeight
-	$.fn.breakTableByHeight.defaults
-	$.fn.expandControlTableParents
-
-http://mths.be/placeholder v2.0.7 by @mathias
-jQuery BBQ: Back Button & Query Library - v1.2.1
-jQuery hashchange event - v1.2
-
-Lo-Dash 2.4.1
-
-Lo-Dash Mixins:
-	_.delegator
-	_.collate
-	_.guid
-	_.prune
-	_.isRealNumber
-	_.isPositiveInteger
-	_.zipNestedObject
-	_.isPairsArray
-	_.hasData
-	_.hasNumericData
-	_.toRecordObjects
-	_.toRecordArrays
-	_.createCaseConverter
-	_.toUpperCase
-	_.toLowerCase
-	_.isWidgetName
-	_.isModuleName
-	_.isTemplateName
-	_.toCase
-	_.collateTree
-	_.overlay
-	_.overlayValue
-	_.favTreeToOptionGroup
-
-Lo-Dash String (_.str or _.string)
-	_.str.isBlank
-	_.str.stripTags
-	_.str.capitalize
-	_.str.chop
-	_.str.clean
-	_.str.count
-	_.str.chars
-	_.str.swapCase
-	_.str.escapeHTML
-	_.str.unescapeHTML
-	_.str.escapeRegExp
-	_.str.splice
-	_.str.insert
-	_.str.contains
-	_.str.join
-	_.str.lines
-	_.str.reverse
-	_.str.startsWith
-	_.str.endsWith
-	_.str.succ
-	_.str.titleize
-	_.str.camelize
-	_.str.underscored
-	_.str.dasherize
-	_.str.classify
-	_.str.humanize
-	_.str.trim
-	_.str.ltrim
-	_.str.rtrim
-	_.str.truncate
-	_.str.prune
-	_.str.words
-	_.str.pad
-	_.str.lpad
-	_.str.rpad
-	_.str.lrpad
-	_.str.toNumber
-	_.str.numberFormat
-	_.str.strRight
-	_.str.strRightBack
-	_.str.strLeft
-	_.str.strLeftBack
-	_.str.toSentence
-	_.str.slugify
-	_.str.surround
-	_.str.quote
-	_.str.repeat
-	_.str.levenshtein
-	// custom additions
-	_.str.nameify
-	_.str.toBoolean
-	_.str.isQueryString
-	_.str.parseJSON
-	_.str.parseQueryString
-	_.str.parse
-	_.str.parseTaggedList
-	_.str.coerce
-	_.str.coerce.coerceType
-	_.str.coerce.coerceTriggers
-
-
-Backbone.js 1.1.0
-
-Backbone Fixes:
-	this.options
-
-Backbone.Epoxy
-
-Backbone and Backbone Epoxy Config:
-	Backbone.Epoxy.binding.config({ optionValue: "id" });
-	Backbone.emulateHTTP = true;
-
-moment.js version : 2.3.1
-
-Moment fixes:
-	moment.fn.humanize = _.partial(moment.fn.fromNow, true);
-	moment.duration.fn.fromNow = _.partial(moment.duration.fn.humanize, 
-
-Moment Duration Format v1.2.1
-numeral.js version : 1.5.1
-Ratio.js version 0.4.0
 
 AMEngine AJAX API
 	//GlobalVars  (Dashboard Ajax Api)
@@ -237,99 +605,11 @@ AMEngine AJAX API
 	daa_serialize=true;
 	daa_showmask = true;
 	
-	util.shouldDebug
-	util.membersEqual
-	util.describe
-	util.debug
-	util.error
-	util.trim
-	util.strip
-	
-	$_
-	$C
-	Try.these
-	
-	getElementsByClassName
-	extractIFrameBody
-	
-	DELAY
-	steps
-	andThen
-	log
-	createXMLHttpRequest
-	
-	ajaxCaller
-	
-	daaHash
-	daaURLGet
-	daaURLFlush
-	daaGetValue
-	daaURLUpdate
-	daaHashUpdate
-	daaHashGet
-	daaHashList
-	daaHashSet
-	
-	run
-	load
-	
-	reloadMetricNameInto
-	reloadMetricInto
-	reloadMetricByName
-	reloadMetric
-	reloadAll
-	GetDash
-	drawEachMetric
-	runDash
-	
-	$.fn.serializeAnything
-	
-	ProcessURL3
-	
-	hideMask
-	getInlineStyle
-	showMask
-	
-	ProcessURL2
-	
-	delay
-	
-	ProcessURL
-	
-	getQueryString
-	
-	getError
-	getErrorHtml
-	isError
-	
-	isLoginPage
-	checkLoginPage
-	
-	returnContents
-	processReqChange2
 	
 	$.am
 	$.fn.am
-	
-	Hashtable
-	
-	URLEncode
-	URLDecode
-	
-	getQueryString
-	parseQueryString
 
-K
-	K.remove
-	K.flush
-	K.toURL
-	K.toObject
-	K.toRequestData
-	K.toRequestURL
-	K.setDefault
-	K.fromQueryString
-	K.eval
-	K.GC
+
 
 naturalSort	
 
@@ -615,7 +895,6 @@ DDK
 	
 reloadControlContainer
 runFromFavorite
-- runFav
 runFavs
 
 
@@ -715,4 +994,168 @@ Bamset2 Config Dialog
 
 DDK.pluginsLoad.resolve();
 DDK.addonsLoad.resolve();
+
+---------------------------------
+-- not included in initial API --
+---------------------------------
+
+jQuery UI fixes:
+	$.ui.dialog.prototype._allowInteraction
+	$.ui.tabs.prototype._setupHeightStyle
+	$.ui.tabs.prototype._getList
+
+jQuery Function Wrappers
+	$.fn.empty
+
+jQuery Plugins:
+	$.fn.reload // deprecated
+	$.fn.reloadControlsQueue // deprecated
+	$.fn.convertToHtmlTable
+	$.fn.appendEachCol
+	$.fn.expandControlTableParents
+
+	http://mths.be/placeholder v2.0.7 by @mathias
+	jQuery BBQ: Back Button & Query Library - v1.2.1
+	jQuery hashchange event - v1.2
+
+	Lo-Dash String (_.str or _.string)
+	_.str.isBlank
+	_.str.stripTags
+	_.str.capitalize
+	_.str.chop
+	_.str.clean
+	_.str.count
+	_.str.chars
+	_.str.swapCase
+	_.str.escapeHTML
+	_.str.unescapeHTML
+	_.str.escapeRegExp
+	_.str.splice
+	_.str.insert
+	_.str.contains
+	_.str.join
+	_.str.lines
+	_.str.reverse
+	_.str.startsWith
+	_.str.endsWith
+	_.str.succ
+	_.str.titleize
+	_.str.camelize
+	_.str.underscored
+	_.str.dasherize
+	_.str.classify
+	_.str.humanize
+	_.str.trim
+	_.str.ltrim
+	_.str.rtrim
+	_.str.truncate
+	_.str.prune
+	_.str.words
+	_.str.pad
+	_.str.lpad
+	_.str.rpad
+	_.str.lrpad
+	_.str.toNumber
+	_.str.numberFormat
+	_.str.strRight
+	_.str.strRightBack
+	_.str.strLeft
+	_.str.strLeftBack
+	_.str.toSentence
+	_.str.slugify
+	_.str.surround
+	_.str.quote
+	_.str.repeat
+	_.str.levenshtein
+	
+Backbone Fixes:
+	this.options
+
+Backbone and Backbone Epoxy Config:
+	Backbone.Epoxy.binding.config({ optionValue: "id" });
+	Backbone.emulateHTTP = true;
+
+Moment fixes:
+	moment.fn.humanize = _.partial(moment.fn.fromNow, true);
+	moment.duration.fn.fromNow = _.partial(moment.duration.fn.humanize, 
+
+	
+AMEngine AJAX API
+	util.shouldDebug
+	util.membersEqual
+	util.describe
+	util.debug
+	util.error
+	util.trim
+	util.strip
+	
+	$_
+	$C
+	Try.these
+	
+	getElementsByClassName
+	extractIFrameBody
+	
+	DELAY
+	steps
+	andThen
+	log
+	createXMLHttpRequest
+	
+	ajaxCaller
+
+	daaHash
+	daaURLGet
+	daaURLFlush
+	daaGetValue
+	daaURLUpdate
+	daaHashUpdate
+	daaHashGet
+	daaHashList
+	daaHashSet
+	
+	reloadMetricNameInto
+	reloadMetricInto
+	reloadMetricByName
+	reloadMetric
+	reloadAll
+	GetDash
+	drawEachMetric
+	runDash
+	
+	$.fn.serializeAnything
+	
+	ProcessURL3
+	
+	hideMask
+	getInlineStyle
+	showMask
+	
+	ProcessURL2
+	
+	delay
+	
+	ProcessURL
+	
+	getQueryString
+	
+	getError
+	getErrorHtml
+	isError
+	
+	isLoginPage
+	checkLoginPage
+	
+	returnContents
+	processReqChange2
+	
+	
+	Hashtable
+	
+	URLEncode
+	URLDecode
+	
+	getQueryString
+	parseQueryString
+
 */

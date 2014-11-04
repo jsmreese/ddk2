@@ -630,7 +630,11 @@ _.extend(K, {
 		function setDefaultKeywordValue(result, _value, _key) {
 			var initialValue = keywordOrDefault(_key, "");
 			
-			if (initialValue) { return result + ""; }
+			if (initialValue) {
+				// if initial value exists, execute keywordUpdate to make it global
+				keywordUpdate(_key, initialValue);
+				return result + "";
+			}
 			
 			keywordUpdate(_key, _value);
 			
