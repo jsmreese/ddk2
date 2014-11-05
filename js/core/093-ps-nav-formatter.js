@@ -824,7 +824,7 @@ PS.NavFormatter.fn.functions = {
 					selectedDate = new moment(value, settings.momentDateFormat),
 					dayOfWeek = selectedDate.isoWeekday();
 				//timeout is for ie8 to prevent reopening the datepicker panel
-				setTimeout(function(){
+		//		setTimeout(function(){
 					if(value){
 						selectedDate.set("date", selectedDate.date() - dayOfWeek + 1);
 						$this.datepicker("setDate", selectedDate.toDate());
@@ -836,7 +836,7 @@ PS.NavFormatter.fn.functions = {
 						$altField.val("");
 					}
 					$this.blur();
-				}, 0);
+		//		}, 0);
 			});
 		},
 		"DATEDAY": function($field, settings){
@@ -915,17 +915,16 @@ PS.NavFormatter.fn.functions = {
 				if(optionData.dateFormat){
 					settings.momentDateFormat = optionData.dateFormat
 					settings.dateFormat = _this.functions.mapDateFormat(optionData.dateFormat);
-					settings.altFormat = optionData.altFormat || settings.dateFormat;
+					settings.altFormat = optionData.altFormat;
 				}
 				else if(hiddenTypeVal && typeVal !== hiddenTypeVal){
 					settings.momentDateFormat = momentDefaultFormat["DATE" + typeVal];
 					settings.dateFormat = _this.functions.mapDateFormat(settings.momentDateFormat);
-					settings.altFormat = settings.dateFormat
 				}
 				else{
 					settings.momentDateFormat = settings.momentDateFormat || momentDefaultFormat["DATE" + typeVal];
 					settings.dateFormat = settings.dateFormat || _this.functions.mapDateFormat(settings.momentDateFormat);
-					settings.altFormat = settings.altFormat || settings.dateFormat
+					settings.altFormat = settings.altFormat;
 				}
 				settings.altField = _this.$el.find(".nav-hidden-date-start");
 				_this.functions.initDate("DATE" + typeVal, $dateStart, settings);
@@ -1032,26 +1031,30 @@ PS.NavFormatter.fn.functions = {
 				$dateDiv.find(".nav-date-end").trigger("change");
 			});
 			this.$el.on("change", ".nav-date-start", function(e){
+				var rawValue;
 				//if type dropdown is hidden use first target keyword
 				//arguments[1] is a flag if true do not update keyword which means triggered manually in the ddk keywordupdate handler
 				if(!arguments[1]){
+					rawValue = $(this).parent().find(".nav-hidden-date-start").val();
 					if(_this.$el.find(".nav-date-type:visible").length){
-						K(_.string.trim(keywords[1]), $(this).val());
+						K(_.string.trim(keywords[1]), rawValue);
 					}
 					else{
-						K(_.string.trim(keywords[0]), $(this).val());
+						K(_.string.trim(keywords[0]), rawValue);
 					}
 				}
 			});
 			this.$el.on("change", ".nav-date-end", function(e){
+				var rawValue;
 				//if type dropdown is hidden use third target keyword
 				//arguments[1] is a flag if true do not update keyword which means triggered manually in the ddk keywordupdate handler
 				if(!arguments[1]){
+					rawValue = $(this).parent().find(".nav-hidden-date-end").val();
 					if(_this.$el.find(".nav-date-type:visible").length){
-						K(_.string.trim(keywords[2]), $(this).val());
+						K(_.string.trim(keywords[2]), rawValue);
 					}
 					else{
-						K(_.string.trim(keywords[1]), $(this).val());
+						K(_.string.trim(keywords[1]), rawValue);
 					}
 				}
 			});
