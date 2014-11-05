@@ -600,6 +600,7 @@ DDK.options.list = [
 	"query_top qt {{QUERY_TOP}}",
 	"query_top_enabled qte {{toolbar_default}}",
 	"query_url qu",
+	"required_parameters rp",
 	"refresh_enabled re {{toolbar_default}}",
 	"series_chartarea sca",
 	"series_color sc",
