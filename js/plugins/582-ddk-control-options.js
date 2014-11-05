@@ -242,9 +242,9 @@ DDK.controlOptions = function (id) {
 				toolbarEnabled: {
 					id: "s_" + id + "_te",
 					label: "Toolbar Enabled",
-					description: "When <code>false</code>, globally disables Control toolbars.",
-					notes: "",
-					values: ["false"],
+					description: "Controls toolbar state.",
+					notes: "<p>When <code>false</code>, globally disables Control toolbars.</p><p>When <code>button</code>, renders toolbars in a hidden state and a button that will toggle toolbar visibility.</p>",
+					values: ["false", "button"],
 					examples: ["Example_DDK1_NF_Chart_Grid_With_Toolbars_Disabled"]
 				},
 				toolbarDefault: {

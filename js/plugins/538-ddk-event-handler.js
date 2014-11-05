@@ -60,5 +60,12 @@ $.extend(true, DDK.eventHandler, {
 		K.flush(["fid", "fdesc", "fuid", "flab"], "s_" + data.id + "_");
 		data.$this.closest("div.ddk-fav-bar").remove();
 		DDK[data.name].resize(data.id);
+	},
+	
+	toggleToolbars: function (e, data) { 
+		var $this, $toolbars;
+		$this = $(e.currentTarget);
+		$toolbars = $this.parent().siblings();
+		$toolbars.toggleClass("ps-hidden");
 	}
 });	
