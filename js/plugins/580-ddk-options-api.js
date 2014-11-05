@@ -487,7 +487,7 @@ PS.optionsAPI.navElemConfig = {
 	"config": {
 		"id": "config",
 		"label": "Element Config Options",
-		"description": "Options for configuring Element object.",
+		"description": "Options for configuring Element object. When setting the options in the data- attribute of an element, replace the spaces and underscores with dash (-). Eg. For queryWidget, use data-query-widget. The jquery select2 and date pickers options not listed here can still be used the same way. These options are listed in the respective websites, <a target=\"_blank\" href=\"http://ivaynberg.github.io/select2/\">select2</a> and <a target=\"_blank\" href=\"http://api.jqueryui.com/datepicker/\">date</a>.",
 		"options": {
 			"queryWidget": {
 				"id": "query_widget",
@@ -505,7 +505,7 @@ PS.optionsAPI.navElemConfig = {
 				"id": "target_keyword",
 				"label": "Target Keyword",
 				"description": "Keyword to be updated on change of input.",
-				"notes": "For timeperiod which can have 3 input (date_type, date_start, date_end), multiple string can be used separated by spaces eg. tp_type tp_start tp_end. The mapping for the keywords is the same as the order of the input displayed which is the date_type, date_start and date_end respectively."
+				"notes": "For timeperiod which can have 3 input (date_type, date_start, date_end), multiple string can be used separated by spaces eg. tp_type tp_start tp_end. The mapping for the keywords is the same as the order of the input displayed which is the date_type, date_start and date_end respectively. The select2 creates a shadow keyword with the target keyword with an added suffix of _label. Eg. targetKeyword=p_mcat, a shadow keyword will be created named p_mcat_label."
 			},
 			"multiple": {
 				"id": "multiple",
@@ -588,7 +588,8 @@ PS.optionsAPI.navElemConfig = {
 				"id": "date_custom_type",
 				"label": "Date Custom Type",
 				"description": "A string target fav (id in the fav value) or an array of json object to be used in the type dropdown.",
-				"notes": "The favorite used should be under the Pureshre Nav Formats category and the reference should be the id in the favorite value not the id or name of the favorite itself."
+				"notes": "The favorite used should be under the Pureshre Nav Formats category and the reference should be the id in the favorite value not the id or name of the favorite itself.",
+				"jsonOptionsApi": "{<br/>\"date-format\": \"Date format of the type. It follows most format in the <a target=\"_blank\" href=\"http://momentjs.com/docs/#/displaying/format/\">moment js</a> and it is case sensitive.\",<br/>\"value\": \"Value of the option in the date type.\",<br/>\"text\": \"Text displayed in the option of the date type. If not supplied, it will try to use the favorite label.\",<br/>\"tp-start-diff\": \"Initial value of the start date. May be a string in the current date format (e.g., \"01/26/2009\"), a number of days from today (e.g., +7) or a string of values and periods (\"y\" for years, \"m\" for months, \"w\" for weeks, \"d\" for days, e.g., \"+1m +7d\").\",<br/>\"tp-end-diff\": \"Initial value of the end date. May be a string in the current date format (e.g., \"01/26/2009\"), a number of days from today (e.g., +7) or a string of values and periods (\"y\" for years, \"m\" for months, \"w\" for weeks, \"d\" for days, e.g., \"+1m +7d\").\",<br/>\"show-tp-end\": \"Flag to show the end date field. Default is false. This is set to true if user wants to have a range of date.\"<br/>}"
 			},
 			"hideDateType": {
 				"id": "hide_date_type",
@@ -628,12 +629,6 @@ PS.optionsAPI.navElemConfig = {
 				"description": "Value of the keyword if the select2 is cleared or whenever the select2 has no selection.",
 				"notes": "This option is only applicable if targetKeyword is supplied.",
 			},
-			"filterKeyword": {
-				"id": "filter_keyword",
-				"label": "Filter Keyword",
-				"description": "Keyword used to filter the data.",
-				"notes": "If data-nav is set to a dimension, the default filterKeyword depends on the dimension. Like metrics will be filtered by p_mcat, while locations and contacts will be filtered by p_org",
-			},
 			"searchKeyword": {
 				"id": "search_keyword",
 				"label": "Search Keyword",
@@ -649,7 +644,7 @@ PS.optionsAPI.navElemConfig = {
 			"extdim": {
 				"id": "extdim",
 				"label": "Extended Dimension",
-				"description": "The extended dimension name to list",
+				"description": "The extended dimension name to be listed.",
 				"notes": "",
 			}
 		}

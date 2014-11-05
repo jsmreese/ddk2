@@ -260,28 +260,29 @@ PS.NavFormatter.fn.functions = {
 							return (column && column.index) || -1;
 						}
 					};
-				//if value and label field is specified, use it
-				valueIndex = navFormatter.getColumnIndex(dataset.columns, valueField) || navFormatter.getColumnIndex(dataset.columns, "name", true);
-				labelIndex = navFormatter.getColumnIndex(dataset.columns, labelField) || navFormatter.getColumnIndex(dataset.columns, "label", true);
-				groupIndex = navFormatter.getColumnIndex(dataset.columns, groupField);
-				iconIndex = navFormatter.getColumnIndex(dataset.columns, iconField);
-				if (records && records.length) {
-					_.each(records, function (record) {
-						if (groupIndex > -1 && optionGroup !== record[groupIndex]) {
-							results.push({ text: record[groupIndex] });
-							optionGroup = record[groupIndex];
-						}
-						result = {
-							id: valueWrapString + record[valueIndex > -1 && valueIndex || 0] + valueWrapString,
-							text: record[labelIndex > -1 && labelIndex || 1]
-						};
-						if(iconIndex && record[iconIndex]){
-							result.icon = record[iconIndex];
-						}
-						results.push(result);
-					});
+				if(dataset){
+					//if value and label field is specified, use it
+					valueIndex = navFormatter.getColumnIndex(dataset.columns, valueField) || navFormatter.getColumnIndex(dataset.columns, "name", true);
+					labelIndex = navFormatter.getColumnIndex(dataset.columns, labelField) || navFormatter.getColumnIndex(dataset.columns, "label", true);
+					groupIndex = navFormatter.getColumnIndex(dataset.columns, groupField);
+					iconIndex = navFormatter.getColumnIndex(dataset.columns, iconField);
+					if (records && records.length) {
+						_.each(records, function (record) {
+							if (groupIndex > -1 && optionGroup !== record[groupIndex]) {
+								results.push({ text: record[groupIndex] });
+								optionGroup = record[groupIndex];
+							}
+							result = {
+								id: valueWrapString + record[valueIndex > -1 && valueIndex || 0] + valueWrapString,
+								text: record[labelIndex > -1 && labelIndex || 1]
+							};
+							if(iconIndex && record[iconIndex]){
+								result.icon = record[iconIndex];
+							}
+							results.push(result);
+						});
+					}
 				}
-				
 				return { results: results, more: results.length === settings.pageSize };
 			},
 			quietMillis: 300
@@ -1085,7 +1086,9 @@ PS.NavFormatter.fn.functions = {
 };
 PS.NavFormatter.fn.mcat = function (isMulti) {
 	var keywords, filterKeywordMap, settings;
-	this.nav = this.nav.substr(0, this.nav.indexOf("_multi"));	//remove multi to be used for keywords
+	if(this.nav.indexOf("_multi") > -1){
+		this.nav = this.nav.substr(0, this.nav.indexOf("_multi"));	//remove multi to be used for keywords
+	}
 	filterKeywordMap = {
 		"metric": "p_mcat",
 		"contact": "p_org",
@@ -1097,7 +1100,6 @@ PS.NavFormatter.fn.mcat = function (isMulti) {
 	keywords = this.$el.data("navKeywords");
 	//the default dimensions settings is retrieved in this.getSettings()
 	settings = _.reduce(_.extend({}, DDK.navset2.defaultSelect2Options, this.getSettings(), {
-		"filterKeyword": filterKeywordMap[this.nav] || "",
 		"type": this.nav,
 		"multiple": isMulti,
 		"targetKeyword": "p_" + this.nav + (isMulti ? "_multi" : ""),
@@ -1115,6 +1117,10 @@ PS.NavFormatter.fn.mcat = function (isMulti) {
 	}
 	else{
 		settings.navKeywords = "&p_dimq_hierarchy_level=99" + settings.navKeywords;
+	}
+	//map the filter keyword
+	if(filterKeywordMap[this.nav] && K(filterKeywordMap[this.nav])){
+		settings.navKeywords = "&" + filterKeywordMap[this.nav] + "_list=" + K(filterKeywordMap[this.nav]) + settings.navKeywords;
 	}
 	this.$el.data(settings);
 	if(settings.navTargetKeyword){	//need to set target keyword attribute since it is needed on keywordupdate handler to set the value
