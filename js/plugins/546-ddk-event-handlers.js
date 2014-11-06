@@ -10,7 +10,7 @@ function keywordupdateHandler(e) {
 			
 			// data-nav-target-keyword
 			$document.find('[data-nav-target-keyword~="' + key + '"]').each(function (index, elem) {
-				var $elem;
+				var $elem, targetKeywords, $dateType, $dateStart, $dateEnd, $dateAltStart, $dateAltEnd, year, month, rawValue;
 				
 				$elem = $(elem);
 				
@@ -44,32 +44,45 @@ function keywordupdateHandler(e) {
 					$dateEnd = $elem.find(".nav-date-end");
 					$dateAltStart = $($dateStart.data("altField"));
 					$dateAltEnd = $($dateEnd.data("altField"));
+					rawValue = value;
+					//check if value is a quarter and process to use first month of the quarter
+					if(value.indexOf("-Q") > -1){
+						year = value.substr(0, value.indexOf("-"));
+						month = value.substr(value.indexOf("Q") + 1) * 3 - 2;
+						value = year + "-" + month;
+					}
 					if(targetKeywords.indexOf(key) === 2){
 						// if the input value matches the new keyword value already
 						// then do nothing
-						if ($dateEnd.val() === value) { return; }
+						if ($dateAltEnd.val() === value) { return; }
 						
-						$dateEnd.val(value).trigger("change", true);	//settings second param to true will prevent keyword update on change
-					//	$dateAltEnd.val(value);
+					//	$dateEnd.val(value).trigger("change", true);	//settings second param to true will prevent keyword update on change
+						$dateEnd.datepicker("setDate", moment(value).toDate()).trigger("change", true);
+						$dateAltEnd.val(rawValue);
+
 					//	$dateStart.datepicker("option", "maxDate", value);
 					}
 					else if(targetKeywords.indexOf(key) === 1){
 						if($dateType.length){
 							// if the input value matches the new keyword value already
 							// then do nothing
-							if ($dateStart.val() === value) { return; }
+							if ($dateAltStart.val() === value) { return; }
 						
-							$dateStart.val(value).trigger("change", true);
-					//		$dateAltStart.val(value);
+					//		$dateStart.val(value).trigger("change", true);
+							$dateStart.datepicker("setDate", moment(value).toDate()).trigger("change", true);
+							$dateAltStart.val(rawValue);
+
 					//		$dateEnd.datepicker("option", "minDate", value);
 						}
 						else{
 							// if the input value matches the new keyword value already
 							// then do nothing
 							if ($dateEnd.val() === value) { return; }
-							
-							$dateEnd.val(value).trigger("change", true);
-					//		$dateAltEnd.val(value);
+
+					//		$dateEnd.val(value).trigger("change", true);
+							$dateEnd.datepicker("setDate", moment(value).toDate()).trigger("change", true);
+							$dateAltEnd.val(rawValue);
+
 					//		$dateStart.datepicker("option", "maxDate", value);
 						}
 					}
@@ -84,10 +97,13 @@ function keywordupdateHandler(e) {
 						else{
 							// if the input value matches the new keyword value already
 							// then do nothing
-							if ($dateStart.val() === value) { return; }
+
+							if ($dateAltStart.val() === value) { return; }
 						
-							$dateStart.val(value).trigger("change", true);
-					//		$dateAltStart.val(value);
+					//		$dateStart.val(value).trigger("change", true);
+							$dateStart.datepicker("setDate", moment(value).toDate()).trigger("change", true);
+							$dateAltStart.val(rawValue);
+
 					//		$dateEnd.datepicker("option", "minDate", value);
 						}
 					}
