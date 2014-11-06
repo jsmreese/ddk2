@@ -2472,7 +2472,7 @@
 			$selection = $(document);
 		}
 		// execute DDK2 formatting
-		$selection.find("[data-nav]").each(function() {
+		$selection.find("[data-nav]").andSelf("[data-nav]").each(function() {
 			(new PS.NavFormatter(this)).exec();
 		});
 	};
