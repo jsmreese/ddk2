@@ -658,6 +658,42 @@
 			return $(elem).closest("[id^=\"psc_\"][id$=\"_widget\"]").get();
 		})));
 	};
+
+	/* $.fn.closestControlGroup jQuery plugin
+	 * Traverses through an element's parents, looking for the closest parent element that contains DDK controls.
+	 * Returns a jQuery object containing the set of DDK control elements contained within that parent element.
+	 * Will first check for data.$menuParent on any parent element (assigned by Menu Framework).
+	 * Will redirect to searching that referenced element's parents if one is found.
+	 * Will stop searching element parents when '.main-section' element is found (Responsive Template content container).
+	 * by: jsmreese
+	 */
+	$.fn.closestControlGroup = function () {
+		var $parents, $controls, data;
+
+		$controls = $();
+		$parents = this.parents();
+		data = $parents.dataStack();
+		
+		// redirect to the original content container element
+		// if element has moved to sidebar via data-menu
+		if (data.$menuParent) {
+			$parents = data.$menuParent.parents();
+		}
+		
+		// find closest ancestor element that contains controls
+		$parents.each(function (index, elem) {
+			var $elem = $(elem);
+			
+			$controls = $elem.findControls();
+			
+			// stop climbing parents if:
+			// 1) controls are found
+			// 2) the .main-section element is reached
+			if ($controls.length || $elem.hasClass("main-section")) { return false; }
+		});
+		
+		return this.pushStack($controls.get());
+	};
 	
 	/* $.fn.controlData jQuery plugin
 	 * Returns an object or array containing the DDK control data for a control or set of DDK control elements.

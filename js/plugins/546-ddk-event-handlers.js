@@ -98,6 +98,17 @@ function keywordupdateHandler(e) {
 }
 
 function navGoHandler(e) {
+	var $target, $controls;
+	
+	$target = $(e.currentTarget);
+	$controls = $target.closestControlGroup();
+	
+	$controls.reloadControls();
+	$(".exit-off-canvas").click();
+}
+
+/*
+function navGoHandler(e) {
 	var $target, $parents, data;
 	
 	$target = $(e.currentTarget);
@@ -128,7 +139,7 @@ function navGoHandler(e) {
 		if ($elem.hasClass("main-section")) { return false; }
 	});
 }
-
+*/
 if (!DDK.outputPDF) {
 	
 	$document.on("click", "button.ddk-chart-series-config", DDK.chart.seriesConfig);
