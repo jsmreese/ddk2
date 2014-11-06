@@ -226,7 +226,15 @@ PS.NavFormatter.fn.functions = {
 			type: "POST",
 			dataType: 'json',
 			data: function (term, page, context) {
-				var dataToPass = {};
+				var dataToPass = {}, filterValue;
+				filterValue = K(settings.filterKeyword);
+				if(settings.filterKeyword && filterValue){
+					if(isNaN(filterValue)){
+						filterValue = "'" + filterValue + "'";
+					}
+					dataToPass[settings.filterKeyword + "_list"] = filterValue;
+					dataToPass["p_dimq_hierarchy_level"] = 99;
+				}
 				//map term to search keyword
 				if(term && settings.searchKeyword){
 					dataToPass[settings.searchKeyword] = term;
@@ -1088,7 +1096,7 @@ PS.NavFormatter.fn.functions = {
 	}
 };
 PS.NavFormatter.fn.mcat = function (isMulti) {
-	var keywords, filterKeywordMap, settings;
+	var keywords, filterKeywordMap, settings, filterValue;
 	if(this.nav.indexOf("_multi") > -1){
 		this.nav = this.nav.substr(0, this.nav.indexOf("_multi"));	//remove multi to be used for keywords
 	}
@@ -1118,12 +1126,17 @@ PS.NavFormatter.fn.mcat = function (isMulti) {
 			settings.navKeywords = "&p_extdim_list=" + settings.navExtdim + settings.navKeywords;
 		}
 	}
-	else{
+/*	else{
 		settings.navKeywords = "&p_dimq_hierarchy_level=99" + settings.navKeywords;
 	}
-	//map the filter keyword
+*/	//map the filter keyword
 	if(filterKeywordMap[this.nav] && K(filterKeywordMap[this.nav])){
-		settings.navKeywords = "&" + filterKeywordMap[this.nav] + "_list=" + K(filterKeywordMap[this.nav]) + settings.navKeywords;
+		filterValue = K(filterKeywordMap[this.nav]);
+		if(isNaN(filterValue)){
+			filterValue = "'" + filterValue + "'";
+		}
+//		settings.navKeywords = "&" + filterKeywordMap[this.nav] + "_list=" + filterValue + settings.navKeywords;
+		settings.navFilterKeyword = filterKeywordMap[this.nav];
 	}
 	this.$el.data(settings);
 	if(settings.navTargetKeyword){	//need to set target keyword attribute since it is needed on keywordupdate handler to set the value
