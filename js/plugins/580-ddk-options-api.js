@@ -646,6 +646,12 @@ PS.optionsAPI.navElemConfig = {
 				"label": "Extended Dimension",
 				"description": "The extended dimension name to be listed.",
 				"notes": "",
+			},
+			"dateFormat": {
+				"id": "date_format",
+				"label": "Date Format",
+				"description": "Global date format for the nav control. It follows most format in the <a target=\"_blank\" href=\"http://momentjs.com/docs/#/displaying/format/\">moment js</a> and it is case sensitive.",
+				"notes": "",
 			}
 		}
 	}		

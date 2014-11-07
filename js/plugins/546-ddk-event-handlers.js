@@ -27,7 +27,7 @@ function keywordupdateHandler(e) {
 							return;
 						}
 						
-						$elem.select2("val", value);
+						$elem.select2("val", value).trigger("change", true);
 						return;
 					}
 					else{
