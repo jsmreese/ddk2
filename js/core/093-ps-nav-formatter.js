@@ -144,8 +144,6 @@ PS.NavFormatter.fn.dimquery.defaults = {
 	queryWidget: "SCIDIM_Query",
 	allowClear: "true",
 	placeholder: "All",
-	valueField: "name",
-	labelField: "label",
 	emptyKeywordValue: "ANY",
 	searchKeyword: "p_dimq_search",
 	initKeyword: "p_dimq_list"
@@ -339,7 +337,7 @@ PS.NavFormatter.fn.functions = {
 							records = dataset && dataset.rows,
 							results = [],
 							valueWrapString = settings.valueWrapString || "",
-							valueIndex, labelIndex;
+							valueIndex, labelIndex, keywordLabel;
 						if(records && records.length){
 							//if value and label field is specified, use it
 							valueIndex = navFormatter.getColumnIndex(dataset.columns, settings.valueField) || navFormatter.getColumnIndex(dataset.columns, "name", true);
@@ -353,6 +351,14 @@ PS.NavFormatter.fn.functions = {
 								//if there's no corresponding label display the value instead.
 								selectedData.push({id: data.config.id, text: data.config.id});
 							}
+							keywordLabel = "";
+							_.each(selectedData, function(item, index){
+								keywordlabel += item.text + ",";
+							});
+							if(keywordLabel){
+								//remove last comma
+								keywordLabel = keywordLabel.substr(0, keywordLabel.length-1);
+							}
 							callback(selectedData);
 						}
 						else{
@@ -360,8 +366,10 @@ PS.NavFormatter.fn.functions = {
 								//if there's no corresponding label display the value instead.
 								selectedData.push({id: data.config.id, text: data.config.id});
 							}
+							keywordLabel = selectedData[0].text;
 							callback(selectedData[0]);
 						}
+						K(settings.targetKeyword + "_label", keywordLabel || "");
 						return;
 					}, "json");
 			}
@@ -1116,14 +1124,14 @@ PS.NavFormatter.fn.mcat = function (isMulti) {
 	};
 	keywords = this.$el.data("navKeywords");
 	//the default dimensions settings is retrieved in this.getSettings()
-	settings = _.reduce(_.extend({}, DDK.navset2.defaultSelect2Options, this.getSettings(), {
+	settings = _.reduce(_.extend({}, DDK.navset2.defaultSelect2Options, {
 		"type": this.nav,
 		"multiple": isMulti,
 		"targetKeyword": "p_" + this.nav + (isMulti ? "_multi" : ""),
 		"valueField": this.nav + (this.nav === "extdim" ? "_value" : "_name"),
 		"labelField": this.nav + (this.nav === "extdim" ? "_value" : "_label"),
 		"keywords": "&p_dimq_type=" + (this.nav === "metric" ? "m" : this.nav) + (keywords || "")
-	}), function(memo, value, key){memo[_.string.camelize("nav_"+key)] = value; return memo;}, {});
+	}, this.getSettings()), function(memo, value, key){memo[_.string.camelize("nav_"+key)] = value; return memo;}, {});
 	if(this.nav === "extdim"){
 		if(settings.navExtdim){
 			if(isNaN(settings.navExtdim) && settings.navExtdim.indexOf("'") < 0){
@@ -1188,14 +1196,17 @@ PS.NavFormatter.fn.select2 = function () {
 			var $this, val, selected, keywordLabel;
 			$this = $(this);
 			val = $this.val();
-			
-			if (settings.emptyKeywordValue && !val) {
-				K(settings.targetKeyword, settings.emptyKeywordValue);
-				K(settings.targetKeyword + "_label", "");
-				return;
-			}
+			//arguments[1] is a flag if true do not update keyword which means triggered manually in the ddk keywordupdate handler
+			if(!arguments[1]){
+				
+				if (settings.emptyKeywordValue && !val) {
+					K(settings.targetKeyword, settings.emptyKeywordValue);
+					K(settings.targetKeyword + "_label", "");
+					return;
+				}
 
-			K(settings.targetKeyword, $this.val());
+				K(settings.targetKeyword, $this.val());
+			}
 			//update shadow keyword label
 			selected = $this.parent().find(".select2-choice span");
 			if(selected && selected.length){	//for single
@@ -1213,7 +1224,6 @@ PS.NavFormatter.fn.select2 = function () {
 			}
 
 			K(settings.targetKeyword + "_label", keywordLabel || "");
-
 		});
 		//just update keyword instead of changing because change event is for the actual changing of option
 		if(this.$el.val()){
