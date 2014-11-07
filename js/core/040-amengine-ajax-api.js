@@ -1345,6 +1345,7 @@ if (jQuery){
                     $elem.find('#loadingobj').remove();
                     $elem.css("position", $elem.data("csspos"));
                     $elem.css("overflow", $elem.data("cssoverflow"));
+					$elem.data("amIsMasked", false);
                 });
             },
             showmask: function (){
@@ -1357,6 +1358,10 @@ if (jQuery){
 				return this;
            },
            _showmask:function($elem){
+				// check if element is already masked
+				if ($elem.length && $elem.data("amIsMasked")) {
+					return;
+				}
 
                 //Cache inline styles
                 $elem.data("csspos",  methods._getInlineStyle($elem, 'position'));
@@ -1375,6 +1380,8 @@ if (jQuery){
 	                    loadobj.width($elem.width() + parseInt($elem.css("padding-left")) + parseInt($elem.css("padding-right")));
                     }
                     $elem.append(loadobj);
+					
+					$elem.data("amIsMasked", true);
                 }
 
            },

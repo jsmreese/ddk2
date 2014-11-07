@@ -3,6 +3,7 @@
 		border: 1px solid #CCC;
 		width: 100%;
 		margin: 0 0 1.25rem;
+		background: #FFF;
 	}
 
 	.select2-container-multi .select2-choices .select2-search-field input:focus {
@@ -72,6 +73,7 @@
 
 	.select2-drop {
 		border: 1px solid #CCC;
+		border-top: 0;
 	}
 	
 	/* for some reason, the border added by the default styling screws up column layout */

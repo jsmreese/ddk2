@@ -1013,7 +1013,7 @@ PS.NavFormatter.fn.functions = {
 					$hiddenField = $this.data("altField"),
 					$dateYear = $("#ui-datepicker-div").find(".ui-datepicker-year:visible"),
 					$dateMonth = $("#ui-datepicker-div").find(".ui-datepicker-month:visible"),
-					dateMoment = new moment($this.val(), settings.momentDateFormat);
+					dateMoment = new moment($this.val(), settings.momentDateFormat.toUpperCase());
 				if(dateMoment.isValid()){
 					inst.drawMonth = dateMoment.month();
 					inst.drawYear = dateMoment.year();
@@ -1039,30 +1039,36 @@ PS.NavFormatter.fn.functions = {
 				$dateDiv.find(".nav-date-end").trigger("change");
 			});
 			this.$el.on("change", ".nav-date-start", function(e){
-				var rawValue;
+				var rawValue, label;
 				//if type dropdown is hidden use first target keyword
 				//arguments[1] is a flag if true do not update keyword which means triggered manually in the ddk keywordupdate handler
 				if(!arguments[1]){
 					rawValue = $(this).parent().find(".nav-hidden-date-start").val();
+					label = $(this).parent().find(".nav-date-start").val();
 					if(_this.$el.find(".nav-date-type:visible").length){
 						K(_.string.trim(keywords[1]), rawValue);
+						K(_.string.trim(keywords[1] + "_label"), label);
 					}
 					else{
 						K(_.string.trim(keywords[0]), rawValue);
+						K(_.string.trim(keywords[0] + "_label"), label);
 					}
 				}
 			});
 			this.$el.on("change", ".nav-date-end", function(e){
-				var rawValue;
+				var rawValue, label;
 				//if type dropdown is hidden use third target keyword
 				//arguments[1] is a flag if true do not update keyword which means triggered manually in the ddk keywordupdate handler
 				if(!arguments[1]){
 					rawValue = $(this).parent().find(".nav-hidden-date-end").val();
+					label = $(this).parent().find(".nav-date-end").val();
 					if(_this.$el.find(".nav-date-type:visible").length){
 						K(_.string.trim(keywords[2]), rawValue);
+						K(_.string.trim(keywords[2] + "_label"), label);
 					}
 					else{
 						K(_.string.trim(keywords[1]), rawValue);
+						K(_.string.trim(keywords[1] + "_label"), label);
 					}
 				}
 			});
@@ -1185,8 +1191,10 @@ PS.NavFormatter.fn.select2 = function () {
 			
 			if (settings.emptyKeywordValue && !val) {
 				K(settings.targetKeyword, settings.emptyKeywordValue);
+				K(settings.targetKeyword + "_label", "");
 				return;
 			}
+
 			K(settings.targetKeyword, $this.val());
 			//update shadow keyword label
 			selected = $this.parent().find(".select2-choice span");
@@ -1203,9 +1211,9 @@ PS.NavFormatter.fn.select2 = function () {
 					keywordLabel = keywordLabel.substr(0, keywordLabel.length-1);
 				}
 			}
-			if(keywordLabel){
-				K(settings.targetKeyword + "_label", keywordLabel);
-			}
+
+			K(settings.targetKeyword + "_label", keywordLabel || "");
+
 		});
 		//just update keyword instead of changing because change event is for the actual changing of option
 		if(this.$el.val()){

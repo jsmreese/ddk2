@@ -20,6 +20,12 @@ DDK.controlOptions = function (id) {
 					description: "Control keywords overrides keywords set elsewhere, such as in the Control options widget or in the global keyword hash.",
 					notes: "Keywords must be formatted as a URL query string. e.g. <code>&amp;key1=value1&amp;key2=value2</code>"
 				},
+				requiredParams: {
+					id: "s_" + id + "_rp",
+					label: "Required Parameters",
+					description: "List of keywords required to render this control.",
+					notes: "If any of the listed keywords does not have a value, an error message will be rendered. Can be a single keyword name or a delimited list of keyword names. Delimiter can be space, comma, or anything matched by regexp \\s. Do not wrap delimited keyword names in single quotes. e.g. <code>p_org</code> or <code>p_org,p_contact</code>."				
+				},
 				datasource: {
 					id: "s_" + id + "_d",
 					label: "Datasource",
@@ -236,9 +242,9 @@ DDK.controlOptions = function (id) {
 				toolbarEnabled: {
 					id: "s_" + id + "_te",
 					label: "Toolbar Enabled",
-					description: "When <code>false</code>, globally disables Control toolbars.",
-					notes: "",
-					values: ["false"],
+					description: "Controls toolbar state.",
+					notes: "<p>When <code>false</code>, globally disables Control toolbars.</p><p>When <code>button</code>, renders toolbars in a hidden state and a button that will toggle toolbar visibility.</p>",
+					values: ["false", "button"],
 					examples: ["Example_DDK1_NF_Chart_Grid_With_Toolbars_Disabled"]
 				},
 				toolbarDefault: {

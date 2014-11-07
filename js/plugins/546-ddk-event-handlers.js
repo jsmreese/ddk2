@@ -59,6 +59,7 @@ function keywordupdateHandler(e) {
 					//	$dateEnd.val(value).trigger("change", true);	//settings second param to true will prevent keyword update on change
 						$dateEnd.datepicker("setDate", moment(value).toDate()).trigger("change", true);
 						$dateAltEnd.val(rawValue);
+
 					//	$dateStart.datepicker("option", "maxDate", value);
 					}
 					else if(targetKeywords.indexOf(key) === 1){
@@ -70,16 +71,18 @@ function keywordupdateHandler(e) {
 					//		$dateStart.val(value).trigger("change", true);
 							$dateStart.datepicker("setDate", moment(value).toDate()).trigger("change", true);
 							$dateAltStart.val(rawValue);
+
 					//		$dateEnd.datepicker("option", "minDate", value);
 						}
 						else{
 							// if the input value matches the new keyword value already
 							// then do nothing
 							if ($dateEnd.val() === value) { return; }
-							
+
 					//		$dateEnd.val(value).trigger("change", true);
 							$dateEnd.datepicker("setDate", moment(value).toDate()).trigger("change", true);
 							$dateAltEnd.val(rawValue);
+
 					//		$dateStart.datepicker("option", "maxDate", value);
 						}
 					}
@@ -94,11 +97,13 @@ function keywordupdateHandler(e) {
 						else{
 							// if the input value matches the new keyword value already
 							// then do nothing
+
 							if ($dateAltStart.val() === value) { return; }
 						
 					//		$dateStart.val(value).trigger("change", true);
 							$dateStart.datepicker("setDate", moment(value).toDate()).trigger("change", true);
 							$dateAltStart.val(rawValue);
+
 					//		$dateEnd.datepicker("option", "minDate", value);
 						}
 					}
@@ -108,6 +113,17 @@ function keywordupdateHandler(e) {
 	}
 }
 
+function navGoHandler(e) {
+	var $target, $controls;
+	
+	$target = $(e.currentTarget);
+	$controls = $target.closestControlGroup();
+	
+	$controls.reloadControls();
+	$(".exit-off-canvas").click();
+}
+
+/*
 function navGoHandler(e) {
 	var $target, $parents, data;
 	
@@ -139,7 +155,7 @@ function navGoHandler(e) {
 		if ($elem.hasClass("main-section")) { return false; }
 	});
 }
-
+*/
 if (!DDK.outputPDF) {
 	
 	$document.on("click", "button.ddk-chart-series-config", DDK.chart.seriesConfig);
