@@ -319,13 +319,13 @@ PS.NavFormatter.fn.functions = {
 		}
 		else{
 			if(settings.queryWidget || settings.queryModule){
-				//map initKeyword to the value
-				if(element.val() && settings.initKeyword){
-					dataToPass[settings.initKeyword] = element.val();
-				}
 				//add single quote wrap if options id does not have one since in SCIDIM_Query it requires all NaN to be wrapped in single quote
 				if(element.val() && isNaN(element.val()) && element.val().indexOf("'") < 0 && settings.queryWidget === "SCIDIM_Query"){
 					wrappedValue = "'" + element.val() + "'";
+				}
+				//map initKeyword to the value
+				if(element.val() && settings.initKeyword){
+					dataToPass[settings.initKeyword] = wrappedValue || element.val();
 				}
 				$.extend(true, dataToPass, K.toObject("p_"), {
 					"config.mn": "DDK_Data_Request",
