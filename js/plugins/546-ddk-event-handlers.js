@@ -56,7 +56,7 @@ function keywordupdateHandler(e) {
 						// then do nothing
 						if ($dateAltEnd.val() === value) { return; }
 						
-					//	$dateEnd.val(value).trigger("change", true);	//settings second param to true will prevent keyword update on change
+						//settings second param to true will prevent keyword update on change
 						$dateEnd.datepicker("setDate", moment(value).toDate()).trigger("change", true);
 						$dateAltEnd.val(rawValue);
 
@@ -68,7 +68,6 @@ function keywordupdateHandler(e) {
 							// then do nothing
 							if ($dateAltStart.val() === value) { return; }
 						
-					//		$dateStart.val(value).trigger("change", true);
 							$dateStart.datepicker("setDate", moment(value).toDate()).trigger("change", true);
 							$dateAltStart.val(rawValue);
 
@@ -79,7 +78,6 @@ function keywordupdateHandler(e) {
 							// then do nothing
 							if ($dateEnd.val() === value) { return; }
 
-					//		$dateEnd.val(value).trigger("change", true);
 							$dateEnd.datepicker("setDate", moment(value).toDate()).trigger("change", true);
 							$dateAltEnd.val(rawValue);
 
@@ -100,7 +98,6 @@ function keywordupdateHandler(e) {
 
 							if ($dateAltStart.val() === value) { return; }
 						
-					//		$dateStart.val(value).trigger("change", true);
 							$dateStart.datepicker("setDate", moment(value).toDate()).trigger("change", true);
 							$dateAltStart.val(rawValue);
 
