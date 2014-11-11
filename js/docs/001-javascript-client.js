@@ -2,8 +2,7 @@ PS.optionsAPI.ddkJavaScript = {
 	"id": "client_javascript",
 	"label": "Client JavaScript",
 	"description": "Libraries and Functions included in the DDK Client JavaScript package.",
-
-	
+	"edit": "https://github.com/jsmreese/ddk2/edit/master/js/docs/001-javascript-client.js",
 	"libraries": {
 		"id": "libraries",
 		"label": "Libraries",
@@ -275,7 +274,7 @@ PS.optionsAPI.ddkJavaScript = {
 				"id": "run_fav",
 				"label": "runFav",
 				"description": "<p>Function to retrive and render a favorite from the Metrics Catalog Database. Can render Content, Content List, and Control Favorites.</p>",
-				"syntax": ["runFav(target, id, success)", "runFav(target, id, settings)", "runFav(settings)"],
+				"syntax": ["runFav(target, id [, success|settings])", "runFav(settings)"],
 				"arguments": [
 					["target", "An element id string, a DOM element, a jQuery selector string, or a jQuery collection."],
 					["id", "The name or id (<code>sci_fav_name</code> or <code>sci_fav_id</code>) of the favorite record to be rendered."],
@@ -314,12 +313,12 @@ PS.optionsAPI.ddkJavaScript = {
 				"id": "run",
 				"label": "run",
 				"description": "<p>Function to retrive and render a widget from the ActiveMetrics Database.</p>",
-				"syntax": ["run(target, widgetName)", "run(target, widgetName, success)", "run(target, widgetName, keywords, success)"],
+				"syntax": ["run(target, widgetName [, keywords] [, success])"],
 				"arguments": [
 					["target", "An element id string only, NOT a DOM element, jQuery selector string or jQuery collection."],
 					["widgetName", "The name of the widget to be rendered."],
-					["success", "Function to execute after widget is rendered."],
-					["keywords", "URL-encoded key/value pairs to be included as keywords for this widget request only. These keywords will not be made global in the client keyword hash."]
+					["keywords", "URL-encoded key/value pairs to be included as keywords for this widget request only. These keywords will not be made global in the client keyword hash."],
+					["success", "Function to execute after widget is rendered."]
 				],
 				"notes": "<p><code>run</code> is simply a wrapper for <code>load</code> that requires a target and always inserts the rendered response into the DOM.</p><p>An additional <code>settings</code> object argument is for internal use only and can be used to filter control state keywords from widget requests.</p>"
 			},
@@ -328,12 +327,12 @@ PS.optionsAPI.ddkJavaScript = {
 				"id": "load",
 				"label": "load",
 				"description": "<p>Function to retrive and render a widget from the ActiveMetrics Database.</p>",
-				"syntax": ["run(target, widgetName, success)", "run(target, widgetName, keywords, success)"],
+				"syntax": ["load(target, widgetName [, keywords] [, success])"],
 				"arguments": [
 					["target", "An element id string only, NOT a DOM element, jQuery selector string or jQuery collection. Can be <code>null</code> indicating no intended target."],
 					["widgetName", "The name of the widget to be rendered."],
-					["success", "Function to execute after widget is rendered."],
-					["keywords", "URL-encoded key/value pairs to be included as keywords for this widget request only. These keywords will not be made global in the client keyword hash."]
+					["keywords", "URL-encoded key/value pairs to be included as keywords for this widget request only. These keywords will not be made global in the client keyword hash."],
+					["success", "Function to execute after widget is rendered."]
 				],
 				"notes": "<p>When the <code>load</code> function is given a callback function, it will not automatically insert the rendered widget response into the DOM. <code>load</code> can be used in this way to post-process a rendered widget before DOM insertion, or simply to retrieve raw data.</p><p>An additional <code>settings</code> object argument is for internal use only and can be used to filter control state keywords from widget requests.</p>"
 			},
@@ -342,7 +341,7 @@ PS.optionsAPI.ddkJavaScript = {
 				"id": "k",
 				"label": "K",
 				"description": "<p>Function to get and set keyword values in the client keyword hash.</p>",
-				"syntax": ["K(key)", "K(key, value)", "K(keys)", "K(keys, values)", "K(obj)", "K(url)", "K(keys, prefix)", "K(keys, values, prefix)", "K(obj, prefix)", "K(url, prefix)"],
+				"syntax": ["K(key|keys|obj|url [, value|values] [, prefix])"],
 				"arguments": [
 					["key", "A keyword name."],
 					["value", "A keyword value."],
@@ -352,9 +351,34 @@ PS.optionsAPI.ddkJavaScript = {
 					["url", "URL-encoded list of key/value pairs."],
 					["prefix", "Prefix applied to keys before keyword get/set operation."]
 				],
-				"usage": "<p><code>K</code> can be used to get or set keyword values in many ways:</p><h5>Basic Getter</h5><pre class='language-javascript'><code>K(key)</code></pre><h5>Basic Setter</h5><pre class='language-javascript'><code>K(key, value)</code></pre><h5>Array Getter</h5><pre class='language-javascript'><code>K(keys)</code></pre><h5>Array Setter</h5><pre class='language-javascript'><code>K(keys, values)</code></pre><h5>Object Setter</h5><pre class='language-javascript'><code>K(obj)</code></pre><h5>URL Setter</h5><pre class='language-javascript'><code>K(url)</code></pre><h5>Array Getter with Prefix</h5><pre class='language-javascript'><code>K(keys, prefix)</code></pre><h5>Array Setter with Prefix</h5><pre class='language-javascript'><code>K(keys, values, prefix)</code></pre><h5>Object Setter with Prefix</h5><pre class='language-javascript'><code>K(obj, prefix)</code></pre><h5>URL Setter with Prefix</h5><pre class='language-javascript'><code>K(url, prefix)</code></pre>"
+				"returns": "<p>Basic getter returns a keyword value, array getter returns an array of keyword values.</p><p>Setter signatures do not return a value.</p>",
+				"usage": "<p><code>K</code> can be used to get or set keyword values in many ways:</p><h5>Basic Getter</h5><pre class='language-javascript'><code>K(\"p_key1\");\n// \"Value1\"</code></pre><h5>Basic Setter</h5><pre class='language-javascript'><code>K(\"p_key1\", \"Value1\");</code></pre><h5>Array Getter</h5><pre class='language-javascript'><code>K([\"p_key1\", \"p_key2\"]);\n// [\"Value1\", \"Value2\"]</code></pre><h5>Array Setter</h5><pre class='language-javascript'><code>K([\"p_key1\", \"p_key2\"], [\"Value1\", \"Value2\"]);</code></pre><h5>Object Setter</h5><pre class='language-javascript'><code>K({\n\tp_key1: \"Value1\",\n\tp_key2: \"Value2\"\n});</code></pre><h5>URL Setter</h5><pre class='language-javascript'><code>K(\"&amp;p_key1=Value1&amp;p_key2=Value2\");</code></pre><h5>Array Getter with Prefix</h5><pre class='language-javascript'><code>K([\"1\", \"2\"], \"p_key\");\n// [\"Value1\", \"Value2\"]</code></pre><h5>Array Setter with Prefix</h5><pre class='language-javascript'><code>K([\"1\", \"2\"], [\"Value1\", \"Value2\"], \"p_key\");</code></pre><h5>Object Setter with Prefix</h5><pre class='language-javascript'><code>K({\n\t\"1\": \"Value1\",\n\t\"2\": \"Value2\"\n}, \"p_key\");</code></pre><h5>URL Setter with Prefix</h5><pre class='language-javascript'><code>K(\"&amp;1=Value1&amp;2=Value2\", \"p_key\");</code></pre>"
 			},
 
+			"k_toURL": {
+				"id": "k_to_url",
+				"label": "K.toURL",
+				"description": "Get a URL-encoded string of key/value pairs from the keyword hash by specifying one or more prefixes.",
+				"syntax": ["K.toURL(prefix|prefixes)"],
+				"arguments": [
+					["prefix", "A keyword name prefix."],
+					["prefixes", "An array of keyword name prefixes."]
+				],
+				"returns": "<p>A URL-encoded list of key/value pairs for all keys matching the specified prefix(es).</p>",
+				"usage": "<pre class='language-javascript'><code>K.toURL(\"p_key\");\n// \"&amp;p_key1=Value1&amp;p_key2=Value2\"</code></pre>"
+			},
+			"k_toObject": {
+				"id": "k_to_object",
+				"label": "K.toObject",
+				"description": "Get an object of key/value pairs from the keyword hash by specifying one or more prefixes.",
+				"syntax": ["K.toObject(prefix|prefixes)"],
+				"arguments": [
+					["prefix", "A keyword name prefix."],
+					["prefixes", "An array of keyword name prefixes."]
+				],
+				"returns": "<p>An object of key/value pairs for all keys matching the specified prefix(es).</p>",
+				"usage": "<pre class='language-javascript'><code>K.toObject(\"p_key\");\n// { p_key1: \"Value1\", p_key2: \"Value2\" }</code></pre>"
+			},
 
 			"k_remove": {
 				"id": "k_remove",
@@ -370,35 +394,14 @@ PS.optionsAPI.ddkJavaScript = {
 				"id": "k_flush",
 				"label": "K.flush",
 				"description": "Delete a group of keywords from the client keyword hash by specifying one or more key prefixes.",
-				"syntax": ["K.flush(prefix)", "K.flush(prefixes)"],
+				"syntax": ["K.flush(prefix|prefixes)"],
 				"arguments": [
 					["prefix", "A keyword name prefix."],
 					["prefixes", "An array of keyword name prefixes."]
 				],
 				"notes": ""
 			},
-			"k_toURL": {
-				"id": "k_to_url",
-				"label": "K.toURL",
-				"description": "Get a URL-encoded string of key/value pairs from the keyword hash by specifying one or more prefixes.",
-				"syntax": ["K.toURL(prefix)", "K.toURL(prefixes)"],
-				"arguments": [
-					["prefix", "A keyword name prefix."],
-					["prefixes", "An array of keyword name prefixes."]
-				],
-				"notes": ""
-			},
-			"k_toObject": {
-				"id": "k_to_object",
-				"label": "K.toObject",
-				"description": "Get an object of key/value pairs from the keyword hash by specifying one or more prefixes.",
-				"syntax": ["K.toObject(prefix)", "K.toObject(prefixes)"],
-				"arguments": [
-					["prefix", "A keyword name prefix."],
-					["prefixes", "An array of keyword name prefixes."]
-				],
-				"notes": ""
-			},
+
 			"k_setDefault": {
 				"id": "k_set_default",
 				"label": "K.setDefault",
