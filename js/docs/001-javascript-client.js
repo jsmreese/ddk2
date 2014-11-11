@@ -13,6 +13,7 @@ PS.optionsAPI.ddkJavaScript = {
 				"id": "modernizr",
 				"label": "Modernizr",
 				"description": "",
+				"url": "http://modernizr.com/",
 				"notes": "",
 				"version": "2.7.2"
 			},
@@ -20,20 +21,23 @@ PS.optionsAPI.ddkJavaScript = {
 				"id": "jquery",
 				"label": "jQuery",
 				"description": "",
-				"notes": "",
+				"url": "http://jquery.com/",
+				"notes": "Version 1.11.1 included in the DDK legacy build (served to IE8 and PDF ouput mode).",
 				"version": "2.1.1"
 			},
 			"jQueryMigrate": {
 				"id": "jquery_migrate",
 				"label": "jQuery Migrate",
 				"description": "",
-				"notes": "",
+				"url": "http://jquery.com/",
+				"notes": "The minified version of jQuery Migrate is included, so deprecated jQuery API calls will not genrate error messages.",
 				"version": "1.2.1"
 			},
 			"jQueryUI": {
 				"id": "jquery_ui",
 				"label": "jQuery UI",
 				"description": "",
+				"url": "http://jqueryui.com/",
 				"notes": "",
 				"version": "1.10.3"
 			},
@@ -43,7 +47,8 @@ PS.optionsAPI.ddkJavaScript = {
 				"id": "lo_dash",
 				"label": "Lo-Dash",
 				"description": "",
-				"notes": "",
+				"url": "http://lodash.com/",
+				"notes": "DDK standard build includes the Lo-Dash modern build. DDK legacy build includes the Lo-Dash compat build.",
 				"version": "2.4.1"
 			},
 
@@ -52,13 +57,15 @@ PS.optionsAPI.ddkJavaScript = {
 				"id": "lo_dash_string",
 				"label": "Lo-Dash String",
 				"description": "",
-				"notes": ""
+				"url": "http://github.com/jsmreese/underscore.string/",
+				"notes": "A custom fork of the Underscore.String project."
 			},
 			
 			"backbone": {
 				"id": "backbone",
 				"label": "Backbone",
 				"description": "",
+				"url": "http://backbonejs.org/",
 				"notes": "",
 				"version": "1.1.0"
 			},
@@ -67,6 +74,7 @@ PS.optionsAPI.ddkJavaScript = {
 				"id": "backbone_epoxy",
 				"label": "Backbone Epoxy",
 				"description": "",
+				"url": "http://epoxyjs.org/index.html",
 				"notes": ""
 			},
 			
@@ -74,6 +82,7 @@ PS.optionsAPI.ddkJavaScript = {
 				"id": "moment",
 				"label": "Moment",
 				"description": "",
+				"url": "http://momentjs.com/",
 				"notes": "",
 				"version": "2.3.1"
 			},
@@ -82,6 +91,7 @@ PS.optionsAPI.ddkJavaScript = {
 				"id": "moment_duration_format",
 				"label": "Moment Duration Format",
 				"description": "",
+				"url": "https://github.com/jsmreese/moment-duration-format",
 				"notes": "",
 				"version": "1.2.1"
 			},
@@ -90,6 +100,7 @@ PS.optionsAPI.ddkJavaScript = {
 				"id": "numeral",
 				"label": "Numeral",
 				"description": "",
+				"url": "http://adamwdraper.github.com/Numeral-js/",
 				"notes": "",
 				"version": "1.5.1"
 			},
@@ -98,6 +109,7 @@ PS.optionsAPI.ddkJavaScript = {
 				"id": "ratio",
 				"label": "Ratio",
 				"description": "",
+				"url": "http://larrybattle.github.io/Ratio.js/",
 				"notes": "",
 				"version": "0.4.0"
 			},
@@ -105,44 +117,52 @@ PS.optionsAPI.ddkJavaScript = {
 			"foundation": {
 				"id": "foundation",
 				"label": "Foundation",
+				"url": "http://foundation.zurb.com/",
 				"version": "5.2.3"
 			},
 			"select2": {
 				"id": "select2",
 				"label": "Select 2",
+				"url": "http://ivaynberg.github.io/select2/",
 				"version": "3.4.0"
 			},
 			"jgrowl": {
 				"id": "jgrowl",
 				"label": "jGrowl",
+				"url": "https://github.com/stanlemon/jGrowl",
 				"version": "1.2.12"
 			},
 
 			"sparkline": {
 				"id": "sparkline",
 				"label": "Sparkline",
+				"url": "http://omnipotent.net/jquery.sparkline/",
 				"version": "2.1.2"
 			},
 			"qtip2": {
 				"id": "qtip2",
 				"label": "qTip2",
+				"url": "http://craigsworks.com/projects/qtip2/",
 				"version": "2.1.1"
 			},
 			"datatables": {
 				"id": "datatables",
 				"label": "DataTables",
+				"url": "http://datatables.net/",
 				"version": "1.9.4"
 			},
 
 			"jstree": {
 				"id": "jstree",
 				"label": "jsTree",
+				"url": "http://jstree.com/",
 				"version": "3.0.4"
 			},
 			"footable": {
 				"id": "footable",
 				"label": "FooTable",
 				"description": "Includes filter, paginate, sort, and striping plugins.",
+				"url": "http://http://themergency.com/footable/",
 				"version": "2.0.1.4"
 			},
 
@@ -150,21 +170,26 @@ PS.optionsAPI.ddkJavaScript = {
 				"id": "code_mirror",
 				"label": "CodeMirror",
 				"description": "Includes JS Hint, JavaScript, SQL, SQL Hint, closebrackets, and matchbrackets plugins.",
+				"url": "http://codemirror.net/index.html",
 				"version": "4.1.0"
 			},
 
 			"js_hint": {
 				"id": "js_hint",
 				"label": "JSHint",
+				"url": "http://www.jshint.com/",
 				"version": "2.1.11"
 			},
 			"prism": {
 				"id": "prism",
-				"label": "Prism"
+				"label": "Prism",
+				"url": "http://prismjs.com/"
 			},
 			"naturalSort": {
 				"id": "natural_sort",
-				"label": "naturalSort"
+				"label": "Natural Sort",
+				"url": "https://github.com/overset/javascript-natural-sort",
+				"version": "0.6"
 			}
 
 		}
@@ -250,15 +275,16 @@ PS.optionsAPI.ddkJavaScript = {
 				"id": "run_fav",
 				"label": "runFav",
 				"description": "<p>Function to retrive and render a favorite from the Metrics Catalog Database. Can render Content, Content List, and Control Favorites.</p>",
-				"syntax": ["runFav(target, id, settings)", "runFav(settings)"],
+				"syntax": ["runFav(target, id, success)", "runFav(target, id, settings)", "runFav(settings)"],
 				"arguments": [
 					["target", "An element id string, a DOM element, a jQuery selector string, or a jQuery collection."],
 					["id", "The name or id (<code>sci_fav_name</code> or <code>sci_fav_id</code>) of the favorite record to be rendered."],
+					["success", "Function executed after favorite load is complete. Do not use for control initialization &ndash; use <code>customInit</code> in control JavaScript for that. Success function acts as a callback. For Control Favorites, success function is passed two arguments: <code>controlName</code>, <code>controlId</code>. For Content and Content List Favorites, success function is passed three arguments as per the jQuery.ajax success function: <code>data</code>,<code>staus</code>,<code>xhr</code>."],
 					["settings", "<p>Object containing one or more of the following properties:</p>", [
 						["target", "As above."],
 						["id", "As above."],
 						["name", "As <code>id</code> above. <code>name</code> or <code>id</code> can be used interchangeably in the settings object."],
-						["success", "Function executed after control reload is complete. Do not use for control initialization &ndash; use <code>customInit</code> in control JavaScript for that. Success function acts as a callback. For Control Favorites, it is passed two arguments: <code>controlName</code>, <code>controlId</code>."],
+						["success", "As above."],
 						["error", "Function executed in the event of an HTTP request or Data Request Framework processing error. Error function is passed four arguments: <code>xhr</code>, <code>status</code>, <code>message</code>, <code>settings</code>. Target element and favorite id can be retrieved from the settings object."],
 						["beforeInit", "Function executed before control initialization."],
 						["beforeReload", "Function executed before favorite retrieval HTTP request is sent."],
@@ -271,7 +297,121 @@ PS.optionsAPI.ddkJavaScript = {
 					]]
 				],
 				"usage": "<pre class='language-javascript'><code>runFav(\"sample_elem_id\", \"SAMPLE_FAV_NAME\", {\n\tshowMask: false,\n\tsuccess: function (name, id) {\n\t\tDDK.info(name, id);\n\t},\n\terror: function (xhr, status, message, settings) {\n\t\tDDK.error(xhr, status, message, settings);\n\t}\n});</code></pre>"
-			}
+			},
+
+			"runFavs": {
+				"id": "run_favs",
+				"label": "runFavs",
+				"description": "<p>Function to initiate automatic favorite loading using <code>data-fav</code> attributes.</p>",
+				"syntax": ["runFavs(target)"],
+				"arguments": [
+					["target", "An element id string, a DOM element, a jQuery selector string, or a jQuery collection."]
+				],
+				"notes": "<p>Will load favorites defined by all <code>data-fav</code> attributes on the target element and all descendant elements.</p><p><code>runFavs</code> is called automatically when the DDK Repsonsive Template is loaded, and again on the rendered content from every runFav request.</p><p>This function should be used only to manually initiate favorite loading .</p>"
+			},
+			
+			"run": {
+				"id": "run",
+				"label": "run",
+				"description": "<p>Function to retrive and render a widget from the ActiveMetrics Database.</p>",
+				"syntax": ["run(target, widgetName)", "run(target, widgetName, success)", "run(target, widgetName, keywords, success)"],
+				"arguments": [
+					["target", "An element id string only, NOT a DOM element, jQuery selector string or jQuery collection."],
+					["widgetName", "The name of the widget to be rendered."],
+					["success", "Function to execute after widget is rendered."],
+					["keywords", "URL-encoded key/value pairs to be included as keywords for this widget request only. These keywords will not be made global in the client keyword hash."]
+				],
+				"notes": "<p><code>run</code> is simply a wrapper for <code>load</code> that requires a target and always inserts the rendered response into the DOM.</p><p>An additional <code>settings</code> object argument is for internal use only and can be used to filter control state keywords from widget requests.</p>"
+			},
+			
+			"load": {
+				"id": "load",
+				"label": "load",
+				"description": "<p>Function to retrive and render a widget from the ActiveMetrics Database.</p>",
+				"syntax": ["run(target, widgetName, success)", "run(target, widgetName, keywords, success)"],
+				"arguments": [
+					["target", "An element id string only, NOT a DOM element, jQuery selector string or jQuery collection. Can be <code>null</code> indicating no intended target."],
+					["widgetName", "The name of the widget to be rendered."],
+					["success", "Function to execute after widget is rendered."],
+					["keywords", "URL-encoded key/value pairs to be included as keywords for this widget request only. These keywords will not be made global in the client keyword hash."]
+				],
+				"notes": "<p>When the <code>load</code> function is given a callback function, it will not automatically insert the rendered widget response into the DOM. <code>load</code> can be used in this way to post-process a rendered widget before DOM insertion, or simply to retrieve raw data.</p><p>An additional <code>settings</code> object argument is for internal use only and can be used to filter control state keywords from widget requests.</p>"
+			},
+
+			"K": {
+				"id": "k",
+				"label": "K",
+				"description": "<p>Function to get and set keyword values in the client keyword hash.</p>",
+				"syntax": ["K(key)", "K(key, value)", "K(keys)", "K(keys, values)", "K(obj)", "K(url)", "K(keys, prefix)", "K(keys, values, prefix)", "K(obj, prefix)", "K(url, prefix)"],
+				"arguments": [
+					["key", "A keyword name."],
+					["value", "A keyword value."],
+					["keys", "An array of keyword names."],
+					["values", "An array of keyword values."],
+					["obj", "Object of key/value pairs."],
+					["url", "URL-encoded list of key/value pairs."],
+					["prefix", "Prefix applied to keys before keyword get/set operation."]
+				],
+				"usage": "<p><code>K</code> can be used to get or set keyword values in many ways:</p><h5>Basic Getter</h5><pre class='language-javascript'><code>K(key)</code></pre><h5>Basic Setter</h5><pre class='language-javascript'><code>K(key, value)</code></pre><h5>Array Getter</h5><pre class='language-javascript'><code>K(keys)</code></pre><h5>Array Setter</h5><pre class='language-javascript'><code>K(keys, values)</code></pre><h5>Object Setter</h5><pre class='language-javascript'><code>K(obj)</code></pre><h5>URL Setter</h5><pre class='language-javascript'><code>K(url)</code></pre><h5>Array Getter with Prefix</h5><pre class='language-javascript'><code>K(keys, prefix)</code></pre><h5>Array Setter with Prefix</h5><pre class='language-javascript'><code>K(keys, values, prefix)</code></pre><h5>Object Setter with Prefix</h5><pre class='language-javascript'><code>K(obj, prefix)</code></pre><h5>URL Setter with Prefix</h5><pre class='language-javascript'><code>K(url, prefix)</code></pre>"
+			},
+
+
+			"k_remove": {
+				"id": "k_remove",
+				"label": "K.remove",
+				"description": "Delete a specific keyword from the client keyword hash.",
+				"syntax": ["K.remove(key)"],
+				"arguments": [
+					["key", "A keyword name."]
+				],
+				"notes": ""
+			},
+			"k_flush": {
+				"id": "k_flush",
+				"label": "K.flush",
+				"description": "Delete a group of keywords from the client keyword hash by specifying one or more key prefixes.",
+				"syntax": ["K.flush(prefix)", "K.flush(prefixes)"],
+				"arguments": [
+					["prefix", "A keyword name prefix."],
+					["prefixes", "An array of keyword name prefixes."]
+				],
+				"notes": ""
+			},
+			"k_toURL": {
+				"id": "k_to_url",
+				"label": "K.toURL",
+				"description": "Get a URL-encoded string of key/value pairs from the keyword hash by specifying one or more prefixes.",
+				"syntax": ["K.toURL(prefix)", "K.toURL(prefixes)"],
+				"arguments": [
+					["prefix", "A keyword name prefix."],
+					["prefixes", "An array of keyword name prefixes."]
+				],
+				"notes": ""
+			},
+			"k_toObject": {
+				"id": "k_to_object",
+				"label": "K.toObject",
+				"description": "Get an object of key/value pairs from the keyword hash by specifying one or more prefixes.",
+				"syntax": ["K.toObject(prefix)", "K.toObject(prefixes)"],
+				"arguments": [
+					["prefix", "A keyword name prefix."],
+					["prefixes", "An array of keyword name prefixes."]
+				],
+				"notes": ""
+			},
+			"k_setDefault": {
+				"id": "k_set_default",
+				"label": "K.setDefault",
+				"description": "Set a keyword value only if that keyword does not already have a value.",
+				"syntax": ["K.setDefault(key, value)"],
+				"arguments": [
+					["key", "A keyword name."],
+					["value", "A keyword value."]
+				],
+				"notes": ""
+			},
+
+				
 		}
 	},
 	
@@ -281,34 +421,11 @@ PS.optionsAPI.ddkJavaScript = {
 		"description": "Undocumented functions.",
 		"options": {
 
-			"K": {
-				"id": "k",
-				"label": "K",
-				"description": "",
-				"notes": ""
-			},
-
-			"run": {
-				"id": "run",
-				"label": "run",
-				"description": "",
-				"notes": ""
-			},
-
-			"load": {
-				"id": "load",
-				"label": "load",
-				"description": "",
-				"notes": ""
-			},
 			"ddk_defer": {
 				"id": "ddk_defer",
 				"label": "DDK.defer"
 			},
-			"run_favs": {
-				"id": "run_favs",
-				"label": "runFavs"
-			},
+
 			"ddk_format": {
 				"id": "ddk_format",
 				"label": "DDK.format"
@@ -457,30 +574,6 @@ PS.optionsAPI.ddkJavaScript = {
 			"label": "K Extensions",
 			"description": "Undocumented K extensions.",
 			"options": {
-				"remove": {
-					"id": "remove",
-					"label": "K.remove",
-					"description": "",
-					"notes": ""
-				},
-				"flush": {
-					"id": "flush",
-					"label": "K.flush",
-					"description": "",
-					"notes": ""
-				},
-				"toURL": {
-					"id": "to_url",
-					"label": "K.toURL",
-					"description": "",
-					"notes": ""
-				},
-				"toObject": {
-					"id": "to_object",
-					"label": "K.toObject",
-					"description": "",
-					"notes": ""
-				},
 				"toRequestData": {
 					"id": "to_request_data",
 					"label": "K.toRequestData",
@@ -490,12 +583,6 @@ PS.optionsAPI.ddkJavaScript = {
 				"toRequestURL": {
 					"id": "to_request_url",
 					"label": "K.toRequestURL",
-					"description": "",
-					"notes": ""
-				},
-				"setDefault": {
-					"id": "set_default",
-					"label": "K.setDefault",
 					"description": "",
 					"notes": ""
 				},
@@ -779,14 +866,6 @@ PS.optionsAPI.ddkJavaScript = {
 			"jQuery_fn_am": {
 				"id": "jquery_fn_am",
 				"label": "$.fn.am"
-			},
-			"overlib": {
-				"id": "overlib",
-				"label": "overlib"
-			},
-			"nd": {
-				"id": "nd",
-				"label": "nd"
 			},
 			"ps_extend": {
 				"id": "ps_extend",
@@ -1103,7 +1182,99 @@ PS.optionsAPI.ddkJavaScript = {
 			"recnet_ie": {
 				"id": "recnet_ie",
 				"label": "recentIE"
+			},
+			"ddk_loadresources": {
+				"id": "ddk_loadresources",
+				"label": "DDK.loadResources"
+			},
+			"ddk_loadtools": {
+				"id": "ddk_loadtools",
+				"label": "DDK.loadTools"
+			},
+			"ddk_initstylesheets": {
+				"id": "ddk_initstylesheets",
+				"label": "DDK.initStylesheets"
+			},
+
+			"reload_control_container": {
+				"id": "reload_control_container",
+				"label": "reloadControlContainer"
+			},
+			"_document": {
+				"id": "_document",
+				"label": "$document"
+			},
+			"keywordupdate_handler": {
+				"id": "keywordupdate_handler",
+				"label": "keywordupdateHandler"
+			},
+			"nav_go_handler": {
+				"id": "nav_go_handler",
+				"label": "navGoHandler"
+			},
+			"ps_options_api": {
+				"id": "ps_options_api",
+				"label": "PS.optionsAPI"
+			},
+			"ddk_column_metric_triggers": {
+				"id": "ddk_column_metric_triggers",
+				"label": "DDK.COLUMN_METRIC_TRIGGERS"
+			},
+			
+			"ddk_validate": {
+				"id": "ddk_validate",
+				"label": "DDK.validate"
+			},
+			"ddk_control_init": {
+				"id": "ddk_control_init",
+				"label": "DDK.control.init"
+			},
+			"ddk_eventhandler": {
+				"id": "ddk_eventhandler",
+				"label": "DDK.eventHandler"
+			},
+			"ddk_dialog": {
+				"id": "ddk_dialog",
+				"label": "DDK.dialog"
+			},
+			"ddk_dialog2": {
+				"id": "ddk_dialog2",
+				"label": "DDK.dialog2"
+			},
+			"ddk_mouseover": {
+				"id": "ddk_mouseover",
+				"label": "DDK.mouseover"
+			},
+			"ddk_pdfgo": {
+				"id": "ddk_pdfgo",
+				"label": "DDK.pdfGo"
+			},			
+			"ddk_regex": {
+				"id": "ddk_regex",
+				"label": "DDK.regex"
+			},
+
+			"ddk_char": {
+				"id": "ddk_char",
+				"label": "DDK.char"
+			},
+			"ddk_escape": {
+				"id": "ddk_escape",
+				"label": "DDK.escape"
+			},
+			"ddk_unescape": {
+				"id": "ddk_unescape",
+				"label": "DDK.unescape"
+			},
+			"ddk_resourcesload": {
+				"id": "ddk_resourcesload",
+				"label": "DDK.resourcesLoad"
+			},
+			"ddk_ease": {
+				"id": "ddk_ease",
+				"label": "DDK.ease"
 			}
+
 		}
 	},
 	
@@ -1112,6 +1283,14 @@ PS.optionsAPI.ddkJavaScript = {
 		"label": "Deprecated",
 		"description": "Deprecated and other legacy functions and variables.",
 		"options": {	
+			"overlib": {
+				"id": "overlib",
+				"label": "overlib"
+			},
+			"nd": {
+				"id": "nd",
+				"label": "nd"
+			},
 			"psc_resize": {
 				"id": "psc_resize",
 				"label": "PSC_Resize"
@@ -1315,22 +1494,6 @@ PS.optionsAPI.ddkJavaScript = {
 			"ddk_loadcontrols": {
 				"id": "ddk_loadcontrols",
 				"label": "DDK.loadControls"
-			},
-			"ddk_pdfgo": {
-				"id": "ddk_pdfgo",
-				"label": "DDK.pdfGo"
-			},
-			"ddk_dialog": {
-				"id": "ddk_dialog",
-				"label": "DDK.dialog"
-			},
-			"ddk_dialog2": {
-				"id": "ddk_dialog2",
-				"label": "DDK.dialog2"
-			},
-			"ddk_mouseover": {
-				"id": "ddk_mouseover",
-				"label": "DDK.mouseover"
 			},
 			"ddk_writefavoritechanges": {
 				"id": "ddk_writefavoritechanges",
@@ -1564,22 +1727,13 @@ PS.optionsAPI.ddkJavaScript = {
 				"id": "ddk_navset2_init",
 				"label": "DDK.navset2.init"
 			},
-			"ddk_control_init": {
-				"id": "ddk_control_init",
-				"label": "DDK.control.init"
-			},
-			"ddk_eventhandler": {
-				"id": "ddk_eventhandler",
-				"label": "DDK.eventHandler"
-			},
+
 			"ddk_help": {
 				"id": "ddk_help",
 				"label": "DDK.help"
 			},
-			"ddk_validate": {
-				"id": "ddk_validate",
-				"label": "DDK.validate"
-			},
+
+			
 			"ddk_accordion": {
 				"id": "ddk_accordion",
 				"label": "DDK.accordion"
@@ -1592,29 +1746,7 @@ PS.optionsAPI.ddkJavaScript = {
 				"id": "ddk_reloadcontrol",
 				"label": "DDK.reloadControl"
 			},
-			"ddk_column_metric_triggers": {
-				"id": "ddk_column_metric_triggers",
-				"label": "DDK.COLUMN_METRIC_TRIGGERS"
-			},
-			"ddk_regex": {
-				"id": "ddk_regex",
-				"label": "DDK.regex"
-			},
 
-			"ddk_char": {
-				"id": "ddk_char",
-				"label": "DDK.char"
-			},
-	
-			"ddk_escape": {
-				"id": "ddk_escape",
-				"label": "DDK.escape"
-			},
-
-			"ddk_unescape": {
-				"id": "ddk_unescape",
-				"label": "DDK.unescape"
-			},
 
 			"ddk_template_metricdisplay": {
 				"id": "ddk_template_metricdisplay",
@@ -1632,7 +1764,7 @@ PS.optionsAPI.ddkJavaScript = {
 			"ddk_reloadfromfavorite": {
 				"id": "ddk_reloadfromfavorite",
 				"label": "DDK.reloadFromFavorite",
-				"notes": "Replaced by <a href='/amengine.aspx?config.mn=DDK2_Docs&api=ddkJavaScript#run_fav'><code>runFav</code></a>."
+				"notes": "Replaced by <a href='amengine/amengine.aspx?config.mn=DDK2_Docs&api=ddkJavaScript#run_fav'><code>runFav</code></a>."
 			},
 			"ddk_reloadfromfavoriterequest": {
 				"id": "ddk_reloadfromfavoriterequest",
@@ -1640,10 +1772,6 @@ PS.optionsAPI.ddkJavaScript = {
 			},
 
 
-			"ddk_ease": {
-				"id": "ddk_ease",
-				"label": "DDK.ease"
-			},
 			"ddk_pluginsload": {
 				"id": "ddk_pluginsload",
 				"label": "DDK.pluginsLoad"
@@ -1651,10 +1779,6 @@ PS.optionsAPI.ddkJavaScript = {
 			"ddk_addonsload": {
 				"id": "ddk_addonsload",
 				"label": "DDK.addonsLoad"
-			},
-			"ddk_resourcesload": {
-				"id": "ddk_resourcesload",
-				"label": "DDK.resourcesLoad"
 			},
 			"ddk_loadscript": {
 				"id": "ddk_loadscript",
@@ -1668,45 +1792,13 @@ PS.optionsAPI.ddkJavaScript = {
 				"id": "ddk_allload",
 				"label": "DDK.allLoad"
 			},
-			"ddk_loadresources": {
-				"id": "ddk_loadresources",
-				"label": "DDK.loadResources"
-			},
-			"ddk_loadtools": {
-				"id": "ddk_loadtools",
-				"label": "DDK.loadTools"
-			},
-			"ddk_initstylesheets": {
-				"id": "ddk_initstylesheets",
-				"label": "DDK.initStylesheets"
-			},
 
-			"reload_control_container": {
-				"id": "reload_control_container",
-				"label": "reloadControlContainer"
-			},
 			"run_from_favorite": {
 				"id": "run_from_favorite",
 				"label": "runFromFavorite"
-			},
-
-
-			"_document": {
-				"id": "_document",
-				"label": "$document"
-			},
-			"keywordupdate_handler": {
-				"id": "keywordupdate_handler",
-				"label": "keywordupdateHandler"
-			},
-			"nav_go_handler": {
-				"id": "nav_go_handler",
-				"label": "navGoHandler"
-			},
-			"ps_options_api": {
-				"id": "ps_options_api",
-				"label": "PS.optionsAPI"
 			}
+
+
 		}
 	}
 };

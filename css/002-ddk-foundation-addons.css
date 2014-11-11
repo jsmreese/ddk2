@@ -29,6 +29,11 @@ h6 { font-size: 0.875rem; }
 	transform: translate3d(300px,0,0);
 }
 
+/* Firefox and IE list errors */
+ul.off-canvas-list ul {
+    list-style-type: none;
+}
+
 .left-off-canvas-menu {
 	width: 300px;
 }

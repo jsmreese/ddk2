@@ -200,6 +200,10 @@ DDK.reloadFromFavoriteRequest = function () {
 				
 				if (type === "Component") {
 					reloadControlContainer(control.name, control.id, settings, settings.success, settings.$target.children().eq(0));
+				} else {
+					if (typeof settings.success === "function") {
+						settings.success.call(null, data, status, xhr);
+					}
 				}
 
 				// trigger screenchange event to update menu framework content
@@ -420,6 +424,11 @@ var runFromFavorite = function (target, favId, keywords, favHeader, favFooter, n
 			DDK.reloadFromFavorite(target, favId, keywords);
 			return;
 		}
+	}
+	
+	if (typeof keywords === "function") {
+		DDK.reloadFromFavorite(target, favId, keywords, null, null, null, favHeader, favFooter, null, newState, showMask, error);
+		return;
 	}
 
 	if (typeof keywords === "boolean") {
