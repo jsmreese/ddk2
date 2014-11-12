@@ -1,3 +1,20 @@
+.fav-open button:hover {
+	opacity: 0.6;
+}
+.fav-open button img {
+	width: 32px;
+}
+.fav-open button {
+	background-color: transparent !important;
+	padding: 0;
+	opacity: 0.5;
+}
+.fav-open {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+
 code {
 	color: #3D638F; /* hsl(212, 40%, 40%) */
 }

@@ -120,6 +120,14 @@ function navGoHandler(e) {
 	$(".exit-off-canvas").click();
 }
 
+function favOpenHandler(e) {
+	var $target;
+	
+	$target = $(e.currentTarget);
+	
+	window.open("amengine.aspx?config.mn=" + $target.data("target") + $target.data("keywords"));
+}
+
 /*
 function navGoHandler(e) {
 	var $target, $parents, data;
@@ -168,4 +176,6 @@ if (!DDK.outputPDF) {
 	
 	$document.on("keywordupdate", keywordupdateHandler);
 	$document.on("click", ".nav-go", navGoHandler);
+	
+	$document.on("click", ".fav-open button", favOpenHandler);
 }
