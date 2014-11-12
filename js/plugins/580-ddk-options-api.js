@@ -501,6 +501,12 @@ PS.optionsAPI.navElemConfig = {
 				"description": "Keywords to pass to the query widget.",
 				"notes": "Keyword format is the same with the DDK K function which can be a url or a json."
 			},
+			"internalKeywords": {
+				"id": "internal_keywords",
+				"label": "Internal Keywords",
+				"description": "Do not overwrite. Internal keywords used by the nav framework for the dimension pickers.",
+				"notes": "Internal keywords are merged with the query keywords before being sending an ajax request."
+			},
 			"targetKeyword": {
 				"id": "target_keyword",
 				"label": "Target Keyword",
