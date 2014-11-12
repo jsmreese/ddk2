@@ -200,6 +200,10 @@ PS.NavFormatter.fn.functions = {
 				if(term && settings.searchKeyword){
 					dataToPass[settings.searchKeyword] = term;
 				}
+				//merge the internalKeywords with keywords
+				if(settings.internalKeywords){
+					settings.keywords = settings.internalKeywords + (settings.keywords || "");
+				}
 				return $.extend({
 						"data.config": JSON.stringify($.extend(settings, {"page": page, "term": term}))
 					}, dataToPass, K.toObject("p_")
@@ -446,6 +450,10 @@ PS.NavFormatter.fn.functions = {
 					}
 					return newData;
 				}
+			}
+			//merge the internalKeywords with keywords
+			if(options.internalKeywords){
+				options.keywords = options.internalKeywords + (options.keywords || "");
 			}
 			$.extend(true, dataToPass, K.toObject("p_"), {
 				"config.mn": "DDK_Data_Request",
@@ -1096,7 +1104,7 @@ PS.NavFormatter.fn.functions = {
 	}
 };
 PS.NavFormatter.fn.mcat = function (isMulti) {
-	var keywords, filterKeywordMap, settings, filterValue;
+	var filterKeywordMap, settings, filterValue;
 	if(this.nav.indexOf("_multi") > -1){
 		this.nav = this.nav.substr(0, this.nav.indexOf("_multi"));	//remove multi to be used for keywords
 	}
@@ -1108,7 +1116,6 @@ PS.NavFormatter.fn.mcat = function (isMulti) {
 		"event": "p_event_cat",
 		"offering": "p_offering_cat"
 	};
-	keywords = this.$el.data("navKeywords");
 	//the default dimensions settings is retrieved in this.getSettings()
 	settings = _.reduce(_.extend({}, DDK.navset2.defaultSelect2Options, {
 		"type": this.nav,
@@ -1116,7 +1123,7 @@ PS.NavFormatter.fn.mcat = function (isMulti) {
 		"targetKeyword": "p_" + this.nav + (isMulti ? "_multi" : ""),
 		"valueField": this.nav + (this.nav === "extdim" ? "_value" : "_name"),
 		"labelField": this.nav + (this.nav === "extdim" ? "_value" : "_label"),
-		"keywords": "&p_dimq_type=" + (this.nav === "metric" ? "m" : this.nav) + (keywords || "")
+		"internalKeywords": "&p_dimq_type=" + (this.nav === "metric" ? "m" : this.nav)
 	}, this.getSettings()), function(memo, value, key){memo[_.string.camelize("nav_"+key)] = value; return memo;}, {});
 	if(this.nav === "extdim"){
 		if(settings.navExtdim){
