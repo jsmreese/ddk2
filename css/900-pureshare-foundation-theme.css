@@ -1,17 +1,21 @@
-.fav-open button:hover {
+.app-link button:hover {
 	opacity: 0.6;
 }
-.fav-open button img {
+.app-link button img {
 	width: 32px;
 }
-.fav-open button {
+.app-link button {
 	background-color: transparent !important;
 	padding: 0;
 	opacity: 0.5;
 }
-.fav-open {
+.app-link {
 	position: absolute;
 	right: 10px;
+	top: 0;
+}
+
+.page-title + .app-link {
 	top: 10px;
 }
 

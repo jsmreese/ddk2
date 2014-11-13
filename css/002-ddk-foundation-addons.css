@@ -19,6 +19,10 @@ h6 { font-size: 0.875rem; }
 	word-break: break-all; /* firefox */
 }
 
+.panel.tight {
+	padding: 0.25em;
+}
+
 /* larger off-canvas */
 .move-right>.inner-wrap {
 	-ms-transform: translate(300px,0);

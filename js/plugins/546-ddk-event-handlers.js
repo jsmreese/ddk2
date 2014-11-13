@@ -120,7 +120,7 @@ function navGoHandler(e) {
 	$(".exit-off-canvas").click();
 }
 
-function favOpenHandler(e) {
+function appLinkHandler(e) {
 	var $target;
 	
 	$target = $(e.currentTarget);
@@ -177,5 +177,5 @@ if (!DDK.outputPDF) {
 	$document.on("keywordupdate", keywordupdateHandler);
 	$document.on("click", ".nav-go", navGoHandler);
 	
-	$document.on("click", ".fav-open button", favOpenHandler);
+	$document.on("click", ".app-link button", appLinkHandler);
 }
