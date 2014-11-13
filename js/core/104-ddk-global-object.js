@@ -1148,17 +1148,21 @@
 						"url" : queryMode == "json" || queryMode == "xml" ? queryUrl : source ? source.replace(/'/g, "%27").replace(/\+/g, "%2b") : "",
 						"dataFilter" : beforeRender,
 						"data" : function (node) {
-							var nodeId = '';
+							var nodeId = '', tempOpen;
 							if(node !== -1){
 								nodeId = node.attr("id");
 							}
+							//clear nodesOpen to only use it once
+							tempOpen = nodesOpen;
+							nodesOpen = "";
 							return {
-									tree_nodes_load : nodesLoad,
-									tree_nodes_open: nodesOpen,
-									tree_nodes_id : nodeId,
-									tree_nodes_search : nodesSearch,
-									p_tree_sort: nodesSort};
-						  }
+								tree_nodes_load : nodesLoad,
+								tree_nodes_open: tempOpen,
+								tree_nodes_id : nodeId,
+								tree_nodes_search : nodesSearch,
+								p_tree_sort: nodesSort
+							};
+						}
 					}
 	//			}
 			});
