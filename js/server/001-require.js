@@ -40,11 +40,13 @@ require.exec = function (moduleName, methodName) {
 	module = require(moduleName);
 	
 	if (module) {
-		method = module[methodName];
-		
+		if (typeof module[methodName] === "function") {
+			method = methodName;
+		}
+
 		if (!method) {
 			rMethod = new RegExp("^" + methodName, "i");
-	
+
 			method = _.findKey(module, function (value, key) {
 				return rMethod.test(key);
 			});
