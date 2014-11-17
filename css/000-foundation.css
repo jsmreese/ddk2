@@ -1070,7 +1070,7 @@ select {
     position: relative;
     right: 91.66667%;
     left: auto; } }
-button, .button {
+button:not(.ui-button), .button:not(.ui-button) {
   border-style: solid;
   border-width: 0px;
   cursor: pointer;
@@ -1093,9 +1093,9 @@ button, .button {
   border-color: #007095;
   color: white;
   transition: background-color 300ms ease-out; }
-  button:hover, button:focus, .button:hover, .button:focus {
+  button:not(.ui-button):hover, button:not(.ui-button):focus, .button:not(.ui-button):hover, .button:not(.ui-button):focus {
     background-color: #007095; }
-  button:hover, button:focus, .button:hover, .button:focus {
+  button:not(.ui-button):hover, button:not(.ui-button):focus, .button:not(.ui-button):hover, .button:not(.ui-button):focus {
     color: white; }
   button.secondary, .button.secondary {
     background-color: #e7e7e7;

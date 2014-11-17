@@ -119,15 +119,15 @@ function navGoHandler(e) {
 	$controls.reloadControls();
 	$(".exit-off-canvas").click();
 }
-
+/*
 function appLinkHandler(e) {
 	var $target;
 	
 	$target = $(e.currentTarget);
 	
-	window.open("amengine.aspx?config.mn=" + $target.data("target") + $target.data("keywords"));
+	window.location.href = "amengine.aspx?config.mn=" + $target.data("target") + $target.data("keywords");
 }
-
+*/
 /*
 function navGoHandler(e) {
 	var $target, $parents, data;
@@ -177,5 +177,5 @@ if (!DDK.outputPDF) {
 	$document.on("keywordupdate", keywordupdateHandler);
 	$document.on("click", ".nav-go", navGoHandler);
 	
-	$document.on("click", ".app-link button", appLinkHandler);
+	//$document.on("click", ".app-link button", appLinkHandler);
 }
