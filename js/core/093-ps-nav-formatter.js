@@ -144,7 +144,7 @@ PS.NavFormatter.fn.dimquery.defaults = {
 	queryWidget: "SCIDIM_Query",
 	allowClear: "true",
 	placeholder: "All",
-	emptyKeywordValue: "ANY",
+//	emptyKeywordValue: "ANY",
 	searchKeyword: "p_dimq_search",
 	initKeyword: "p_dimq_list"
 };
@@ -1086,18 +1086,12 @@ PS.NavFormatter.fn.functions = {
 			}
 			$dateType.trigger("change");
 			if(keywords[2] && keywordValues[keywords[2]]){
-				//force trigger keyword change to update keyword labels and display dates
-				K.flush(keywords[0]);
-				K(keywords[0], keywordValues[keywords[0]]);
+				K(keywords[2], keywordValues[keywords[2]]);
 			}
 			if(keywords[1] && keywordValues[keywords[1]]){
-				//force trigger keyword change to update keyword labels and display dates
-				K.flush(keywords[1]);
 				K(keywords[1], keywordValues[keywords[1]]);
 			}
 			if(keywords[0] && keywordValues[keywords[0]]){
-				//force trigger keyword change to update keyword labels and display dates
-				K.flush(keywords[0]);
 				K(keywords[0], keywordValues[keywords[0]]);
 			}
 		}
@@ -1197,7 +1191,7 @@ PS.NavFormatter.fn.select2 = function () {
 				K(settings.targetKeyword, $this.val());
 			}
 			//update shadow keyword label
-			selected = $this.parent().find(".select2-choice span");
+			selected = $this.parent().find(".select2-choice:not(.select2-default) span");
 			if(selected && selected.length){	//for single
 				keywordLabel = selected.text();
 			}
