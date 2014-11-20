@@ -1,13 +1,20 @@
-.app-link a:hover {
+.fav-link {
+	display: none;
+	line-height: 1.6;
+}
+
+.app-link > a:hover, .app-link > button:hover {
 	opacity: 0.6;
 }
-.app-link a img {
+.app-link a img, .app-link button img {
 	width: 32px;
 }
-.app-link a {
+.app-link > a, .app-link > button {
 	background-color: transparent !important;
 	padding: 0;
+	margin: 0;
 	opacity: 0.5;
+	vertical-align: middle;
 }
 .app-link {
 	position: absolute;
@@ -15,13 +22,22 @@
 	top: 0;
 }
 
-.app-link a span.ddk-icon {
-	font-size: 32px;
-	line-height: 40px;
+.app-link > a span.ddk-icon, .app-link > button span.ddk-icon {
+	font-size: 24px;
+	color: #93C !important;
 }
+
+.app-link > button + a, .app-link > button + button, .app-link > a + a, .app-link > a + button {
+	margin-left: 5px;
+}
+
 
 .page-title + .app-link {
 	top: 10px;
+}
+
+.page-title + .app-link > a span.ddk-icon, .page-title + .app-link > button span.ddk-icon {
+	line-height: 40px;
 }
 
 code {

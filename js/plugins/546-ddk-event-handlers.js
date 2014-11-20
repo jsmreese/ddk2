@@ -119,6 +119,25 @@ function navGoHandler(e) {
 	$controls.reloadControls();
 	$(".exit-off-canvas").click();
 }
+
+function favLinkToggleHandler(e) {
+	var $target, $favLinkContainer, $favLink, href, parameters;
+	
+	$target = $(e.currentTarget);
+	$favLinkContainer = $target.closest(".app-link").siblings(".fav-link")
+	$favLink = $favLinkContainer.find("a");
+	
+	parameters = K.toObject(["fcon", "p_"]);
+	parameters = _.omit(parameters, function (value, key) {
+		return _.string.startsWith(key, "p_fc_");
+	});
+	
+	href = window.location.origin + window.location.pathname + $favLink.data("base") + "&" + $.param(parameters);
+	
+	$favLink.attr("href", href).text(href);
+	$favLinkContainer.slideToggle();
+};
+
 /*
 function appLinkHandler(e) {
 	var $target;
@@ -176,6 +195,7 @@ if (!DDK.outputPDF) {
 	
 	$document.on("keywordupdate", keywordupdateHandler);
 	$document.on("click", ".nav-go", navGoHandler);
+	$document.on("click", ".fav-link-toggle", favLinkToggleHandler);
 	
 	//$document.on("click", ".app-link button", appLinkHandler);
 }
