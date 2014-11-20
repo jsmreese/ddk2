@@ -14,7 +14,7 @@ function keywordupdateHandler(e) {
 				
 				$elem = $(elem);
 				
-				if ($elem.is("input")) {
+				if ($elem.is("input") || $elem.is("select")) {	//select2 can use native html select
 					// if the input value matches the new keyword value already
 					// then do nothing
 					if ($elem.val() === value) { return; }

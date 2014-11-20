@@ -2546,7 +2546,6 @@ $.extend(true, DDK, {
 			targetKeyword: "",
 			emptyKeywordValue: "",
 			label: "",
-			multiple: false,
 			placeholder: "",
 			value: "",
 			width: "100%",
