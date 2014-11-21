@@ -191,6 +191,9 @@ DDK.reloadFromFavoriteRequest = function () {
 				DDK.navFormat(settings.$target);
 				DDK.format(settings.$target);
 				
+				// show export CSV icons in Favorite headers
+				toggleCSV();
+				
 				// initialize Prism.js syntax highlighting
 				Prism && Prism.highlightAll();
 				
@@ -351,6 +354,8 @@ DDK.reloadControl = function (controlName, controlId, callback, beforeInit, befo
 		}
 		run(controlContainerId, "PSC_" + controlTitle + "_Widget", keywords, function (data, header, id) {
 			reloadControlContainer(controlName, controlId, options, callback, $control);
+			// show export CSV icons in Favorite headers
+			toggleCSV();
 		}, { 
 			stateFilter: "s_" + controlId + "_",
 			requestId: _.uniqueId(),
