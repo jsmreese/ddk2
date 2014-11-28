@@ -344,7 +344,8 @@ DDK.reloadControl = function (controlName, controlId, callback, beforeInit, befo
 		var newKeys = _.string.parseQueryString(controlData.keywords || "");
 
 		K("s_" + controlId + "_keywords", _.reduce(_.extend({}, oldKeys, newKeys), function (memo, value, key) {
-			return memo + (key ? "&" + key + "=" + (value ? encodeURIComponent(value) : "") : "");
+			//return memo + (key ? "&" + key + "=" + (value ? encodeURIComponent(value) : "") : "");
+			return memo + (key ? "&" + key + "=" + (value != null ? encodeURIComponent(value.toString()) : "") : "");
 		}, ""), { silent: true });
 
 		$("body").children(".ps-tooltip-dialog").not(".ddk-dialog-persist").remove();

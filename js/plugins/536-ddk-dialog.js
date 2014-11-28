@@ -1111,7 +1111,8 @@ $.extend(true, DDK.dialog, {
 				var newKeys = _.string.parseQueryString(data.keywords);
 
 				K("s_" + data.ddkControlId + "_keywords", _.reduce(_.extend({}, oldKeys, newKeys), function (memo, value, key) {
-					return memo + (key ? "&" + key + "=" + (value ? encodeURIComponent(value) : "") : "");
+					//return memo + (key ? "&" + key + "=" + (value ? encodeURIComponent(value) : "") : "");
+					return memo + (key ? "&" + key + "=" + (value != null ? encodeURIComponent(value.toString()) : "") : "");
 				}, ""));
 			}
 			
