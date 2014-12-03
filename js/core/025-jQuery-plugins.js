@@ -15,10 +15,9 @@
 		var $target;
 		
 		// per PureShare standards
-		// element ids must start with a lowercase letter
-		// and can contain only lowercase letters, numbers, and underscores
-		// and cannot end in an underscore
-		if (typeof target === "string" && /^[a-z][a-z0-9\_]*[a-z0-9]$/.test(target)) {
+		// element ids must start with a letter
+		// and can contain only letters, numbers, and underscores
+		if (typeof target === "string" && /^[A-Za-z][A-Za-z0-9\_]*$/.test(target)) {
 			$target = $("#" + target);
 			
 			if ($target.length) { return $target; }
