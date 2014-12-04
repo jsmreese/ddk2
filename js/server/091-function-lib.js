@@ -2,6 +2,13 @@ var keywordUpdate = function (key, value) {
 	if (_.isPlainObject(value) || _.isArray(value)) {
 		value = JSON.stringify(value);
 	}
+	
+	// don't set recursive keywords
+	if ((value === DDK.char.tilde + key + DDK.char.tilde) || (value === "%%" + key + "%%")) {
+		// instead, get the value of the keyword (could be an empty string!) and set the keyword to that value
+		value = K(key);
+	}
+	
 	FunctionLib.keywordUpdate(key, value);
 };
 
