@@ -11,9 +11,9 @@ var keywordUpdate = function (key, value) {
 	
 	// unescape DDK Keywords (%% to ~) in keyword values
 	// then eval before setting new keyword values
-	if (typeof value === "string") {
-		value = evalKeywordValue(value.replace(/%%/g, DDK.char.tilde));
-	}
+	//if (typeof value === "string") {
+	//	value = evalKeywordValue(value.replace(/%%/g, DDK.char.tilde));
+	//}
 	
 	FunctionLib.keywordUpdate(key, value);
 };
