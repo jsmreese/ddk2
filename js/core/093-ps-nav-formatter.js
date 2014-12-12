@@ -105,20 +105,20 @@ PS.NavFormatter.fn.getSettings = function () {
 	var customSettings, dimensions;
 	dimensions = "mcat metric org loc contact fcat fav event_cat event offering_cat offering extdim".split(" ");
 	if(this.nav && this.nav.substr(0, 4) === "date"){
-		customSettings = this.date.defaults;
+		customSettings = this.defaults.date;
 	}
 	else if(dimensions.indexOf(this.nav) > -1){
-		customSettings = this.dimquery.defaults;
+		customSettings = this.defaults.dimquery;
 	}
 	return _.extend(
 		// start with an empty object
 		{},
 		
 		// add the global default format settings
-		this.defaults,
+		this.defaults.global,
 		
 		// add the default format settings for this format
-		this[this.nav].defaults,
+		this.defaults[this.nav],
 
 		// add the default format settings from this format style
 		this[this.nav][this.navStyle],
@@ -137,32 +137,40 @@ PS.NavFormatter.fn.getSettings = function () {
 };
 PS.NavFormatter.fn.defaults = {
 	// add default NavFormatter options here
-	"pageSize": 50
-};
-PS.NavFormatter.fn.dimquery = {};
-PS.NavFormatter.fn.dimquery.defaults = {
-	queryWidget: "SCIDIM_Query",
-	allowClear: "true",
-	placeholder: "All",
-//	emptyKeywordValue: "ANY",
-	searchKeyword: "p_dimq_search",
-	initKeyword: "p_dimq_list"
-};
-PS.NavFormatter.fn.date = {};
-PS.NavFormatter.fn.date.defaults = {
-	dateFormat: "",	//defualt format depends on date type, set on initDate function
-	altFormat: "",	//defualt format depends on date type, set on initDate function
-	hideDateType: false,	//hides the date type
-	dateTypeDisabled: false,	//disables the date type
-	typeDefault: "",		//default value of the date type
-	dateStart: "",		//default value of the date start field
-	dateEnd: "",		//default value of the date end field
-	typeOptions: [],	//an array of json formatted {"label": "option1", "data-tp-type": "-5"}. The data-tp-type is the difference in current date
-	changeMonth: true,	//enables changing the month, overriden in specific types
-	changeYear: true,	//enables changing the year, overriden in specific types
-	showButtonPanel: true,
-	beforeShow: function(input, inst) {
-		inst.dpDiv.removeClass("hide-calendar hide-month");
+	"global": {
+		"pageSize": 50
+	},
+	"dimquery": {
+		queryWidget: "SCIDIM_Query",
+		allowClear: "true",
+		placeholder: "All",
+		searchKeyword: "p_dimq_search",
+		initKeyword: "p_dimq_list"
+	},
+	"date": {
+		dateFormat: "",	//defualt format depends on date type, set on initDate function
+		altFormat: "",	//defualt format depends on date type, set on initDate function
+		hideDateType: false,	//hides the date type
+		dateTypeDisabled: false,	//disables the date type
+		typeDefault: "",		//default value of the date type
+		dateStart: "",		//default value of the date start field
+		dateEnd: "",		//default value of the date end field
+		typeOptions: [],	//an array of json formatted {"label": "option1", "data-tp-type": "-5"}. The data-tp-type is the difference in current date
+		changeMonth: true,	//enables changing the month, overriden in specific types
+		changeYear: true,	//enables changing the year, overriden in specific types
+		showButtonPanel: true,
+		beforeShow: function(input, inst) {
+			inst.dpDiv.removeClass("hide-calendar hide-month");
+		}
+	},
+	"tree": {
+		serverPaged: true,
+		search: {
+			show_only_matches: true
+		},
+		searchEnabled: true,
+		plugins: ["search", "types"],
+		dialogModal: "true"
 	}
 };
 PS.NavFormatter.fn.functions = {
@@ -202,7 +210,7 @@ PS.NavFormatter.fn.functions = {
 				}
 				//merge the internalKeywords with keywords
 				if(settings.internalKeywords){
-					settings.keywords = settings.internalKeywords + (settings.keywords || "");
+					settings.keywords = DDK.util.mergeUrl(settings.internalKeywords, settings.keywords || "");
 				}
 				return $.extend({
 						"data.config": JSON.stringify($.extend(settings, {"page": page, "term": term}))
@@ -291,6 +299,10 @@ PS.NavFormatter.fn.functions = {
 				//map initKeyword to the value
 				if(element.val() && settings.initKeyword){
 					dataToPass[settings.initKeyword] = wrappedValue || element.val();
+				}
+				//merge the internalKeywords with keywords
+				if(settings.internalKeywords){
+					settings.keywords = DDK.util.mergeUrl(settings.internalKeywords, settings.keywords || "");
 				}
 				$.extend(true, dataToPass, K.toObject("p_"), {
 					"config.mn": "DDK_Data_Request",
@@ -885,8 +897,9 @@ PS.NavFormatter.fn.functions = {
 				value = $this.val(),
 				dateToday = new moment(),
 				$selectedOption = $this.find("option:selected"),
-				typeVal = value ? value.split("_")[0] : "",	//parse value to get type <TYPE>_<KEY>, type should be a CMQ tp_type DAY,WEEK,MONTH,QUARTER,YEAR
-				hiddenTypeVal = $hiddenType.val().split("_")[0],	//hidden type is used to check if the date format should be changed like from day to month
+				dateTypeMap = {"D": "DAY", "W": "WEEK", "M": "MONTH", "Q": "QUARTER", "Y": "YEAR"},
+				typeVal = value ? dateTypeMap[value[0].toUpperCase()] : "",	//parse value to get the first letter and determine the date type
+				hiddenTypeVal = $hiddenType.val() ? dateTypeMap[$hiddenType.val()[0].toUpperCase()] : "",	//hidden type is used to check if the date format should be changed like from day to month
 				optionData = $selectedOption.data(),
 				startValue,
 				endValue;
@@ -957,6 +970,20 @@ PS.NavFormatter.fn.functions = {
 	//				$dateEnd.datepicker("option", "minDate", moment($dateStart.val(), settings.momentDateFormat).toDate()).trigger("change");
 				}
 				$hiddenType.val(value);
+				//check if there's an on initialize callback
+				if(settings.init){
+					if(typeof(settings.init) === "string"){
+						try{
+							settings.init = eval(settings.init);
+						}
+						catch(e){
+							DDK.error("Tree initialization function error : " + e);
+						}
+					}
+					if(typeof(settings.init) === "function"){
+						settings.init.call(this.$el);	
+					}
+				}
 			}
 			else{
 				DDK.error("Date Type change: No valid date type selected");
@@ -1146,10 +1173,7 @@ PS.NavFormatter.fn.mcat = function (isMulti) {
 PS.NavFormatter.fn.mcat_multi = function(){
 	PS.NavFormatter.fn.mcat.call(this, true);
 };
-_.each("metric org contact loc fcat fav event_cat event offering_cat offering extdim".split(" "), function(dim){
-	PS.NavFormatter.fn[dim] = PS.NavFormatter.fn.mcat;
-	PS.NavFormatter.fn[dim + "_multi"] = PS.NavFormatter.fn.mcat_multi;
-});
+//other dimensions are set below the mcatTree code
 
 PS.NavFormatter.fn.select2 = function () {
 	var localThis = this, 
@@ -1223,6 +1247,20 @@ PS.NavFormatter.fn.select2 = function () {
 		}
 	}
 	this.$el.select2(settings);
+	//check if there's an on initialize callback
+	if(settings.init){
+		if(typeof(settings.init) === "string"){
+			try{
+				settings.init = eval(settings.init);
+			}
+			catch(e){
+				DDK.error("Tree initialization function error : " + e);
+			}
+		}
+		if(typeof(settings.init) === "function"){
+			settings.init.call(this.$el);	
+		}
+	}
 };
 
 
@@ -1275,6 +1313,337 @@ PS.NavFormatter.fn.input = function () {
 	if(settings.targetKeyword){
 		this.$el.on("change", function(e){
 			K(settings.targetKeyword, $(this).val());
+		});
+	}
+};
+PS.NavFormatter.fn.mcatTree = function () {
+	var settings, dimType;
+	dimType = this.nav.substr(0, this.nav.indexOf("Tree"));
+	//the default dimensions settings is retrieved in this.getSettings()
+	settings = _.reduce(_.extend({}, {
+		"queryWidget": "SCIDIM_Query",
+		"targetKeyword": "p_" + dimType,
+		"internalKeywords": "&p_dimq_type=" + (dimType === "metric" ? "m" : dimType)
+	}, this.getSettings()), function(memo, value, key){memo[_.string.camelize("nav_"+key)] = value; return memo;}, {});
+	this.$el.data(settings);
+	this.$el.attr("data-nav", "tree").data("nav", "tree");
+	this.nav = "tree";
+	DDK.navFormat(this.$el);
+};
+_.each("metric org contact loc fcat fav event_cat event offering_cat offering extdim".split(" "), function(dim){
+	PS.NavFormatter.fn[dim] = PS.NavFormatter.fn.mcat;
+	PS.NavFormatter.fn[dim + "_multi"] = PS.NavFormatter.fn.mcat_multi;
+	PS.NavFormatter.fn[dim + "Tree"] = PS.NavFormatter.fn.mcatTree;
+});
+PS.NavFormatter.fn.tree = function () {
+	var settings, elemId, $treeButton, $treeDiv, $navTree, 
+		data, dataConfig, $searchBox, $searchLabel, $targetElem, treeValue,
+		ajaxDataFilter, treeParentSql;
+	elemId = this.$el.id;
+	settings = this.getSettings();
+	$targetElem = $.target(settings.targetElem);
+	//set the dimension type 
+	settings.dimqType = (settings.keywords && DDK.util.keywordFromUrl(settings.keywords, "p_dimq_type")) ||
+			(settings.internalKeywords && DDK.util.keywordFromUrl(settings.internalKeywords, "p_dimq_type"));
+	if(this.$el.is(":button")){
+		$treeButton = this.$el;
+		$treeDiv = $("<div class=\"navset2-tree-container\"/>");
+		$treeDiv.data($treeButton.data());
+		$treeButton.on("click", function(e){
+			var $this, $dialog;
+			$this = $(this);
+			$dialog = $this.data("dialog");
+			if(!$dialog || $dialog.length < 1){
+				$dialog = $("<div class=\"navset2-tree-dialog\"/>");
+				if(elemId){
+					$dialog.attr("id", elemId + "Dialog");
+				}
+				$this.data("dialog", $dialog);
+			}
+			$treeDiv.show().appendTo($dialog);
+			//if target field is specified add event on node click to set label on target field
+			if($targetElem){
+				$treeDiv.find(".jstree").on("select_node.jstree", function(e, data){ 
+					if($targetElem.is("input")){
+						if(settings.useIdAsValue){
+							treeValue = (data.node.a_attr && data.node.a_attr["data-id"]) || data.node.id;
+						}
+						else{
+							treeValue = (data.node.a_attr && data.node.a_attr["name"]) || data.node.id;
+						}
+						if($targetElem.data("select2")){
+							$targetElem.select2("data", {
+								"id": treeValue,
+								"text": data.node.text
+							}).trigger("change");
+						}
+						else{
+							$targetElem.val(treeValue);
+						}
+					}
+					else{
+						$targetElem.text(data.node.text);
+					}
+					$dialog.dialog("close");
+				});
+			}
+			//compute for width and height base from screen
+			settings.dialogWidth = $(window).width() * 0.5;
+			settings.dialogHeight = $(window).height() * 0.7;
+			$dialog.dialog(_.reduce(_.pick(settings, function (value, key) {
+				return _.string.startsWith(key, "dialog");
+			}), function (accumulator, value, key) {
+				accumulator[_.string.camelize(key.slice(6))] = value;
+				return accumulator;
+			}, {}));
+		});
+	}
+	else{
+		$treeDiv = this.$el;
+	}
+	//add search and tree container
+	if(settings.searchEnabled){
+		$searchLabel = $("<div class='nav-label'>Search</div>");
+		//add label for searchbox
+		$searchBox = $("<input type='text' class='navset2-tree-search' placeholder='Enter text here'/>");
+		if(elemId){
+			$searchBox.attr("id", elemId + "_search");
+		}
+		$treeDiv.append($searchLabel).append($searchBox);
+	}
+	$navTree = $("<div class='navset2-tree'/>");
+	if(elemId){
+		$navTree.attr("id", elemId + "_tree");
+	}
+	$treeDiv.append($navTree);
+	//combine user specified plugins to default plugins if any
+	if(settings.plugins){
+		if(typeof(settings.plugins) === "string"){
+			settings.plugins = [].concat(settings.plugins);
+		}
+		settings.plugins = _.union(settings.plugins, this.defaults.tree.plugins);
+	}
+	dataConfig = _.omit(settings, function(value, key){ return typeof(value) === "object"});
+	ajaxDataFilter = function (returnData) {
+		var result, columns, columnMapping, tempCol, data, aAttr, strippedRecord;
+		data = typeof(returnData) === "object" ? returnData : JSON.parse(returnData);
+		//the key is the field that jstree needs, and the value is the column (or substring of the column) of the sql
+		columnMapping = {
+			"id": settings.idField || (settings.queryWidget === "SCIDIM_Query" ? "tree_path_id" : "id"),
+			"text": settings.textField || "label",
+			"parent": settings.parentField || "parent",
+			"children": settings.childrenField || "has_children",
+			"type": settings.typeField || "type"
+		};
+		if(data && data.datasets && data.datasets[0]){
+			columns = data.datasets[0].columns;
+			//check if required field exist, if not use alias
+			_.each(columnMapping, function(alias, column){
+				if(_.findIndex(columns, {"name": column}) < 0){
+					tempCol = _.find(columns, function(columnAttrs){ return _.string.endsWith(columnAttrs.name, alias); });
+					if(tempCol){
+						tempCol.name = column;
+					}
+				}
+			});
+			result = treeData = data && data.datasets && data.datasets[0] && _.toRecordObjects(data.datasets[0]).rows;
+			
+			if (result) {
+				//add attribute for a element if not specified in the sql
+				if(_.findIndex(columns, {"name": "a_attr"}) < 0){
+					_.each(result, function(record, index){
+						aAttr = {};
+						//remove prefix of column to be generic
+						if(settings.queryWidget === "SCIDIM_Query"){
+							strippedRecord = _.reduce(record, function(accumulator, value, key){
+								if(key.indexOf("_") > -1){
+									accumulator[key.slice(key.indexOf("_") + 1)] = value;
+								}
+								return accumulator;
+							}, {});
+						}
+						else{
+							strippedRecord = record;
+						}
+						aAttr["data-id"] = strippedRecord.id;
+						aAttr["data-parent-id"] = strippedRecord.parent_id;
+						aAttr["data-tree-id"] = strippedRecord.tree_id;
+						aAttr["data-tree-parent-id"] = strippedRecord.tree_parent_id;
+						aAttr["name"] = strippedRecord.name;
+						aAttr["title"] = strippedRecord.name;
+						aAttr["type"] = record.type;
+						if(!_.isEmpty(aAttr)){
+							record["a_attr"] = aAttr;
+						}
+					});
+				}
+				// some jquery dataFilter needs a string to be returned
+				return JSON.stringify(result);
+			}
+		}
+		else{
+			DDK.error(data.errorMessage);
+			$navTree.html("An error occured. Check logs for more details.");
+		}
+	};
+	treeParentSql = "CASE WHEN recids.tree_path_parent_id = '' THEN '#' ELSE CONVERT(VARCHAR,recids.tree_path_parent_id) END AS parent";
+	$navTree.jstree($.extend(true, {
+		search: {
+			ajax: !dataConfig.serverPaged ? false : function(searchText, searchCallback){
+				delay(function(){
+					DDK.log("Tree start server search");
+					var keywords;
+					if(dataConfig.queryWidget === "SCIDIM_Query"){
+						keywords = {};
+						dataConfig.keywords = dataConfig.origKeywords || dataConfig.keywords || "";
+						//merge the internalKeywords with keywords
+						if(dataConfig.internalKeywords){
+							dataConfig.keywords = DDK.util.mergeUrl(dataConfig.internalKeywords, dataConfig.keywords || "");
+						}
+						keywords["p_dimq_custom_columns"] = "node_type,tree_path_id,tree_path_parent_id,tree_id,tree_parent_id";
+						keywords["p_dimq_hierarchy_leaf_search"] = searchText;
+						keywords["p_dimq_hierarchy_level"] = "99";
+						//replace empty parent id with # to be displayed as root node
+						keywords["p_dimq_expr_columns"] = encodeURIComponent(treeParentSql);
+						//updates or adds the keyword value to the url formatted keywords
+						_.each(keywords, function(value, key){
+							if(value){
+								dataConfig.keywords = DDK.util.mergeUrl("&" + key + "=" + value, dataConfig.keywords);
+							}
+						});
+					}
+					$.ajax({
+						dataType: "json",
+						url: "amengine.aspx",
+						type: "POST",
+						data: {
+							"config.mn": "DDK_Data_Request",
+							"data.config": JSON.stringify(dataConfig)
+						},
+						success: function(data){
+							var resultData, idToOpen;
+							resultData = JSON.parse(ajaxDataFilter(data));
+							idToOpen = [];
+							_.each(resultData, function(result, index){
+								idToOpen.push(result.id);
+							});
+							searchCallback.call(this, idToOpen);
+						}
+					});
+				}, 500);
+			}
+		},
+		core: {
+			check_callback: true,	//allows user to modify the tree  structure
+			data: {
+				dataType: "json",
+				url: "amengine.aspx",
+				type: "POST",
+				data: function(node){
+					var imWithCat, keywords;
+					keywords = {};
+					dimWithCat = {"m": "mcat", "contact": "org", "fav": "fcat", "event": "eventcat", "offering": "offeringcat"};
+					//check if queryWidget is a SCIDIM_Query and necessary keywords
+					if(dataConfig.queryWidget === "SCIDIM_Query"){
+						dataConfig.keywords = dataConfig.keywords || "";
+						//merge the internalKeywords with keywords
+						if(dataConfig.internalKeywords){
+							dataConfig.keywords = DDK.util.mergeUrl(dataConfig.internalKeywords, dataConfig.keywords || "");
+						}
+						keywords["p_dimq_custom_columns"] = "node_type,tree_path_id,tree_path_parent_id,tree_id,tree_parent_id";
+						if(dataConfig.serverPaged){	//for server paged
+							keywords["p_dimq_custom_columns"] += ",tree_has_children";
+							//construct parent sql
+							if(node.id === "#"){	//for root node
+								//store original keywords to avoid overriding 
+								dataConfig.origKeywords = dataConfig.keywords;
+								keywords["p_dimq_hierarchy_level"] = encodeURIComponent("=0");
+							}
+							else{	//for loading node via ajax
+								dataConfig.keywords = dataConfig.origKeywords;	//this is to avoid overriding keywords
+								keywords["p_dimq_hierarchy_level"] = "99";
+							}
+						}
+						else{	//for client paged
+							keywords["p_dimq_hierarchy_level"] = "99";
+						}
+						//change sorting of dim query
+						keywords["p_dimq_order_flag"] = "true";
+						keywords["p_dimq_order_columns"] = "node_type desc,sort_order,label";
+						//check if dimension type needs a category
+						if(dimWithCat[settings.dimqType]){
+							keywords["p_dimq_hierarchy_include_cat_rows"] = "true";
+							keywords["p_" + dimWithCat[settings.dimqType] + "_list"] = "ALL";
+						}
+						//replace empty parent id with # to be displayed as root node
+						keywords["p_dimq_expr_columns"] = encodeURIComponent(treeParentSql);
+						//add leaf filter for loading of expanded nodes on server-paged
+						if(node.id !== "#"){
+							keywords["p_dimq_custom_filter"] = encodeURIComponent("tree_path_parent_id='" + node.id + "'");
+						}
+						//updates or adds the keyword value to the url formatted keywords
+						_.each(keywords, function(value, key){
+							if(value){
+							//	dataConfig.keywords = DDK.util.keywordFromUrl(dataConfig.keywords, key, value);
+								dataConfig.keywords = DDK.util.mergeUrl("&" + key + "=" + value, dataConfig.keywords);
+							}
+						});
+					}
+					return {
+						"config.mn": "DDK_Data_Request",
+						"data.config": JSON.stringify(dataConfig),
+						"id": (node.id === "#" ? undefined : (node.a_attr["data-id"] || node.id))
+					};
+				},
+				dataFilter: ajaxDataFilter
+			}
+		}
+	}, settings));
+	//check if there's an on initialize callback
+	if(settings.init){
+		if(typeof(settings.init) === "string"){
+			try{
+				settings.init = eval(settings.init);
+			}
+			catch(e){
+				DDK.error("Tree initialization function error : " + e);
+			}
+		}
+		if(typeof(settings.init) === "function"){
+			settings.init.call($navTree);	
+		}
+	}
+	//add event on whole node to toggle nodes
+	$navTree.on("select_node.jstree", function(e, data){
+		$navTree.jstree("toggle_node", data.node);
+		if(settings.targetKeyword){
+			K(settings.targetKeyword + "_label", data.node.text);
+			if(settings.useIdAsValue){
+				K(settings.targetKeyword, (data.node.a_attr && data.node.a_attr["data-id"]) || data.node.id);
+			}
+			else{
+				K(settings.targetKeyword, (data.node.a_attr && data.node.a_attr["name"]) || data.node.id);
+			}
+		}
+	});
+	//add search event
+	if($searchBox){
+		$searchBox.on("keyup", function(e){
+			var $this, c;
+			$this = $(this);
+			c = e.which ? e.which : e.keycode;
+			if(!(c == 9 ||				//tab
+				(c > 15 && c < 21) ||			//shift, ctrl, alt capslock
+				c == 27 || c == 91 ||		//escape and window key
+				(c > 33 && c < 41) ||			//pgup, pgdown, end, home, nav arrows
+				c == 44 || c == 45 ||		//printscreen, pause
+				(c > 111 && c < 124) ||	//f1-f12
+				c == 255						//Fn Key
+			)) {
+				delay(function(){
+					$navTree.jstree(true).search($this.val());
+				});
+			}
 		});
 	}
 };
