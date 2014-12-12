@@ -18,7 +18,7 @@
 		// element ids must start with a lowercase letter
 		// and can contain only lowercase letters, numbers, and underscores
 		// and cannot end in an underscore
-		if (typeof target === "string" && /^[a-z][a-z0-9\_]*[a-z0-9]$/.test(target)) {
+		if (typeof target === "string" && /^[A-Za-z][A-Za-z0-9\_]*[A-Za-z0-9]$/.test(target)) {
 			$target = $("#" + target);
 			
 			if ($target.length) { return $target; }

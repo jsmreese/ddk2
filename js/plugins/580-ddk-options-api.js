@@ -495,6 +495,12 @@ PS.optionsAPI.navElemConfig = {
 				"description": "Widget that contains the sql query to retrieve the data for the select2 options.",
 				"notes": "The sql query should be in the html.detail of the widget."
 			},
+			"init": {
+				"id": "init",
+				"label": "Initialization callback",
+				"description": "A string function name to call after the control initialization",
+				"notes": "The function name should be existing and on a global scope."
+			},
 			"keywords": {
 				"id": "keywords",
 				"label": "Query Keywords",
@@ -584,6 +590,12 @@ PS.optionsAPI.navElemConfig = {
 				"description": "Icon Field mapping for select2",
 				"notes": "This is the alias name of the column set in the sql statement Eg. SQL: [SELECT sci_m_img AS dp_icon;] In the navset options, use iconField: dp_icon"
 			},
+			"iconField": {
+				"id": "icon_field",
+				"label": "Icon Field",
+				"description": "Icon Field mapping for select2",
+				"notes": "This is the alias name of the column set in the sql statement Eg. SQL: [SELECT sci_m_img AS dp_icon;] In the navset options, use iconField: dp_icon"
+			},
 			"typeDefault": {
 				"id": "type_default",
 				"label": "Type Default",
@@ -595,7 +607,7 @@ PS.optionsAPI.navElemConfig = {
 				"label": "Date Custom Type",
 				"description": "A string target fav (id in the fav value) or an array of json object to be used in the type dropdown.",
 				"notes": "The favorite used should be under the Pureshre Nav Formats category and the reference should be the id in the favorite value not the id or name of the favorite itself.",
-				"jsonOptionsApi": "{<br/>\"date-format\": \"Date format of the type. It follows most format in the <a target=\"_blank\" href=\"http://momentjs.com/docs/#/displaying/format/\">moment js</a> and it is case sensitive.\",<br/>\"value\": \"Value of the option in the date type. The value should have a prefix in the following: DAY, WEEK, MONTH, QUARTER, YEAR. The prefix is used to determine the default format to be used. You can have a value without the listed prefix if you specify the date format of the type.\",<br/>\"text\": \"Text displayed in the option of the date type. If not supplied, it will try to use the favorite label.\",<br/>\"tp-start-diff\": \"Initial value of the start date. May be a string in the current date format (e.g., \"01/26/2009\"), a number of days from today (e.g., +7) or a string of values and periods (\"y\" for years, \"m\" for months, \"w\" for weeks, \"d\" for days, e.g., \"+1m +7d\").\",<br/>\"tp-end-diff\": \"Initial value of the end date. May be a string in the current date format (e.g., \"01/26/2009\"), a number of days from today (e.g., +7) or a string of values and periods (\"y\" for years, \"m\" for months, \"w\" for weeks, \"d\" for days, e.g., \"+1m +7d\").\",<br/>\"show-tp-end\": \"Flag to show the end date field. Default is false. This is set to true if user wants to have a range of date.\"<br/>}"
+				"jsonOptionsApi": "{<br/>\"date-format\": \"Date format of the type. It follows most format in the <a target=\"_blank\" href=\"http://momentjs.com/docs/#/displaying/format/\">moment js</a> and it is case sensitive.\",<br/>\"value\": \"Value of the option in the date type. The first letter of the value is used to determine the default format to be used (D = Day, W = Week, M = Month, Q = Quarter, Y = Year).\",<br/>\"text\": \"Text displayed in the option of the date type. If not supplied, it will try to use the favorite label.\",<br/>\"tp-start-diff\": \"Initial value of the start date. May be a string in the current date format (e.g., \"01/26/2009\"), a number of days from today (e.g., +7) or a string of values and periods (\"y\" for years, \"m\" for months, \"w\" for weeks, \"d\" for days, e.g., \"+1m +7d\").\",<br/>\"tp-end-diff\": \"Initial value of the end date. May be a string in the current date format (e.g., \"01/26/2009\"), a number of days from today (e.g., +7) or a string of values and periods (\"y\" for years, \"m\" for months, \"w\" for weeks, \"d\" for days, e.g., \"+1m +7d\").\",<br/>\"show-tp-end\": \"Flag to show the end date field. Default is false. This is set to true if user wants to have a range of date.\"<br/>}"
 			},
 			"hideDateType": {
 				"id": "hide_date_type",
@@ -633,31 +645,83 @@ PS.optionsAPI.navElemConfig = {
 				"id": "empty_keyword_value",
 				"label": "Empty Keyword Value",
 				"description": "Value of the keyword if the select2 is cleared or whenever the select2 has no selection.",
-				"notes": "This option is only applicable if targetKeyword is supplied.",
+				"notes": "This option is only applicable if targetKeyword is supplied."
 			},
 			"searchKeyword": {
 				"id": "search_keyword",
 				"label": "Search Keyword",
 				"description": "Mapped from data_term. Same as the filterKeyword but this is triggered when a user types in the search for the navigation control.",
-				"notes": "If data-nav is set to a dimension, the default searchKeyword will be p_dimq_search.",
+				"notes": "If data-nav is set to a dimension, the default searchKeyword will be p_dimq_search."
 			},
 			"initKeyword": {
 				"id": "init_keyword",
 				"label": "Init Keyword",
 				"description": "Mapped from data_id. Keyword used to get the value in the query.",
-				"notes": "If data-nav is set to a dimension, the default searchKeyword will be p_dimq_list.",
+				"notes": "If data-nav is set to a dimension, the default searchKeyword will be p_dimq_list."
 			},
 			"extdim": {
 				"id": "extdim",
 				"label": "Extended Dimension",
 				"description": "The extended dimension name to be listed.",
-				"notes": "",
+				"notes": ""
 			},
 			"dateFormat": {
 				"id": "date_format",
 				"label": "Date Format",
 				"description": "Global date format for the nav control. It follows most format in the <a target=\"_blank\" href=\"http://momentjs.com/docs/#/displaying/format/\">moment js</a> and it is case sensitive.",
+				"notes": ""
+			},
+			"idField": {
+				"id": "id_field",
+				"label": "Id Field",
+				"description": "Id Field mapping for tree, if this is empty navset will use the column with an 'id' suffix in the sql"
+				"notes": "This is the alias name of the column set in the sql statement Eg. SQL: [SELECT sci_m_id AS m_id;] In the navset options, use idField: m_id"
+			},
+			"textField": {
+				"id": "text_field",
+				"label": "Text Field",
+				"description": "Text Field mapping for tree, if this is empty navset will use the column with an 'label' suffix in the sql"
+				"notes": "This is the alias name of the column set in the sql statement Eg. SQL: [SELECT sci_m_label AS m_label;] In the navset options, use textField: m_label"
+			},
+			"parentField": {
+				"id": "parent_field",
+				"label": "Parent Field",
+				"description": "Parent Field mapping for tree, if this is empty navset will use the column with an 'parent' suffix in the sql"
+				"notes": "This is the alias name of the column set in the sql statement Eg. SQL: [SELECT sci_m_parent_id AS m_parent;] In the navset options, use parentField: m_parent"
+			},
+			"childrenField": {
+				"id": "children_field",
+				"label": "Children Field",
+				"description": "Chilren Field mapping for tree, if this is empty navset will use the column with an 'has_children' suffix in the sql"
+				"notes": "This is the alias name of the column set in the sql statement Eg. SQL: [SELECT 'true' AS has_children;] In the navset options, use childrenField: m_has_children"
+			},
+			"typeField": {
+				"id": "type_field",
+				"label": "Type Field",
+				"description": "Type Field mapping for tree, if this is empty navset will use the column with an 'type' suffix in the sql"
+				"notes": "This is the alias name of the column set in the sql statement Eg. SQL: [SELECT node_type AS type;] In the navset options, use typeField: node_type"
+			},
+			"targetElem": {
+				"id": "target_elem",
+				"label": "Target Element",
+				"description": "Used only for tree button mode. If this is specified and when user selects a tree node, the id/label will be set on the target element.",
+				"notes": "Can be an input, select2 or a label. For input, the id will be set in the value. For select2, the id and label will be set as value and text respectively. For labels or other elements, the label will be set as the text."
+			},
+			"useIdAsValue": {
+				"id": "use_id_as_value",
+				"label": "Use Id as Value",
+				"description": "For tree only. If set to true, navset2 will use the id as the value when updating the target keyword otherwise it will use the name.",
 				"notes": "",
+				"values": [
+					{
+						"value": "true",
+						"label": "True"
+					},
+					{
+						"value": "false",
+						"label": "False"
+					}
+				]
 			}
 		}
 	}		
