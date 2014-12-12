@@ -407,7 +407,7 @@ DDK.options.set = function (controlName, controlId) {
 			
 			// if `keywords` then instantiate the `value` as keywords
 			if (optionName === "keywords") { 
-				K(evalKeywordValue(optionValue));
+				K(evalKeywordValue(optionValue.replace(/%25%25/g, DDK.char.tilde)));
 			}
 		} else {
 			optionsWidget = K(controlName + "_" + optionName);
