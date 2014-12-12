@@ -194,7 +194,107 @@
 				}
 
 				return width;
-			}	
+			},
+			/*
+			   Function: DDK.util.keywordFromUrl
+
+			   Sets or gets the keyword value from the given url formatted keyword-value pair
+
+			   Parameters:
+
+				  url - The url formatted keyword-value pair
+				  keyword - Keyword name to get the value from
+				  value - optional, if supplied, value will be set to the keyword name
+
+			   Returns:
+
+				  If get, returns a string value of the keyword
+				  If set, returns the new url formatted keyword-value pair
+
+			*/
+			keywordFromUrl: function(url, keyword, value) {
+				"use strict";
+				var keyPairs, keyPairArr, keywordValue, newUrl;
+				if(typeof(url) !== "undefined" && keyword){
+					keyPairs = url.split("&");
+					keyPairs = _.map(keyPairs, function(keyPair, index){
+						keyPairArr = keyPair.split("=");
+						if(keyPairArr[0] === keyword){
+							if(typeof(value) !== "undefined"){	//if value is specified, set it to the keyword value
+								keyPairArr[1] = value;
+							}
+							else{	//if value is undefined, return the keyword value
+								keywordValue = keyPairArr[1];
+							}
+						}
+						return keyPairArr.join("=");
+					});
+					//if value has a value and keyword does not exist yet, add it in the url
+					if(typeof(value) !== "undefined"){
+						newUrl = keyPairs.join("&");
+						if(newUrl === url){
+							newUrl += "&" + keyword + "=" + value;
+						}
+						return newUrl;
+					}
+					return keywordValue;
+				}
+			},
+			/*
+			   Function: DDK.util.mergeUrl
+
+			   Merge two or more url formatted keyword value pair without duplicates. 
+			   If a property of the first object is itself an object or array, 
+			   it will be completely overwritten by a property with the same key in the second or subsequent object
+
+			   Parameters:
+
+				  Two or more url formatted keyword-value pair
+
+			   Returns:
+
+				  Returns the merged url
+
+			*/
+			mergeUrl: function() {
+				"use strict";
+				var ctr, url1, url2, keyPairs1, keyPairs2, keyPairArr1, keyPairArr2, newKeyPairs, excludePair, newUrl;
+				excludePair = [];
+				newKeyPairs = [];
+				url1 = arguments[0];
+				url2 = arguments[1];
+				if(typeof(url1) !== "undefined" && typeof(url2) !== "undefined"){
+					keyPairs1 = url1.split("&");
+					keyPairs2 = url2.split("&");
+					_.each(keyPairs1, function(keyPair1, index){
+						keyPairArr1 = keyPair1.split("=");
+						_.each(keyPairs2, function(keyPair2, index2){
+							keyPairArr2 = keyPair2.split("=");
+							if(keyPairArr2[0]){
+								if(keyPairArr1[0] === keyPairArr2[0]){
+									keyPairArr1[1] = keyPairArr2[1];
+									excludePair.push(keyPair2);
+								}
+							}
+						});
+						if(keyPairArr1[0]){
+							newKeyPairs.push("&" + keyPairArr1[0] + "=" + keyPairArr1[1]);
+						}
+					});
+					_.each(keyPairs2, function(keyPair2, index2){
+						if(excludePair.indexOf(keyPair2) < 0 && keyPair2){
+							newKeyPairs.push("&" + keyPair2);
+						}
+					});
+					ctr = 2;
+					newUrl = newKeyPairs.join("");
+					while(arguments[ctr]){
+						newUrl = mergeUrl(newUrl, arguments[ctr]);
+						ctr++;
+					}
+					return newUrl
+				}
+			}
 		};
 		
 		function focus(e) {
