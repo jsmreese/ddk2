@@ -557,8 +557,8 @@ i.jstree-icon {
 	right: 15px;
 	overflow: auto;
 }
-.jstree-default > .jstree-container-ul .jstree-loading > .jstree-ocl {
-  background: url("../imgs/spinner_16x16.gif") center center no-repeat;
+.jstree-default > .jstree-container-ul li.jstree-loading > .jstree-ocl:before {
+	content: url("../imgs/spinner_16x16.gif");
 }
 .jstree-rename-input{
 	margin-left: 20px;

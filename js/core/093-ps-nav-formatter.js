@@ -1337,11 +1337,12 @@ _.each("metric org contact loc fcat fav event_cat event offering_cat offering ex
 });
 PS.NavFormatter.fn.tree = function () {
 	var settings, elemId, $treeButton, $treeDiv, $navTree, 
-		data, dataConfig, $searchBox, $searchLabel, $targetElem, treeValue,
-		ajaxDataFilter, treeParentSql;
+		data, $searchBox, $searchLabel, $targetElem, treeValue,
+		ajaxDataFilter, treeParentSql, dimWithCat;
 	elemId = this.$el.id;
 	settings = this.getSettings();
 	$targetElem = $.target(settings.targetElem);
+	dimWithCat = {"m": "mcat", "contact": "org", "fav": "fcat", "event": "eventcat", "offering": "offeringcat"};
 	//set the dimension type 
 	settings.dimqType = (settings.keywords && DDK.util.keywordFromUrl(settings.keywords, "p_dimq_type")) ||
 			(settings.internalKeywords && DDK.util.keywordFromUrl(settings.internalKeywords, "p_dimq_type"));
@@ -1423,7 +1424,7 @@ PS.NavFormatter.fn.tree = function () {
 		}
 		settings.plugins = _.union(settings.plugins, this.defaults.tree.plugins);
 	}
-	dataConfig = _.omit(settings, function(value, key){ return typeof(value) === "object"});
+//	dataConfig = _.omit(settings, function(value, key){ return typeof(value) === "object"});
 	ajaxDataFilter = function (returnData) {
 		var result, columns, columnMapping, tempCol, data, aAttr, strippedRecord;
 		data = typeof(returnData) === "object" ? returnData : JSON.parse(returnData);
@@ -1489,36 +1490,44 @@ PS.NavFormatter.fn.tree = function () {
 	treeParentSql = "CASE WHEN recids.tree_path_parent_id = '' THEN '#' ELSE CONVERT(VARCHAR,recids.tree_path_parent_id) END AS parent";
 	$navTree.jstree($.extend(true, {
 		search: {
-			ajax: !dataConfig.serverPaged ? false : function(searchText, searchCallback){
+			ajax: !settings.serverPaged ? false : function(searchText, searchCallback){
+				var dataToPass;
+				dataToPass = _.clone(settings);
 				delay(function(){
 					DDK.log("Tree start server search");
 					var keywords;
-					if(dataConfig.queryWidget === "SCIDIM_Query"){
+					if(settings.queryWidget === "SCIDIM_Query"){
 						keywords = {};
-						dataConfig.keywords = dataConfig.origKeywords || dataConfig.keywords || "";
+						dataToPass.keywords = dataToPass.keywords || "";
 						//merge the internalKeywords with keywords
-						if(dataConfig.internalKeywords){
-							dataConfig.keywords = DDK.util.mergeUrl(dataConfig.internalKeywords, dataConfig.keywords || "");
+						if(dataToPass.internalKeywords){
+							dataToPass.keywords = DDK.util.mergeUrl(dataToPass.internalKeywords, dataToPass.keywords || "");
 						}
-						keywords["p_dimq_custom_columns"] = "node_type,tree_path_id,tree_path_parent_id,tree_id,tree_parent_id";
+						keywords["p_dimq_custom_columns"] = "node_type,tree_path_id,tree_path_parent_id,tree_id,tree_parent_id,tree_has_children";
 						keywords["p_dimq_hierarchy_leaf_search"] = searchText;
 						keywords["p_dimq_hierarchy_level"] = "99";
+						//check if dimension type needs a category
+						if(dimWithCat[settings.dimqType]){
+							keywords["p_dimq_hierarchy_include_cat_rows"] = "true";
+							keywords["p_" + dimWithCat[settings.dimqType] + "_list"] = "ALL";
+						}
 						//replace empty parent id with # to be displayed as root node
 						keywords["p_dimq_expr_columns"] = encodeURIComponent(treeParentSql);
 						//updates or adds the keyword value to the url formatted keywords
 						_.each(keywords, function(value, key){
 							if(value){
-								dataConfig.keywords = DDK.util.mergeUrl("&" + key + "=" + value, dataConfig.keywords);
+								dataToPass.keywords = DDK.util.mergeUrl(dataToPass.keywords, "&" + key + "=" + value);
 							}
 						});
 					}
+					$navTree.am("showmask");
 					$.ajax({
 						dataType: "json",
 						url: "amengine.aspx",
 						type: "POST",
 						data: {
 							"config.mn": "DDK_Data_Request",
-							"data.config": JSON.stringify(dataConfig)
+							"data.config": JSON.stringify(dataToPass).replace(/\[/g, "\\[").replace(/\]/g, "\\]")
 						},
 						success: function(data){
 							var resultData, idToOpen;
@@ -1540,28 +1549,28 @@ PS.NavFormatter.fn.tree = function () {
 				url: "amengine.aspx",
 				type: "POST",
 				data: function(node){
-					var imWithCat, keywords;
+					var imWithCat, keywords, dataToPass;
 					keywords = {};
-					dimWithCat = {"m": "mcat", "contact": "org", "fav": "fcat", "event": "eventcat", "offering": "offeringcat"};
+					dataToPass = _.clone(settings);
 					//check if queryWidget is a SCIDIM_Query and necessary keywords
-					if(dataConfig.queryWidget === "SCIDIM_Query"){
-						dataConfig.keywords = dataConfig.keywords || "";
+					if(settings.queryWidget === "SCIDIM_Query"){
+						dataToPass.keywords = dataToPass.keywords || "";
 						//merge the internalKeywords with keywords
-						if(dataConfig.internalKeywords){
-							dataConfig.keywords = DDK.util.mergeUrl(dataConfig.internalKeywords, dataConfig.keywords || "");
+						if(dataToPass.internalKeywords){
+							dataToPass.keywords = DDK.util.mergeUrl(dataToPass.internalKeywords, dataToPass.keywords || "");
 						}
 						keywords["p_dimq_custom_columns"] = "node_type,tree_path_id,tree_path_parent_id,tree_id,tree_parent_id";
-						if(dataConfig.serverPaged){	//for server paged
+						if(settings.serverPaged){	//for server paged
 							keywords["p_dimq_custom_columns"] += ",tree_has_children";
 							//construct parent sql
-							if(node.id === "#"){	//for root node
-								//store original keywords to avoid overriding 
-								dataConfig.origKeywords = dataConfig.keywords;
-								keywords["p_dimq_hierarchy_level"] = encodeURIComponent("=0");
-							}
-							else{	//for loading node via ajax
-								dataConfig.keywords = dataConfig.origKeywords;	//this is to avoid overriding keywords
+							if(node.id !== "#" || DDK.util.keywordFromUrl(dataToPass.keywords, "p_dimq_hierarchy_leaf_search")){	//for loading node via ajax
+					//			dataToPass.keywords = dataToPass.origKeywords;	//this is to avoid overriding keywords
 								keywords["p_dimq_hierarchy_level"] = "99";
+							}
+							else{	//for root node
+								//store original keywords to avoid overriding 
+					//			dataToPass.origKeywords = dataToPass.keywords;
+								keywords["p_dimq_hierarchy_level"] = encodeURIComponent("=0");
 							}
 						}
 						else{	//for client paged
@@ -1584,14 +1593,13 @@ PS.NavFormatter.fn.tree = function () {
 						//updates or adds the keyword value to the url formatted keywords
 						_.each(keywords, function(value, key){
 							if(value){
-							//	dataConfig.keywords = DDK.util.keywordFromUrl(dataConfig.keywords, key, value);
-								dataConfig.keywords = DDK.util.mergeUrl("&" + key + "=" + value, dataConfig.keywords);
+								dataToPass.keywords = DDK.util.mergeUrl("&" + key + "=" + value, dataToPass.keywords);
 							}
 						});
 					}
 					return {
 						"config.mn": "DDK_Data_Request",
-						"data.config": JSON.stringify(dataConfig),
+						"data.config": JSON.stringify(dataToPass).replace(/\[/g, "\\[").replace(/\]/g, "\\]"),
 						"id": (node.id === "#" ? undefined : (node.a_attr["data-id"] || node.id))
 					};
 				},
@@ -1626,6 +1634,27 @@ PS.NavFormatter.fn.tree = function () {
 			}
 		}
 	});
+	//add event on searching to display no result if there are no matches
+	$navTree.on("search.jstree", function(e, data){
+		var $noResultDiv;
+		if(data.res.length){	//display no result msg and hide tree
+			$navTree.find(">div.no-result-msg").hide();
+			$navTree.find(">ul").show();
+		}
+		else{	//show tree and hide no result msg
+			$noResultDiv = $navTree.find(">div.no-result-msg");
+			if(!$noResultDiv.length){
+				$noResultDiv = $navTree.append('<div class="no-result-msg">No Match Found</div>');
+			}
+			$noResultDiv.show();
+			$navTree.find(">ul").hide();
+		}
+		$navTree.am("hidemask");
+	});
+	$navTree.on("clear_search.jstree", function(e, data){
+		$navTree.find(">div.no-result-msg").hide();
+		$navTree.find(">ul").show();
+	});
 	//add search event
 	if($searchBox){
 		$searchBox.on("keyup", function(e){
@@ -1641,7 +1670,14 @@ PS.NavFormatter.fn.tree = function () {
 				c == 255						//Fn Key
 			)) {
 				delay(function(){
-					$navTree.jstree(true).search($this.val());
+	/*				if(settings.serverPaged){
+						settings.internalKeywords = DDK.util.mergeUrl(settings.internalKeywords || "", "&p_dimq_hierarchy_leaf_search=" + $this.val());
+						$navTree.jstree("refresh");
+						settings.internalKeywords = DDK.util.mergeUrl(settings.keywords || "", "&p_dimq_hierarchy_leaf_search=");
+					}
+					else{
+	*/					$navTree.jstree(true).search($this.val());
+	//				}
 				});
 			}
 		});
