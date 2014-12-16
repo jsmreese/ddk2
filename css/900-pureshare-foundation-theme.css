@@ -206,6 +206,8 @@ button:not(.ui-button):hover, button:not(.ui-button):focus {
 	color: #666;
 }
 
+.main-section .jstree ul .jstree-initial-node > .jstree-ocl:before,
+.ui-dialog .jstree ul .jstree-initial-node > .jstree-ocl:before,
 .main-section .jstree ul .jstree-node > .jstree-ocl:before,
 .ui-dialog .jstree ul .jstree-node > .jstree-ocl:before {
 	top: 4px;
@@ -254,6 +256,7 @@ button:not(.ui-button):hover, button:not(.ui-button):focus {
 	content: '\01F7';
 }
 
+.off-canvas-list .jstree-initial-node > .jstree-ocl:before,
 .off-canvas-list .jstree-node > .jstree-ocl:before {
 	top: 12px;
 	position: absolute;
@@ -474,11 +477,9 @@ i.jstree-icon {
   border-left-color: white;
   background: #e2e3e3;
 }
-.jstree-default .jstree-search {
-  font-style: italic;
-  color: #8b0000;
-  font-weight: bold;
-}
+
+
+
 .jstree-default .jstree-no-checkboxes .jstree-checkbox {
   display: none !important;
 }
@@ -602,8 +603,63 @@ i.jstree-icon {
 #jstree-dnd.jstree-default .jstree-er {
 	background-position: -36px -68px;
 }
+
+/*
+// this made really strange effects with the existing trees
+// in the docs viewer and favorites catalog apps
 .jstree-default .jstree-clicked {
   background: #beebff;
   border-radius: 2px;
   box-shadow: inset 0 0 1px #999999;
+}
+*/
+
+/*
+// replacing this with jstree-search styles used in the
+// favorites catalog and docs viewer apps
+.jstree-default .jstree-search {
+  font-style: italic;
+  color: #8b0000;
+  font-weight: bold;
+}
+*/
+
+/* below here added by jsmreese, styles culled from DDK2_Docs and Favorites_Catalog apps */
+
+.jstree-anchor:focus {
+	outline: none;
+}
+
+.jstree-search {
+	background: hsla(48, 87%, 60%, 0.5);
+}
+
+.jstree ul li a.jstree-search:hover,
+.left-off-canvas-menu .jstree ul li a.jstree-search:hover,
+.main-section .jstree ul li a.jstree-search:hover {
+	background: hsla(48, 87%, 35%, 0.35);
+}
+
+.jstree-selected {
+	background: hsla(212, 87%, 70%, 0.5);
+}
+
+.jstree ul li a.jstree-selected:hover,
+.left-off-canvas-menu .jstree ul li a.jstree-selected:hover,
+.main-section .jstree ul li a.jstree-selected:hover {
+	background: hsla(212, 87%, 35%, 0.35);
+}
+
+.jstree-search.jstree-selected {
+	background: hsla(190, 87%, 70%, 0.5);
+}
+
+.jstree-search.jstree-selected:hover,
+.left-off-canvas-menu .jstree ul li a.jstree-search.jstree-selected:hover,
+.main-section .jstree ul li a.jstree-search.jstree-selected:hover {
+	background: hsla(190, 87%, 40%, 0.35);
+}
+
+.jstree-initial-node > a > .jstree-themeicon-hidden {
+	margin-left: 1.4em;
 }
