@@ -573,8 +573,8 @@ i.jstree-icon {
 	right: 15px;
 	overflow: auto;
 }
-.jstree-default > .jstree-container-ul .jstree-loading > .jstree-ocl {
-  background: url("../imgs/spinner_16x16.gif") center center no-repeat;
+.jstree-default > .jstree-container-ul li.jstree-loading > .jstree-ocl:before {
+	content: url("../imgs/spinner_16x16.gif");
 }
 .jstree-rename-input{
 	margin-left: 20px;
@@ -601,4 +601,9 @@ i.jstree-icon {
 }
 #jstree-dnd.jstree-default .jstree-er {
 	background-position: -36px -68px;
+}
+.jstree-default .jstree-clicked {
+  background: #beebff;
+  border-radius: 2px;
+  box-shadow: inset 0 0 1px #999999;
 }
