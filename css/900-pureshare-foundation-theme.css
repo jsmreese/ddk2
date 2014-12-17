@@ -663,3 +663,15 @@ i.jstree-icon {
 .jstree-initial-node > a > .jstree-themeicon-hidden {
 	margin-left: 1.4em;
 }
+
+/*
+// leaving this out for now... overlaps the spinner
+jstree-default > .jstree-container-ul .jstree-loading > .jstree-anchor {
+	display: inline-block;
+	color: black;
+	white-space: nowrap;
+	padding: 0 4px 0 1px;
+	margin: 0;
+	vertical-align: top;
+}
+*/
