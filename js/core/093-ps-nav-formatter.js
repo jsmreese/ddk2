@@ -304,53 +304,71 @@ PS.NavFormatter.fn.functions = {
 				if(settings.internalKeywords){
 					settings.keywords = DDK.util.mergeUrl(settings.internalKeywords, settings.keywords || "");
 				}
-				$.extend(true, dataToPass, K.toObject("p_"), {
+				element.uniqueId();	//generate id to serialize jquery object to pass
+				var dataList = PS.NavFormatter.dataList || [];
+				dataList.push($.extend(true, {}, settings, {"id": wrappedValue || element.val(), "elementId": element.attr("id"), "keywords": (settings.keywords || "") + K.toURL("p_") + "&" + settings.initKeyword + "=" + dataToPass[settings.initKeyword]}));
+				$.extend(true, dataToPass, {
 					"config.mn": "DDK_Data_Request",
 					"filterColumn": settings.filterColumn,
 					"columnPrefix": settings.columnPrefix,
-					"data.config": JSON.stringify($.extend(true, {}, settings, {"id": wrappedValue || element.val()}))
+					"data.config": DDK.escape.brackets(JSON.stringify(dataList))//JSON.stringify($.extend(true, {}, settings, {"id": wrappedValue || element.val(), "element": element.attr("id")}))
 				});
-				$.post("amengine.aspx", dataToPass, 
-					function(data) {
-						var dataset = data && data.datasets && data.datasets[0],
-							records = dataset && dataset.rows,
-							results = [],
-							valueWrapString = settings.valueWrapString || "",
-							valueIndex, labelIndex, keywordLabel;
-						if(records && records.length){
-							//if value and label field is specified, use it
-							valueIndex = navFormatter.getColumnIndex(dataset.columns, settings.valueField) || navFormatter.getColumnIndex(dataset.columns, "name", true);
-							labelIndex = navFormatter.getColumnIndex(dataset.columns, settings.labelField) || navFormatter.getColumnIndex(dataset.columns, "label", true);
-							selectedData = _.map(records, function(record, key){
-								return {"id": record[valueIndex], "text": record[labelIndex]};
+				PS.NavFormatter.dataList = dataList;
+				delay(function(){
+					$.post("amengine.aspx", dataToPass, 
+						function(data) {
+							var datasetList, dataset, records, results, config, valueWrapString,
+								selectedData, valueIndex, labelIndex, keywordLabel, $elem;
+							datasetList = data && data.datasets
+							PS.NavFormatter.dataList = undefined;
+							_.each(datasetList, function(item, index){
+								dataset = data && data.datasets && data.datasets[index];
+								records = dataset && dataset.rows;
+								results = [];
+								selectedData = [];
+								config = dataset.config;
+								valueWrapString = config.valueWrapString || "";
+								$elem = $("#" + config.elementId);
+								if(records && records.length){
+									//if value and label field is specified, use it
+									valueIndex = navFormatter.getColumnIndex(dataset.columns, config.valueField) || navFormatter.getColumnIndex(dataset.columns, "name", true);
+									labelIndex = navFormatter.getColumnIndex(dataset.columns, config.labelField) || navFormatter.getColumnIndex(dataset.columns, "label", true);
+									selectedData = _.map(records, function(record, key){
+										return {"id": record[valueIndex], "text": record[labelIndex]};
+									});
+								}
+								if(config.multiple){
+									if(selectedData && selectedData.length === 0){
+										//if there's no corresponding label display the value instead.
+										selectedData.push({id: config.id, text: config.id});
+									}
+									keywordLabel = "";
+									_.each(selectedData, function(item, index){
+										keywordlabel += item.text + ",";
+									});
+									if(keywordLabel){
+										//remove last comma
+										keywordLabel = keywordLabel.substr(0, keywordLabel.length-1);
+									}
+									if($elem && $elem.length){
+										$elem.select2("data", selectedData);
+									}
+								}
+								else{
+									if(!selectedData[0]){
+										//if there's no corresponding label display the value instead.
+										selectedData.push({id: config.id, text: config.id});
+									}
+									keywordLabel = selectedData[0].text;
+									if($elem && $elem.length){
+										$elem.select2("data", selectedData[0]);
+									}
+								}
+								K(config.targetKeyword + "_label", keywordLabel || "");
 							});
-						}
-						if(settings.multiple){
-							if(selectedData && selectedData.length === 0){
-								//if there's no corresponding label display the value instead.
-								selectedData.push({id: data.config.id, text: data.config.id});
-							}
-							keywordLabel = "";
-							_.each(selectedData, function(item, index){
-								keywordlabel += item.text + ",";
-							});
-							if(keywordLabel){
-								//remove last comma
-								keywordLabel = keywordLabel.substr(0, keywordLabel.length-1);
-							}
-							callback(selectedData);
-						}
-						else{
-							if(!selectedData[0]){
-								//if there's no corresponding label display the value instead.
-								selectedData.push({id: data.config.id, text: data.config.id});
-							}
-							keywordLabel = selectedData[0].text;
-							callback(selectedData[0]);
-						}
-						K(settings.targetKeyword + "_label", keywordLabel || "");
-						return;
-					}, "json");
+							return;
+						}, "json");
+				}, 200);
 			}
 			else{
 				ids = element.val().split(",");
@@ -697,11 +715,12 @@ PS.NavFormatter.fn.functions = {
 					}
 				},
 				onClose: _.wrap(settings.onClose, function (func, dateText, inst) {
+					var $this = $(this);
 					if(func){
 						func(dateText, inst);
 					}
-					$(this).datepicker("setDate", (new moment(inst.selectedYear, "YYYY")).toDate());
-					$(this).trigger("change");
+					$this.datepicker("setDate", (new moment(inst.selectedYear, "YYYY")).toDate());
+					$this.trigger("change");
 				})
 			});
 			$field.datepicker(options);
@@ -723,11 +742,12 @@ PS.NavFormatter.fn.functions = {
 					}
 				},
 				onClose: _.wrap(settings.onClose, function (func, dateText, inst) {
+					var $this = $(this);
 					if(func){
 						func(dateText, inst);
 					}
-					$(this).datepicker("setDate", moment(inst.selectedYear + "-" + _.string.lpad(inst.selectedMonth + 1, 2, "0"), "YYYY-MM").toDate()); //new Date(inst.selectedYear + "-" + _.string.lpad(inst.selectedMonth + 1, 2, "0")));
-					$(this).trigger("change");
+					$this.datepicker("setDate", moment(inst.selectedYear + "-" + _.string.lpad(inst.selectedMonth + 1, 2, "0"), "YYYY-MM").toDate()); //new Date(inst.selectedYear + "-" + _.string.lpad(inst.selectedMonth + 1, 2, "0")));
+					$this.trigger("change");
 				})
 			});
 			$field.datepicker(options).on("change", function(e){
@@ -770,12 +790,12 @@ PS.NavFormatter.fn.functions = {
 					}
 				},
 				onClose: _.wrap(settings.onClose, function (func, dateText, inst) {
+					var $this = $(this);
 					if(func){
 						func(dateText, inst);
 					}
-				//	this.value = inst.selectedYear + "-" + _.string.lpad(inst.selectedMonth + 1, 2, "0");
-					$(this).datepicker("setDate", (new moment(inst.selectedYear + "-" + _.string.lpad(inst.selectedMonth + 1, 2, "0"), "YYYY-MM")).toDate());
-					$(this).trigger("change");
+					$this.datepicker("setDate", (new moment(inst.selectedYear + "-" + _.string.lpad(inst.selectedMonth + 1, 2, "0"), "YYYY-MM")).toDate());
+					$this.trigger("change");
 				})
 			});
 			$field.datepicker(options);
@@ -802,7 +822,6 @@ PS.NavFormatter.fn.functions = {
 					if (this.value) {
 						val = this.value.split("-W");
 						return {
-						//	defaultDate: new Date(val[0], 1, val[1] * 7)
 							defaultDate: new Date(inst.selectedYear, inst.selectedMonth, inst.selectedDay)
 						};
 					}
@@ -1564,12 +1583,9 @@ PS.NavFormatter.fn.tree = function () {
 							keywords["p_dimq_custom_columns"] += ",tree_has_children";
 							//construct parent sql
 							if(node.id !== "#" || DDK.util.keywordFromUrl(dataToPass.keywords, "p_dimq_hierarchy_leaf_search")){	//for loading node via ajax
-					//			dataToPass.keywords = dataToPass.origKeywords;	//this is to avoid overriding keywords
 								keywords["p_dimq_hierarchy_level"] = "99";
 							}
 							else{	//for root node
-								//store original keywords to avoid overriding 
-					//			dataToPass.origKeywords = dataToPass.keywords;
 								keywords["p_dimq_hierarchy_level"] = encodeURIComponent("=0");
 							}
 						}
@@ -1670,14 +1686,7 @@ PS.NavFormatter.fn.tree = function () {
 				c == 255						//Fn Key
 			)) {
 				delay(function(){
-	/*				if(settings.serverPaged){
-						settings.internalKeywords = DDK.util.mergeUrl(settings.internalKeywords || "", "&p_dimq_hierarchy_leaf_search=" + $this.val());
-						$navTree.jstree("refresh");
-						settings.internalKeywords = DDK.util.mergeUrl(settings.keywords || "", "&p_dimq_hierarchy_leaf_search=");
-					}
-					else{
-	*/					$navTree.jstree(true).search($this.val());
-	//				}
+					$navTree.jstree(true).search($this.val());
 				});
 			}
 		});
