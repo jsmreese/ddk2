@@ -4,6 +4,8 @@ function keywordupdateHandler(e) {
 	var keywords = e.keywords;
 
 	if (keywords) {
+		updateFavLinks();
+		
 		_.each(keywords, function (value, key) {
 			// data-watch
 			$document.find('[data-watch~="' + key + '"]').findControls().reloadControls();
@@ -119,6 +121,105 @@ function navGoHandler(e) {
 	$controls.reloadControls();
 	$(".exit-off-canvas").click();
 }
+
+function favLinkToggleHandler(e) {
+	var $target;
+	
+	$target = $(e.currentTarget).closest(".app-link").siblings(".fav-link");
+
+	updateFavLinks();
+	$target.slideToggle();
+};
+
+function updateFavLinks() {
+	var $links, parameters;
+
+	$links = $(".fav-link");
+
+	parameters = K.toObject(["fcon", "p_"]);
+	parameters = _.omit(parameters, function (value, key) {
+		return _.string.startsWith(key, "p_fc_");
+	});
+	
+	$links.each(function (index, elem) {
+		var $link, href;
+		
+		$link = $(elem).find("a");
+		href = window.location.origin + window.location.pathname + $link.data("base") + "&" + $.param(parameters);
+		
+		$link.attr("href", href).text(href);
+	});
+}
+
+function toggleCSV() {
+	$document.find(".fav-header").each(function (index, elem) {
+		var $elem, $csv;
+		
+		$elem = $(elem);
+		$csv = $elem.siblings().find(".control-export-csv");
+		
+		$elem.find(".fav-export-csv")[$csv.length ? "show" : "hide"]();
+	});
+}
+
+function favExportCSVHandler(e) {
+	var $targets;
+
+	$targets = $(e.currentTarget).closestControlGroup();
+
+	$targets.each(function (index, elem) {
+		var $csv, data;
+
+		$csv = $(elem).find(".control-export-csv");
+		data = $csv.data();
+	
+		var url = "amengine.aspx",
+			insertWidget = "PSC_CCS_Export_Parameters",
+			exportWidget = "PSC_CCS_Data_Set",
+			exportData = data.url.slice(40).replace(/'/g, "''"),
+			detail = _.toCase("camel", _.string.parseQueryString(exportData)),
+			name = detail.componentName,
+			id = detail.componentId,
+			exportGetData = function (feid) {
+				var data = {
+					"config.mn": exportWidget,
+					"output": "csv",
+					"f_eid": feid,
+					"component_name": name,
+					"component_id": id
+				};
+				
+				data[name + "_id"] = id;
+				data[name + "_export_query_widget"] = detail[name + "ExportQueryWidget"];
+				data[name + "_query_header_widget"] = detail[name + "QueryHeaderWidget"];
+				data[name + "_query_widget"] = detail[name + "QueryWidget"];
+				data[name + "_datasource"] = detail[name + "Datasource"];
+				data.filename = detail.filename;
+				//extend data json
+				_.each(K.toObject("p_"), function(value, key){
+					if(value !== ""){
+						data[key] = value;
+					}
+				});
+				return data;
+			},
+			loadingMessage = "<html><head><title>Building CSV Output...</title><style>body { background: #f4f4f4; text-align: center; font-family: sans-serif; font-size: 1em; line-height: 1.414em; color: #444; }</style></head><body><div>Building CSV Output...</div></body></html>",
+			exportWindow = window.open();
+
+		exportWindow.document.open();
+		exportWindow.document.write(loadingMessage);
+		exportWindow.document.close();
+			
+		$.post(url, {
+			"config.mn": insertWidget,
+			"fav_export_value": exportData
+		},
+		function (feid) {
+			exportWindow.location = url + "?" + $.param(exportGetData(feid));
+		});
+	});
+}
+
 /*
 function appLinkHandler(e) {
 	var $target;
@@ -176,6 +277,8 @@ if (!DDK.outputPDF) {
 	
 	$document.on("keywordupdate", keywordupdateHandler);
 	$document.on("click", ".nav-go", navGoHandler);
+	$document.on("click", ".fav-link-toggle", favLinkToggleHandler);
+	$document.on("click", ".fav-export-csv", favExportCSVHandler);
 	
 	//$document.on("click", ".app-link button", appLinkHandler);
 }

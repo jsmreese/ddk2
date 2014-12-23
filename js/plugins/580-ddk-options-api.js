@@ -674,31 +674,31 @@ PS.optionsAPI.navElemConfig = {
 			"idField": {
 				"id": "id_field",
 				"label": "Id Field",
-				"description": "Id Field mapping for tree, if this is empty navset will use the column with an 'id' suffix in the sql"
+				"description": "Id Field mapping for tree, if this is empty navset will use the column with an 'id' suffix in the sql",
 				"notes": "This is the alias name of the column set in the sql statement Eg. SQL: [SELECT sci_m_id AS m_id;] In the navset options, use idField: m_id"
 			},
 			"textField": {
 				"id": "text_field",
 				"label": "Text Field",
-				"description": "Text Field mapping for tree, if this is empty navset will use the column with an 'label' suffix in the sql"
+				"description": "Text Field mapping for tree, if this is empty navset will use the column with an 'label' suffix in the sql",
 				"notes": "This is the alias name of the column set in the sql statement Eg. SQL: [SELECT sci_m_label AS m_label;] In the navset options, use textField: m_label"
 			},
 			"parentField": {
 				"id": "parent_field",
 				"label": "Parent Field",
-				"description": "Parent Field mapping for tree, if this is empty navset will use the column with an 'parent' suffix in the sql"
+				"description": "Parent Field mapping for tree, if this is empty navset will use the column with an 'parent' suffix in the sql",
 				"notes": "This is the alias name of the column set in the sql statement Eg. SQL: [SELECT sci_m_parent_id AS m_parent;] In the navset options, use parentField: m_parent"
 			},
 			"childrenField": {
 				"id": "children_field",
 				"label": "Children Field",
-				"description": "Chilren Field mapping for tree, if this is empty navset will use the column with an 'has_children' suffix in the sql"
+				"description": "Chilren Field mapping for tree, if this is empty navset will use the column with an 'has_children' suffix in the sql",
 				"notes": "This is the alias name of the column set in the sql statement Eg. SQL: [SELECT 'true' AS has_children;] In the navset options, use childrenField: m_has_children"
 			},
 			"typeField": {
 				"id": "type_field",
 				"label": "Type Field",
-				"description": "Type Field mapping for tree, if this is empty navset will use the column with an 'type' suffix in the sql"
+				"description": "Type Field mapping for tree, if this is empty navset will use the column with an 'type' suffix in the sql",
 				"notes": "This is the alias name of the column set in the sql statement Eg. SQL: [SELECT node_type AS type;] In the navset options, use typeField: node_type"
 			},
 			"targetElem": {

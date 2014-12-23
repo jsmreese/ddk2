@@ -30,7 +30,8 @@ DDK.chart.updateImage = function (controlId) {
 		var newKeys = _.string.parseQueryString(controlData.keywords || "");
 		
 		K("s_" + controlId + "_keywords", _.reduce(_.extend({}, oldKeys, newKeys), function (memo, value, key) {
-			return memo + (key ? "&" + key + "=" + (value ? encodeURIComponent(value) : "") : "");
+			//return memo + (key ? "&" + key + "=" + (value ? encodeURIComponent(value) : "") : "");
+			return memo + (key ? "&" + key + "=" + (value != null ? encodeURIComponent(value.toString()) : "") : "");
 		}, ""), { silent: true });
 
 		DDK.log("Updating chart image: " + controlId);				
