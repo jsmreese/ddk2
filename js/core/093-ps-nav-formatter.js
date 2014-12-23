@@ -433,24 +433,28 @@ PS.NavFormatter.fn.functions = {
 			arrayValue;
 		options.page = options.page || 1;
 		if(options.queryWidget || options.queryModule){
+			//add single quote wrap if options id does not have one since in SCIDIM_Query it requires all NaN to be wrapped in single quote
+			if(id && isNaN(id) && id.indexOf("'") < 0 && options.queryWidget === "SCIDIM_Query"){
+				wrappedValue = "'" + id + "'";
+			}
 			//map initKeyword to the value
 			if(id && options.initKeyword){
-				dataToPass[options.initKeyword] = id;
+				dataToPass[options.initKeyword] = wrappedValue || id;
 			}
-			//add single quote wrap if options id does not have one since in SCIDIM_Query it requires all NaN to be wrapped in single quote
-			if(options.id && isNaN(options.id) && options.id.indexOf("'") < 0 && options.queryWidget === "SCIDIM_Query"){
-				wrappedValue = "'" + options.id + "'";
+			//map term to search keyword
+			if(term && options.searchKeyword){
+				dataToPass[options.searchKeyword] = term;
 			}
 			//check if the value is in the cached data
-			if(options.id && navFormatter.data && navFormatter.data.length){
+			if(id && navFormatter.data && navFormatter.data.length){
 				arrayValue = [];
-				if(options.id.indexOf(",") > -1){
-					_.each(options.id.split(","), function(value, index){
+				if(id.indexOf(",") > -1){
+					_.each(id.split(","), function(value, index){
 						arrayValue.push(_.string.trim(value));
 					});
 				}
 				else{
-					arrayValue.push(wrappedValue || options.id);
+					arrayValue.push(wrappedValue || id);
 				}
 				newData = _.filter(navFormatter.data, function(data, index){
 					return arrayValue.indexOf(data.id) > -1;
@@ -487,7 +491,7 @@ PS.NavFormatter.fn.functions = {
 			}
 			$.extend(true, dataToPass, K.toObject("p_"), {
 				"config.mn": "DDK_Data_Request",
-				"data.config": JSON.stringify($.extend(true, {}, options, {"id": wrappedValue || options.id}))
+				"data.config": JSON.stringify($.extend(true, {}, options, {"id": wrappedValue || id}))
 			});
 			$.ajax({
 				type: "POST",
