@@ -704,7 +704,7 @@ DDK.controlOptions = function (id) {
 						label: "X Axis Format",
 						description: "Format type for the x-axis.",
 						notes: "X-axis format options expect query dimension field values in the format <code>yyyy-mm-dd</code> as output by the SQL function <code>CONVERT(VARCHAR(10), &lt;datetime&gt;, 120)</code>. <p>The <code>-dash</code> format variant uses a dash between formatted strings rather than spaces or newline characters.",
-						values: ["day", "day-dash", "month", "month-dash"],
+						values: ["day", "day-dash", "month", "month-dash", "week", "week-date"],
 						examples: ["Example_DDK1_AXF_AxisX_Format"]
 					},
 					formatWidgetAxisX: {
