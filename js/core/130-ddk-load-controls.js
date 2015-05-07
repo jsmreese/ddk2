@@ -195,7 +195,10 @@ DDK.reloadFromFavoriteRequest = function () {
 				toggleCSV();
 				
 				// initialize Prism.js syntax highlighting
-				Prism && Prism.highlightAll();
+				//Prism && Prism.highlightAll();	this errors in ie8
+				if(typeof Prism !== "undefined"){
+					Prism.highlightAll();
+				}
 				
 				if (control.stateKeywords) {
 					K(control.stateKeywords);

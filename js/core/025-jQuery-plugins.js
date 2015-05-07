@@ -108,7 +108,19 @@
 		}
 		
 		elem = document.createElement("script");
-		elem.onload = function (e) {
+		// Handle elem loading
+		var done = false;
+		var head = document.getElementsByTagName("head")[0] || document.documentElement;
+		// Attach handlers for all browsers
+		elem.onload = elem.onreadystatechange = function() {
+			if ( !done && (!this.readyState ||
+					this.readyState === "loaded" || this.readyState === "complete") ) {
+				done = true;
+					DDK.log("Script load complete.", settings.src);
+					ret.resolve();
+			}
+		};
+/*		elem.onload = function (e) {
 			DDK.log("Script load complete.", settings.src);
 			ret.resolve();
 		};
@@ -116,7 +128,7 @@
 			DDK.error("Script load error.", settings.src);
 			ret.reject();
 		};
-
+*/
 		elem.src = settings.src;
 		document.body.appendChild(elem);
 		
@@ -134,16 +146,21 @@
 	$.createStylesheet = function (media) {
 		// Create a style element
 		var style = document.createElement("style");
-		
+		style.setAttribute("type", "text/css");
 		// WebKit hack
-		style.appendChild(document.createTextNode(""));
+		if (style.styleSheet) {   // for IE
+			style.styleSheet.cssText = "";
+		} else {                // others
+			style.appendChild(document.createTextNode(""));
+		}
+		//style.appendChild(document.createTextNode(""));
 		
 		if (media) {
 			style.setAttribute("media", media)
 		}
 
 		// Add the style element to the page
-		document.head.appendChild(style);
+		document.getElementsByTagName('head')[0].appendChild(style);
 		
 		return style.sheet;
 	};
@@ -277,6 +294,7 @@
 			//remove sorting class
 			$thead.find("th.sorting, th.sorting_asc, th.sorting_desc").removeClass("sorting").removeClass("sorting_asc").removeClass("sorting_desc");
 			
+			$table.addClass($tbody.closest("table").get(0).className);
 			$table.append($thead).append($tbody).append($tfoot);
 			$table.addClass("table-default");
 			$table.insertAfter($this);

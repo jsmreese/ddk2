@@ -353,6 +353,7 @@
 
     // You can have tooltips use a css class other than jqstooltip by specifying tooltipClassname
     defaultStyles = '.jqstooltip { ' +
+            'box-sizing: content-box;' +
             'position: absolute;' +
             'left: 0px;' +
             'top: 0px;' +

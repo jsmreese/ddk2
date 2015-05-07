@@ -168,6 +168,26 @@ module.exports = function(grunt) {
 						rename: function (dest) {
 							return dest + "ddk2-responsive-legacy.css";
 						}
+					},
+					// standard build part 2
+					{
+						expand: true,
+						cwd: "css/",
+						src: ["*.css", "!0*.css", "06*.css", "07*.css", "08*.css", "09*.css", "!*-LEGACY.css", "!*-NR.css"],
+						dest: "dist/css/",
+						rename: function (dest) {
+							return dest + "ddk2-responsive-standard-2.css";
+						}
+					},
+					// legacy build part 2
+					{
+						expand: true,
+						cwd: "css/",
+						src: ["*.css", "!0*.css", "06*.css", "07*.css", "08*.css", "09*.css", "!*-STANDARD.css", "!*-NR.css"],
+						dest: "dist/css/",
+						rename: function (dest) {
+							return dest + "ddk2-responsive-legacy-2.css";
+						}
 					}
 				]
 			}

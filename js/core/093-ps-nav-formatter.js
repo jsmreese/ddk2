@@ -305,8 +305,17 @@ PS.NavFormatter.fn.functions = {
 					settings.keywords = DDK.util.mergeUrl(settings.internalKeywords, settings.keywords || "");
 				}
 				element.uniqueId();	//generate id to serialize jquery object to pass
-				var dataList = PS.NavFormatter.dataList || [];
-				dataList.push($.extend(true, {}, settings, {"id": wrappedValue || element.val(), "elementId": element.attr("id"), "keywords": (settings.keywords || "") + K.toURL("p_") + "&" + settings.initKeyword + "=" + dataToPass[settings.initKeyword]}));
+				var dataList, dataSettings;
+				dataList = PS.NavFormatter.dataList || [];
+				dataSettings = $.extend(true, {}, settings, {
+					"id": wrappedValue || element.val(), 
+					"elementId": element.attr("id"), 
+					"keywords": (settings.keywords || "") + K.toURL("p_")
+				});
+				if(settings.initKeyword){
+					dataSettings.keywords += "&" + settings.initKeyword + "=" + dataToPass[settings.initKeyword];
+				}
+				dataList.push(dataSettings);
 				$.extend(true, dataToPass, {
 					"config.mn": "DDK_Data_Request",
 					"filterColumn": settings.filterColumn,
@@ -344,7 +353,7 @@ PS.NavFormatter.fn.functions = {
 									}
 									keywordLabel = "";
 									_.each(selectedData, function(item, index){
-										keywordlabel += item.text + ",";
+										keywordLabel += item.text + ",";
 									});
 									if(keywordLabel){
 										//remove last comma

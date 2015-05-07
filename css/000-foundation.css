@@ -2866,13 +2866,16 @@ blockquote p {
 
 @media print {
   * {
-    background: transparent !important;
+/*    This prevents other bg color in pdf mode
+	background: transparent !important;
     color: black !important;
-    /* Black prints faster: h5bp.com/s */
+*/    /* Black prints faster: h5bp.com/s */
     box-shadow: none !important;
     text-shadow: none !important; }
-
-  a,
+  .page-background{
+	background: transparent !important;
+  }
+ /* a,
   a:visited {
     text-decoration: underline; }
 
@@ -2886,7 +2889,7 @@ blockquote p {
   a[href^="javascript:"]:after,
   a[href^="#"]:after {
     content: ""; }
-
+*/
   pre,
   blockquote {
     border: 1px solid #999999;
