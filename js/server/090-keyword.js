@@ -698,7 +698,7 @@ _.extend(K, {
 			// except for settings.except
 			var evalValue;
 
-			if (settings && settings.except && key === settings.except) { return; }
+			if (settings && settings.except && _.indexOf(settings.except.split(" "), key) > -1) { return; }
 			
 			evalValue = value;
 			
