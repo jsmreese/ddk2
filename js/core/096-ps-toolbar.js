@@ -11,7 +11,7 @@ $(document).on("mouseenter", "[data-toolbar]", function (e) {
 				at: "bottom center",
 				adjust: {
 					y: -4
-				},
+				}
 			},
 			content: {
 				text: "" // placeholder for generated content

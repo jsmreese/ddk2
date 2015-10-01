@@ -475,7 +475,7 @@ PS.optionsAPI.bamset = {
                                 "label": "Set Footer Grid Classes",
                                 "description": "Set footer grid classes.",
                                 "notes": "Appends classes on the set footer div. This option is here to separate the section formatting classes from the grid classes in the UI. Both are rendered on the same element."
-                        },
+                        }
 
                 }
         }                
