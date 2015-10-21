@@ -607,7 +607,7 @@ PS.NavFormatter.fn.functions = {
 					}
 					else {
 						_.each(options, function(o) {
-							if(o.id && (o.id.toString().toLowerCase().indexOf(query.term) > -1 || o.text.toLowerCase().indexOf(query.term) > -1)){
+							if(o.id && (o.id.toString().toLowerCase().indexOf(query.term.toLowerCase()) > -1 || o.text.toLowerCase().indexOf(query.term.toLowerCase()) > -1)){
 								data.results.push(o);
 							}
 						});
