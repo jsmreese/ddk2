@@ -1,10 +1,10 @@
 {
   "name": "ddk2",
-  "version": "2.2.1b5",
+  "version": "2.3.0b1",
   "title": "PureShare DDK2",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jsmreese/ddk2.git"
+    "url": "https://github.com/jacksontan/ddk2.git"
   },
   "dependencies": {
     "grunt": "~0.4.1",
