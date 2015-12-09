@@ -12,7 +12,7 @@ function keywordupdateHandler(e) {
 			
 			// data-nav-target-keyword
 			$document.find('[data-nav-target-keyword~="' + key + '"]').each(function (index, elem) {
-				var $elem, targetKeywords, $dateType, $dateStart, $dateEnd, $dateAltStart, $dateAltEnd, year, month, rawValue;
+				var $elem, targetKeywords, $dateType, $dateStart, $dateEnd, $dateAltStart, $dateAltEnd, year, month, rawValue, momentDateFormat;
 				
 				$elem = $(elem);
 				
@@ -47,6 +47,7 @@ function keywordupdateHandler(e) {
 					$dateAltStart = $($dateStart.data("altField"));
 					$dateAltEnd = $($dateEnd.data("altField"));
 					rawValue = value;
+					momentDateFormat = $dateStart.data("datepicker") && $dateStart.data("datepicker").settings.momentDateFormat;
 					//check if value is a quarter and process to use first month of the quarter
 					if(value.indexOf("-Q") > -1){
 						year = value.substr(0, value.indexOf("-"));
@@ -59,7 +60,7 @@ function keywordupdateHandler(e) {
 						if ($dateAltEnd.val() === value) { return; }
 						
 						//settings second param to true will prevent keyword update on change
-						$dateEnd.datepicker("setDate", moment(value).toDate()).trigger("change", true);
+						$dateEnd.datepicker("setDate", moment(value, momentDateFormat).toDate()).trigger("change", true);
 						$dateAltEnd.val(rawValue);
 
 					//	$dateStart.datepicker("option", "maxDate", value);
@@ -70,7 +71,7 @@ function keywordupdateHandler(e) {
 							// then do nothing
 							if ($dateAltStart.val() === value) { return; }
 						
-							$dateStart.datepicker("setDate", moment(value).toDate()).trigger("change", true);
+							$dateStart.datepicker("setDate", moment(value, momentDateFormat).toDate()).trigger("change", true);
 							$dateAltStart.val(rawValue);
 
 					//		$dateEnd.datepicker("option", "minDate", value);
@@ -80,7 +81,7 @@ function keywordupdateHandler(e) {
 							// then do nothing
 							if ($dateEnd.val() === value) { return; }
 
-							$dateEnd.datepicker("setDate", moment(value).toDate()).trigger("change", true);
+							$dateEnd.datepicker("setDate", moment(value, momentDateFormat).toDate()).trigger("change", true);
 							$dateAltEnd.val(rawValue);
 
 					//		$dateStart.datepicker("option", "maxDate", value);
@@ -100,7 +101,7 @@ function keywordupdateHandler(e) {
 
 							if ($dateAltStart.val() === value) { return; }
 						
-							$dateStart.datepicker("setDate", moment(value).toDate()).trigger("change", true);
+							$dateStart.datepicker("setDate", moment(value, momentDateFormat).toDate()).trigger("change", true);
 							$dateAltStart.val(rawValue);
 
 					//		$dateEnd.datepicker("option", "minDate", value);
