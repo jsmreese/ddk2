@@ -1992,7 +1992,10 @@
 					$(document).find("table").breakTableByHeight();
 					$(document).find("table").breakTableByWidth();
 					$(document).expandControlTableParents()
-			
+					$(document).find(".pdf-excluded").remove();
+					$(document).find("textarea").each(function(){
+						$(this).attr("rows", (this.scrollHeight/16) + 1)
+					});
 					window.ABCpdf_go = true;
 					//console.log("pdf output");
 				}, DDK_PDF_WAIT);

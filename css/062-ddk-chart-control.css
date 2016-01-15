@@ -157,3 +157,8 @@
 	table.chart-datatable {
 		border: 0;
 	}
+	.ps-chart img{
+		height:auto !important;
+		width:auto !important;
+		min-width:0 !important;
+	}

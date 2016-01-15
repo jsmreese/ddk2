@@ -1120,7 +1120,7 @@ $.extend(true, DDK.dialog, {
 				K("ddk.path", K("ddk").path);
 				K("ddk.theme", K("ddk").theme);
 			}
-			run("ddk_dialog_content", "PSC_CMS_Dialog_Frame", null, null, { stateFilter: "s_" + data.ddkControlId + "_" });
+			run("ddk_dialog_content", "PSC_CMS_Dialog_Frame", null, function(){$("#chooseMetricsForm").submit();}, { stateFilter: "s_" + data.ddkControlId + "_" });
 		}
 	},
 	saveFavorite: {
